@@ -1,0 +1,52 @@
+{
+  "name": "eth-interface",
+  "namespace": "ethereum",
+  "version": "0.20.6",
+  "description": "Ethereum JavaScript API, middleware to talk to a ethereum node using an async provider",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --project src/tsconfig.json && tsc --project test/tsconfig.json",
+    "watch": "tsc --project src/tsconfig.json --watch & tsc --project test/tsconfig.json --watch",
+    "lint": "tslint",
+    "test": "mocha; ",
+    "test-coveralls": "istanbul cover _mocha -- -R spec && cat coverage/lcov.info | coveralls --verbose"
+  },
+  "directories": {
+    "dist": "./dist"
+  },
+  "dependencies": {
+    "bignumber.js": "^7.0.1",
+    "crypto-js": "^3.1.9-1",
+    "dcl-tslint-config-standard": "^1.0.1",
+    "utf8": "^3.0.0"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.3",
+    "@types/mocha": "^5.2.0",
+    "@types/node": "^10.1.0",
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.1",
+    "istanbul": "^0.4.4",
+    "mocha": "^5.1.1",
+    "sandboxed-module": "^2.0.2",
+    "tslint": "^5.10.0",
+    "tslint-language-service": "^0.9.9",
+    "typescript": "^2.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ethereum/web3.js.git"
+  },
+  "homepage": "https://github.com/ethereum/web3.js",
+  "bugs": {
+    "url": "https://github.com/ethereum/web3.js/issues"
+  },
+  "keywords": ["ethereum", "javascript", "API"],
+  "license": "LGPL-3.0"
+}

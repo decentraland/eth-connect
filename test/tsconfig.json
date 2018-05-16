@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "types": ["@types/mocha"],
+    "declaration": false,
+    "sourceMap": false,
+    "inlineSourceMap": false,
+    "inlineSources": false
+  },
+  "extends": "../tsconfig.json"
+}
