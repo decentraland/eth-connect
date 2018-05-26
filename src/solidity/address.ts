@@ -8,6 +8,8 @@ export class SolidityTypeAddress extends SolidityType {
       outputFormatter: f.formatOutputAddress
     })
   }
+
+  // tslint:disable-next-line:prefer-function-over-method
   isType(name) {
     return !!name.match(/address(\[([0-9]*)\])?/)
   }

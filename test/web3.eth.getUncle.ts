@@ -1,8 +1,5 @@
 import BigNumber from 'bignumber.js'
 import testMethod = require('./helpers/test.method')
-import { eth } from '../dist/methods/eth'
-
-let method = 'getUncle'
 
 let blockResult = {
   number: '0x1b4',
@@ -115,14 +112,7 @@ let formattedBlockResultWithTx = {
   uncles: ['0x460cfb8472af2c5fd05b5a2', '0xd5460cfb8472af2c5fd05b5a2']
 }
 
-let tests = [
-  {
-    args: ['0x47d33b27bb249a2dbab4c0612bf9caf4c1950855', 2],
-    formattedArgs: ['0x47d33b27bb249a2dbab4c0612bf9caf4c1950855', '0x2'],
-    result: blockResult,
-    formattedResult: formattedBlockResult,
-    call: 'eth_getUncleByBlockHashAndIndex'
-  },
+testMethod.runTests(`eth_getUncleByBlockNumberAndIndex`, [
   {
     args: [436, 1],
     formattedArgs: ['0x1b4', '0x1'],
@@ -137,6 +127,14 @@ let tests = [
     formattedResult: formattedBlockResultWithTx,
     call: 'eth_getUncleByBlockNumberAndIndex'
   }
-]
+])
 
-testMethod.runTests(`eth.${method}`, eth.getUncle, tests)
+testMethod.runTests(`eth_getUncleByBlockHashAndIndex`, [
+  {
+    args: ['0x47d33b27bb249a2dbab4c0612bf9caf4c1950855', 2],
+    formattedArgs: ['0x47d33b27bb249a2dbab4c0612bf9caf4c1950855', '0x2'],
+    result: blockResult,
+    formattedResult: formattedBlockResult,
+    call: 'eth_getUncleByBlockHashAndIndex'
+  }
+])

@@ -17,6 +17,11 @@
 
 export let messageId = 0
 
+export type RPCSendableMessage = {
+  method: string
+  params: any[]
+}
+
 /**
  * Should be called to valid json create payload object
  *
@@ -26,8 +31,13 @@ export let messageId = 0
  * @returns {object} valid jsonrpc payload object
  */
 export function toPayload(method: string, params: any[]) {
-  if (!method) console.error('jsonrpc method should be specified!')
+  if (!method) {
+    throw new Error('jsonrpc method should be specified!')
+  }
 
+  if (typeof method !== 'string') {
+    throw new Error(`jsonrpc must be a string, got ${typeof method}!`)
+  }
   // advance message ID
   messageId++
 
@@ -67,7 +77,7 @@ export function isValidResponse(response) {
  * @param {Array} messages, an array of objects with method (required) and params (optional) fields
  * @returns {Array} batch payload
  */
-export function toBatchPayload(messages) {
+export function toBatchPayload(messages: RPCSendableMessage[]) {
   return messages.map(function(message) {
     return toPayload(message.method, message.params)
   })

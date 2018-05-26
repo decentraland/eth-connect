@@ -7,7 +7,8 @@ describe('jsonrpc', function() {
       // given
       let messages = [
         {
-          method: 'helloworld'
+          method: 'helloworld',
+          params: []
         },
         {
           method: 'test2',

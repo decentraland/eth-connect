@@ -2,6 +2,7 @@ import { RequestManager } from './RequestManager'
 import { SolidityFunction } from './SolidityFunction'
 import { SolidityEvent } from './SolidityEvent'
 import { AllSolidityEvents } from './AllSolidityEvents'
+import { EthFilter } from './Filter'
 
 /**
  * Should be called to add functions to contract object
@@ -48,6 +49,8 @@ function addEventsToContract(contract: Contract) {
     })
 }
 
+export type EventFilterCreator = (indexed, options?, callback?: (event) => void) => Promise<EthFilter>
+
 /**
  * Should be called to create new contract instance
  *
@@ -56,6 +59,8 @@ function addEventsToContract(contract: Contract) {
  * @param {Address} contract address
  */
 export class Contract {
+  events: { [key: string]: EventFilterCreator } = {}
+
   transactionHash: string = null
 
   constructor(public requestManager: RequestManager, public abi: any[], public address: string) {

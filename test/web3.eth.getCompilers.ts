@@ -1,5 +1,4 @@
 import testMethod = require('./helpers/test.method')
-import { eth } from '../dist/methods/eth'
 
 let method = 'getCompilers'
 
@@ -20,4 +19,4 @@ let tests = [
   }
 ]
 
-testMethod.runTests(`eth.${method}`, eth.getCompilers, tests)
+testMethod.runTests(`eth_getCompilers`, tests)

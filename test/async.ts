@@ -3,16 +3,12 @@ const assert = chai.assert
 
 import { RequestManager } from '../dist'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
-import { eth } from '../dist/methods/eth'
-
-// use sendTransaction as dummy
-let method = 'sendTransaction'
 
 let tests = [
   {
     input: {
-      from: 'XE7338O073KYGTWWZN0F2WZ0R8PX5ZPPZS',
-      to: 'XE7338O073KYGTWWZN0F2WZ0R8PX5ZPPZS'
+      from: '00c5496aee77c1ba1f0854206a26dda82a81d6d8',
+      to: '00c5496aee77c1ba1f0854206a26dda82a81d6d8'
     },
     formattedInput: {
       from: '0x00c5496aee77c1ba1f0854206a26dda82a81d6d8',
@@ -20,7 +16,7 @@ let tests = [
     },
     result: '0xb',
     formattedResult: '0xb',
-    call: 'eth_' + method
+    call: 'eth_sendTransaction'
   }
 ]
 
@@ -31,7 +27,7 @@ describe('async', function() {
       const provider = new FakeHttpProvider()
 
       provider.injectResult(test.result)
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.jsonrpc, '2.0')
         assert.equal(payload.method, test.call)
         assert.deepEqual(payload.params, [test.formattedInput])
@@ -40,7 +36,7 @@ describe('async', function() {
       const rm = new RequestManager(provider)
 
       // when
-      const result = await eth[method].exec(rm, test.input)
+      const result = await rm.eth_sendTransaction(test.input as any)
 
       assert.strictEqual(test.formattedResult, result)
     })
@@ -53,7 +49,7 @@ describe('async', function() {
         message: test.result,
         code: -32603
       })
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.jsonrpc, '2.0')
         assert.equal(payload.method, test.call)
         assert.deepEqual(payload.params, [test.formattedInput])
@@ -63,7 +59,7 @@ describe('async', function() {
 
       // when
       try {
-        await eth[method].exec(rm, test.input)
+        await rm.eth_sendTransaction(test.input as any)
       } catch (error) {
         assert.strictEqual(test.formattedResult, error.message)
       }

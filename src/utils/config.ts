@@ -55,4 +55,3 @@ export const ETH_BIGNUMBER_ROUNDING_MODE = {
 }
 export const ETH_POLLING_TIMEOUT = 1000 / 2
 export let defaultBlock = 'latest'
-export let defaultAccount = undefined

@@ -14,7 +14,8 @@
     "**/*.map": {
       "when": "$(basename)"
     },
-    "test/**/*.d.ts": true
+    "test/**/*.d.ts": true,
+    "dist": true
   },
   "editor.tabSize": 2,
   "files.encoding": "utf8",

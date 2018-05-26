@@ -2,7 +2,6 @@ import chai = require('chai')
 const assert = chai.assert
 import { RequestManager } from '../dist'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
-import { personal } from '../dist/methods/personal'
 
 let method = 'listAccounts'
 
@@ -23,14 +22,14 @@ describe('web3.personal', function() {
         const rm = new RequestManager(provider)
 
         provider.injectResult(test.result)
-        provider.injectValidation(function(payload) {
+        provider.injectValidation(async payload => {
           assert.equal(payload.jsonrpc, '2.0')
           assert.equal(payload.method, test.call)
           assert.deepEqual(payload.params, [])
         })
 
         // when
-        let result = await personal[method].exec(rm)
+        let result = await rm.personal_listAccounts()
 
         // then
         assert.deepEqual(test.formattedResult, result)

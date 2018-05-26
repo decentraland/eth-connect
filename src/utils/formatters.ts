@@ -26,8 +26,8 @@ import BigNumber from 'bignumber.js'
  * @param {string|number|BigNumber}
  * @returns {BigNumber} object
  */
-export function outputBigNumberFormatter(number): BigNumber {
-  return utils.toBigNumber(number)
+export function outputBigNumberFormatter(num): BigNumber {
+  return utils.toBigNumber(num)
 }
 
 export function isPredefinedBlockNumber(blockNumber) {
@@ -58,7 +58,7 @@ export function inputBlockNumberFormatter(blockNumber) {
  * @returns object
  */
 export function inputCallFormatter(options) {
-  options.from = options.from || config.defaultAccount
+  options.from = options.from
 
   if (options.from) {
     options.from = inputAddressFormatter(options.from)
@@ -69,6 +69,7 @@ export function inputCallFormatter(options) {
     options.to = inputAddressFormatter(options.to)
   }
 
+  // tslint:disable-next-line:semicolon
   ;['gasPrice', 'gas', 'value', 'nonce']
     .filter(function(key) {
       return options[key] !== undefined
@@ -88,7 +89,14 @@ export function inputCallFormatter(options) {
  * @returns object
  */
 export function inputTransactionFormatter(options) {
-  options.from = options.from || config.defaultAccount
+  if (typeof options !== 'object') {
+    throw new Error('Did not provide transaction options')
+  }
+
+  if (!options.from) {
+    throw new Error('Missing "from" in transaction options')
+  }
+
   options.from = inputAddressFormatter(options.from)
 
   if (options.to) {
@@ -96,6 +104,7 @@ export function inputTransactionFormatter(options) {
     options.to = inputAddressFormatter(options.to)
   }
 
+  // tslint:disable-next-line:semicolon
   ;['gasPrice', 'gas', 'value', 'nonce']
     .filter(function(key) {
       return options[key] !== undefined
@@ -208,14 +217,13 @@ export function outputLogFormatter(log) {
  * @returns {object}
  */
 export function inputPostFormatter(post) {
-  // post.payload = utils.toHex(post.payload);
   post.ttl = utils.fromDecimal(post.ttl)
   post.workToProve = utils.fromDecimal(post.workToProve)
   post.priority = utils.fromDecimal(post.priority)
 
   // fallback
   if (!utils.isArray(post.topics)) {
-    post.topics = post.topics ? [(post.topics as any) as string] : []
+    post.topics = post.topics ? [post.topics as string] : []
   }
 
   // format the following options
@@ -239,12 +247,6 @@ export function outputPostFormatter(post) {
   post.sent = utils.toDecimal(post.sent)
   post.ttl = utils.toDecimal(post.ttl)
   post.workProved = utils.toDecimal(post.workProved)
-  // post.payloadRaw = post.payload;
-  // post.payload = utils.toAscii(post.payload);
-
-  // if (utils.isJson(post.payload)) {
-  //     post.payload = JSON.parse(post.payload);
-  // }
 
   // format the following options
   if (!post.topics) {
@@ -263,7 +265,7 @@ export function inputAddressFormatter(address) {
   } else if (utils.isAddress(address)) {
     return '0x' + address
   }
-  throw new Error('invalid address')
+  throw new Error(`Invalid address: ${JSON.stringify(address)}`)
 }
 
 export function outputSyncingFormatter(result) {

@@ -1,9 +1,9 @@
 import chai = require('chai')
 const assert = chai.assert
 import { RequestManager, ContractFactory } from '../dist'
+import { future } from '../dist/utils/future'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 import { FakeHttpProvider2 } from './helpers/FakeHttpProvider2'
-import utils = require('../dist/utils/utils')
 
 import BigNumber from 'bignumber.js'
 import { sha3 } from '../dist/utils/utils'
@@ -75,237 +75,225 @@ let address = '0x1234567890123456789012345678901234567891'
 
 describe('contract', function() {
   describe('event', function() {
-    it('should create event filter', async function(done) {
+    it('should create event filter', async function() {
       const provider = new FakeHttpProvider()
       const rm = new RequestManager(provider)
+      rm.debug = false
       let signature = 'Changed(address,uint256,uint256,uint256)'
-      let step = 0
-      provider.injectValidation(function(payload) {
-        if (step === 0) {
-          step = 1
-          provider.injectResult('0x3')
-          assert.equal(payload.jsonrpc, '2.0')
-          assert.equal(payload.method, 'eth_newFilter')
-          assert.deepEqual(payload.params[0], {
-            topics: [
-              '0x' + sha3(signature),
-              '0x0000000000000000000000001234567890123456789012345678901234567891',
-              '0x000000000000000000000000000000000000000000000000000000000000000a'
-            ],
-            address: '0x1234567890123456789012345678901234567891'
-          })
-        } else if (step === 1) {
-          step = 2
-          provider.injectResult([
-            {
-              address: address,
-              topics: [
-                '0x' + sha3(signature),
-                '0x0000000000000000000000001234567890123456789012345678901234567891',
-                '0x0000000000000000000000000000000000000000000000000000000000000001'
-              ],
-              number: 2,
-              data:
-                '0x0000000000000000000000000000000000000000000000000000000000000001' +
-                '0000000000000000000000000000000000000000000000000000000000000008'
-            }
-          ])
-          assert.equal(payload.jsonrpc, '2.0')
-          assert.equal(payload.method, 'eth_getFilterLogs')
-        } else if (step === 2 && utils.isArray(payload)) {
-          step++
-          provider.injectBatchResults([
-            [
-              {
-                address: address,
-                topics: [
-                  '0x' + sha3(signature),
-                  '0x0000000000000000000000001234567890123456789012345678901234567891',
-                  '0x0000000000000000000000000000000000000000000000000000000000000001'
-                ],
-                number: 2,
-                data:
-                  '0x0000000000000000000000000000000000000000000000000000000000000001' +
-                  '0000000000000000000000000000000000000000000000000000000000000008'
-              }
-            ]
-          ])
-          let r = payload.filter(function(p) {
-            return p.jsonrpc === '2.0' && p.method === 'eth_getFilterChanges' && p.params[0] === '0x3'
-          })
-          assert.equal(r.length > 0, true)
-        }
+
+      const newFilterFuture = provider.mockNewFilter({
+        topics: [
+          '0x' + sha3(signature),
+          '0x0000000000000000000000001234567890123456789012345678901234567891',
+          '0x000000000000000000000000000000000000000000000000000000000000000a'
+        ],
+        address: '0x1234567890123456789012345678901234567891'
       })
 
-      let contract: any = await new ContractFactory(rm, desc).at(address)
+      const getFilterLogs = provider.mockGetFilterLogs([
+        {
+          address: address,
+          topics: [
+            '0x' + sha3(signature),
+            '0x0000000000000000000000001234567890123456789012345678901234567891',
+            '0x0000000000000000000000000000000000000000000000000000000000000001'
+          ],
+          number: 2,
+          data:
+            '0x0000000000000000000000000000000000000000000000000000000000000001' +
+            '0000000000000000000000000000000000000000000000000000000000000008'
+        }
+      ])
+
+      const batchResults = provider.mockGetFilterChanges({
+        address,
+        topics: [
+          '0x' + sha3(signature),
+          '0x0000000000000000000000001234567890123456789012345678901234567891',
+          '0x0000000000000000000000000000000000000000000000000000000000000001'
+        ]
+      })
+
+      const uninstallFilerCalled = provider.mockUninstallFilter()
+      let contract = await new ContractFactory(rm, desc).at(address)
 
       let res = 0
-      let event = contract.Changed({ from: address, amount: 10 })
-      event.watch(function(_, result) {
-        assert.equal(result.args.from, address)
-        assert.equal(result.args.amount, 1)
-        assert.equal(result.args.t1, 1)
-        assert.equal(result.args.t2, 8)
-        res++
-        if (res === 2) {
-          event.stopWatching()
-          done()
+      const done = future()
+
+      let event = await contract.events.Changed({ from: address, amount: 10 })
+
+      await event.getLogs()
+
+      await event.watch(function(result: any) {
+        try {
+          assert.equal(result.args.from, address)
+          assert.equal(result.args.amount, 1)
+          assert.equal(result.args.t1, 1)
+          assert.equal(result.args.t2, 8)
+          res++
+          if (res === 2) {
+            done.resolve(1)
+          }
+        } catch (e) {
+          done.reject(e)
         }
       })
+
+      await done
+
+      await event.stop()
+
+      await newFilterFuture
+
+      await getFilterLogs
+
+      await batchResults
+
+      await uninstallFilerCalled
     })
 
-    it('should create event filter and watch immediately', async function(done) {
+    it('should create event filter and watch immediately', async function() {
       const provider = new FakeHttpProvider()
       const rm = new RequestManager(provider)
 
       let signature = 'Changed(address,uint256,uint256,uint256)'
-      let step = 0
-      provider.injectValidation(function(payload) {
-        if (step === 0) {
-          step = 1
-          provider.injectResult('0x3')
-          assert.equal(payload.jsonrpc, '2.0')
-          assert.equal(payload.method, 'eth_newFilter')
-          assert.deepEqual(payload.params[0], {
-            topics: [
-              '0x' + sha3(signature),
-              '0x0000000000000000000000001234567890123456789012345678901234567891',
-              null
-            ],
-            address: '0x1234567890123456789012345678901234567891'
-          })
-        } else if (step === 1) {
-          step = 2
-          provider.injectResult([
-            {
-              address: address,
-              topics: [
-                '0x' + sha3(signature),
-                '0x0000000000000000000000001234567890123456789012345678901234567891',
-                '0x0000000000000000000000000000000000000000000000000000000000000001'
-              ],
-              number: 2,
-              data:
-                '0x0000000000000000000000000000000000000000000000000000000000000001' +
-                '0000000000000000000000000000000000000000000000000000000000000008'
-            }
-          ])
-          assert.equal(payload.jsonrpc, '2.0')
-          assert.equal(payload.method, 'eth_getFilterLogs')
-        } else if (step === 2 && utils.isArray(payload)) {
-          step++
-          provider.injectBatchResults([
-            [
-              {
-                address: address,
-                topics: [
-                  '0x' + sha3(signature),
-                  '0x0000000000000000000000001234567890123456789012345678901234567891',
-                  '0x0000000000000000000000000000000000000000000000000000000000000001'
-                ],
-                number: 2,
-                data:
-                  '0x0000000000000000000000000000000000000000000000000000000000000001' +
-                  '0000000000000000000000000000000000000000000000000000000000000008'
-              }
-            ]
-          ])
-          let r = payload.filter(function(p) {
-            return p.jsonrpc === '2.0' && p.method === 'eth_getFilterChanges' && p.params[0] === '0x3'
-          })
-          assert.equal(r.length > 0, true)
+
+      const newFilterFuture = provider.mockNewFilter({
+        topics: ['0x' + sha3(signature), '0x0000000000000000000000001234567890123456789012345678901234567891', null],
+        address: '0x1234567890123456789012345678901234567891'
+      })
+
+      const getFilterLogs = provider.mockGetFilterLogs([
+        {
+          address: address,
+          topics: [
+            '0x' + sha3(signature),
+            '0x0000000000000000000000001234567890123456789012345678901234567891',
+            '0x0000000000000000000000000000000000000000000000000000000000000001'
+          ],
+          number: 2,
+          data:
+            '0x0000000000000000000000000000000000000000000000000000000000000001' +
+            '0000000000000000000000000000000000000000000000000000000000000008'
+        }
+      ])
+
+      const batchResults = provider.mockGetFilterChanges({
+        address,
+        topics: [
+          '0x' + sha3(signature),
+          '0x0000000000000000000000001234567890123456789012345678901234567891',
+          '0x0000000000000000000000000000000000000000000000000000000000000001'
+        ]
+      })
+
+      const uninstallFilerCalled = provider.mockUninstallFilter()
+
+      let contract = await new ContractFactory(rm, desc).at(address)
+
+      const done = future()
+
+      let event = await contract.events.Changed({ from: address })
+
+      await event.watch(function(result: any) {
+        try {
+          assert.equal(result.args.from, address)
+          assert.equal(result.args.amount, 1)
+          assert.equal(result.args.t1, 1)
+          assert.equal(result.args.t2, 8)
+
+          done.resolve(1)
+        } catch (e) {
+          done.reject(e)
         }
       })
 
-      let contract: any = await new ContractFactory(rm, desc).at(address)
+      await event.getLogs()
 
-      let res = 0
-      let event = contract.Changed({ from: address }, function(_, result) {
-        assert.equal(result.args.from, address)
-        assert.equal(result.args.amount, 1)
-        assert.equal(result.args.t1, 1)
-        assert.equal(result.args.t2, 8)
-        res++
-        if (res === 2) {
-          event.stopWatching()
-          done()
-        }
-      })
+      await done
+      await event.stop()
+      await newFilterFuture
+      await getFilterLogs
+      await batchResults
+      await uninstallFilerCalled
     })
 
-    it('should create all event filter', async function(done) {
+    it('should create all event filter', async function() {
       const provider = new FakeHttpProvider()
       const rm = new RequestManager(provider)
+      rm.debug = false
       let signature = 'Changed(address,uint256,uint256,uint256)'
-      let step = 0
-      provider.injectValidation(function(payload) {
-        if (step === 0) {
-          step = 1
-          provider.injectResult('0x3')
-          assert.equal(payload.jsonrpc, '2.0')
-          assert.equal(payload.method, 'eth_newFilter')
-          assert.deepEqual(payload.params[0], {
-            topics: [],
-            address: '0x1234567890123456789012345678901234567891'
-          })
-        } else if (step === 1) {
-          step = 2
-          provider.injectResult([
-            {
-              address: address,
-              topics: [
-                '0x' + sha3(signature),
-                '0x0000000000000000000000001234567890123456789012345678901234567891',
-                '0x0000000000000000000000000000000000000000000000000000000000000001'
-              ],
-              number: 2,
-              data:
-                '0x0000000000000000000000000000000000000000000000000000000000000001' +
-                '0000000000000000000000000000000000000000000000000000000000000008'
-            }
-          ])
-          assert.equal(payload.jsonrpc, '2.0')
-          assert.equal(payload.method, 'eth_getFilterLogs')
-        } else if (step === 2 && utils.isArray(payload)) {
-          step++
-          provider.injectBatchResults([
-            [
-              {
-                address: address,
-                topics: [
-                  '0x' + sha3(signature),
-                  '0x0000000000000000000000001234567890123456789012345678901234567891',
-                  '0x0000000000000000000000000000000000000000000000000000000000000001'
-                ],
-                number: 2,
-                data:
-                  '0x0000000000000000000000000000000000000000000000000000000000000001' +
-                  '0000000000000000000000000000000000000000000000000000000000000008'
-              }
-            ]
-          ])
-          let r = payload.filter(function(p) {
-            return p.jsonrpc === '2.0' && p.method === 'eth_getFilterChanges' && p.params[0] === '0x3'
-          })
-          assert.equal(r.length > 0, true)
-        }
+
+      const newFilterCalled = provider.injectValidation(async payload => {
+        if (payload.method !== 'eth_newFilter') return false
+
+        provider.injectResult('0x3')
+
+        assert.deepEqual(payload.params[0], {
+          topics: [],
+          address: '0x1234567890123456789012345678901234567891'
+        })
       })
 
-      let contract: any = await new ContractFactory(rm, desc).at(address)
+      const getFilterLogsCalled = provider.mockGetFilterLogs({
+        address: address,
+        topics: [
+          '0x' + sha3(signature),
+          '0x0000000000000000000000001234567890123456789012345678901234567891',
+          '0x0000000000000000000000000000000000000000000000000000000000000001'
+        ],
+        number: 2,
+        data:
+          '0x0000000000000000000000000000000000000000000000000000000000000001' +
+          '0000000000000000000000000000000000000000000000000000000000000008'
+      })
+
+      const getFilterChangesCalled = provider.mockGetFilterChanges({
+        address: address,
+        topics: [
+          '0x' + sha3(signature),
+          '0x0000000000000000000000001234567890123456789012345678901234567891',
+          '0x0000000000000000000000000000000000000000000000000000000000000001'
+        ],
+        number: 2,
+        data:
+          '0x0000000000000000000000000000000000000000000000000000000000000001' +
+          '0000000000000000000000000000000000000000000000000000000000000008'
+      })
+
+      let contract = await new ContractFactory(rm, desc).at(address)
 
       let res = 0
-      let event = contract.allEvents()
-      event.watch(function(_, result) {
-        assert.equal(result.args.from, address)
-        assert.equal(result.args.amount, 1)
-        assert.equal(result.args.t1, 1)
-        assert.equal(result.args.t2, 8)
-        res++
-        if (res === 2) {
-          event.stopWatching()
-          done()
+      let event = await contract.events.allEvents(void 0)
+      const done = future()
+
+      await event.getLogs()
+
+      await event.watch(function(result: any) {
+        try {
+          if (typeof result === 'string') throw new Error('Result as a string: ' + result)
+          assert.equal(result.args.from, address)
+          assert.equal(result.args.amount, 1)
+          assert.equal(result.args.t1, 1)
+          assert.equal(result.args.t2, 8)
+          res++
+          if (res === 2) {
+            done.resolve(1)
+          }
+        } catch (e) {
+          done.reject(e)
         }
       })
+
+      await done
+
+      await newFilterCalled
+      await getFilterLogsCalled
+      await getFilterChangesCalled
+
+      const didCallUninstall = provider.mockUninstallFilter()
+      await event.stop()
+      await didCallUninstall
     })
 
     it('should call constant function', async function() {
@@ -315,7 +303,7 @@ describe('contract', function() {
       let signature = 'balance(address)'
       let address = '0x1234567890123456789012345678901234567891'
 
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_call')
         assert.deepEqual(payload.params, [
           {
@@ -340,7 +328,7 @@ describe('contract', function() {
       let signature = 'balance(address)'
       let address = '0x1234567890123456789012345678901234567891'
 
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_call')
         assert.deepEqual(payload.params, [
           {
@@ -363,7 +351,7 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_sendTransaction')
         assert.deepEqual(payload.params, [
           {
@@ -389,7 +377,7 @@ describe('contract', function() {
       provider.injectResult('0x0000000000000000000000000000000000000000000000000000000000000032')
       let signature = 'balance(address)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_call')
         assert.deepEqual(payload.params, [
           {
@@ -405,7 +393,7 @@ describe('contract', function() {
 
       let contract: any = await new ContractFactory(rm, desc).at(address)
 
-      let r = contract.balance(address, { from: address, gas: 50000 })
+      let r = await contract.balance(address, { from: address, gas: 50000 })
       assert.deepEqual(new BigNumber(0x32), r)
     })
 
@@ -415,7 +403,7 @@ describe('contract', function() {
       provider.injectResult('0x0000000000000000000000000000000000000000000000000000000000000032')
       let signature = 'balance(address)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_call')
         assert.deepEqual(payload.params, [
           {
@@ -446,7 +434,7 @@ describe('contract', function() {
       provider.injectResult('0x0000000000000000000000000000000000000000000000000000000000000032')
       let signature = 'balance(address)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_call')
         assert.deepEqual(payload.params, [
           {
@@ -472,7 +460,7 @@ describe('contract', function() {
       provider.injectResult('0x0000000000000000000000000000000000000000000000000000000000000032')
       let signature = 'balance(address)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_call')
         assert.deepEqual(payload.params, [
           {
@@ -497,7 +485,7 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_sendTransaction')
         assert.deepEqual(payload.params, [
           {
@@ -531,7 +519,7 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_sendTransaction')
         assert.deepEqual(payload.params, [
           {
@@ -559,7 +547,7 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_sendTransaction')
         assert.deepEqual(payload.params, [
           {
@@ -587,7 +575,7 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_sendTransaction')
         assert.deepEqual(payload.params, [
           {
@@ -615,7 +603,7 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let address = '0x1234567890123456789012345678901234567891'
       let signature = 'send(address,uint256)'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_sendTransaction')
         assert.deepEqual(payload.params, [
           {
@@ -643,7 +631,7 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_estimateGas')
         assert.deepEqual(payload.params, [
           {
@@ -663,7 +651,7 @@ describe('contract', function() {
 
       let contract: any = await new ContractFactory(rm, desc).at(address)
 
-      contract.send.estimateGas(address, 17, { from: address, gas: 50000, gasPrice: 3000, value: 10000 })
+      await contract.send.estimateGas(address, 17, { from: address, gas: 50000, gasPrice: 3000, value: 10000 })
     })
 
     it('should call testArr method and properly parse result', async function() {
@@ -677,7 +665,7 @@ describe('contract', function() {
         }
       ])
 
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_call')
         assert.deepEqual(payload.params, [
           {
@@ -709,7 +697,7 @@ describe('contract', function() {
           result: '0x0000000000000000000000000000000000000000000000000000000000000005'
         }
       ])
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.method, 'eth_call')
         assert.deepEqual(payload.params, [
           {

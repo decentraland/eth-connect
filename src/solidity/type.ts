@@ -160,34 +160,29 @@ export class SolidityType {
    * @param {string} name
    * @return {string} encoded value
    */
-  encode(value, name) {
-    let self = this
+  encode(value, name: string) {
     if (this.isDynamicArray(name)) {
-      return (function() {
-        let length = value.length // in int
-        let nestedName = self.nestedName(name)
+      let length = value.length // in int
+      let nestedName = this.nestedName(name)
 
-        let result = []
-        result.push(f.formatInputInt(length).encode())
+      let result = []
+      result.push(f.formatInputInt(length).encode())
 
-        value.forEach(function(v) {
-          result.push(self.encode(v, nestedName))
-        })
+      value.forEach(v => {
+        result.push(this.encode(v, nestedName))
+      })
 
-        return result
-      })()
+      return result
     } else if (this.isStaticArray(name)) {
-      return (function() {
-        let length = self.staticArrayLength(name) // in int
-        let nestedName = self.nestedName(name)
+      let length = this.staticArrayLength(name) // in int
+      let nestedName = this.nestedName(name)
 
-        let result = []
-        for (let i = 0; i < length; i++) {
-          result.push(self.encode(value[i], nestedName))
-        }
+      let result = []
+      for (let i = 0; i < length; i++) {
+        result.push(this.encode(value[i], nestedName))
+      }
 
-        return result
-      })()
+      return result
     }
 
     return this._inputFormatter(value, name).encode()
@@ -203,49 +198,41 @@ export class SolidityType {
    * @returns {object} decoded value
    */
   decode(bytes: string, offset: number, name: string) {
-    let self = this
-
     if (this.isDynamicArray(name)) {
-      return (function() {
-        let arrayOffset = parseInt('0x' + bytes.substr(offset * 2, 64), 16) // in bytes
-        let length = parseInt('0x' + bytes.substr(arrayOffset * 2, 64), 16) // in int
-        let arrayStart = arrayOffset + 32 // array starts after length; // in bytes
+      let arrayOffset = parseInt('0x' + bytes.substr(offset * 2, 64), 16) // in bytes
+      let length = parseInt('0x' + bytes.substr(arrayOffset * 2, 64), 16) // in int
+      let arrayStart = arrayOffset + 32 // array starts after length; // in bytes
 
-        let nestedName = self.nestedName(name)
-        let nestedStaticPartLength = self.staticPartLength(nestedName) // in bytes
-        let roundedNestedStaticPartLength = Math.floor((nestedStaticPartLength + 31) / 32) * 32
-        let result = []
+      let nestedName = this.nestedName(name)
+      let nestedStaticPartLength = this.staticPartLength(nestedName) // in bytes
+      let roundedNestedStaticPartLength = Math.floor((nestedStaticPartLength + 31) / 32) * 32
+      let result = []
 
-        for (let i = 0; i < length * roundedNestedStaticPartLength; i += roundedNestedStaticPartLength) {
-          result.push(self.decode(bytes, arrayStart + i, nestedName))
-        }
+      for (let i = 0; i < length * roundedNestedStaticPartLength; i += roundedNestedStaticPartLength) {
+        result.push(this.decode(bytes, arrayStart + i, nestedName))
+      }
 
-        return result
-      })()
+      return result
     } else if (this.isStaticArray(name)) {
-      return (function() {
-        let length = self.staticArrayLength(name) // in int
-        let arrayStart = offset // in bytes
+      let length = this.staticArrayLength(name) // in int
+      let arrayStart = offset // in bytes
 
-        let nestedName = self.nestedName(name)
-        let nestedStaticPartLength = self.staticPartLength(nestedName) // in bytes
-        let roundedNestedStaticPartLength = Math.floor((nestedStaticPartLength + 31) / 32) * 32
-        let result = []
+      let nestedName = this.nestedName(name)
+      let nestedStaticPartLength = this.staticPartLength(nestedName) // in bytes
+      let roundedNestedStaticPartLength = Math.floor((nestedStaticPartLength + 31) / 32) * 32
+      let result = []
 
-        for (let i = 0; i < length * roundedNestedStaticPartLength; i += roundedNestedStaticPartLength) {
-          result.push(self.decode(bytes, arrayStart + i, nestedName))
-        }
+      for (let i = 0; i < length * roundedNestedStaticPartLength; i += roundedNestedStaticPartLength) {
+        result.push(this.decode(bytes, arrayStart + i, nestedName))
+      }
 
-        return result
-      })()
+      return result
     } else if (this.isDynamicType(name)) {
-      return (function() {
-        let dynamicOffset = parseInt('0x' + bytes.substr(offset * 2, 64), 16) // in bytes
-        let length = parseInt('0x' + bytes.substr(dynamicOffset * 2, 64), 16) // in bytes
-        let roundedLength = Math.floor((length + 31) / 32) // in int
-        let param = new SolidityParam(bytes.substr(dynamicOffset * 2, (1 + roundedLength) * 64), 0)
-        return self._outputFormatter(param, name)
-      })()
+      let dynamicOffset = parseInt('0x' + bytes.substr(offset * 2, 64), 16) // in bytes
+      let length = parseInt('0x' + bytes.substr(dynamicOffset * 2, 64), 16) // in bytes
+      let roundedLength = Math.floor((length + 31) / 32) // in int
+      let param = new SolidityParam(bytes.substr(dynamicOffset * 2, (1 + roundedLength) * 64), 0)
+      return this._outputFormatter(param, name)
     }
 
     let length = this.staticPartLength(name)

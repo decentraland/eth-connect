@@ -23,9 +23,9 @@ import utils = require('../utils/utils')
  */
 export class SolidityParam {
   value
-  offset: number = 0
+  offset: number = undefined
 
-  constructor(value, offset: number = 0) {
+  constructor(value, offset: number = undefined) {
     this.value = value || ''
     this.offset = offset // offset bytes
   }

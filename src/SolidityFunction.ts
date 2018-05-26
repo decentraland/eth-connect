@@ -21,7 +21,6 @@ import formatters = require('./utils/formatters')
 
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
-import { eth } from './methods/eth'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
@@ -56,7 +55,7 @@ export class SolidityFunction {
     this._address = address
   }
 
-  extractDefaultBlock(args) {
+  extractDefaultBlock(args: any[]) {
     if (args.length > this._inputTypes.length && !utils.isObject(args[args.length - 1])) {
       return formatters.inputDefaultBlockNumberFormatter(args.pop()) // modify the args array!
     }
@@ -75,7 +74,7 @@ export class SolidityFunction {
       return !(utils.isObject(a) === true && utils.isArray(a) === false && utils.isBigNumber(a) === false)
     })
     if (inputArgs.length !== this._inputTypes.length) {
-      throw errors.InvalidNumberOfSolidityArgs()
+      throw errors.InvalidNumberOfSolidityArgs(inputArgs.length, this._inputTypes.length)
     }
   }
 
@@ -90,7 +89,8 @@ export class SolidityFunction {
     let options = {
       to: undefined,
       data: undefined,
-      value: undefined
+      value: undefined,
+      from: undefined
     }
 
     if (args.length > this._inputTypes.length && utils.isObject(args[args.length - 1])) {
@@ -115,7 +115,7 @@ export class SolidityFunction {
   }
 
   unpackOutput(output: string) {
-    if (output === undefined || output === '') {
+    if (!output) {
       return
     }
 
@@ -131,22 +131,25 @@ export class SolidityFunction {
    * @param {...Object} Contract function arguments
    * @return {string} output bytes
    */
-  async exec(requestManager: RequestManager, ...args) {
+  async execute(requestManager: RequestManager, ...args) {
     if (!requestManager) {
       throw new Error(`Cannot call function ${this.displayName()} because there is no requestManager`)
     }
 
-    let payload = this.toPayload(args)
-
-    if (!this.needsToBeTransaction) {
+    if (this.needsToBeTransaction) {
+      let payload = this.toPayload(args)
       if (payload.value > 0 && !this._payable) {
         throw new Error('Cannot send value to non-payable function')
       }
-      let output = await eth.sendTransaction.exec(requestManager, payload)
+      if (!payload.from) {
+        throw new Error('Missing "from" in transaction options')
+      }
+      let output = await requestManager.eth_sendTransaction(payload)
       return this.unpackOutput(output)
     } else {
       let defaultBlock = this.extractDefaultBlock(args)
-      let output = await eth.call.exec(requestManager, payload, defaultBlock)
+      let payload = this.toPayload(args)
+      let output = await requestManager.eth_call(payload, defaultBlock)
       return this.unpackOutput(output)
     }
   }
@@ -159,7 +162,7 @@ export class SolidityFunction {
   estimateGas(...args) {
     let payload = this.toPayload(args)
 
-    return eth.estimateGas.exec(this.requestManager, payload)
+    return this.requestManager.eth_estimateGas(payload)
   }
 
   /**
@@ -207,7 +210,9 @@ export class SolidityFunction {
     contract[displayName] = function(...args) {
       const requestManager = this.requestManager || fun.requestManager
 
-      return fun.exec(requestManager, ...args)
+      return fun.execute(requestManager, ...args)
     }
+
+    contract[displayName].estimateGas = this.estimateGas.bind(this)
   }
 }

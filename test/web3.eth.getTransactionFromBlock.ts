@@ -1,8 +1,5 @@
 import BigNumber from 'bignumber.js'
 import testMethod = require('./helpers/test.method')
-import { eth } from '../dist/methods/eth'
-
-let method = 'getTransactionFromBlock'
 
 let txResult = {
   status: 'mined',
@@ -33,14 +30,7 @@ let formattedTxResult = {
   input: '0x603880600c6000396000f30060'
 }
 
-let tests = [
-  {
-    args: ['0x2dbab4c0612bf9caf4c195085547dc0612bf9caf4c1950855', 2],
-    formattedArgs: ['0x2dbab4c0612bf9caf4c195085547dc0612bf9caf4c1950855', '0x2'],
-    result: txResult,
-    formattedResult: formattedTxResult,
-    call: 'eth_getTransactionByBlockHashAndIndex'
-  },
+testMethod.runTests(`eth_getTransactionByBlockNumberAndIndex`, [
   {
     args: [436, 11],
     formattedArgs: ['0x1b4', '0xb'],
@@ -48,6 +38,14 @@ let tests = [
     formattedResult: formattedTxResult,
     call: 'eth_getTransactionByBlockNumberAndIndex'
   }
-]
+])
 
-testMethod.runTests(`eth.${method}`, eth.getTransactionFromBlock, tests)
+testMethod.runTests(`eth_getTransactionByBlockHashAndIndex`, [
+  {
+    args: ['0x2dbab4c0612bf9caf4c195085547dc0612bf9caf4c1950855', 2],
+    formattedArgs: ['0x2dbab4c0612bf9caf4c195085547dc0612bf9caf4c1950855', '0x2'],
+    result: txResult,
+    formattedResult: formattedTxResult,
+    call: 'eth_getTransactionByBlockHashAndIndex'
+  }
+])

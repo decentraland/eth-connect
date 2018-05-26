@@ -9,7 +9,7 @@ describe('lib/web3/method', function() {
       // given
       let method = new Method({
         name: 'dummy',
-        call: 'dummy',
+        callName: 'dummy',
         params: 1
       })
 
@@ -33,7 +33,7 @@ describe('lib/web3/method', function() {
       // given
       let method = new Method({
         name: 'dummy',
-        call: 'dummy',
+        callName: 'dummy',
         params: 2
       })
 
@@ -49,8 +49,8 @@ describe('lib/web3/method', function() {
       }
 
       // then
-      assert.throws(test, errors.InvalidNumberOfRPCParams().message)
-      assert.throws(test2, errors.InvalidNumberOfRPCParams().message)
+      assert.throws(test, errors.InvalidNumberOfRPCParams('dummy', 1, 2).message)
+      assert.throws(test2, errors.InvalidNumberOfRPCParams('dummy', 3, 2).message)
     })
   })
 })

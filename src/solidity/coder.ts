@@ -104,24 +104,23 @@ export class SolidityCoder {
   encodeMultiWithOffset(types: string[], solidityTypes: SolidityType[], encodeds, _dynamicOffset: number) {
     let dynamicOffset = _dynamicOffset
     let result = ''
-    let self = this
 
-    types.forEach(function(_, i) {
+    types.forEach((_, i) => {
       if (isDynamic(solidityTypes[i], types[i])) {
         result += formatter.formatInputInt(dynamicOffset).encode()
-        let e = self.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
+        let e = this.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
         dynamicOffset += e.length / 2
       } else {
         // don't add length to dynamicOffset. it's already counted
-        result += self.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
+        result += this.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
       }
 
       // TODO: figure out nested arrays
     })
 
-    types.forEach(function(_, i) {
+    types.forEach((_, i) => {
       if (isDynamic(solidityTypes[i], types[i])) {
-        let e = self.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
+        let e = this.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
         dynamicOffset += e.length / 2
         result += e
       }
@@ -129,11 +128,11 @@ export class SolidityCoder {
     return result
   }
 
+  // tslint:disable-next-line:prefer-function-over-method
   encodeWithOffset(type: string, solidityType: SolidityType, encoded, offset: number) {
     /* jshint maxcomplexity: 17 */
     /* jshint maxdepth: 5 */
 
-    let self = this
     let encodingMode = { dynamic: 1, static: 2, other: 3 }
 
     let mode = solidityType.isDynamicArray(type)
@@ -165,9 +164,9 @@ export class SolidityCoder {
       for (let c = 0; c < len; c++) {
         let additionalOffset = result / 2
         if (mode === encodingMode.dynamic) {
-          result += self.encodeWithOffset(nestedName, solidityType, encoded[c + 1], offset + additionalOffset)
+          result += this.encodeWithOffset(nestedName, solidityType, encoded[c + 1], offset + additionalOffset)
         } else if (mode === encodingMode.static) {
-          result += self.encodeWithOffset(nestedName, solidityType, encoded[c], offset + additionalOffset)
+          result += this.encodeWithOffset(nestedName, solidityType, encoded[c], offset + additionalOffset)
         }
       }
 
@@ -185,7 +184,7 @@ export class SolidityCoder {
    * @param {string} bytes
    * @return {object} plain param
    */
-  decodeParam(type, bytes) {
+  decodeParam(type: string, bytes: string) {
     return this.decodeParams([type], bytes)[0]
   }
 
@@ -197,7 +196,7 @@ export class SolidityCoder {
    * @param {string} bytes
    * @return {Array} array of plain params
    */
-  decodeParams(types: string[], bytes) {
+  decodeParams(types: string[], bytes: string) {
     let solidityTypes = this.getSolidityTypes(types)
     let offsets = this.getOffsets(types, solidityTypes)
 

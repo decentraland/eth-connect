@@ -74,8 +74,8 @@ function testBytes(bloom, bytes) {
  * @returns {Boolean} topic is (probably) part of the block
  */
 export function testAddress(bloom, address) {
-  if (!utils.isBloom(bloom)) throw new Error('invalid bloom')
-  if (!utils.isAddress(address)) throw new Error('invalid address')
+  if (!utils.isBloom(bloom)) throw new Error(`Invalid bloom: ${JSON.stringify(bloom)}`)
+  if (!utils.isAddress(address)) throw new Error(`Invalid address: ${JSON.stringify(address)}`)
 
   return testBytes(bloom, address)
 }

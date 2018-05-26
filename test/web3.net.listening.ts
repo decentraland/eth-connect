@@ -3,7 +3,6 @@ const assert = chai.assert
 import { RequestManager } from '../dist'
 
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
-import { net } from '../dist/methods/net'
 
 let method = 'listening'
 
@@ -24,14 +23,14 @@ describe('web3.net', function() {
         const rm = new RequestManager(provider)
 
         provider.injectResult(test.result)
-        provider.injectValidation(function(payload) {
+        provider.injectValidation(async payload => {
           assert.equal(payload.jsonrpc, '2.0')
           assert.equal(payload.method, test.call)
           assert.deepEqual(payload.params, [])
         })
 
         // when
-        let result = await net[method].exec(rm)
+        let result = await rm.net_listening()
 
         // then
         assert.deepEqual(test.formattedResult, result)

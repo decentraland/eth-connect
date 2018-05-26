@@ -18,28 +18,11 @@
 export { RequestManager } from './RequestManager'
 export { Contract } from './Contract'
 export { ContractFactory } from './ContractFactory'
-export { IsSyncing } from './IsSyncing'
 export { Method } from './Method'
 export { Property } from './Property'
 
-import { db } from './methods/db'
-import { eth } from './methods/eth'
-import { net } from './methods/net'
-import { personal } from './methods/personal'
-import { shh } from './methods/shh'
-import { swarm } from './methods/swarm'
-import * as watches from './methods/watches'
+export { eth } from './methods/eth'
 
 import * as utils from './utils/utils'
 
-const methods = {
-  db,
-  eth,
-  net,
-  personal,
-  shh,
-  swarm,
-  watches
-}
-
-export { utils, methods }
+export { utils }

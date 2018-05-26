@@ -176,7 +176,7 @@ export function fromUtf8(_str: string, allowZero = false) {
  * @param {number} optional padding
  * @returns {string} hex representation of input string
  */
-export function fromAscii(str: string) {
+export function fromAscii(str: string, num: number = 0) {
   let hex = ''
   for (let i = 0; i < str.length; i++) {
     let code = str.charCodeAt(i)
@@ -184,7 +184,7 @@ export function fromAscii(str: string) {
     hex += n.length < 2 ? '0' + n : n
   }
 
-  return '0x' + hex
+  return '0x' + hex.padEnd(num, '0')
 }
 
 /**

@@ -23,8 +23,10 @@
 import utils = require('./utils/utils')
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
-import { eth } from './methods/eth'
 import { Contract } from './Contract'
+import { future } from './utils/future'
+import { TransactionOptions } from './Schema'
+import { EthBlockFilter } from './Filter'
 
 /**
  * Should be called to check if the contract gets properly deployed on the blockchain.
@@ -35,54 +37,49 @@ import { Contract } from './Contract'
  * @returns {Undefined}
  */
 async function checkForContractAddress(contract: Contract) {
-  const receipt = await new Promise<any>((resolve, reject) => {
-    // wait for receipt
-    let count = 0
-    let filter = eth.filter(contract.requestManager, 'latest', function(e) {
-      if (!e) {
-        count++
+  const receiptFuture = future()
+  // TODO fix filter
+  const filter = new EthBlockFilter(contract.requestManager)
 
-        // stop watching after 50 blocks (timeout)
-        if (count > 50) {
-          filter.stopWatching(function() {
-            // stub
-          })
-          reject(new Error("Contract transaction couldn't be found after 50 blocks"))
-        } else {
-          eth.getTransactionReceipt
-            .exec(contract.requestManager, contract.transactionHash)
-            .then(receipt => {
-              if (receipt && receipt.blockHash) {
-                filter.stopWatching(function() {
-                  // stub
-                })
-                resolve(receipt)
-              }
-            })
-            .catch(error => {
-              filter.stopWatching(function() {
-                // stub
-              })
-              reject(error)
-            })
+  await filter.watch(e => {
+    let count = 0
+
+    count++
+
+    // stop watching after 50 blocks (timeout)
+    if (count > 50) {
+      filter
+        .stop()
+        .then(() => receiptFuture.reject(new Error("Contract transaction couldn't be found after 50 blocks")))
+        .catch(receiptFuture.reject)
+    } else {
+      contract.requestManager.eth_getTransactionReceipt(contract.transactionHash).then(
+        receipt => {
+          if (receipt && receipt.blockHash) {
+            filter
+              .stop()
+              .then(() => receiptFuture.resolve(receipt))
+              .catch(receiptFuture.reject)
+          }
+        },
+        error => {
+          filter.stop().then(() => receiptFuture.reject(error), receiptFuture.reject)
         }
-      }
-    })
+      )
+    }
   })
 
-  return new Promise<any>((resolve, reject) => {
-    eth.getCode
-      .exec(contract.requestManager, receipt.contractAddress)
-      .then(code => {
-        if (code.length > 3) {
-          contract.address = receipt.contractAddress
-          // call callback for the second time
-          resolve(contract)
-        } else {
-          reject(new Error("The contract code couldn't be stored, please check your gas amount."))
-        }
-      })
-      .catch(reject)
+  const receipt = await receiptFuture
+  const code = await contract.requestManager.eth_getCode(receipt.contractAddress, 'latest')
+
+  if (code.length > 3) {
+    contract.address = receipt.contractAddress
+    return contract
+  }
+
+  throw Object.assign(new Error("The contract code couldn't be stored, please check your gas amount."), {
+    response: code,
+    receipt
   })
 }
 
@@ -128,23 +125,27 @@ export class ContractFactory {
    * @param {Function} callback
    * @returns {Contract} returns contract instance
    */
-  async deploy(param1, param2, options): Promise<Contract>
-  async deploy(param1, options): Promise<Contract>
-  async deploy(options): Promise<Contract>
-  async deploy() {
+  async deploy(param1, param2, options: TransactionOptions): Promise<Contract>
+  async deploy(param1, options: TransactionOptions): Promise<Contract>
+  async deploy(options: TransactionOptions): Promise<Contract>
+  async deploy(...args) {
     let contract = new Contract(this.requestManager, this.abi, null)
 
     // parse arguments
-    let options = {
-      value: undefined,
-      data: undefined
-    }
-
-    let args = Array.prototype.slice.call(arguments)
+    let options: TransactionOptions
 
     let last = args[args.length - 1]
+
     if (utils.isObject(last) && !utils.isArray(last)) {
       options = args.pop()
+    }
+
+    if (!options) {
+      throw new Error('Missing options object')
+    }
+
+    if (!options.data || typeof options.data !== 'string') {
+      throw new Error('Invalid options.data')
     }
 
     if (options.value > 0) {
@@ -162,7 +163,7 @@ export class ContractFactory {
     options.data += bytes
 
     // wait for the contract address and check if the code was deployed
-    const hash = await eth.sendTransaction.exec(this.requestManager, options)
+    const hash = await this.requestManager.eth_sendTransaction(options)
 
     // add the transaction hash
     contract.transactionHash = hash
@@ -181,7 +182,8 @@ export class ContractFactory {
    * @returns {Contract} returns contract if no callback was passed,
    * otherwise calls callback function (err, contract)
    */
-  async at(address: string) {
+  async at(address: string): Promise<Contract> {
+    if (!utils.isAddress(address)) throw new TypeError(`Invalid address ${JSON.stringify(address)}`)
     let contract = new Contract(this.requestManager, this.abi, address)
     return contract
   }
@@ -191,16 +193,25 @@ export class ContractFactory {
    *
    * @method getData
    */
-  async getData() {
+  async getData(...args: any[]) {
     let options = { data: undefined }
-    let args = Array.prototype.slice.call(arguments)
 
-    let last = args[args.length - 1]
+    const last = args[args.length - 1]
+
     if (utils.isObject(last) && !utils.isArray(last)) {
       options = args.pop()
     }
 
-    let bytes = encodeConstructorParams(this.abi, args)
+    if (!options) {
+      throw new Error('Missing options object')
+    }
+
+    if (!options.data || typeof options.data !== 'string') {
+      throw new Error('Invalid options.data')
+    }
+
+    const bytes = encodeConstructorParams(this.abi, args)
+
     options.data += bytes
 
     return options.data

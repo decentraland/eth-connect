@@ -14,15 +14,9 @@
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
- * @file method.js
- * @author Marek Kotewicz <marek@ethdev.com>
- * @date 2015
- */
 
 import errors = require('./utils/errors')
 import { RequestManager } from './RequestManager'
-import { Contract } from './Contract'
 
 export class Method {
   name: string
@@ -34,20 +28,20 @@ export class Method {
 
   constructor(options: {
     name: string
-    call: string | ((args) => string)
+    callName: string | ((args) => string)
     params: number
     inputFormatter?: any[]
     outputFormatter?: any
   }) {
     this.name = options.name
-    this.callName = options.call
+    this.callName = options.callName
     this.params = options.params || 0
     this.inputFormatter = options.inputFormatter || null
     this.outputFormatter = options.outputFormatter || null
     this.requestManager = null
   }
 
-  setRequestManager(rm) {
+  setRequestManager(rm: RequestManager) {
     this.requestManager = rm
   }
 
@@ -69,9 +63,9 @@ export class Method {
    * @param {Array} arguments
    * @throws {Error} if it is not
    */
-  validateArgs(args) {
+  validateArgs(args: any[]) {
     if (args.length !== this.params) {
-      throw errors.InvalidNumberOfRPCParams()
+      throw errors.InvalidNumberOfRPCParams(this.name, args.length, this.params)
     }
   }
 
@@ -122,18 +116,24 @@ export class Method {
     }
   }
 
-  attachToObject(obj: Contract) {
-    let func = (...args) => this.exec(this.requestManager, ...args)
+  attachToObject(obj: object) {
+    let func = (...args) => this.execute(this.requestManager, ...args)
+    Object.defineProperty(func, 'name', { value: this.callName })
+
     let name = this.name.split('.')
     if (name.length > 1) {
       obj[name[0]] = obj[name[0]] || {}
+
+      if (name[1] in obj[name[0]]) throw new Error(`Cannot override property ${name[0]}.${name[1]}`)
+
       obj[name[0]][name[1]] = func
     } else {
+      if (name[0] in obj) throw new Error(`Cannot override property ${name[0]}`)
       obj[name[0]] = func
     }
   }
 
-  async exec(requestManager: RequestManager, ...args: any[]) {
+  async execute(requestManager: RequestManager, ...args: any[]) {
     let payload = this.toPayload(args)
     if (!requestManager) throw new Error('Missing RequestManager in method#exec')
     const result = await requestManager.sendAsync(payload)

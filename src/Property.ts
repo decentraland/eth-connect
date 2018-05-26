@@ -86,7 +86,7 @@ export class Property {
           throw new Error(`Cannot read property ${property.name} because there is no requestManager`)
         }
 
-        return property.exec(requestManager)
+        return property.execute(requestManager)
       },
       enumerable: true
     }
@@ -97,13 +97,18 @@ export class Property {
     if (names.length > 1) {
       obj[names[0]] = obj[names[0]] || {}
       name = names[1]
+
+      if (name in obj[name[0]]) throw new Error(`Cannot override property ${name[0]}.${name}`)
+
       Object.defineProperty(obj[names[0]], name, proto)
     } else {
+      if (name in obj) throw new Error(`Cannot override property ${name}`)
+
       Object.defineProperty(obj, name, proto)
     }
   }
 
-  async exec(requestManager: RequestManager) {
+  async execute(requestManager: RequestManager) {
     const result = await requestManager.sendAsync({
       method: this.getter,
       params: []

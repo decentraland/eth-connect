@@ -18,6 +18,16 @@
 import formatters = require('./utils/formatters')
 import utils = require('./utils/utils')
 import { RequestManager } from './RequestManager'
+import config = require('./utils/config')
+import { Quantity, FilterOptions, FilterChange, TxHash, SHHFilterOptions, SHHFilterMessage } from './Schema'
+import { future, IFuture } from './utils/future'
+
+function safeAsync(fn: () => Promise<any>) {
+  return function() {
+    // tslint:disable-next-line:no-console
+    fn().catch($ => console.error($))
+  }
+}
 
 /**
  * Converts a given topic to a hex string, but also allows null values.
@@ -34,214 +44,229 @@ function toTopic(value: any) {
   else return utils.fromUtf8(strValue)
 }
 
-/// This method should be called on options object, to verify deprecated properties && lazy load dynamic ones
-/// @param should be string or object
-/// @returns options string or object
-function getOptions(options, type) {
-  if (utils.isString(options)) {
-    return options
-  }
+export type FilterCallback = (messages: FilterChange[] | string[]) => void
 
-  switch (type) {
-    case 'eth':
-      // make sure topics, get converted to hex
-      options.topics = options.topics || []
-      options.topics = options.topics.map(function(topic) {
-        return utils.isArray(topic) ? topic.map(toTopic) : toTopic(topic)
-      })
+export class SHHFilter {
+  public isStarted = false
 
-      return {
-        topics: options.topics,
-        from: options.from,
-        to: options.to,
-        address: options.address,
-        fromBlock: formatters.inputBlockNumberFormatter(options.fromBlock),
-        toBlock: formatters.inputBlockNumberFormatter(options.toBlock)
-      }
-    case 'shh':
-      return options
-  }
-}
+  private timeout: any
+  private filterId: IFuture<Quantity> = future()
+  private callbacks: ((message: SHHFilterMessage) => void)[] = []
+  private stopSemaphore: IFuture<any>
 
-/**
- * Adds the callback and sets up the methods, to iterate over the results.
- * @method getLogsAtStart
- * @param {object} self
- * @param {function} callback
- */
-function getLogsAtStart(self, callback) {
-  // call getFilterLogs for the first watch callback start
-  if (!utils.isString(self.options)) {
-    self.get(function(err, messages) {
-      // don't send all the responses to all the watches again... just to self one
-      if (err) {
-        callback(err)
-      }
-
-      if (utils.isArray(messages)) {
-        messages.forEach(function(message) {
-          callback(null, message)
-        })
-      }
+  constructor(public requestManager: RequestManager, public options: SHHFilterOptions) {
+    this.options = this.options || { topics: [] }
+    this.options.topics = this.options.topics || []
+    this.options.topics = this.options.topics.map(function(topic) {
+      return toTopic(topic)
     })
-  }
-}
 
-/**
- * Adds the callback and sets up the methods, to iterate over the results.
- *
- * @method pollFilter
- * @param {object} self
- */
-function pollFilter(self) {
-  function onMessage(error, messages) {
-    if (error) {
-      return self.callbacks.forEach(function(callback) {
-        callback(error)
-      })
-    }
-
-    if (utils.isArray(messages)) {
-      messages.forEach(function(message) {
-        const theMessage = self.formatter ? self.formatter(message) : message
-        self.callbacks.forEach(function(callback) {
-          callback(null, theMessage)
-        })
-      })
+    this.options = {
+      topics: this.options.topics,
+      to: this.options.to
     }
   }
 
-  self.requestManager.startPolling(
-    {
-      method: self.implementation.poll.call,
-      params: [self.filterId]
-    },
-    self.filterId,
-    onMessage,
-    self.stopWatching.bind(self)
-  )
+  async start() {
+    if (this.isStarted) return
+    this.isStarted = true
+
+    try {
+      const id = await this.requestManager.shh_newFilter(this.options)
+
+      if (!id) {
+        throw new Error('Could not create a filter, response: ' + JSON.stringify(id))
+      }
+
+      this.filterId.resolve(id)
+    } catch (e) {
+      this.isStarted = false
+      throw e
+    }
+
+    await this.poll()
+  }
+
+  async watch(callback: (message: SHHFilterMessage) => void) {
+    if (callback) {
+      this.callbacks.push(callback)
+      if (!this.isStarted) {
+        await this.start()
+      }
+    }
+  }
+
+  async stop() {
+    const filterId = await this.filterId
+    if (!this.stopSemaphore || (!this.stopSemaphore.isPending && this.timeout)) {
+      this.stopSemaphore = future()
+    }
+
+    await this.requestManager.shh_uninstallFilter(filterId)
+    this.isStarted = false
+
+    if (this.timeout) {
+      await this.stopSemaphore
+      clearTimeout(this.timeout)
+    }
+  }
+
+  /**
+   * Adds the callback and sets up the methods, to iterate over the results.
+   *
+   * @method pollFilter
+   */
+  private async poll() {
+    const filterId = await this.filterId
+
+    const result: SHHFilterMessage[] = await this.requestManager.shh_getFilterChanges(filterId)
+
+    this.callbacks.forEach(cb => {
+      result.forEach($ => cb($))
+    })
+
+    if (this.isStarted) {
+      this.timeout = setTimeout(safeAsync(() => this.poll()), config.ETH_POLLING_TIMEOUT)
+    } else {
+      if (this.stopSemaphore && this.stopSemaphore.isPending) {
+        this.stopSemaphore.resolve(1)
+      }
+      this.timeout = null
+    }
+  }
 }
 
-export class Filter {
-  requestManager: RequestManager
-  filterId = null
-  callbacks = []
-  getLogsCallbacks = []
-  pollFilters = []
-  options
-  implementation
-  formatter
+export class EthFilter<T = FilterChange | string> {
+  public isStarted = false
+
+  private timeout: any
+  private filterId: IFuture<Quantity> = future()
+  private callbacks: ((message: T) => void)[] = []
+
+  private stopSemaphore: IFuture<any>
 
   constructor(
-    options,
-    type,
-    requestManager: RequestManager,
-    methods,
-    formatter,
-    callback: Function,
-    filterCreationErrorCallback?: Function
+    public requestManager: RequestManager,
+    public options: FilterOptions,
+    public formatter: (message: FilterChange | string) => T = x => x as any
   ) {
-    let implementation = {}
-
-    methods.forEach(function(method) {
-      method.setRequestManager(requestManager)
-      method.attachToObject(implementation)
+    this.options = this.options || {}
+    this.options.topics = this.options.topics || []
+    this.options.topics = this.options.topics.map(function(topic) {
+      return toTopic(topic)
     })
 
-    this.requestManager = requestManager
-    this.options = getOptions(options, type)
-    this.implementation = implementation
-
-    this.formatter = formatter
-    this.implementation.newFilter(this.options, (error, id) => {
-      if (error) {
-        this.callbacks.forEach(function(cb) {
-          cb(error)
-        })
-        if (typeof filterCreationErrorCallback === 'function') {
-          filterCreationErrorCallback(error)
-        }
-      } else {
-        this.filterId = id
-
-        // check if there are get pending callbacks as a consequence
-        // of calling get() with filterId unassigned.
-        this.getLogsCallbacks.forEach(function(cb) {
-          this.get(cb)
-        })
-        this.getLogsCallbacks = []
-
-        // get filter logs for the already existing watch calls
-        this.callbacks.forEach(function(cb) {
-          getLogsAtStart(this, cb)
-        })
-        if (this.callbacks.length > 0) pollFilter(this)
-
-        // start to watch immediately
-        if (typeof callback === 'function') {
-          return this.watch(callback)
-        }
-      }
-    })
-
-    return this
+    this.options = {
+      topics: this.options.topics,
+      address: this.options.address,
+      fromBlock: formatters.inputBlockNumberFormatter(this.options.fromBlock),
+      toBlock: formatters.inputBlockNumberFormatter(this.options.toBlock)
+    }
   }
 
-  watch(callback) {
-    this.callbacks.push(callback)
+  async getNewFilter() {
+    return this.requestManager.eth_newFilter(this.options)
+  }
 
-    if (this.filterId) {
-      getLogsAtStart(this, callback)
-      pollFilter(this)
+  async start() {
+    if (this.isStarted) return
+    this.isStarted = true
+
+    try {
+      const id = await this.getNewFilter()
+
+      if (!id) {
+        throw new Error('Could not create a filter, response: ' + JSON.stringify(id))
+      }
+
+      this.filterId.resolve(id)
+    } catch (e) {
+      this.isStarted = false
+      throw e
     }
 
-    return this
+    await this.poll()
   }
 
-  stopWatching(callback) {
-    this.requestManager.stopPolling(this.filterId)
-    this.callbacks = []
-    // remove filter async
+  async watch(callback: (message: T) => void) {
     if (callback) {
-      this.implementation.uninstallFilter(this.filterId, callback)
-    } else {
-      return this.implementation.uninstallFilter(this.filterId)
+      this.callbacks.push(callback)
+      if (!this.isStarted) {
+        await this.start()
+      }
     }
   }
 
-  get(callback) {
-    let self = this
-    if (utils.isFunction(callback)) {
-      if (this.filterId === null) {
-        // If filterId is not set yet, call it back
-        // when newFilter() assigns it.
-        this.getLogsCallbacks.push(callback)
-      } else {
-        this.implementation.getLogs(this.filterId, function(err, res) {
-          if (err) {
-            callback(err)
-          } else {
-            callback(
-              null,
-              res.map(function(log) {
-                return self.formatter ? self.formatter(log) : log
-              })
-            )
-          }
-        })
-      }
-    } else {
-      if (this.filterId === null) {
-        throw new Error(
-          "Filter ID Error: filter().get() can't be chained synchronous, please provide a callback for the get() method."
-        )
-      }
-      let logs = this.implementation.getLogs(this.filterId)
-      return logs.map(function(log) {
-        return self.formatter ? self.formatter(log) : log
-      })
+  async stop() {
+    const filterId = await this.filterId
+    if (!this.stopSemaphore || (!this.stopSemaphore.isPending && this.timeout)) {
+      this.stopSemaphore = future()
     }
 
-    return this
+    await this.requestManager.eth_uninstallFilter(filterId)
+    this.isStarted = false
+
+    if (this.timeout) {
+      await this.stopSemaphore
+      clearTimeout(this.timeout)
+    }
+  }
+
+  async getLogs() {
+    if (!this.isStarted) {
+      await this.start()
+    }
+    const filterId = await this.filterId
+
+    return this.requestManager.eth_getFilterLogs(filterId)
+  }
+
+  /**
+   * Adds the callback and sets up the methods, to iterate over the results.
+   *
+   * @method pollFilter
+   */
+  private async poll() {
+    const filterId = await this.filterId
+
+    const result: any[] = await this.requestManager.eth_getFilterChanges(filterId)
+
+    this.callbacks.forEach(cb => {
+      if (this.formatter) {
+        result.forEach($ => {
+          cb(this.formatter($))
+        })
+      } else {
+        result.forEach($ => cb($))
+      }
+    })
+
+    if (this.isStarted) {
+      this.timeout = setTimeout(safeAsync(() => this.poll()), config.ETH_POLLING_TIMEOUT)
+    } else {
+      if (this.stopSemaphore && this.stopSemaphore.isPending) {
+        this.stopSemaphore.resolve(1)
+      }
+      this.timeout = null
+    }
+  }
+}
+
+export class EthPendingTransactionFilter extends EthFilter<TxHash> {
+  constructor(requestManager: RequestManager) {
+    super(requestManager, null, arg => arg as TxHash)
+  }
+  async getNewFilter() {
+    return this.requestManager.eth_newPendingTransactionFilter()
+  }
+}
+
+export class EthBlockFilter extends EthFilter<TxHash> {
+  constructor(requestManager: RequestManager) {
+    super(requestManager, null, arg => arg as TxHash)
+  }
+
+  async getNewFilter() {
+    return this.requestManager.eth_newBlockFilter()
   }
 }

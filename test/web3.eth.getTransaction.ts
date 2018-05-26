@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js'
 import testMethod = require('./helpers/test.method')
-import { eth } from '../dist/methods/eth'
 
 let method = 'getTransaction'
 
@@ -32,7 +31,7 @@ let formattedTxResult = {
   input: '0x603880600c6000396000f30060'
 }
 
-let tests = [
+testMethod.runTests(`eth_getTransactionByHash`, [
   {
     args: ['0x2dbab4c0612bf9caf4c195085547dc0612bf9caf4c1950855'],
     formattedArgs: ['0x2dbab4c0612bf9caf4c195085547dc0612bf9caf4c1950855'],
@@ -40,6 +39,4 @@ let tests = [
     formattedResult: formattedTxResult,
     call: 'eth_' + method + 'ByHash'
   }
-]
-
-testMethod.runTests(`eth.${method}`, eth.getTransaction, tests)
+])

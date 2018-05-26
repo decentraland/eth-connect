@@ -15,26 +15,343 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// tslint:disable:variable-name
+
 import jsonRpc = require('./utils/jsonrpc')
-import utils = require('./utils/utils')
-import config = require('./utils/config')
 import errors = require('./utils/errors')
+import { IFuture, future } from './utils/future'
+import { eth } from './methods/eth'
+
+import {
+  SHHFilterOptions,
+  Data,
+  Quantity,
+  SHHFilterMessage,
+  SHHPost,
+  FilterChange,
+  TransactionReceipt,
+  Tag,
+  BlockObject,
+  TransactionObject,
+  TransactionCallOptions,
+  TransactionOptions,
+  Syncing,
+  TxHash,
+  Address,
+  FilterOptions
+} from './Schema'
+
+export function inject(target: Object, propertyKey: string | symbol) {
+  const method = eth[propertyKey]
+
+  if (!method) {
+    throw new Error(`Could not find the method/property named ${propertyKey}`)
+  }
+
+  Object.defineProperty(target, propertyKey, {
+    value: function() {
+      return method.execute.call(method, this, ...arguments)
+    }
+  })
+}
+
+export type BlockIdentifier = 'latest' | 'earliest' | 'pending' | string
 
 /**
  * It's responsible for passing messages to providers
  * It's also responsible for polling the ethereum node for incoming messages
  * Default poll timeout is 1 second
- * Singleton
  */
 export class RequestManager {
-  provider: any
-  polls: any = {}
-  timeout: any = null
+  requests = new Map<number, IFuture<any>>()
 
-  constructor(provider) {
-    this.provider = provider
-    this.polls = {}
-    this.timeout = null
+  debug = false
+
+  /** Returns the current client version. */
+  @inject web3_clientVersion: () => Promise<string>
+
+  /** Returns Keccak-256 (not the standardized SHA3-256) of the given data. */
+  @inject web3_sha3: (data: Data) => Promise<Data>
+
+  /** Returns the current network id. */
+  @inject net_version: () => Promise<number>
+
+  /** Returns number of peers currently connected to the client. */
+  @inject net_peerCount: () => Promise<Quantity>
+
+  /** Returns true if client is actively listening for network connections. */
+  @inject net_listening: () => Promise<boolean>
+
+  /** Returns the current ethereum protocol version. */
+  @inject eth_protocolVersion: () => Promise<number>
+
+  /** Returns an object with data about the sync status or false. */
+  @inject eth_syncing: () => Promise<false | Syncing>
+
+  /** Returns the client coinbase address. */
+  @inject eth_coinbase: () => Promise<Address>
+
+  /** Returns true if client is actively mining new blocks. */
+  @inject eth_mining: () => Promise<boolean>
+
+  /** Returns the number of hashes per second that the node is mining with. */
+  @inject eth_hashrate: () => Promise<Quantity>
+
+  /** Returns the current price per gas in wei. */
+  @inject eth_gasPrice: () => Promise<Quantity>
+
+  /** Returns a list of addresses owned by client. */
+  @inject eth_accounts: () => Promise<Address[]>
+
+  /** Returns the number of most recent block. */
+  @inject eth_blockNumber: () => Promise<Quantity>
+
+  /** Returns the balance of the account of given address. */
+  @inject eth_getBalance: (address: Address, block: Quantity | Tag) => Promise<Quantity>
+
+  /** Returns the value from a storage position at a given address. */
+  @inject eth_getStorageAt: (address: Address, position: Quantity, block: Quantity | Tag) => Promise<Data>
+
+  /** Returns the number of transactions sent from an address. */
+  @inject eth_getTransactionCount: (address: Address, block: Quantity | Tag) => Promise<Quantity>
+
+  /** Returns the number of transactions in a block from a block matching the given block hash. */
+  @inject eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<Quantity>
+
+  /** Returns the number of transactions in a block matching the given block number. */
+  @inject eth_getBlockTransactionCountByNumber: (block: Quantity | Tag) => Promise<Quantity>
+
+  /** Returns the number of uncles in a block from a block matching the given block hash. */
+  @inject eth_getUncleCountByBlockHash: (blockHash: TxHash) => Promise<Quantity>
+
+  /** Returns the number of uncles in a block from a block matching the given block number. */
+  @inject eth_getUncleCountByBlockNumber: (block: Quantity | Tag) => Promise<Quantity>
+
+  /** Returns code at a given address. */
+  @inject eth_getCode: (address: Address, block: Quantity | Tag) => Promise<Data>
+  /**
+   * The sign method calculates an Ethereum specific signature with:
+   *
+   * sign(keccak256("\x19Ethereum Signed Message:\n" + len(message) + message))).
+   *
+   * By adding a prefix to the message makes the calculated signature recognisable as an Ethereum specific signature.
+   * This prevents misuse where a malicious DApp can sign arbitrary data (e.g. transaction) and use the signature to
+   * impersonate the victim.
+   *
+   * Note the address to sign with must be unlocked.
+   */
+  @inject eth_sign: (address: Address, message: Data) => Promise<Data>
+
+  /** Creates new message call transaction or a contract creation, if the data field contains code. */
+  @inject eth_sendTransaction: (options: TransactionOptions) => Promise<TxHash>
+
+  /** Creates new message call transaction or a contract creation for signed transactions. */
+  @inject eth_sendRawTransaction: (rawTransaction: Data) => Promise<TxHash>
+
+  /** Executes a new message call immediately without creating a transaction on the block chain. */
+  @inject eth_call: (options: TransactionCallOptions, block: Quantity | Tag) => Promise<Data>
+  /**
+   * Generates and returns an estimate of how much gas is necessary to allow the transaction to complete.
+   * The transaction will not be added to the blockchain. Note that the estimate may be significantly more
+   * than the amount of gas actually used by the transaction, for a variety of reasons including EVM mechanics
+   * and node performance.
+   */
+  @inject eth_estimateGas: (data: Partial<TransactionCallOptions> & Partial<TransactionOptions>) => Promise<Quantity>
+
+  /** Returns information about a block by hash. */
+  @inject eth_getBlockByHash: (blockHash: TxHash, fullTransactionObjects: boolean) => Promise<BlockObject>
+
+  /** Returns information about a block by block number. */
+  @inject eth_getBlockByNumber: (block: Quantity | Tag, fullTransactionObjects: boolean) => Promise<BlockObject>
+
+  /** Returns the information about a transaction requested by transaction hash. */
+  @inject eth_getTransactionByHash: (hash: TxHash) => Promise<TransactionObject>
+
+  /** Returns information about a transaction by block hash and transaction index position. */
+  @inject eth_getTransactionByBlockHashAndIndex: (blockHash: TxHash, txIndex: Quantity) => Promise<TransactionObject>
+
+  /** Returns information about a transaction by block number and transaction index position. */
+  @inject
+  eth_getTransactionByBlockNumberAndIndex: (block: Quantity | Tag, txIndex: Quantity) => Promise<TransactionObject>
+  /**
+   * Returns the receipt of a transaction by transaction hash.
+   * Note That the receipt is not available for pending transactions.
+   */
+  @inject eth_getTransactionReceipt: (hash: TxHash) => Promise<TransactionReceipt>
+
+  /** Returns information about a uncle of a block by hash and uncle index position. */
+  @inject eth_getUncleByBlockHashAndIndex: (blockHash: TxHash, index: Quantity) => Promise<BlockObject>
+
+  /** Returns information about a uncle of a block by number and uncle index position. */
+  @inject eth_getUncleByBlockNumberAndIndex: (block: Quantity | Tag, index: Quantity) => Promise<BlockObject>
+
+  /** Returns a list of available compilers in the client. */
+  @inject eth_getCompilers: () => Promise<Array<string>>
+
+  /** Returns compiled LLL code. */
+  @inject eth_compileLLL: (code: string) => Promise<Data>
+
+  /** Returns compiled solidity code. */
+  @inject eth_compileSolidity: (code: string) => Promise<any>
+
+  /** Returns compiled serpent code. */
+  @inject eth_compileSerpent: (code: string) => Promise<Data>
+
+  /**
+   * Creates a filter object, based on filter options, to notify when the state changes (logs). To check if the state
+   * has changed, call eth_getFilterChanges.
+   *
+   * A note on specifying topic filters:
+   * Topics are order-dependent. A transaction with a log with topics [A, B] will be matched by the following topic
+   * filters:
+   *
+   * [] "anything"
+   * [A] "A in first position (and anything after)"
+   * [null, B] "anything in first position AND B in second position (and anything after)"
+   * [A, B] "A in first position AND B in second position (and anything after)"
+   * [[A, B], [A, B]] "(A OR B) in first position AND (A OR B) in second position (and anything after)"
+   */
+  @inject eth_newFilter: (options: FilterOptions) => Promise<Quantity>
+
+  /**
+   * Creates a filter in the node, to notify when a new block arrives. To check if the state has changed, call
+   * eth_getFilterChanges.
+   */
+  @inject eth_newBlockFilter: () => Promise<Quantity>
+
+  /**
+   * Creates a filter in the node, to notify when new pending transactions arrive. To check if the state has changed,
+   * call eth_getFilterChanges.
+   */
+  @inject eth_newPendingTransactionFilter: () => Promise<Quantity>
+
+  /**
+   * Uninstalls a filter with given id. Should always be called when watch is no longer needed. Additonally Filters
+   * timeout when they aren't requested with eth_getFilterChanges for a period of time.
+   */
+  @inject eth_uninstallFilter: (filterId: Quantity) => Promise<boolean>
+
+  /**
+   * Polling method for a filter, which returns an array of logs which occurred since last poll.
+   */
+  @inject eth_getFilterChanges: (filterId: Quantity) => Promise<Array<TxHash> | Array<FilterChange>>
+
+  /** Returns an array of all logs matching filter with given id. */
+  @inject eth_getFilterLogs: (filterId: Quantity) => Promise<Array<TxHash> | Array<FilterChange>>
+
+  /** Returns an array of all logs matching a given filter object. */
+  @inject eth_getLogs: (options: FilterOptions) => Promise<Array<TxHash> | Array<FilterChange>>
+
+  /**
+   * Returns the hash of the current block, the seedHash, and the boundary condition to be met ("target").
+   *
+   * @returns Array with the following properties:
+   *
+   * DATA, 32 Bytes - current block header pow-hash
+   * DATA, 32 Bytes - the seed hash used for the DAG.
+   * DATA, 32 Bytes - the boundary condition ("target"), 2^256 / difficulty.
+   */
+  @inject eth_getWork: () => Promise<Array<TxHash>>
+
+  /** Used for submitting a proof-of-work solution. */
+  @inject eth_submitWork: (data: Data, powHash: TxHash, digest: TxHash) => Promise<boolean>
+
+  /** Used for submitting mining hashrate. */
+  @inject eth_submitHashrate: (hashRate: Data, id: Data) => Promise<boolean>
+
+  /** Sends a whisper message. */
+  @inject shh_post: (data: SHHPost) => Promise<boolean>
+
+  /** Returns the current whisper protocol version. */
+  @inject shh_version: () => Promise<string>
+
+  /** Creates new whisper identity in the client. */
+  @inject shh_newIdentity: () => Promise<Data>
+
+  /** Checks if the client hold the private keys for a given identity. */
+  @inject shh_hasIdentity: (identity: Data) => Promise<boolean>
+  @inject shh_newGroup: () => Promise<Data>
+  @inject shh_addToGroup: (group: Data) => Promise<boolean>
+
+  /** Creates filter to notify, when client receives whisper message matching the filter options. */
+  @inject shh_newFilter: (options: SHHFilterOptions) => Promise<Quantity>
+
+  /**
+   * Uninstalls a filter with given id. Should always be called when watch is no longer needed.
+   * Additonally Filters timeout when they aren't requested with shh_getFilterChanges for a period of time.
+   */
+  @inject shh_uninstallFilter: (filterId: Quantity) => Promise<boolean>
+
+  /**
+   * Polling method for whisper filters. Returns new messages since the last call of this method.
+   *
+   * Note calling the shh_getMessages method, will reset the buffer for this method, so that you won't receive duplicate
+   * messages.
+   */
+  @inject shh_getFilterChanges: (filterId: Quantity) => Promise<Array<SHHFilterMessage>>
+
+  /** Get all messages matching a filter. Unlike shh_getFilterChanges this returns all messages. */
+  @inject shh_getMessages: (filterId: Quantity) => Promise<Array<SHHFilterMessage>>
+
+  /**
+   * Decrypts the key with the given address from the key store.
+   *
+   * Both passphrase and unlock duration are optional when using the JavaScript console. If the passphrase is not
+   * supplied as an argument, the console will prompt for the passphrase interactively.
+   *
+   * The unencrypted key will be held in memory until the unlock duration expires. If the unlock duration defaults to
+   * 300 seconds. An explicit duration of zero seconds unlocks the key until geth exits.
+   *
+   * The account can be used with eth_sign and eth_sendTransaction while it is unlocked.
+   */
+  @inject personal_unlockAccount: (account: Address, passPhrase?: Data, seconds?: Quantity) => Promise<boolean>
+
+  /**
+   * Generates a new private key and stores it in the key store directory. The key file is encrypted with the given
+   * passphrase. Returns the address of the new account.
+   *
+   * At the geth console, newAccount will prompt for a passphrase when it is not supplied as the argument.
+   */
+  @inject personal_newAccount: (passPhrase: Data) => Promise<Address>
+
+  /** Returns all the Ethereum account addresses of all keys in the key store. */
+  @inject personal_listAccounts: () => Promise<Array<Address>>
+
+  /** Removes the private key with given address from memory. The account can no longer be used to send transactions. */
+  @inject personal_lockAccount: (address: Address) => Promise<boolean>
+
+  /**
+   * Imports the given unencrypted private key (hex string) into the key store, encrypting it with the passphrase.
+   * Returns the address of the new account.
+   */
+  @inject personal_importRawKey: (keydata: Data, passPhrase: Data) => Promise<Address>
+
+  /**
+   * Imports the given unencrypted private key (hex string) into the key store, encrypting it with the passphrase.
+   * Returns the address of the new account.
+   */
+  @inject personal_sendTransaction: (txObject: TransactionOptions, passPhrase: Data) => Promise<TxHash>
+
+  /**
+   * The sign method calculates an Ethereum specific signature with:
+   *   sign(keccack256("\x19Ethereum Signed Message:\n" + len(message) + message))).
+   *
+   * By adding a prefix to the message makes the calculated signature recognisable as an Ethereum specific signature.
+   * This prevents misuse where a malicious DApp can sign arbitrary data (e.g. transaction) and use the signature to
+   * impersonate the victim.
+   *
+   * See ecRecover to verify the signature.
+   */
+  @inject personal_sign: (txObject: TransactionOptions, passPhrase: Data) => Promise<TxHash>
+
+  /**
+   * ecRecover returns the address associated with the private key that was used to calculate the signature in
+   * personal_sign.
+   */
+  @inject personal_ecRecover: (message: Data, signature: Data) => Promise<Address>
+
+  constructor(public provider: any) {
+    // stub
   }
 
   /**
@@ -44,55 +361,49 @@ export class RequestManager {
    * @param {object} data
    * @param {Function} callback
    */
-  async sendAsync(data: { method: string; params: any[] }) {
+  async sendAsync(data: jsonRpc.RPCSendableMessage) {
     if (!this.provider) {
       throw errors.InvalidProvider()
     }
 
     let payload = jsonRpc.toPayload(data.method, data.params)
 
-    return new Promise<any>((resolve, reject) => {
-      this.provider.sendAsync(payload, function(err, result) {
-        if (err) {
-          return reject(err)
-        }
+    const defer = future()
 
-        if (!jsonRpc.isValidResponse(result)) {
-          return reject(errors.InvalidResponse(result))
-        }
+    defer.finally(() => this.requests.delete(payload.id))
 
-        resolve(result.result)
-      })
-    })
-  }
+    this.requests.set(payload.id, defer)
 
-  /**
-   * Should be called to asynchronously send batch request
-   *
-   * @method sendBatch
-   * @param {Array} batch data
-   * @param {Function} callback
-   */
-  async sendBatch(data: any[]) {
-    if (!this.provider) {
-      throw errors.InvalidProvider()
+    if (this.debug) {
+      // tslint:disable-next-line:no-console
+      console.log('SEND >> ' + JSON.stringify(payload))
+
+      defer
+        .then(data => {
+          // tslint:disable-next-line:no-console
+          console.log('RECV << ' + JSON.stringify(data))
+        })
+        .catch(err => {
+          // tslint:disable-next-line:no-console
+          console.log('ERR << ' + JSON.stringify(err))
+        })
     }
 
-    let payload = jsonRpc.toBatchPayload(data)
+    this.provider.sendAsync(payload, function(err, result) {
+      if (err) {
+        defer.reject(err)
+        return
+      }
 
-    return new Promise<any>((resolve, reject) => {
-      this.provider.sendAsync(payload, function(err, result) {
-        if (err) {
-          return reject(err)
-        }
+      if (!jsonRpc.isValidResponse(result)) {
+        defer.reject(errors.InvalidResponse(result))
+        return
+      }
 
-        if (!jsonRpc.isValidResponse(result)) {
-          return reject(errors.InvalidResponse(result))
-        }
-
-        resolve(result.result)
-      })
+      defer.resolve(result.result)
     })
+
+    return defer
   }
 
   /**
@@ -103,144 +414,5 @@ export class RequestManager {
    */
   setProvider(p) {
     this.provider = p
-  }
-
-  /**
-   * Should be used to start polling
-   *
-   * @method startPolling
-   * @param {object} data
-   * @param {number} pollId
-   * @param {Function} callback
-   * @param {Function} uninstall
-   *
-   * @todo cleanup number of params
-   */
-  startPolling(data, pollId: string, callback, uninstall) {
-    this.polls[pollId] = {
-      data: data,
-      id: pollId,
-      callback: callback,
-      uninstall: uninstall
-    }
-
-    // start polling
-    if (!this.timeout) {
-      this.poll()
-    }
-  }
-
-  /**
-   * Should be used to stop polling for filter with given id
-   *
-   * @method stopPolling
-   * @param {number} pollId
-   */
-  stopPolling(pollId: string | number) {
-    delete this.polls[pollId]
-
-    // stop polling
-    if (Object.keys(this.polls).length === 0 && this.timeout) {
-      clearTimeout(this.timeout)
-      this.timeout = null
-    }
-  }
-
-  /**
-   * Should be called to reset the polling mechanism of the request manager
-   *
-   * @method reset
-   */
-  reset(keepIsSyncing) {
-    /*jshint maxcomplexity:5 */
-
-    for (let key in this.polls) {
-      // remove all polls, except sync polls,
-      // they need to be removed manually by calling syncing.stopWatching()
-      if (!keepIsSyncing || key.indexOf('syncPoll_') === -1) {
-        this.polls[key].uninstall()
-        delete this.polls[key]
-      }
-    }
-
-    // stop polling
-    if (Object.keys(this.polls).length === 0 && this.timeout) {
-      clearTimeout(this.timeout)
-      this.timeout = null
-    }
-  }
-
-  /**
-   * Should be called to poll for changes on filter with given id
-   *
-   * @method poll
-   */
-  poll() {
-    /*jshint maxcomplexity: 6 */
-    this.timeout = setTimeout(this.poll.bind(this), config.ETH_POLLING_TIMEOUT)
-
-    if (Object.keys(this.polls).length === 0) {
-      return
-    }
-
-    if (!this.provider) {
-      // tslint:disable-next-line:no-console
-      console.error(errors.InvalidProvider())
-      return
-    }
-
-    let pollsData = []
-    let pollsIds = []
-    for (let key in this.polls) {
-      pollsData.push(this.polls[key].data)
-      pollsIds.push(key)
-    }
-
-    if (pollsData.length === 0) {
-      return
-    }
-
-    let payload = jsonRpc.toBatchPayload(pollsData)
-
-    // map the request id to they poll id
-    let pollsIdMap = {}
-    payload.forEach(function(load, index) {
-      pollsIdMap[load.id] = pollsIds[index]
-    })
-
-    let self = this
-    this.provider.sendAsync(payload, function(error, results) {
-      // TODO: console log?
-      if (error) {
-        return
-      }
-
-      if (!utils.isArray(results)) {
-        throw errors.InvalidResponse(results)
-      }
-      results
-        .map(function(result) {
-          let id = pollsIdMap[result.id]
-
-          // make sure the filter is still installed after arrival of the request
-          if (self.polls[id]) {
-            result.callback = self.polls[id].callback
-            return result
-          } else return false
-        })
-        .filter(function(result) {
-          return !!result
-        })
-        .filter(function(result) {
-          let valid = jsonRpc.isValidResponse(result)
-          if (!valid) {
-            result.callback(errors.InvalidResponse(result))
-          }
-          return valid
-        })
-        .forEach(function(result) {
-          result.callback(null, result.result)
-        })
-    })
   }
 }

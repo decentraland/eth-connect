@@ -60,8 +60,8 @@ let tests = [
     input: {
       data: '0x34234bf23bf4234',
       value: new BigNumber(100),
-      from: 'XE7338O073KYGTWWZN0F2WZ0R8PX5ZPPZS',
-      to: 'XE7338O073KYGTWWZN0F2WZ0R8PX5ZPPZS',
+      from: '00c5496aee77c1ba1f0854206a26dda82a81d6d8',
+      to: '0x00c5496aee77c1ba1f0854206a26dda82a81d6d8',
       gas: '1000',
       gasPrice: new BigNumber(1000)
     },
@@ -78,7 +78,7 @@ let tests = [
     input: {
       data: '0x34234bf23bf4234',
       value: new BigNumber(100),
-      from: 'XE7338O073KYGTWWZN0F2WZ0R8PX5ZPPZS',
+      from: '00c5496aee77c1ba1f0854206a26dda82a81d6d8',
       gas: '1000',
       gasPrice: new BigNumber(1000)
     },

@@ -12,7 +12,7 @@ describe('lib/web3/method', function() {
 
       let method = new Method({
         name: 'dummy',
-        call: 'dummy',
+        callName: 'dummy',
         inputFormatter: [star, star, star],
         params: 3
       })
@@ -30,7 +30,7 @@ describe('lib/web3/method', function() {
     it('should do nothing if there is no formatter', function() {
       // given
       let method = new Method({
-        call: 'dummy',
+        callName: 'dummy',
         name: 'dummy',
         params: 3
       })

@@ -1,8 +1,5 @@
 import BigNumber from 'bignumber.js'
 import testMethod = require('./helpers/test.method')
-import { eth } from '../dist/methods/eth'
-
-let method = 'getBlock'
 
 let blockResult = {
   number: '0x1b4',
@@ -115,28 +112,29 @@ let formattedBlockResultWithTx = {
   uncles: ['0x460cfb8472af2c5fd05b5a2', '0xd5460cfb8472af2c5fd05b5a2']
 }
 
-let tests = [
+testMethod.runTests(`eth_getBlockByHash`, [
   {
     args: ['0x47d33b27bb249a2dbab4c0612bf9caf4c1950855'],
     formattedArgs: ['0x47d33b27bb249a2dbab4c0612bf9caf4c1950855', false],
     result: blockResult,
     formattedResult: formattedBlockResult,
-    call: 'eth_' + method + 'ByHash'
-  },
+    call: 'eth_getBlockByHash'
+  }
+])
+
+testMethod.runTests(`eth_getBlockByNumber`, [
   {
     args: [436],
     formattedArgs: ['0x1b4', false],
     result: blockResult,
     formattedResult: formattedBlockResult,
-    call: 'eth_' + method + 'ByNumber'
+    call: 'eth_getBlockByNumber'
   },
   {
     args: [436, true],
     formattedArgs: ['0x1b4', true],
     result: blockResultWithTx,
     formattedResult: formattedBlockResultWithTx,
-    call: 'eth_' + method + 'ByNumber'
+    call: 'eth_getBlockByNumber'
   }
-]
-
-testMethod.runTests(`eth.${method}`, eth.getBlock, tests)
+])

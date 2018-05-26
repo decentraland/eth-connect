@@ -18,11 +18,10 @@
 import formatters = require('./utils/formatters')
 import utils = require('./utils/utils')
 
-import watches = require('./methods/watches')
-
 import { SolidityEvent } from './SolidityEvent'
-import { Filter } from './Filter'
 import { RequestManager } from './RequestManager'
+import { Contract } from './Contract'
+import { EthFilter } from './Filter'
 
 export class AllSolidityEvents {
   constructor(public _requestManager: RequestManager, public _json, public _address: string) {}
@@ -60,14 +59,14 @@ export class AllSolidityEvents {
     return event.decode(data)
   }
 
-  execute(options, callback: Function) {
+  async execute(options) {
     let filterOptions = this.encode(options)
     let formatter = this.decode.bind(this)
-    return new Filter(filterOptions, 'eth', this._requestManager, watches.eth(), formatter, callback)
+    return new EthFilter<any>(this._requestManager, filterOptions, formatter)
   }
 
-  attachToContract(contract) {
+  attachToContract(contract: Contract) {
     let execute = this.execute.bind(this)
-    contract.allEvents = execute
+    contract.events.allEvents = execute
   }
 }

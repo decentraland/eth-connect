@@ -1,7 +1,5 @@
 import { utils } from '../dist'
-
 import testMethod = require('./helpers/test.method')
-import { shh } from '../dist/methods/shh'
 
 let method = 'post'
 
@@ -37,4 +35,4 @@ let tests = [
   }
 ]
 
-testMethod.runTests(`shh.${method}`, shh.post, tests)
+testMethod.runTests(`shh_${method}`, tests)

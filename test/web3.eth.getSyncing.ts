@@ -13,7 +13,7 @@ describe('eth', function() {
         currentBlock: '0xb',
         highestBlock: '0xb'
       })
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.jsonrpc, '2.0', 'failed')
         assert.equal(payload.method, 'eth_syncing')
       })
@@ -35,7 +35,7 @@ describe('eth', function() {
       // const rm = new RequestManager(provider)
 
       provider.injectResult(false)
-      provider.injectValidation(function(payload) {
+      provider.injectValidation(async payload => {
         assert.equal(payload.jsonrpc, '2.0', 'failed')
         assert.equal(payload.method, 'eth_syncing')
       })

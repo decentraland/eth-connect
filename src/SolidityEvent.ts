@@ -24,11 +24,9 @@ import utils = require('./utils/utils')
 import formatters = require('./utils/formatters')
 
 import { coder } from './solidity/coder'
-import watches = require('./methods/watches')
-
-import { Filter } from './Filter'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
+import { EthFilter } from './Filter'
 
 /**
  * This prototype should be used to create event filters
@@ -188,10 +186,10 @@ export class SolidityEvent {
    * @param {object} options
    * @return {object} filter object
    */
-  execute(indexed, options, callback: Function) {
+  async execute(indexed, options) {
     let o = this.encode(indexed, options)
     let formatter = this.decode.bind(this)
-    return new Filter(o, 'eth', this.requestManager, watches.eth(), formatter, callback)
+    return new EthFilter(this.requestManager, o, formatter)
   }
 
   /**
@@ -203,9 +201,9 @@ export class SolidityEvent {
   attachToContract(contract: Contract) {
     let execute = this.execute.bind(this)
     let displayName = this.displayName()
-    if (!contract[displayName]) {
-      contract[displayName] = execute
+    if (!contract.events[displayName]) {
+      contract.events[displayName] = execute
     }
-    contract[displayName][this.typeName()] = this.execute.bind(this, contract)
+    contract.events[displayName][this.typeName()] = this.execute.bind(this, contract)
   }
 }

@@ -3,120 +3,184 @@ import { RequestManager } from '../dist'
 const assert = chai.assert
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 
-import { eth } from '../dist/methods/eth'
+import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../dist/Filter'
+import { future } from '../dist/utils/future'
 
-let method = 'filter'
+describe('eth.filter', function() {
+  it('Test EthFilter', async function() {
+    // given
+    const provider = new FakeHttpProvider()
+    const rm = new RequestManager(provider)
+    rm.debug = false
 
-let tests = [
-  {
-    args: [
-      {
-        fromBlock: 0,
-        toBlock: 10,
-        address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855'
-      }
-    ],
-    formattedArgs: [
-      {
-        fromBlock: '0x0',
-        toBlock: '0xa',
-        address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855',
-        topics: []
-      }
-    ],
-    result: '0xf',
-    formattedResult: '0xf',
-    call: 'eth_newFilter'
-  },
-  {
-    args: [
-      {
-        fromBlock: 'latest',
-        toBlock: 'latest',
-        address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855'
-      }
-    ],
-    formattedArgs: [
-      {
-        fromBlock: 'latest',
-        toBlock: 'latest',
-        address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855',
-        topics: []
-      }
-    ],
-    result: '0xf',
-    formattedResult: '0xf',
-    call: 'eth_newFilter'
-  },
-  {
-    args: ['latest'],
-    formattedArgs: [],
-    result: '0xf',
-    formattedResult: '0xf',
-    call: 'eth_newBlockFilter'
-  },
-  {
-    args: ['pending'],
-    formattedArgs: [],
-    result: '0xf',
-    formattedResult: '0xf',
-    call: 'eth_newPendingTransactionFilter'
-  }
-]
-
-describe('web3.eth', function() {
-  describe(method, function() {
-    tests.forEach(function(test, index) {
-      it('property test: ' + index, function(done) {
-        // given
-        const provider = new FakeHttpProvider()
-        const rm = new RequestManager(provider)
-
-        provider.injectResult(test.result)
-        provider.injectValidation(function(payload) {
-          assert.equal(payload.jsonrpc, '2.0')
-          assert.equal(payload.method, test.call)
-          assert.deepEqual(payload.params, test.formattedArgs)
-        })
-
-        // call
-        let filter = eth[method].exec(rm, ...test.args)
-
-        // test filter.get
-        if (typeof test.args === 'object') {
-          let logs = [{ data: '0xb' }, { data: '0x11' }]
-
-          provider.injectResult(logs)
-          provider.injectValidation(function(payload) {
-            assert.equal(payload.jsonrpc, '2.0')
-            assert.equal(payload.method, 'eth_getFilterLogs')
-            assert.deepEqual(payload.params, [test.formattedResult])
-          })
-
-          // async should get the fake logs
-          filter.get(function(_, res) {
-            assert.equal(logs, res)
-            done()
-          })
-        }
-      })
-      /*
-      it('should call filterCreationErrorCallback on error while filter creation', function() {
-        // given
-        const provider = new FakeHttpProvider()
-        web3.reset()
-        const rm = new RequestManager(provider)
-        provider.injectError(errors.InvalidConnection())
-        // call
-        let args = test.args.slice()
-        args.push(undefined)
-        args.push(function(err) {
-          assert.include(errors, err)
-          done()
-        })
-        web3.eth[method].apply(web3.eth, args)
-      })
-      */
+    const didCallNewFilter = provider.mockNewFilter({
+      fromBlock: '0x0',
+      toBlock: '0xa',
+      address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855',
+      topics: []
     })
+
+    // call
+    let filter = new EthFilter(rm, {
+      fromBlock: 0,
+      toBlock: 10,
+      address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855'
+    })
+
+    const logs = [
+      {
+        address: '0x1',
+        number: 2,
+        topics: [
+          '0x0000000000000000000000001234567890123456789012345678901234567891',
+          '0x0000000000000000000000000000000000000000000000000000000000000001'
+        ],
+        data: '0xb'
+      },
+      {
+        address: '0x1',
+        number: 2,
+        topics: [
+          '0x0000000000000000000000001234567890123456789012345678901234567891',
+          '0x0000000000000000000000000000000000000000000000000000000000000001'
+        ],
+        data: '0x11'
+      }
+    ]
+
+    const didCallChanges = provider.mockGetFilterChanges(logs)
+    const didCallLogs = provider.mockGetFilterLogs(logs)
+    const didCallUninstall = provider.mockUninstallFilter()
+
+    // async should get the fake logs
+    const res = await filter.getLogs()
+
+    await didCallNewFilter
+    await didCallLogs
+
+    assert.deepEqual(logs, res as any)
+
+    await didCallChanges
+
+    await filter.stop()
+    await didCallUninstall
+  })
+
+  it('Test EthFilter polling', async function() {
+    this.timeout(100000)
+    // given
+    const provider = new FakeHttpProvider()
+    const rm = new RequestManager(provider)
+    rm.debug = false
+
+    const didCallNewFilter = provider.mockNewFilter({
+      fromBlock: '0x0',
+      toBlock: '0xa',
+      address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855',
+      topics: []
+    })
+
+    // call
+    let filter = new EthFilter(rm, {
+      fromBlock: 0,
+      toBlock: 10,
+      address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855'
+    })
+
+    const logs = [
+      {
+        address: '0x1',
+        number: 2,
+        topics: [
+          '0x0000000000000000000000001234567890123456789012345678901234567891',
+          '0x0000000000000000000000000000000000000000000000000000000000000001'
+        ],
+        data: '0xb'
+      },
+      {
+        address: '0x1',
+        number: 2,
+        topics: [
+          '0x0000000000000000000000001234567890123456789012345678901234567891',
+          '0x0000000000000000000000000000000000000000000000000000000000000001'
+        ],
+        data: '0x11'
+      }
+    ]
+
+    let counter = 0
+
+    const didCallThreeTimes = future()
+
+    const didCallChanges = provider.mockGetFilterChanges(logs, () => {
+      counter++
+      if (counter === 5) didCallThreeTimes.resolve(1)
+    })
+
+    const didCallLogs = provider.mockGetFilterLogs(logs)
+    const didCallUninstall = provider.mockUninstallFilter()
+
+    // async should get the fake logs
+    const res = await filter.getLogs()
+
+    await didCallNewFilter
+    await didCallLogs
+
+    assert.deepEqual(logs, res as any)
+
+    await didCallChanges
+    await didCallThreeTimes
+
+    await filter.stop()
+    await didCallUninstall
+  })
+
+  it('EthBlockFilter', async function() {
+    // given
+    const provider = new FakeHttpProvider()
+    const rm = new RequestManager(provider)
+
+    const didCallInit = provider.injectHandler('eth_newBlockFilter', async _ => {
+      provider.injectResult('0xf')
+    })
+
+    const didCallGetChanges = provider.injectHandler('eth_getFilterChanges', async _ => {
+      provider.injectResult(['0xf'])
+    })
+
+    // call
+    let filter = new EthBlockFilter(rm)
+    await filter.start()
+    await didCallInit
+    const didCallUninstall = provider.mockUninstallFilter()
+    await didCallGetChanges
+    await filter.stop()
+    await didCallUninstall
+  })
+
+  it('EthPendingTransactionFilter', async function() {
+    // given
+    const provider = new FakeHttpProvider()
+    const rm = new RequestManager(provider)
+
+    // call
+    let filter = new EthPendingTransactionFilter(rm)
+
+    const didCallInit = provider.injectHandler('eth_newPendingTransactionFilter', async _ => {
+      provider.injectResult('0xf')
+    })
+
+    const didCallGetChanges = provider.injectHandler('eth_getFilterChanges', async _ => {
+      provider.injectResult(['0xf'])
+    })
+
+    const didCallUninstall = provider.mockUninstallFilter()
+    await filter.start()
+    await didCallInit
+
+    await didCallGetChanges
+    await filter.stop()
+
+    await didCallUninstall
   })
 })

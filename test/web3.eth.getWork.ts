@@ -1,5 +1,4 @@
 import testMethod = require('./helpers/test.method')
-import { eth } from '../dist/methods/eth'
 
 let method = 'getWork'
 
@@ -13,4 +12,4 @@ let tests = [
   }
 ]
 
-testMethod.runTests(`eth.${method}`, eth.getWork, tests)
+testMethod.runTests(`eth_getWork`, tests)

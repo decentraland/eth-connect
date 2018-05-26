@@ -1,5 +1,4 @@
 import testMethod = require('./helpers/test.method')
-import { personal } from '../dist/methods/personal'
 
 let method = 'unlockAccount'
 
@@ -20,4 +19,4 @@ let tests = [
   }
 ]
 
-testMethod.runTests(`personal.${method}`, personal.unlockAccount, tests)
+testMethod.runTests(`personal_${method}`, tests)

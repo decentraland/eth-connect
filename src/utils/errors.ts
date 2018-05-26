@@ -15,12 +15,14 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-export function InvalidNumberOfSolidityArgs() {
-  return new Error('Invalid number of arguments to Solidity function')
+export function InvalidNumberOfSolidityArgs(given: number, expected: number) {
+  return new Error(`Invalid number of arguments to Solidity function. given: ${given}, expected: ${expected}`)
 }
 
-export function InvalidNumberOfRPCParams() {
-  return new Error('Invalid number of input parameters to RPC method')
+export function InvalidNumberOfRPCParams(methodName: string, given: number, expected: number) {
+  return new Error(
+    `Invalid number of input parameters to RPC method "${methodName}" given: ${given}, expected: ${expected}`
+  )
 }
 
 export function InvalidConnection(host) {
