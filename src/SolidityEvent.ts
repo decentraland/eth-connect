@@ -80,7 +80,7 @@ export class SolidityEvent {
    * @return {string} event type name
    */
   typeName() {
-    return utils.extractTypeName(this._name)
+    return utils.extractTypeName(this._name) || 'void'
   }
 
   /**

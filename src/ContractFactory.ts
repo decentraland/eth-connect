@@ -25,7 +25,7 @@ import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
 import { future } from './utils/future'
-import { TransactionOptions } from './Schema'
+import { TransactionOptions, TxHash } from './Schema'
 import { EthBlockFilter } from './Filter'
 
 /**
@@ -36,12 +36,12 @@ import { EthBlockFilter } from './Filter'
  * @param {Function} callback
  * @returns {Undefined}
  */
-async function checkForContractAddress(contract: Contract) {
+async function checkForContractAddress(requestManager: RequestManager, txId: TxHash) {
   const receiptFuture = future()
   // TODO fix filter
-  const filter = new EthBlockFilter(contract.requestManager)
+  const filter = new EthBlockFilter(requestManager)
 
-  await filter.watch(e => {
+  await filter.watch(_ => {
     let count = 0
 
     count++
@@ -53,7 +53,7 @@ async function checkForContractAddress(contract: Contract) {
         .then(() => receiptFuture.reject(new Error("Contract transaction couldn't be found after 50 blocks")))
         .catch(receiptFuture.reject)
     } else {
-      contract.requestManager.eth_getTransactionReceipt(contract.transactionHash).then(
+      requestManager.eth_getTransactionReceipt(txId).then(
         receipt => {
           if (receipt && receipt.blockHash) {
             filter
@@ -70,11 +70,10 @@ async function checkForContractAddress(contract: Contract) {
   })
 
   const receipt = await receiptFuture
-  const code = await contract.requestManager.eth_getCode(receipt.contractAddress, 'latest')
+  const code = await requestManager.eth_getCode(receipt.contractAddress, 'latest')
 
   if (code.length > 3) {
-    contract.address = receipt.contractAddress
-    return contract
+    return receipt.contractAddress
   }
 
   throw Object.assign(new Error("The contract code couldn't be stored, please check your gas amount."), {
@@ -129,8 +128,6 @@ export class ContractFactory {
   async deploy(param1, options: TransactionOptions): Promise<Contract>
   async deploy(options: TransactionOptions): Promise<Contract>
   async deploy(...args) {
-    let contract = new Contract(this.requestManager, this.abi, null)
-
     // parse arguments
     let options: TransactionOptions
 
@@ -165,10 +162,9 @@ export class ContractFactory {
     // wait for the contract address and check if the code was deployed
     const hash = await this.requestManager.eth_sendTransaction(options)
 
-    // add the transaction hash
+    const address = await checkForContractAddress(this.requestManager, hash)
+    const contract = await this.at(address)
     contract.transactionHash = hash
-
-    await checkForContractAddress(contract)
 
     return contract
   }
@@ -183,7 +179,9 @@ export class ContractFactory {
    * otherwise calls callback function (err, contract)
    */
   async at(address: string): Promise<Contract> {
-    if (!utils.isAddress(address)) throw new TypeError(`Invalid address ${JSON.stringify(address)}`)
+    if (!utils.isAddress(address)) {
+      throw new TypeError(`Invalid address ${JSON.stringify(address)}`)
+    }
     let contract = new Contract(this.requestManager, this.abi, address)
     return contract
   }

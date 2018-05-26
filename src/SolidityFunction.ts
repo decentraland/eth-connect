@@ -68,7 +68,11 @@ export class SolidityFunction {
    * @param {Array} arguments
    * @throws {Error} if it is not
    */
-  validateArgs(args) {
+  validateArgs(args: any[]) {
+    if (args.some($ => typeof $ === 'undefined')) {
+      throw new Error('Invalid call, some arguments are undefined')
+    }
+
     let inputArgs = args.filter(function(a) {
       // filter the options object but not arguments that are arrays
       return !(utils.isObject(a) === true && utils.isArray(a) === false && utils.isBigNumber(a) === false)
@@ -101,6 +105,7 @@ export class SolidityFunction {
 
     options.to = this._address
     options.data = '0x' + this.signature() + coder.encodeParams(this._inputTypes, args)
+
     return options
   }
 
@@ -137,19 +142,19 @@ export class SolidityFunction {
     }
 
     if (this.needsToBeTransaction) {
-      let payload = this.toPayload(args)
+      const payload = this.toPayload(args)
       if (payload.value > 0 && !this._payable) {
         throw new Error('Cannot send value to non-payable function')
       }
       if (!payload.from) {
         throw new Error('Missing "from" in transaction options')
       }
-      let output = await requestManager.eth_sendTransaction(payload)
-      return this.unpackOutput(output)
+      const txHash = await requestManager.eth_sendTransaction(payload)
+      return txHash
     } else {
-      let defaultBlock = this.extractDefaultBlock(args)
-      let payload = this.toPayload(args)
-      let output = await requestManager.eth_call(payload, defaultBlock)
+      const defaultBlock = this.extractDefaultBlock(args)
+      const payload = this.toPayload(args)
+      const output = await requestManager.eth_call(payload, defaultBlock)
       return this.unpackOutput(output)
     }
   }
@@ -194,7 +199,7 @@ export class SolidityFunction {
    * @return {string} type name of the function
    */
   typeName(): string {
-    return utils.extractTypeName(this._name)
+    return utils.extractTypeName(this._name) || 'void'
   }
 
   /**
@@ -207,12 +212,19 @@ export class SolidityFunction {
     let displayName = this.displayName()
     const fun = this
 
-    contract[displayName] = function(...args) {
-      const requestManager = this.requestManager || fun.requestManager
+    const execute = Object.assign(
+      function(...args) {
+        const requestManager = this.requestManager || fun.requestManager
 
-      return fun.execute(requestManager, ...args)
+        return fun.execute(requestManager, ...args)
+      },
+      { estimateGas: this.estimateGas.bind(this) }
+    )
+
+    if (!contract[displayName]) {
+      contract[displayName] = execute
     }
 
-    contract[displayName].estimateGas = this.estimateGas.bind(this)
+    contract[displayName][this.typeName()] = execute
   }
 }

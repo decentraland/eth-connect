@@ -13,7 +13,7 @@ declare var require
 describe('integration.erc20', function() {
   const nodeConnectionFactory = new NodeConnectionFactory()
   const rm = new RequestManager(nodeConnectionFactory.createProvider())
-
+  rm.debug = true
   it('should return no instantiated contracts', async () => {
     try {
       await new ContractFactory(rm, []).at('')
@@ -73,21 +73,25 @@ function doTest(requestManager: RequestManager) {
     ERC20Contract = await deployContract(requestManager, account, 'MANA', require('./fixtures/ERC20.json'))
     console.log(`> Tx: ${ERC20Contract.transactionHash}`)
 
+    // manaAddress = txRecipt.contractAddress
+  })
+
+  it('gets the receipt', async () => {
     const txRecipt = await requestManager.eth_getTransactionReceipt(ERC20Contract.transactionHash)
 
     expect(typeof txRecipt.contractAddress).to.eq('string')
     expect(txRecipt.contractAddress.length).to.be.greaterThan(0)
+  })
 
+  it('gets the trasaction', async () => {
     const x = await requestManager.eth_getTransactionByHash(ERC20Contract.transactionHash)
     expect(typeof x).eq('object')
     expect(x.hash).eq(ERC20Contract.transactionHash)
-
-    // manaAddress = txRecipt.contractAddress
   })
 
   it('should get 0 mana balance by default', async () => {
     {
-      const account = await requestManager.eth_accounts()[0]
+      const account = (await requestManager.eth_accounts())[0]
 
       const balance = await ERC20Contract.balanceOf(account)
 
@@ -98,10 +102,6 @@ function doTest(requestManager: RequestManager) {
       const balance = await ERC20Contract.balanceOf('0x0')
       expect(balance.toString()).eq('0')
     }
-  })
-
-  it('should fail by invoking an unexistent method', async () => {
-    expect(() => ERC20Contract.asasd()).to.throw()
   })
 
   it('should fail by pointing to a contract to wrong address', async function() {
@@ -122,9 +122,9 @@ function doTest(requestManager: RequestManager) {
     await x
   })
 
-  it.skip('should work with injected methods from ABI', async function() {
+  it('should work with injected methods from ABI', async function() {
     this.timeout(1000000)
-    // const account = await eth.accounts.execute(requestManager)[0]
+    const account = (await requestManager.eth_accounts())[0]
     {
       const mintingFinished = ERC20Contract.mintingFinished()
       expect('then' in mintingFinished).eq(true, 'The injected methods should be thenable')
@@ -132,17 +132,21 @@ function doTest(requestManager: RequestManager) {
       const result = await mintingFinished
       expect(typeof result).eq('boolean', 'mintingFinished should return a boolean')
     }
-    // {
-    //   const totalSupply = await ERC20Contract.totalSupply()
-    //   expect(totalSupply.toNumber()).eq(0)
-    // }
-    // {
-    //   const mintResult = await ERC20Contract.mint(account, 10)
-    //   expect(typeof mintResult).eq('string')
-    // }
-    // {
-    //   const totalSupply = await ERC20Contract.totalSupply()
-    //   expect(totalSupply.toNumber()).eq(10)
-    // }
+    {
+      const totalSupply = await ERC20Contract.totalSupply()
+      expect(totalSupply.toNumber()).eq(0)
+    }
+    {
+      const mintResult = await ERC20Contract.mint(account, 10, { from: account })
+      expect(typeof mintResult).eq('string')
+    }
+    {
+      const mintResult = await ERC20Contract.mint(account, 10, { from: account })
+      expect(typeof mintResult).eq('string')
+    }
+    {
+      const totalSupply = await ERC20Contract.totalSupply()
+      expect(totalSupply.toNumber()).eq(20)
+    }
   })
 }
