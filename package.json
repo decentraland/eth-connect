@@ -13,9 +13,7 @@
     "coverage": "nyc --reporter=html --reporter=text mocha",
     "test-coveralls": "nyc report --reporter=text-lcov | coveralls --verbose"
   },
-  "directories": {
-    "dist": "./dist"
-  },
+  "files": ["dist"],
   "dependencies": {
     "bignumber.js": "^7.0.1",
     "crypto-js": "^3.1.9-1",
