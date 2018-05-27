@@ -1,7 +1,7 @@
 {
-  "name": "eth-interface",
+  "name": "web3-ts",
   "namespace": "ethereum",
-  "version": "0.20.6",
+  "version": "0.2.0",
   "description": "Ethereum JavaScript API, middleware to talk to a ethereum node using an async provider",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
