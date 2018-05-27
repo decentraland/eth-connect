@@ -108,7 +108,7 @@ export class RequestManager {
   @inject eth_blockNumber: () => Promise<Quantity>
 
   /** Returns the balance of the account of given address. */
-  @inject eth_getBalance: (address: Address, block: Quantity | Tag) => Promise<Quantity>
+  @inject eth_getBalance: (address: Address, block: Quantity | Tag) => Promise<BigNumber>
 
   /** Returns the value from a storage position at a given address. */
   @inject eth_getStorageAt: (address: Address, position: Quantity, block: Quantity | Tag) => Promise<Data>
