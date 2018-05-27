@@ -11,7 +11,6 @@ describe('lib/web3/method', function() {
       }
 
       let method = new Method({
-        name: 'dummy',
         callName: 'dummy',
         inputFormatter: [star, star, star],
         params: 3
@@ -31,7 +30,6 @@ describe('lib/web3/method', function() {
       // given
       let method = new Method({
         callName: 'dummy',
-        name: 'dummy',
         params: 3
       })
       let args = [1, 2, 3]

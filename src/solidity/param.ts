@@ -31,68 +31,6 @@ export class SolidityParam {
   }
 
   /**
-   * This method should be called to encode array of params
-   *
-   * @method encodeList
-   * @param {Array[SolidityParam]} params
-   * @returns {string}
-   */
-  static encodeList(params) {
-    // updating offsets
-    let totalOffset = params.length * 32
-    let offsetParams = params.map(function(param) {
-      if (!param.isDynamic()) {
-        return param
-      }
-      let offset = totalOffset
-      totalOffset += param.dynamicPartLength()
-      return param.withOffset(offset)
-    })
-
-    // encode everything!
-    return offsetParams.reduce(
-      function(result, param) {
-        return result + param.dynamicPart()
-      },
-      offsetParams.reduce(function(result, param) {
-        return result + param.staticPart()
-      }, '')
-    )
-  }
-  /**
-   * This method should be used to get length of params's dynamic part
-   *
-   * @method dynamicPartLength
-   * @returns {number} length of dynamic part (in bytes)
-   */
-  dynamicPartLength() {
-    return this.dynamicPart().length / 2
-  }
-
-  /**
-   * This method should be used to create copy of solidity param with different offset
-   *
-   * @method withOffset
-   * @param {number} offset length in bytes
-   * @returns {SolidityParam} new solidity param with applied offset
-   */
-  withOffset(offset) {
-    return new SolidityParam(this.value, offset)
-  }
-
-  /**
-   * This method should be used to combine solidity params together
-   * eg. when appending an array
-   *
-   * @method combine
-   * @param {SolidityParam} param with which we should combine
-   * @param {SolidityParam} result of combination
-   */
-  combine(param) {
-    return new SolidityParam(this.value + param.value)
-  }
-
-  /**
    * This method should be called to check if param has dynamic size.
    * If it has, it returns true, otherwise false
    *

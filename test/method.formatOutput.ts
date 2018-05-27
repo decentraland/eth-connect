@@ -13,7 +13,6 @@ describe('lib/web3/method', function() {
       }
 
       let method = new Method({
-        name: 'dummy',
         callName: 'dummy',
         params: 3,
         outputFormatter: formatter
@@ -31,7 +30,6 @@ describe('lib/web3/method', function() {
     it('should do nothing if there is no formatter', function() {
       // given
       let method = new Method({
-        name: 'dummy',
         callName: 'dummy',
         params: 3
       })

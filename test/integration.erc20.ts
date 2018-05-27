@@ -13,7 +13,8 @@ declare var require
 describe('integration.erc20', function() {
   const nodeConnectionFactory = new NodeConnectionFactory()
   const rm = new RequestManager(nodeConnectionFactory.createProvider())
-  rm.debug = true
+  rm.debug = false
+
   it('should return no instantiated contracts', async () => {
     try {
       await new ContractFactory(rm, []).at('')
@@ -29,16 +30,6 @@ describe('integration.erc20', function() {
 })
 
 function doTest(requestManager: RequestManager) {
-  it('should get the addresses', async () => {
-    const accounts = await requestManager.eth_accounts()
-    const account = accounts[0]
-
-    console.log(`> Using account ${account}`)
-    // tslint:disable-next-line:no-unused-expression
-    expect(account).to.be.string
-    expect(account.length).to.gt(0)
-  })
-
   it('should get the network', async () => {
     // this should not fail, that's all
     await requestManager.net_version()

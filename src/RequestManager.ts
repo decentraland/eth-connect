@@ -40,6 +40,7 @@ import {
   Address,
   FilterOptions
 } from './Schema'
+import BigNumber from 'bignumber.js'
 
 export function inject(target: Object, propertyKey: string | symbol) {
   const method = eth[propertyKey]
@@ -98,7 +99,7 @@ export class RequestManager {
   @inject eth_hashrate: () => Promise<Quantity>
 
   /** Returns the current price per gas in wei. */
-  @inject eth_gasPrice: () => Promise<Quantity>
+  @inject eth_gasPrice: () => Promise<BigNumber>
 
   /** Returns a list of addresses owned by client. */
   @inject eth_accounts: () => Promise<Address[]>
@@ -211,19 +212,19 @@ export class RequestManager {
    * [A, B] "A in first position AND B in second position (and anything after)"
    * [[A, B], [A, B]] "(A OR B) in first position AND (A OR B) in second position (and anything after)"
    */
-  @inject eth_newFilter: (options: FilterOptions) => Promise<Quantity>
+  @inject eth_newFilter: (options: FilterOptions) => Promise<Data> // this should be quantity
 
   /**
    * Creates a filter in the node, to notify when a new block arrives. To check if the state has changed, call
    * eth_getFilterChanges.
    */
-  @inject eth_newBlockFilter: () => Promise<Quantity>
+  @inject eth_newBlockFilter: () => Promise<Data> // this should be quantity
 
   /**
    * Creates a filter in the node, to notify when new pending transactions arrive. To check if the state has changed,
    * call eth_getFilterChanges.
    */
-  @inject eth_newPendingTransactionFilter: () => Promise<Quantity>
+  @inject eth_newPendingTransactionFilter: () => Promise<Data> // this should be quantity
 
   /**
    * Uninstalls a filter with given id. Should always be called when watch is no longer needed. Additonally Filters
@@ -274,7 +275,7 @@ export class RequestManager {
   @inject shh_addToGroup: (group: Data) => Promise<boolean>
 
   /** Creates filter to notify, when client receives whisper message matching the filter options. */
-  @inject shh_newFilter: (options: SHHFilterOptions) => Promise<Quantity>
+  @inject shh_newFilter: (options: SHHFilterOptions) => Promise<Data> // this should be quantity
 
   /**
    * Uninstalls a filter with given id. Should always be called when watch is no longer needed.

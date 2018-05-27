@@ -242,6 +242,19 @@ export function extractTypeName(name: string) {
  * @param {string|number|BigNumber}
  * @return {string}
  */
+export function isHex(value: string) {
+  if (typeof value === 'string') {
+    return /^0x[0-9a-fA-F]+$/.test(value)
+  } else return false
+}
+
+/**
+ * Converts value to it's decimal representation in string
+ *
+ * @method toDecimal
+ * @param {string|number|BigNumber}
+ * @return {string}
+ */
 export function toDecimal(value: number | string) {
   return toBigNumber(value).toNumber()
 }

@@ -8,7 +8,6 @@ describe('lib/web3/method', function() {
     it('should pass', function() {
       // given
       let method = new Method({
-        name: 'dummy',
         callName: 'dummy',
         params: 1
       })
@@ -32,7 +31,6 @@ describe('lib/web3/method', function() {
     it('should return call based on args', function() {
       // given
       let method = new Method({
-        name: 'dummy',
         callName: 'dummy',
         params: 2
       })

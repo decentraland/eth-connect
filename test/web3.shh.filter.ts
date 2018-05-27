@@ -11,7 +11,7 @@ describe('shh.filter', function() {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
-    rm.debug = true
+    rm.debug = false
 
     const didCall = provider.injectValidation(async payload => {
       if (payload.method !== 'shh_newFilter') return false

@@ -19,41 +19,18 @@ import errors = require('./utils/errors')
 import { RequestManager } from './RequestManager'
 
 export class Method {
-  name: string
-  callName: string | ((args) => string)
+  callName: string
   params: number
   inputFormatter: Function[] | null
   outputFormatter?: Function | null
   requestManager: RequestManager
 
-  constructor(options: {
-    name: string
-    callName: string | ((args) => string)
-    params: number
-    inputFormatter?: any[]
-    outputFormatter?: any
-  }) {
-    this.name = options.name
+  constructor(options: { callName: string; params: number; inputFormatter?: any[]; outputFormatter?: any }) {
     this.callName = options.callName
     this.params = options.params || 0
     this.inputFormatter = options.inputFormatter || null
     this.outputFormatter = options.outputFormatter || null
     this.requestManager = null
-  }
-
-  setRequestManager(rm: RequestManager) {
-    this.requestManager = rm
-  }
-
-  /**
-   * Should be used to determine name of the jsonrpc method based on arguments
-   *
-   * @method getCall
-   * @param {Array} arguments
-   * @return {string} name of jsonrpc method
-   */
-  getCall(args: any[]) {
-    return typeof this.callName === 'function' ? this.callName(args) : this.callName
   }
 
   /**
@@ -65,7 +42,7 @@ export class Method {
    */
   validateArgs(args: any[]) {
     if (args.length !== this.params) {
-      throw errors.InvalidNumberOfRPCParams(this.name, args.length, this.params)
+      throw errors.InvalidNumberOfRPCParams(this.callName, args.length, this.params)
     }
   }
 
@@ -105,31 +82,13 @@ export class Method {
    * @return {object}
    */
   toPayload(args: any[]) {
-    let call = this.getCall(args)
     let params = this.formatInput(args)
 
     this.validateArgs(params)
 
     return {
-      method: call,
+      method: this.callName,
       params: params
-    }
-  }
-
-  attachToObject(obj: object) {
-    let func = (...args) => this.execute(this.requestManager, ...args)
-    Object.defineProperty(func, 'name', { value: this.callName })
-
-    let name = this.name.split('.')
-    if (name.length > 1) {
-      obj[name[0]] = obj[name[0]] || {}
-
-      if (name[1] in obj[name[0]]) throw new Error(`Cannot override property ${name[0]}.${name[1]}`)
-
-      obj[name[0]][name[1]] = func
-    } else {
-      if (name[0] in obj) throw new Error(`Cannot override property ${name[0]}`)
-      obj[name[0]] = func
     }
   }
 

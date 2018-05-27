@@ -164,7 +164,7 @@ export class EthFilter<T = FilterChange | string> {
     }
   }
 
-  async getNewFilter() {
+  async getNewFilter(): Promise<any> {
     return this.requestManager.eth_newFilter(this.options)
   }
 
