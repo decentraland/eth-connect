@@ -72,7 +72,7 @@ export class SHHFilter {
     this.isStarted = true
 
     try {
-      const id = await this.requestManager.shh_newFilter(this.options)
+      const id: any = await this.requestManager.shh_newFilter(this.options)
 
       if (!id) {
         throw new Error('Could not create a filter, response: ' + JSON.stringify(id))
