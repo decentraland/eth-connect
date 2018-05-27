@@ -1,3 +1,5 @@
+# A revisioned version of web3 built in typescript
+
 ## Inspiration
 
 Most of our daily work requires interacting with web3; it is usually a pain in the rear. This project provides a well tested, revisioned version of web3; it was built entirely using Typescript, and modern patterns like `async/await`, getting rid of the strange code patterns introduced by the old days Javascript.
