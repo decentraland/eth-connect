@@ -5,7 +5,6 @@ const expect = chai.expect
 
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 import { ContractFactory, RequestManager } from '../dist'
-import { deployContract } from './helpers/deployContract'
 import { future } from '../dist/utils/future'
 import BigNumber from 'bignumber.js'
 declare var require
@@ -61,7 +60,12 @@ function doTest(requestManager: RequestManager) {
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
 
-    ERC20Contract = await deployContract(requestManager, account, 'MANA', require('./fixtures/ERC20.json'))
+    const abi = require('./fixtures/ERC20.json').abi
+    const bytecode = require('./fixtures/ERC20.json').bytecode
+
+    const factory = new ContractFactory(requestManager, abi)
+    ERC20Contract = await factory.deploy({ data: bytecode, from: account, to: null })
+
     console.log(`> Tx: ${ERC20Contract.transactionHash}`)
 
     // manaAddress = txRecipt.contractAddress

@@ -159,6 +159,10 @@ export class ContractFactory {
     let bytes = encodeConstructorParams(this.abi, args)
     options.data += bytes
 
+    if (!options.gas) {
+      options.gas = await this.requestManager.eth_estimateGas(options)
+    }
+
     // wait for the contract address and check if the code was deployed
     const hash = await this.requestManager.eth_sendTransaction(options)
 

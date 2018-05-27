@@ -5,7 +5,6 @@ const expect = chai.expect
 
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 import { ContractFactory, RequestManager } from '../dist'
-import { deployContract } from './helpers/deployContract'
 import { EthFilter } from '../dist/Filter'
 
 /*
@@ -169,7 +168,9 @@ function doTest(rm: RequestManager) {
     const accounts = await rm.eth_accounts()
     const account = accounts[0]
 
-    TestContract = await deployContract(rm, account, 'Coursetro', contract)
+    const factory = new ContractFactory(rm, contract.abi)
+    TestContract = await factory.deploy({ data: contract.bytecode, from: account, to: null })
+
     console.log(`> Tx: ${TestContract.transactionHash}`)
   })
 

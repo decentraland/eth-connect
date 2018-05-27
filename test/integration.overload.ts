@@ -5,7 +5,6 @@ const expect = chai.expect
 
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 import { ContractFactory, RequestManager } from '../dist'
-import { deployContract } from './helpers/deployContract'
 
 /*
 
@@ -148,7 +147,9 @@ function doTest(requestManager: RequestManager) {
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
 
-    TestContract = await deployContract(requestManager, account, 'OverloadTest', contract)
+    const factory = new ContractFactory(requestManager, contract.abi)
+    TestContract = await factory.deploy({ data: contract.bytecode, from: account, to: null })
+
     console.log(`> Tx: ${TestContract.transactionHash}`)
   })
 

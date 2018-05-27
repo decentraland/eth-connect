@@ -274,7 +274,7 @@ describe('web3.eth.contract', function() {
     const rm = new RequestManager(provider)
     const factory = new ContractFactory(rm, description)
 
-    const contract = await factory.deploy(2, { from: address, data: code, gas: 0, to: null })
+    const contract = await factory.deploy(2, { data: code, from: address, gas: 0, to: null })
 
     assert.equal(contract.transactionHash, txHash)
     assert.equal(contract.address, contractAddress)
