@@ -1,31 +1,18 @@
 import chai = require('chai')
+import 'isomorphic-fetch'
 // tslint:disable
 
 const expect = chai.expect
 
-import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 import { ContractFactory, RequestManager } from '../dist'
 import { future } from '../dist/utils/future'
 import BigNumber from 'bignumber.js'
+import { testAllProviders } from './helpers/testAllProviders'
+
 declare var require
 
 describe('integration.erc20', function() {
-  const nodeConnectionFactory = new NodeConnectionFactory()
-  const rm = new RequestManager(nodeConnectionFactory.createProvider())
-  rm.debug = false
-
-  it('should return no instantiated contracts', async () => {
-    try {
-      await new ContractFactory(rm, []).at('')
-      throw new Error('x')
-    } catch (e) {
-      if (e.message == 'x') throw new Error("The test didn't fail")
-    }
-  })
-
-  describe('ETH using provider', function() {
-    doTest(rm)
-  })
+  testAllProviders(doTest)
 })
 
 function doTest(requestManager: RequestManager) {

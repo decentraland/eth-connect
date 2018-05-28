@@ -34,12 +34,13 @@
     "coveralls": "^3.0.1",
     "dcl-tslint-config-standard": "^1.0.1",
     "ganache-cli": "^6.1.0",
+    "isomorphic-fetch": "^2.2.1",
     "mocha": "^5.1.1",
     "nyc": "^11.8.0",
-    "sandboxed-module": "^2.0.2",
     "tslint": "^5.10.0",
     "tslint-language-service": "^0.9.9",
-    "typescript": "^2.8.3"
+    "typescript": "^2.8.3",
+    "websocket": "^1.0.26"
   },
   "repository": {
     "type": "git",

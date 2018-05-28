@@ -15,14 +15,20 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import { HTTPProvider } from './providers/HTTPProvider'
+import { WebSocketProvider } from './providers/WebSocketProvider'
+import * as utils from './utils/utils'
+
 export { RequestManager } from './RequestManager'
 export { Contract } from './Contract'
 export { ContractFactory } from './ContractFactory'
 export { Method } from './Method'
 export { Property } from './Property'
-
 export { eth } from './methods/eth'
 
-import * as utils from './utils/utils'
+const providers = {
+  HTTPProvider,
+  WebSocketProvider
+}
 
-export { utils }
+export { utils, providers }

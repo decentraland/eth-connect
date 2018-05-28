@@ -1,0 +1,210 @@
+import { Callback, RPCMessage, toRPC } from './common'
+import { IFuture, future } from '../utils/future'
+
+export type WebSocketProviderOptions = {
+  /**
+   * WebSocketConstructor, used in Node.js where WebSocket is not globally available
+   */
+  WebSocketConstructor?: any
+
+  timeout?: number
+
+  protocol?: string
+}
+
+export class WebSocketProvider {
+  responseCallbacks = new Map<number, IFuture<any>>()
+  notificationCallbacks = new Set<Callback>()
+  connection: IFuture<WebSocket>
+
+  private lastChunk: string = ''
+  private lastChunkTimeout: any
+
+  constructor(public url: string, public options: WebSocketProviderOptions = {}) {
+    this.connect()
+  }
+
+  // tslint:disable-next-line:prefer-function-over-method
+  send() {
+    throw new Error('Sync requests are deprecated')
+  }
+
+  sendAsync(payload: RPCMessage | RPCMessage[], callback: Callback) {
+    const toSend: RPCMessage[] = []
+    let didFinish: Promise<any>
+    if (payload instanceof Array) {
+      didFinish = Promise.all(
+        payload.map($ => {
+          const defer = future<any>()
+
+          try {
+            const message = toRPC($)
+            toSend.push(message)
+            this.responseCallbacks.set(message.id, defer)
+          } catch (e) {
+            defer.reject(e)
+          }
+
+          return defer
+        })
+      )
+    } else {
+      const defer = future<any>()
+      try {
+        const message = toRPC(payload)
+        toSend.push(message)
+        this.responseCallbacks.set(message.id, defer)
+      } catch (e) {
+        defer.reject(e)
+      }
+      didFinish = defer
+    }
+
+    didFinish.then($ => callback(null, $)).catch(err => callback(err))
+
+    this.connection
+      .then(ws => {
+        toSend.forEach($ => ws.send(JSON.stringify($)))
+      })
+      .catch(err => {
+        callback(err)
+      })
+  }
+
+  /**
+   * Will parse the response and make an array out of it.
+   * @method _parseResponse
+   * @param {String} data
+   */
+  private parseResponse(data: string) {
+    let returnValues = []
+
+    // DE-CHUNKER
+    let dechunkedData = data
+      .replace(/\}[\n\r]?\{/g, '}|--|{') // }{
+      .replace(/\}\][\n\r]?\[\{/g, '}]|--|[{') // }][{
+      .replace(/\}[\n\r]?\[\{/g, '}|--|[{') // }[{
+      .replace(/\}\][\n\r]?\{/g, '}]|--|{') // }]{
+      .split('|--|')
+
+    dechunkedData.forEach(chunk => {
+      let data = chunk
+      // prepend the last chunk
+      if (this.lastChunk) {
+        data = this.lastChunk + data
+      }
+
+      let result = null
+
+      try {
+        result = JSON.parse(data)
+      } catch (e) {
+        this.lastChunk = data
+
+        // start timeout to cancel all requests
+        clearTimeout(this.lastChunkTimeout)
+
+        this.lastChunkTimeout = setTimeout(() => {
+          this.timeout()
+        }, 1000 * 15)
+
+        return
+      }
+
+      // cancel timeout and set chunk to null
+      clearTimeout(this.lastChunkTimeout)
+      this.lastChunk = null
+
+      if (result) returnValues.push(result)
+    })
+
+    return returnValues
+  }
+
+  private processMessage(message) {
+    if ('id' in message) {
+      const id = message.id
+
+      const defer = this.responseCallbacks.get(id)
+
+      if (!defer) return
+
+      this.responseCallbacks.delete(id)
+
+      if ('error' in message) {
+        defer.reject(message.error)
+      } else if ('result' in message) {
+        defer.resolve(message)
+      }
+    } else {
+      this.notificationCallbacks.forEach($ => $(null, message))
+    }
+  }
+
+  /**
+   * Timeout all requests when the end/error event is fired
+   * @method _timeout
+   */
+  private timeout() {
+    if (!this.connection || !this.connection.isPending) {
+      this.connection = future<WebSocket>()
+    }
+
+    const timeoutError = new Error('Connection timeout')
+    this.responseCallbacks.forEach($ => $.reject(timeoutError))
+    this.responseCallbacks.clear()
+
+    // reset all requests and callbacks
+    this.connect()
+  }
+
+  private connect() {
+    if (this.connection && !this.connection.isPending) {
+      // tslint:disable-next-line
+      this.connection.then($ => $.close())
+    }
+
+    if (!this.connection || !this.connection.isPending) {
+      this.connection = future<WebSocket>()
+    }
+
+    this.lastChunk = ''
+
+    let ctor: typeof WebSocket =
+      this.options.WebSocketConstructor || (typeof WebSocket !== 'undefined' ? WebSocket : void 0)
+
+    if (!ctor) {
+      throw new Error('Please provide a WebSocketConstructor')
+    }
+
+    const connection = new ctor(this.url, this.options.protocol)
+
+    connection.onopen = () => {
+      this.connection.resolve(connection)
+    }
+
+    connection.onerror = () => {
+      this.timeout()
+    }
+
+    connection.onclose = () => {
+      this.timeout()
+    }
+
+    // LISTEN FOR CONNECTION RESPONSES
+    connection.onmessage = e => {
+      let data = typeof e.data === 'string' ? e.data : ''
+
+      this.parseResponse(data).forEach(result => {
+        // get the id which matches the returned id
+        if (result instanceof Array) {
+          result.forEach($ => this.processMessage($))
+        } else {
+          this.processMessage(result)
+        }
+      })
+    }
+  }
+}
+
+export default WebSocketProvider

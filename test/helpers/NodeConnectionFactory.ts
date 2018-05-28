@@ -16,6 +16,7 @@ export type ConnectionOptions = {
   db_path?: string
   account_keys_path?: string
   vmErrorsOnRPCResponse?: boolean
+  ws: boolean
 }
 
 export class NodeConnectionFactory {
@@ -49,6 +50,7 @@ export class NodeConnectionFactory {
         }
       },
       vmErrorsOnRPCResponse: true,
+      ws: true,
       ...options
     }
   }
