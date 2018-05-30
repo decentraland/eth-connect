@@ -11,7 +11,7 @@ docker pull ethereum/client-go
 docker run \
   -it --name geth-dev \
   -v "$(pwd)":/eth_common \
-  -p 8545:8545 -p 8546:8546 \
+  -p 8545:8545 -p 8546:8548 \
   ethereum/client-go \
     --identity="TEST_NODE" --networkid="53611" \
     --rpc --rpcaddr 0.0.0.0 --rpcapi admin,debug,eth,miner,net,personal,shh,txpool,web3 \
