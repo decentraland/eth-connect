@@ -50,7 +50,7 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
   })
 
   describe('provider: ws', function() {
-    const provider = new WebSocketProvider('ws://127.0.0.1:8548', { WebSocketConstructor: w3cwebsocket })
+    const provider = new WebSocketProvider('ws://127.0.0.1:8546', { WebSocketConstructor: w3cwebsocket })
     const rm = new RequestManager(provider)
 
     doTest(rm)
