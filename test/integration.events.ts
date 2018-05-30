@@ -200,14 +200,16 @@ function doTest(rm: RequestManager) {
     expect(x.hash).eq(TestContract.transactionHash)
   })
 
-  it('setInstructor("agustin", 99)', async () => {
+  it('setInstructor("agustin", 99)', async function() {
+    this.timeout(5000)
     const accounts = await rm.eth_accounts()
     const from = accounts[0]
     const tx = await TestContract.setInstructor('agustin', 99, { from })
     await rm.waitForCompletion(tx)
   })
 
-  it('setInstructorEvent("agustin", 99)', async () => {
+  it('setInstructorEvent("agustin", 99)', async function() {
+    this.timeout(5000)
     const accounts = await rm.eth_accounts()
     const from = accounts[0]
     const tx = await TestContract.setInstructorEvent('agustin', 99, { from })
