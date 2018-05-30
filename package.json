@@ -1,7 +1,7 @@
 {
   "name": "eth-connect",
   "namespace": "ethereum",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Ethereum JavaScript API, middleware to talk to a ethereum node using an async provider",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -13,7 +13,9 @@
     "coverage": "nyc --reporter=html --reporter=text mocha",
     "test-coveralls": "nyc report --reporter=text-lcov | coveralls --verbose"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "bignumber.js": "^7.0.1",
     "crypto-js": "^3.1.9-1",
@@ -48,6 +50,10 @@
   "bugs": {
     "url": "https://github.com/decentraland/web3-ts/issues"
   },
-  "keywords": ["ethereum", "javascript", "API"],
+  "keywords": [
+    "ethereum",
+    "javascript",
+    "API"
+  ],
   "license": "LGPL-3.0"
 }
