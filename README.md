@@ -1,4 +1,6 @@
-# A revisioned version of web3 built in typescript [![Build Status](https://travis-ci.org/decentraland/web3-ts.svg?branch=master)](https://travis-ci.org/decentraland/web3-ts)
+# eth-connect, a revisioned version of web3 built in typescript [![Build Status](https://travis-ci.org/decentraland/web3-ts.svg?branch=master)](https://travis-ci.org/decentraland/web3-ts)
+
+> Published as `eth-connect`
 
 ## Inspiration
 

@@ -1,5 +1,5 @@
 {
-  "name": "web3-ts",
+  "name": "eth-connect",
   "namespace": "ethereum",
   "version": "0.2.2",
   "description": "Ethereum JavaScript API, middleware to talk to a ethereum node using an async provider",
