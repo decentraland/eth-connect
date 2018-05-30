@@ -9,7 +9,7 @@ docker pull ethereum/client-go
 
 # initialize geth node
 docker run \
-  -it --name geth-dev \
+  -d --name geth-dev \
   -v "$(pwd)":/eth_common \
   -p 8545:8545 -p 8546:8546 \
   ethereum/client-go \
