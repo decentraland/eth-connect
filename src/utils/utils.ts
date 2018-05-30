@@ -255,8 +255,43 @@ export function isHex(value: string) {
  * @param {string|number|BigNumber}
  * @return {string}
  */
-export function toDecimal(value: number | string) {
+export function toNullDecimal(value: number | string | BigNumber) {
+  if (value === undefined || value === null) return value
   return toBigNumber(value).toNumber()
+}
+/**
+ * Converts value to it's decimal representation in string
+ *
+ * @method toDecimal
+ * @param {string|number|BigNumber}
+ * @return {string}
+ */
+export function toDecimal(value: number | string | BigNumber) {
+  return toBigNumber(value).toNumber()
+}
+
+/**
+ * Converts value to it's hex  representation in string
+ */
+export function toData(val: string | number | BigNumber) {
+  if (typeof val === 'string') {
+    if (!val.startsWith('0x') && /^[A-Za-z0-9]+$/.test(val)) {
+      return '0x' + val
+    }
+  }
+  return toHex(val)
+}
+
+/**
+ * Converts value to it's boolean representation (x != 0)
+ *
+ * @method toBoolean
+ * @param {string|number|BigNumber}
+ * @return {string}
+ */
+export function toBoolean(value: number | string | BigNumber | boolean) {
+  if (typeof value === 'boolean') return value
+  return toBigNumber(value).toNumber() !== 0
 }
 
 /**

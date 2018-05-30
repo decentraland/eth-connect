@@ -24,6 +24,8 @@ export class SolidityTypeReal extends SolidityType {
       outputFormatter: f.formatOutputReal
     })
   }
+
+  // tslint:disable-next-line:prefer-function-over-method
   isType(name) {
     return !!name.match(/real([0-9]*)?(\[([0-9]*)\])?/)
   }

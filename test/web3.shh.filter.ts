@@ -11,21 +11,18 @@ describe('shh.filter', function() {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
-    rm.debug = false
 
-    const didCall = provider.injectValidation(async payload => {
-      if (payload.method !== 'shh_newFilter') return false
-      provider.injectResult('0xf')
+    const didCall = provider.injectHandler('shh_newFilter', async payload => {
       assert.deepEqual(payload.params[0], { topics: ['0x32dd4f54', '0x564b4566'] })
+      provider.injectResult('0xfaaa1231')
     })
-    const didCallUninstall = provider.injectValidation(async payload => {
-      if (payload.method !== 'shh_uninstallFilter') return false
+
+    const didCallUninstall = provider.injectHandler('shh_uninstallFilter', async _ => {
       provider.injectResult(true)
     })
 
-    const didGetChanges = provider.injectValidation(async payload => {
-      if (payload.method !== 'shh_getFilterChanges') return false
-
+    const didGetChanges = provider.injectHandler('shh_getFilterChanges', async payload => {
+      assert(payload.params[0] === '0xfaaa1231', 'verify forwarding filter id')
       provider.injectResult([
         {
           hash: '0x33eb2da77bf3527e28f8bf493650b1879b08c4f2a362beae4ba2f71bafcd91f9',
@@ -44,6 +41,8 @@ describe('shh.filter', function() {
     // call
     const filter = new SHHFilter(rm, { topics: ['0x32dd4f54', '0x564b4566'], test: 'asd' } as any)
     await filter.start()
+    await filter.watch(() => void 0)
+
     await didCall
     await didGetChanges
 

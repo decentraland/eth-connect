@@ -3,8 +3,8 @@
     "types": ["@types/mocha"],
     "declaration": false,
     "sourceMap": false,
-    "inlineSourceMap": false,
-    "inlineSources": false
+    "inlineSourceMap": true,
+    "inlineSources": true
   },
   "extends": "../tsconfig.json"
 }

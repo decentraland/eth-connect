@@ -24,6 +24,8 @@ export class SolidityTypeUReal extends SolidityType {
       outputFormatter: f.formatOutputUReal
     })
   }
+
+  // tslint:disable-next-line:prefer-function-over-method
   isType(name) {
     return !!name.match(/^ureal([0-9]*)?(\[([0-9]*)\])*$/)
   }

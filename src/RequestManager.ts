@@ -41,10 +41,23 @@ import {
   FilterOptions
 } from './Schema'
 import BigNumber from 'bignumber.js'
+import { sleep } from './utils/sleep'
+
+export let TRANSACTION_FETCH_DELAY: number = 2 * 1000
+
+export const TRANSACTION_STATUS = Object.freeze({
+  pending: 'pending' as 'pending',
+  confirmed: 'confirmed' as 'confirmed',
+  failed: 'failed' as 'failed'
+})
+
+export type TransactionAndReceipt = TransactionObject & { receipt: TransactionReceipt }
+export type FinishedTransactionAndReceipt = TransactionAndReceipt & { status: keyof typeof TRANSACTION_STATUS }
 
 export function inject(target: Object, propertyKey: string | symbol) {
   const method = eth[propertyKey]
 
+  /* istanbul ignore if */
   if (!method) {
     throw new Error(`Could not find the method/property named ${propertyKey}`)
   }
@@ -65,8 +78,6 @@ export type BlockIdentifier = 'latest' | 'earliest' | 'pending' | string
  */
 export class RequestManager {
   requests = new Map<number, IFuture<any>>()
-
-  debug = false
 
   /** Returns the current client version. */
   @inject web3_clientVersion: () => Promise<string>
@@ -230,15 +241,15 @@ export class RequestManager {
    * Uninstalls a filter with given id. Should always be called when watch is no longer needed. Additonally Filters
    * timeout when they aren't requested with eth_getFilterChanges for a period of time.
    */
-  @inject eth_uninstallFilter: (filterId: Quantity) => Promise<boolean>
+  @inject eth_uninstallFilter: (filterId: Data) => Promise<boolean>
 
   /**
    * Polling method for a filter, which returns an array of logs which occurred since last poll.
    */
-  @inject eth_getFilterChanges: (filterId: Quantity) => Promise<Array<TxHash> | Array<FilterChange>>
+  @inject eth_getFilterChanges: (filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>
 
   /** Returns an array of all logs matching filter with given id. */
-  @inject eth_getFilterLogs: (filterId: Quantity) => Promise<Array<TxHash> | Array<FilterChange>>
+  @inject eth_getFilterLogs: (filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>
 
   /** Returns an array of all logs matching a given filter object. */
   @inject eth_getLogs: (options: FilterOptions) => Promise<Array<TxHash> | Array<FilterChange>>
@@ -281,7 +292,7 @@ export class RequestManager {
    * Uninstalls a filter with given id. Should always be called when watch is no longer needed.
    * Additonally Filters timeout when they aren't requested with shh_getFilterChanges for a period of time.
    */
-  @inject shh_uninstallFilter: (filterId: Quantity) => Promise<boolean>
+  @inject shh_uninstallFilter: (filterId: Data) => Promise<boolean>
 
   /**
    * Polling method for whisper filters. Returns new messages since the last call of this method.
@@ -289,10 +300,10 @@ export class RequestManager {
    * Note calling the shh_getMessages method, will reset the buffer for this method, so that you won't receive duplicate
    * messages.
    */
-  @inject shh_getFilterChanges: (filterId: Quantity) => Promise<Array<SHHFilterMessage>>
+  @inject shh_getFilterChanges: (filterId: Data) => Promise<Array<SHHFilterMessage>>
 
   /** Get all messages matching a filter. Unlike shh_getFilterChanges this returns all messages. */
-  @inject shh_getMessages: (filterId: Quantity) => Promise<Array<SHHFilterMessage>>
+  @inject shh_getMessages: (filterId: Data) => Promise<Array<SHHFilterMessage>>
 
   /**
    * Decrypts the key with the given address from the key store.
@@ -343,7 +354,7 @@ export class RequestManager {
    *
    * See ecRecover to verify the signature.
    */
-  @inject personal_sign: (txObject: TransactionOptions, passPhrase: Data) => Promise<TxHash>
+  @inject personal_sign: (data: Data, signerAddress: Address, passPhrase: Data) => Promise<Data>
 
   /**
    * ecRecover returns the address associated with the private key that was used to calculate the signature in
@@ -363,6 +374,7 @@ export class RequestManager {
    * @param {Function} callback
    */
   async sendAsync(data: jsonRpc.RPCSendableMessage) {
+    /* istanbul ignore if */
     if (!this.provider) {
       throw errors.InvalidProvider()
     }
@@ -375,27 +387,13 @@ export class RequestManager {
 
     this.requests.set(payload.id, defer)
 
-    if (this.debug) {
-      // tslint:disable-next-line:no-console
-      console.log('SEND >> ' + JSON.stringify(payload))
-
-      defer
-        .then(data => {
-          // tslint:disable-next-line:no-console
-          console.log('RECV << ' + JSON.stringify(data))
-        })
-        .catch(err => {
-          // tslint:disable-next-line:no-console
-          console.log('ERR << ' + JSON.stringify(err))
-        })
-    }
-
     this.provider.sendAsync(payload, function(err, result) {
       if (err) {
         defer.reject(err)
         return
       }
 
+      /* istanbul ignore if */
       if (!jsonRpc.isValidResponse(result)) {
         defer.reject(errors.InvalidResponse(result))
         return
@@ -413,7 +411,112 @@ export class RequestManager {
    * @method setProvider
    * @param {object}
    */
+  /* istanbul ignore next */
   setProvider(p) {
     this.provider = p
+  }
+
+  /**
+   * Waits until the transaction finishes. Returns if it was successfull.
+   * Throws if the transaction fails or if it lacks any of the supplied events
+   * @param  {string} txId - Transaction id to watch
+   * @param  {Array<string>|string} events - Events to watch. See {@link txUtils#getLogEvents}
+   * @return {object} data - Current transaction data. See {@link txUtils#getTransaction}
+   */
+  async getConfirmedTransaction(txId: string) {
+    const tx = await this.waitForCompletion(txId)
+
+    if (this.isFailure(tx)) {
+      throw new Error(`Transaction "${txId}" failed`)
+    }
+
+    return tx
+  }
+
+  /**
+   * Wait until a transaction finishes by either being mined or failing
+   * @param  {string} txId - Transaction id to watch
+   * @param  {number} [retriesOnEmpty] - Number of retries when a transaction status returns empty
+   * @return {Promise<object>} data - Current transaction data. See {@link txUtils#getTransaction}
+   */
+  async waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt> {
+    const isDropped = await this.isTxDropped(txId, retriesOnEmpty)
+
+    if (isDropped) {
+      const tx = await this.getTransactionAndReceipt(txId)
+      return { ...tx, status: TRANSACTION_STATUS.failed }
+    }
+
+    while (true) {
+      const tx = await this.getTransactionAndReceipt(txId)
+
+      if (!this.isPending(tx) && tx.receipt) {
+        return {
+          ...tx,
+          status: this.isFailure(tx) ? TRANSACTION_STATUS.failed : TRANSACTION_STATUS.confirmed
+        }
+      }
+
+      await sleep(TRANSACTION_FETCH_DELAY)
+    }
+  }
+
+  /*
+   * Wait retryAttemps*TRANSACTION_FETCH_DELAY for a transaction status to be in the mempool
+   * @param  {string} txId - Transaction id to watch
+   * @param  {number} [retryAttemps=15] - Number of retries when a transaction status returns empty
+   * @return {Promise<boolean>}
+   */
+  async isTxDropped(txId: string, _retryAttemps: number = 15): Promise<boolean> {
+    let retryAttemps = _retryAttemps
+
+    while (retryAttemps > 0) {
+      const tx = await this.getTransactionAndReceipt(txId)
+
+      if (tx !== null) {
+        return false
+      }
+
+      retryAttemps -= 1
+      await sleep(TRANSACTION_FETCH_DELAY)
+    }
+
+    return true
+  }
+
+  /**
+   * Get the transaction status and receipt
+   * @param  {string} txId - Transaction id
+   */
+  // prettier-ignore
+  async getTransactionAndReceipt(txId: string): Promise<TransactionAndReceipt> {
+    const [tx, receipt] = await Promise.all([
+      this.eth_getTransactionByHash(txId),
+      this.eth_getTransactionReceipt(txId)
+    ])
+
+    return tx ? { ...tx, receipt } : null
+  }
+
+  /**
+   * Expects the result of getTransaction's geth command and returns true if the transaction is still pending.
+   * It'll also check for a pending status prop against {@link txUtils#TRANSACTION_STATUS}
+   * @param {object} tx - The transaction object
+   * @return boolean
+   */
+  // tslint:disable-next-line:prefer-function-over-method
+  isPending(tx: TransactionAndReceipt) {
+    return tx && tx.blockNumber === null
+  }
+
+  /**
+   * Expects the result of getTransactionRecepeit's geth command and returns true if the transaction failed.
+   * It'll also check for a failed status prop against {@link txUtils#TRANSACTION_STATUS}
+   * @param {object} tx - The transaction object
+   * @return boolean
+   */
+  // tslint:disable-next-line:prefer-function-over-method
+  isFailure(tx: TransactionAndReceipt) {
+    return tx && (!tx.receipt || tx.receipt.status === 0)
   }
 }

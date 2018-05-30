@@ -22,6 +22,7 @@ import { SolidityEvent } from './SolidityEvent'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
 import { EthFilter } from './Filter'
+import { FilterOptions } from './Schema'
 
 export class AllSolidityEvents {
   constructor(public _requestManager: RequestManager, public _json, public _address: string) {}
@@ -59,7 +60,7 @@ export class AllSolidityEvents {
     return event.decode(data)
   }
 
-  async execute(options) {
+  async execute(options: FilterOptions) {
     let filterOptions = this.encode(options)
     let formatter = this.decode.bind(this)
     return new EthFilter<any>(this._requestManager, filterOptions, formatter)
@@ -67,6 +68,6 @@ export class AllSolidityEvents {
 
   attachToContract(contract: Contract) {
     let execute = this.execute.bind(this)
-    contract.events.allEvents = execute
+    contract.allEvents = execute
   }
 }

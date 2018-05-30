@@ -12,11 +12,9 @@ export function runTests(testName: string, tests: { result; call; formattedArgs;
         const provider = new FakeHttpProvider()
         const rm = new RequestManager(provider)
 
-        provider.injectResult(test.result)
-
-        provider.injectValidation(async payload => {
+        const didCall = provider.injectHandler(test.call, async payload => {
+          provider.injectResult(test.result)
           assert.equal(payload.jsonrpc, '2.0')
-          assert.equal(payload.method, test.call)
           assert.deepEqual(payload.params, test.formattedArgs)
         })
 
@@ -27,6 +25,8 @@ export function runTests(testName: string, tests: { result; call; formattedArgs;
         const result = await rm[testName](...test.args)
 
         assert.deepEqual(test.formattedResult, result)
+
+        await didCall
       })
     })
   })

@@ -19,7 +19,7 @@ import formatters = require('./utils/formatters')
 import utils = require('./utils/utils')
 import { RequestManager } from './RequestManager'
 import config = require('./utils/config')
-import { Quantity, FilterOptions, FilterChange, TxHash, SHHFilterOptions, SHHFilterMessage } from './Schema'
+import { FilterOptions, FilterChange, TxHash, SHHFilterOptions, Data, SHHFilterMessage } from './Schema'
 import { future, IFuture } from './utils/future'
 
 function safeAsync(fn: () => Promise<any>) {
@@ -46,15 +46,113 @@ function toTopic(value: any) {
 
 export type FilterCallback = (messages: FilterChange[] | string[]) => void
 
-export class SHHFilter {
+export abstract class AbstractFilter<T> {
   public isStarted = false
+  public isDisposed = false
 
-  private timeout: any
-  private filterId: IFuture<Quantity> = future()
-  private callbacks: ((message: SHHFilterMessage) => void)[] = []
-  private stopSemaphore: IFuture<any>
+  public formatter: (x) => T
 
+  protected filterId: IFuture<Data> = future()
+  protected callbacks: ((message: T) => void)[] = []
+  protected stopSemaphore = future()
+
+  constructor(public requestManager: RequestManager) {
+    // stub
+  }
+
+  async watch(callback: (message: T) => void) {
+    if (this.isDisposed) throw new Error('The filter was disposed')
+    if (callback) {
+      this.callbacks.push(callback)
+
+      if (!this.isStarted) {
+        await this.start()
+      }
+    }
+  }
+
+  async start() {
+    if (this.isDisposed) throw new Error('The filter was disposed')
+    if (this.isStarted) return
+
+    this.isStarted = true
+
+    try {
+      const id = await this.getNewFilter()
+
+      if (!id) {
+        throw new Error('Could not create a filter, response: ' + JSON.stringify(id))
+      }
+
+      this.filterId.resolve(id)
+    } catch (e) {
+      throw e
+    }
+
+    this.stopSemaphore = future()
+    await this.poll()
+  }
+
+  async stop() {
+    if (!this.isStarted) return
+    if (this.isDisposed) return
+
+    this.isDisposed = true
+
+    const filterId = await this.filterId
+
+    this.isStarted = false
+
+    if (this.stopSemaphore) await this.stopSemaphore
+
+    const didStop = await this.uninstall()
+
+    if (didStop !== true) {
+      throw new Error(`Couldn't stop the eth filter: ${filterId}`)
+    }
+  }
+
+  protected abstract async getNewFilter(): Promise<Data>
+  protected abstract async getChanges(): Promise<any>
+  protected abstract async uninstall(): Promise<any>
+
+  /**
+   * Adds the callback and sets up the methods, to iterate over the results.
+   *
+   * @method pollFilter
+   */
+  private async poll() {
+    if (this.isStarted) {
+      if (this.callbacks.length) {
+        const result: any[] = await this.getChanges()
+
+        this.callbacks.forEach(cb => {
+          if (this.formatter) {
+            result.forEach($ => {
+              cb(this.formatter($))
+            })
+          } else {
+            result.forEach($ => cb($))
+          }
+        })
+      }
+
+      this.stopSemaphore.resolve(1)
+
+      if (this.isStarted) {
+        this.stopSemaphore = future()
+        setTimeout(safeAsync(() => this.poll()), config.ETH_POLLING_TIMEOUT)
+      }
+    } else {
+      this.stopSemaphore.resolve(1)
+    }
+  }
+}
+
+export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
   constructor(public requestManager: RequestManager, public options: SHHFilterOptions) {
+    super(requestManager)
+
     this.options = this.options || { topics: [] }
     this.options.topics = this.options.topics || []
     this.options.topics = this.options.topics.map(function(topic) {
@@ -67,89 +165,33 @@ export class SHHFilter {
     }
   }
 
-  async start() {
-    if (this.isStarted) return
-    this.isStarted = true
-
-    try {
-      const id: any = await this.requestManager.shh_newFilter(this.options)
-
-      if (!id) {
-        throw new Error('Could not create a filter, response: ' + JSON.stringify(id))
-      }
-
-      this.filterId.resolve(id)
-    } catch (e) {
-      this.isStarted = false
-      throw e
-    }
-
-    await this.poll()
-  }
-
-  async watch(callback: (message: SHHFilterMessage) => void) {
-    if (callback) {
-      this.callbacks.push(callback)
-      if (!this.isStarted) {
-        await this.start()
-      }
-    }
-  }
-
-  async stop() {
+  async getMessages(): Promise<any> {
     const filterId = await this.filterId
-    if (!this.stopSemaphore || (!this.stopSemaphore.isPending && this.timeout)) {
-      this.stopSemaphore = future()
-    }
-
-    await this.requestManager.shh_uninstallFilter(filterId)
-    this.isStarted = false
-
-    if (this.timeout) {
-      await this.stopSemaphore
-      clearTimeout(this.timeout)
-    }
+    return this.requestManager.shh_getMessages(filterId)
   }
 
-  /**
-   * Adds the callback and sets up the methods, to iterate over the results.
-   *
-   * @method pollFilter
-   */
-  private async poll() {
+  protected async getNewFilter(): Promise<string> {
+    return this.requestManager.shh_newFilter(this.options)
+  }
+
+  protected async getChanges(): Promise<any> {
     const filterId = await this.filterId
+    return this.requestManager.shh_getFilterChanges(filterId)
+  }
 
-    const result: SHHFilterMessage[] = await this.requestManager.shh_getFilterChanges(filterId)
-
-    this.callbacks.forEach(cb => {
-      result.forEach($ => cb($))
-    })
-
-    if (this.isStarted) {
-      this.timeout = setTimeout(safeAsync(() => this.poll()), config.ETH_POLLING_TIMEOUT)
-    } else {
-      if (this.stopSemaphore && this.stopSemaphore.isPending) {
-        this.stopSemaphore.resolve(1)
-      }
-      this.timeout = null
-    }
+  protected async uninstall(): Promise<any> {
+    const filterId = await this.filterId
+    return this.requestManager.shh_uninstallFilter(filterId)
   }
 }
 
-export class EthFilter<T = FilterChange | string> {
-  public isStarted = false
-
-  private timeout: any
-  private filterId: IFuture<Quantity> = future()
-  private callbacks: ((message: T) => void)[] = []
-
-  private stopSemaphore: IFuture<any>
-
+export class EthFilter<T = FilterChange | string> extends AbstractFilter<T> {
   constructor(
     public requestManager: RequestManager,
     public options: FilterOptions,
     public formatter: (message: FilterChange | string) => T = x => x as any
   ) {
+    super(requestManager)
     this.options = this.options || {}
     this.options.topics = this.options.topics || []
     this.options.topics = this.options.topics.map(function(topic) {
@@ -158,57 +200,15 @@ export class EthFilter<T = FilterChange | string> {
 
     this.options = {
       topics: this.options.topics,
-      address: this.options.address,
-      fromBlock: formatters.inputBlockNumberFormatter(this.options.fromBlock),
-      toBlock: formatters.inputBlockNumberFormatter(this.options.toBlock)
-    }
-  }
-
-  async getNewFilter(): Promise<any> {
-    return this.requestManager.eth_newFilter(this.options)
-  }
-
-  async start() {
-    if (this.isStarted) return
-    this.isStarted = true
-
-    try {
-      const id = await this.getNewFilter()
-
-      if (!id) {
-        throw new Error('Could not create a filter, response: ' + JSON.stringify(id))
-      }
-
-      this.filterId.resolve(id)
-    } catch (e) {
-      this.isStarted = false
-      throw e
-    }
-
-    await this.poll()
-  }
-
-  async watch(callback: (message: T) => void) {
-    if (callback) {
-      this.callbacks.push(callback)
-      if (!this.isStarted) {
-        await this.start()
-      }
-    }
-  }
-
-  async stop() {
-    const filterId = await this.filterId
-    if (!this.stopSemaphore || (!this.stopSemaphore.isPending && this.timeout)) {
-      this.stopSemaphore = future()
-    }
-
-    await this.requestManager.eth_uninstallFilter(filterId)
-    this.isStarted = false
-
-    if (this.timeout) {
-      await this.stopSemaphore
-      clearTimeout(this.timeout)
+      address: this.options.address ? this.options.address : undefined,
+      fromBlock:
+        typeof this.options.fromBlock === 'number' || typeof this.options.fromBlock === 'string'
+          ? formatters.inputBlockNumberFormatter(this.options.fromBlock)
+          : 'latest',
+      toBlock:
+        typeof this.options.toBlock === 'number' || typeof this.options.toBlock === 'string'
+          ? formatters.inputBlockNumberFormatter(this.options.toBlock)
+          : 'latest'
     }
   }
 
@@ -221,34 +221,18 @@ export class EthFilter<T = FilterChange | string> {
     return this.requestManager.eth_getFilterLogs(filterId)
   }
 
-  /**
-   * Adds the callback and sets up the methods, to iterate over the results.
-   *
-   * @method pollFilter
-   */
-  private async poll() {
+  protected async getNewFilter(): Promise<any> {
+    return this.requestManager.eth_newFilter(this.options)
+  }
+
+  protected async getChanges(): Promise<any> {
     const filterId = await this.filterId
+    return this.requestManager.eth_getFilterChanges(filterId)
+  }
 
-    const result: any[] = await this.requestManager.eth_getFilterChanges(filterId)
-
-    this.callbacks.forEach(cb => {
-      if (this.formatter) {
-        result.forEach($ => {
-          cb(this.formatter($))
-        })
-      } else {
-        result.forEach($ => cb($))
-      }
-    })
-
-    if (this.isStarted) {
-      this.timeout = setTimeout(safeAsync(() => this.poll()), config.ETH_POLLING_TIMEOUT)
-    } else {
-      if (this.stopSemaphore && this.stopSemaphore.isPending) {
-        this.stopSemaphore.resolve(1)
-      }
-      this.timeout = null
-    }
+  protected async uninstall(): Promise<any> {
+    const filterId = await this.filterId
+    return this.requestManager.eth_uninstallFilter(filterId)
   }
 }
 

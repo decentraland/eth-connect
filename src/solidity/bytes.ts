@@ -21,6 +21,7 @@ export class SolidityTypeBytes extends SolidityType {
       outputFormatter: f.formatOutputBytes
     })
   }
+  // tslint:disable-next-line:prefer-function-over-method
   isType(name) {
     return !!name.match(/^bytes([0-9]{1,})(\[([0-9]*)\])*$/)
   }

@@ -25,8 +25,7 @@ import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
 import { future } from './utils/future'
-import { TransactionOptions, TxHash } from './Schema'
-import { EthBlockFilter } from './Filter'
+import { TransactionOptions, TxHash, Data } from './Schema'
 
 /**
  * Should be called to check if the contract gets properly deployed on the blockchain.
@@ -38,36 +37,30 @@ import { EthBlockFilter } from './Filter'
  */
 async function checkForContractAddress(requestManager: RequestManager, txId: TxHash) {
   const receiptFuture = future()
-  // TODO fix filter
-  const filter = new EthBlockFilter(requestManager)
 
-  await filter.watch(_ => {
-    let count = 0
+  let count = 0
 
+  const fetcher = () => {
     count++
-
     // stop watching after 50 blocks (timeout)
     if (count > 50) {
-      filter
-        .stop()
-        .then(() => receiptFuture.reject(new Error("Contract transaction couldn't be found after 50 blocks")))
-        .catch(receiptFuture.reject)
+      receiptFuture.reject(new Error("Contract transaction couldn't be found after 50 blocks"))
     } else {
       requestManager.eth_getTransactionReceipt(txId).then(
         receipt => {
           if (receipt && receipt.blockHash) {
-            filter
-              .stop()
-              .then(() => receiptFuture.resolve(receipt))
-              .catch(receiptFuture.reject)
+            receiptFuture.resolve(receipt)
+          } else {
+            setTimeout(fetcher, 1000)
           }
         },
-        error => {
-          filter.stop().then(() => receiptFuture.reject(error), receiptFuture.reject)
-        }
+        /* istanbul ignore next */
+        error => receiptFuture.reject(error)
       )
     }
-  })
+  }
+
+  fetcher()
 
   const receipt = await receiptFuture
   const code = await requestManager.eth_getCode(receipt.contractAddress, 'latest')
@@ -76,6 +69,7 @@ async function checkForContractAddress(requestManager: RequestManager, txId: TxH
     return receipt.contractAddress
   }
 
+  /* istanbul ignore next */
   throw Object.assign(new Error("The contract code couldn't be stored, please check your gas amount."), {
     response: code,
     receipt
@@ -137,10 +131,12 @@ export class ContractFactory {
       options = args.pop()
     }
 
+    /* istanbul ignore if */
     if (!options) {
       throw new Error('Missing options object')
     }
 
+    /* istanbul ignore if */
     if (!options.data || typeof options.data !== 'string') {
       throw new Error('Invalid options.data')
     }
@@ -151,6 +147,7 @@ export class ContractFactory {
           return json.type === 'constructor' && json.inputs.length === args.length
         })[0] || {}
 
+      /* istanbul ignore if */
       if (!constructorAbi.payable) {
         throw new Error('Cannot send value to non-payable constructor')
       }
@@ -195,7 +192,7 @@ export class ContractFactory {
    *
    * @method getData
    */
-  async getData(...args: any[]) {
+  async getData(...args: any[]): Promise<Data> {
     let options = { data: undefined }
 
     const last = args[args.length - 1]

@@ -24,6 +24,8 @@ export class SolidityTypeInt extends SolidityType {
       outputFormatter: f.formatOutputInt
     })
   }
+
+  // tslint:disable-next-line:prefer-function-over-method
   isType(name) {
     return !!name.match(/^int([0-9]*)?(\[([0-9]*)\])*$/)
   }

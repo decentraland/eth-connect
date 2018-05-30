@@ -13,7 +13,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     const nodeConnectionFactory = new NodeConnectionFactory()
     const provider = nodeConnectionFactory.createProvider()
     const rm = new RequestManager(provider)
-    rm.debug = false
 
     it('should return no instantiated contracts', async () => {
       try {
@@ -33,7 +32,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
   describe('provider: http', function() {
     const nodeConnectionFactory = new NodeConnectionFactory()
-
     const provider = nodeConnectionFactory.createServer()
 
     it('should start the server', done => {
@@ -43,7 +41,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     })
 
     const rm = new RequestManager(new HTTPProvider('http://127.0.0.1:7654'))
-    rm.debug = false
 
     doTest(rm)
 
@@ -52,23 +49,12 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     })
   })
 
-  describe.skip('provider: ws', function() {
-    const nodeConnectionFactory = new NodeConnectionFactory()
-    const provider = nodeConnectionFactory.createServer()
-
-    it('should start the server', done => {
-      provider.listen(7654, function(err) {
-        done(err)
-      })
-    })
-
-    const rm = new RequestManager(new WebSocketProvider('ws://127.0.0.1:7654', { WebSocketConstructor: w3cwebsocket }))
-    rm.debug = false
+  describe('provider: ws', function() {
+    const provider = new WebSocketProvider('ws://127.0.0.1:8546', { WebSocketConstructor: w3cwebsocket })
+    const rm = new RequestManager(provider)
 
     doTest(rm)
 
-    it('closes the provider', done => {
-      provider.close(done)
-    })
+    after(() => provider.dispose())
   })
 }

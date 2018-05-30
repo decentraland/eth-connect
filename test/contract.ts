@@ -78,7 +78,7 @@ describe('contract', function() {
     it('should create event filter', async function() {
       const provider = new FakeHttpProvider()
       const rm = new RequestManager(provider)
-      rm.debug = false
+
       let signature = 'Changed(address,uint256,uint256,uint256)'
 
       const newFilterFuture = provider.mockNewFilter({
@@ -87,6 +87,8 @@ describe('contract', function() {
           '0x0000000000000000000000001234567890123456789012345678901234567891',
           '0x000000000000000000000000000000000000000000000000000000000000000a'
         ],
+        fromBlock: 'latest',
+        toBlock: 'latest',
         address: '0x1234567890123456789012345678901234567891'
       })
 
@@ -160,7 +162,9 @@ describe('contract', function() {
 
       const newFilterFuture = provider.mockNewFilter({
         topics: ['0x' + sha3(signature), '0x0000000000000000000000001234567890123456789012345678901234567891', null],
-        address: '0x1234567890123456789012345678901234567891'
+        address: '0x1234567890123456789012345678901234567891',
+        fromBlock: 'latest',
+        toBlock: 'latest'
       })
 
       const getFilterLogs = provider.mockGetFilterLogs([
@@ -221,7 +225,7 @@ describe('contract', function() {
     it('should create all event filter', async function() {
       const provider = new FakeHttpProvider()
       const rm = new RequestManager(provider)
-      rm.debug = false
+
       let signature = 'Changed(address,uint256,uint256,uint256)'
 
       const newFilterCalled = provider.injectValidation(async payload => {
@@ -230,6 +234,8 @@ describe('contract', function() {
         provider.injectResult('0x3')
 
         assert.deepEqual(payload.params[0], {
+          fromBlock: 'latest',
+          toBlock: 'latest',
           topics: [],
           address: '0x1234567890123456789012345678901234567891'
         })
@@ -264,7 +270,7 @@ describe('contract', function() {
       let contract = await new ContractFactory(rm, desc).at(address)
 
       let res = 0
-      let event = await contract.events.allEvents(void 0)
+      let event = await contract.allEvents({})
       const done = future()
 
       await event.getLogs()
@@ -351,8 +357,8 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(async payload => {
-        assert.equal(payload.method, 'eth_sendTransaction')
+
+      const didCall = provider.injectHandler('eth_sendTransaction', async payload => {
         assert.deepEqual(payload.params, [
           {
             data:
@@ -364,11 +370,14 @@ describe('contract', function() {
             to: address
           }
         ])
+        provider.injectResult('0xb')
       })
 
       let contract: any = await new ContractFactory(rm, desc).at(address)
 
       await contract.send(address, 17, { from: address })
+
+      await didCall
     })
 
     it('should make a call with optional params', async function() {
@@ -485,7 +494,8 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(async payload => {
+      provider.injectHandler('eth_sendTransaction', async payload => {
+        provider.injectResult('0x0000000000000000000000001234567890123456789012345678901234567891')
         assert.equal(payload.method, 'eth_sendTransaction')
         assert.deepEqual(payload.params, [
           {
@@ -519,7 +529,8 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(async payload => {
+      const didCall = provider.injectHandler('eth_sendTransaction', async payload => {
+        provider.injectResult('0x0000000000000000000000001234567890123456789012345678901234567891')
         assert.equal(payload.method, 'eth_sendTransaction')
         assert.deepEqual(payload.params, [
           {
@@ -540,6 +551,7 @@ describe('contract', function() {
       let contract: any = await new ContractFactory(rm, desc).at(address)
 
       await contract.send(address, 17, { from: address, gas: 50000, gasPrice: 3000, value: 10000 })
+      await didCall
     })
 
     it('should sendTransaction with bigNum param and optional params', async function() {
@@ -547,7 +559,8 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(async payload => {
+      const didCall = provider.injectHandler('eth_sendTransaction', async payload => {
+        provider.injectResult('0x0000000000000000000000001234567890123456789012345678901234567891')
         assert.equal(payload.method, 'eth_sendTransaction')
         assert.deepEqual(payload.params, [
           {
@@ -568,6 +581,7 @@ describe('contract', function() {
       let contract: any = await new ContractFactory(rm, desc).at(address)
 
       await contract.send(address, new BigNumber(17), { from: address, gas: 50000, gasPrice: 3000, value: 10000 })
+      await didCall
     })
 
     it('should explicitly sendTransaction with optional params', async function() {
@@ -575,8 +589,9 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(async payload => {
-        assert.equal(payload.method, 'eth_sendTransaction')
+      const didCall = provider.injectHandler('eth_sendTransaction', async payload => {
+        provider.injectResult('0x0000000000000000000000001234567890123456789012345678901234567891')
+
         assert.deepEqual(payload.params, [
           {
             data:
@@ -596,6 +611,7 @@ describe('contract', function() {
       let contract: any = await new ContractFactory(rm, desc).at(address)
 
       await contract.send(address, 17, { from: address, gas: 50000, gasPrice: 3000, value: 10000 })
+      await didCall
     })
 
     it('should explicitly sendTransaction with optional params and call callback without error', async function() {
@@ -603,8 +619,8 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let address = '0x1234567890123456789012345678901234567891'
       let signature = 'send(address,uint256)'
-      provider.injectValidation(async payload => {
-        assert.equal(payload.method, 'eth_sendTransaction')
+      const didCall = provider.injectHandler('eth_sendTransaction', async payload => {
+        provider.injectResult('0x0000000000000000000000001234567890123456789012345678901234567891')
         assert.deepEqual(payload.params, [
           {
             data:
@@ -624,6 +640,7 @@ describe('contract', function() {
       let contract: any = await new ContractFactory(rm, desc).at(address)
 
       await contract.send(address, 17, { from: address, gas: 50000, gasPrice: 3000, value: 10000 })
+      await didCall
     })
 
     it('should explicitly estimateGas with optional params', async function() {
@@ -631,8 +648,7 @@ describe('contract', function() {
       const rm = new RequestManager(provider)
       let signature = 'send(address,uint256)'
       let address = '0x1234567890123456789012345678901234567891'
-      provider.injectValidation(async payload => {
-        assert.equal(payload.method, 'eth_estimateGas')
+      const didCall = provider.injectHandler('eth_estimateGas', async payload => {
         assert.deepEqual(payload.params, [
           {
             data:
@@ -647,11 +663,14 @@ describe('contract', function() {
             value: '0x2710'
           }
         ])
+        provider.injectResult('0x123')
       })
 
       let contract: any = await new ContractFactory(rm, desc).at(address)
 
       await contract.send.estimateGas(address, 17, { from: address, gas: 50000, gasPrice: 3000, value: 10000 })
+
+      await didCall
     })
 
     it('should call testArr method and properly parse result', async function() {

@@ -11,18 +11,16 @@ describe('eth.filter', function() {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
-    rm.debug = false
 
     const didCallNewFilter = provider.mockNewFilter({
-      fromBlock: '0x0',
       toBlock: '0xa',
-      address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855',
-      topics: []
+      fromBlock: 'latest',
+      topics: [],
+      address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855'
     })
 
     // call
     let filter = new EthFilter(rm, {
-      fromBlock: 0,
       toBlock: 10,
       address: '0x47d33b27bb249a2dbab4c0612bf9caf4c1950855'
     })
@@ -55,13 +53,13 @@ describe('eth.filter', function() {
     // async should get the fake logs
     const res = await filter.getLogs()
 
+    await filter.watch(() => void 0)
+
     await didCallNewFilter
     await didCallLogs
-
     assert.deepEqual(logs, res as any)
 
     await didCallChanges
-
     await filter.stop()
     await didCallUninstall
   })
@@ -71,7 +69,6 @@ describe('eth.filter', function() {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
-    rm.debug = false
 
     const didCallNewFilter = provider.mockNewFilter({
       fromBlock: '0x0',
@@ -120,6 +117,7 @@ describe('eth.filter', function() {
     const didCallLogs = provider.mockGetFilterLogs(logs)
     const didCallUninstall = provider.mockUninstallFilter()
 
+    await filter.watch(() => void 0)
     // async should get the fake logs
     const res = await filter.getLogs()
 
@@ -151,6 +149,7 @@ describe('eth.filter', function() {
     // call
     let filter = new EthBlockFilter(rm)
     await filter.start()
+    await filter.watch(() => void 0)
     await didCallInit
     const didCallUninstall = provider.mockUninstallFilter()
     await didCallGetChanges
@@ -176,11 +175,10 @@ describe('eth.filter', function() {
 
     const didCallUninstall = provider.mockUninstallFilter()
     await filter.start()
+    await filter.watch(() => void 0)
     await didCallInit
-
     await didCallGetChanges
     await filter.stop()
-
     await didCallUninstall
   })
 })

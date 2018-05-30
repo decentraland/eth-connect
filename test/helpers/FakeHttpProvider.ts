@@ -40,7 +40,6 @@ export class FakeHttpProvider {
   validations: { defer: IFuture<any>; callback: (result: any) => Promise<any> }[] = []
 
   constructor() {
-    this.response = getResponseStub()
     this.error = null
   }
 
@@ -65,15 +64,18 @@ export class FakeHttpProvider {
       // imitate plain json object
       mutex = Promise.all(
         this.validations.map($ => {
-          const x = $.callback(JSON.parse(JSON.stringify(payload)))
-          x
-            .then(x => {
-              if (x !== false) $.defer.resolve(payload)
-            })
-            .catch(x => {
-              $.defer.reject(x)
-            })
-          return $
+          try {
+            return $.callback(JSON.parse(JSON.stringify(payload)))
+              .then(x => {
+                if (x !== false) $.defer.resolve(payload)
+              })
+              .catch(x => {
+                $.defer.reject(x)
+              })
+          } catch (e) {
+            $.defer.reject(e)
+            return $.defer
+          }
         })
       )
     }
@@ -81,12 +83,13 @@ export class FakeHttpProvider {
     mutex
       .then(() => {
         try {
-          let response = this.getResponse(payload)
-
-          let error = this.error
-          setTimeout(function() {
-            callback(error, response)
-          }, 1)
+          if (this.error) {
+            callback(this.error)
+            this.error = null
+          } else {
+            let response = this.getResponse(payload)
+            callback(null, response)
+          }
         } catch (e) {
           callback(e, null)
         }

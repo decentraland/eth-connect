@@ -251,14 +251,12 @@ describe('web3.eth.contract', function() {
       code + '0000000000000000000000000000000000000000000000000000000000000002'
     )
 
-    const validation2 = provider.mockNewBlockFilter()
-
-    const getFilterChangesCalled = provider.mockGetFilterChanges({})
-
-    const uninstallFilerCalled = provider.mockUninstallFilter()
-
     const getTransactionReceiptCalled = provider.mockGetTransactionReceipt(txHash, {
       contractAddress
+    })
+
+    const estimateGas = provider.injectHandler('eth_estimateGas', async _ => {
+      provider.injectResult('0x60016')
     })
 
     const getCodeCalled = provider.injectValidation(async payload => {
@@ -279,16 +277,12 @@ describe('web3.eth.contract', function() {
     assert.equal(contract.transactionHash, txHash)
     assert.equal(contract.address, contractAddress)
 
-    await getFilterChangesCalled
+    await estimateGas
 
     await getTransactionReceiptCalled
 
     await getCodeCalled
 
     await validation1
-
-    await validation2
-
-    await uninstallFilerCalled
   })
 })

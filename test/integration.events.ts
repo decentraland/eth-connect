@@ -3,9 +3,11 @@ import chai = require('chai')
 
 const expect = chai.expect
 
-import { ContractFactory, RequestManager } from '../dist'
-import { EthFilter } from '../dist/Filter'
+import { ContractFactory, RequestManager, Contract } from '../dist'
+import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../dist/Filter'
 import { testAllProviders } from './helpers/testAllProviders'
+import { future } from '../dist/utils/future'
+import WebSocketProvider from '../dist/providers/WebSocketProvider'
 
 /*
 pragma solidity ^0.4.21;
@@ -130,23 +132,38 @@ function doTest(rm: RequestManager) {
   it('should unlock the account', async () => {
     const accounts = await rm.eth_accounts()
     const account = accounts[0]
-    const accountUnlocked = await rm.personal_unlockAccount(account)
+    const accountUnlocked = await rm.personal_unlockAccount(account, '', 300)
     console.log(`> Unlocking account status=${accountUnlocked}`)
     // tslint:disable-next-line:no-unused-expression
     expect(accountUnlocked).to.be.true
   })
 
   let TestContract = null
+  let contractEvents: EthFilter = null
   let ethFilter: EthFilter = null
-  let messages = []
+  let blockFilter: EthBlockFilter = null
+  let pendingFilter: EthPendingTransactionFilter = null
+
+  const didReceiveAnyMessage = future()
+  const didReceiveAnyBlock = future()
+  const didReceiveAnyPending = future()
+  const didReceiveAllEventsFilter = future()
 
   it('creates the filters', async () => {
-    ethFilter = new EthFilter(rm, { fromBlock: 0 })
+    ethFilter = new EthFilter(rm, { fromBlock: 'earliest' })
     await ethFilter.watch($ => {
-      console.dir($)
-      messages.push($)
+      didReceiveAnyMessage.resolve($)
     })
-    await ethFilter.stop()
+
+    blockFilter = new EthBlockFilter(rm)
+    await blockFilter.watch($ => {
+      didReceiveAnyBlock.resolve($)
+    })
+
+    pendingFilter = new EthPendingTransactionFilter(rm)
+    await pendingFilter.watch($ => {
+      didReceiveAnyPending.resolve($)
+    })
   })
 
   it('deploys a new contract', async function() {
@@ -155,7 +172,17 @@ function doTest(rm: RequestManager) {
     const account = accounts[0]
 
     const factory = new ContractFactory(rm, contract.abi)
-    TestContract = await factory.deploy({ data: contract.bytecode, from: account, to: null })
+    const theDeployedContract: Contract = (TestContract = await factory.deploy({
+      data: contract.bytecode,
+      from: account,
+      to: null
+    }))
+
+    contractEvents = await theDeployedContract.allEvents({})
+
+    await contractEvents.watch($ => {
+      didReceiveAllEventsFilter.resolve($)
+    })
 
     console.log(`> Tx: ${TestContract.transactionHash}`)
   })
@@ -176,7 +203,15 @@ function doTest(rm: RequestManager) {
   it('setInstructor("agustin", 99)', async () => {
     const accounts = await rm.eth_accounts()
     const from = accounts[0]
-    await TestContract.setInstructor('agustin', 99, { from })
+    const tx = await TestContract.setInstructor('agustin', 99, { from })
+    await rm.waitForCompletion(tx)
+  })
+
+  it('setInstructorEvent("agustin", 99)', async () => {
+    const accounts = await rm.eth_accounts()
+    const from = accounts[0]
+    const tx = await TestContract.setInstructorEvent('agustin', 99, { from })
+    await rm.waitForCompletion(tx)
   })
 
   it('getInstructor()', async () => {
@@ -185,7 +220,49 @@ function doTest(rm: RequestManager) {
     expect(age.toNumber()).to.eq(99)
   })
 
-  it('tears down the filters', async () => {
+  it('did receive a filter message', async () => {
+    await didReceiveAnyMessage
+  })
+
+  it('did receive a filter block', async () => {
+    await didReceiveAnyBlock
+  })
+
+  it('did receive a filter pending message', async () => {
+    if (rm.provider instanceof WebSocketProvider /* test in geth node only */) {
+      await didReceiveAnyPending
+    }
+  })
+
+  it('did receive a allEvents filter message', async () => {
+    await didReceiveAllEventsFilter
+  })
+
+  it('should create and destroy a filter without start', async () => {
+    const filter = new EthBlockFilter(rm)
+    await filter.stop()
+  })
+
+  it('should get the logs from EthFilter', async () => {
+    {
+      const logs = await ethFilter.getLogs()
+      expect(logs.length).to.be.gt(0)
+    }
+  })
+
+  it('tears down the EthFilter', async () => {
     await ethFilter.stop()
+  })
+
+  it('tears down the EthBlockFilter', async () => {
+    await blockFilter.stop()
+  })
+
+  it('tears down the EthPendingTransactionFilter', async () => {
+    await pendingFilter.stop()
+  })
+
+  it('tears down the allEvents EthFilter', async () => {
+    await contractEvents.stop()
   })
 }

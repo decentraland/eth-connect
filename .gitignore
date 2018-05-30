@@ -25,3 +25,4 @@ test/**/*.js
 test/**/*.map
 test/**/*.d.ts
 .nyc_output
+eth_common/.ethereum

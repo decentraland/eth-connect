@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js'
+
 /** Hex string */
 export type Data = string
 /** Hex string of 32 bytes */
@@ -144,15 +146,19 @@ export type TransactionObject = {
   /** address of the sender. */
   from: Address
   /** address of the receiver. null when its a contract creation transaction. */
-  to: Address
+  to: Address | null
   /** value transferred in Wei. */
-  value: Quantity
+  value: BigNumber
   /** gas price provided by the sender in Wei. */
-  gasPrice: Quantity
+  gasPrice: BigNumber
   /** gas provided by the sender. */
   gas: Quantity
   /** the data send along with the transaction. */
   input: Data
+
+  v?: Data
+  r?: Data
+  s?: Data
 }
 
 export type FilterLog = {}

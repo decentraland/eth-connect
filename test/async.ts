@@ -26,11 +26,11 @@ describe('async', function() {
       // given
       const provider = new FakeHttpProvider()
 
-      provider.injectResult(test.result)
       provider.injectValidation(async payload => {
         assert.equal(payload.jsonrpc, '2.0')
         assert.equal(payload.method, test.call)
         assert.deepEqual(payload.params, [test.formattedInput])
+        provider.injectResult(test.result)
       })
 
       const rm = new RequestManager(provider)
@@ -45,14 +45,15 @@ describe('async', function() {
       // given
       const provider = new FakeHttpProvider()
 
-      provider.injectError({
-        message: test.result,
-        code: -32603
-      })
       provider.injectValidation(async payload => {
         assert.equal(payload.jsonrpc, '2.0')
         assert.equal(payload.method, test.call)
         assert.deepEqual(payload.params, [test.formattedInput])
+
+        provider.injectError({
+          message: test.result,
+          code: -32603
+        })
       })
 
       const rm = new RequestManager(provider)

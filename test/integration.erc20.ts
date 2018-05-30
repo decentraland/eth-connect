@@ -5,7 +5,6 @@ import 'isomorphic-fetch'
 const expect = chai.expect
 
 import { ContractFactory, RequestManager } from '../dist'
-import { future } from '../dist/utils/future'
 import BigNumber from 'bignumber.js'
 import { testAllProviders } from './helpers/testAllProviders'
 
@@ -24,15 +23,17 @@ function doTest(requestManager: RequestManager) {
   it('should get the balance', async () => {
     const coinbase = await requestManager.eth_coinbase()
     console.log(`> Coinbase`, coinbase)
-    const balance = await requestManager.eth_getBalance(coinbase, 'latest')
+    const accounts = await requestManager.eth_accounts()
+    const account = accounts[0]
+    const balance = await requestManager.eth_getBalance(account, 'latest')
     console.log(`> Balance ${balance}`)
-    expect(balance.toString()).to.eq('100012300001')
+    expect(balance.toNumber()).to.gt(0)
   })
 
   it('should unlock the account', async () => {
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
-    const accountUnlocked = await requestManager.personal_unlockAccount(account)
+    const accountUnlocked = await requestManager.personal_unlockAccount(account, '', 300)
     console.log(`> Unlocking account status=${accountUnlocked}`)
     // tslint:disable-next-line:no-unused-expression
     expect(accountUnlocked).to.be.true
@@ -63,12 +64,27 @@ function doTest(requestManager: RequestManager) {
 
     expect(typeof txRecipt.contractAddress).to.eq('string')
     expect(txRecipt.contractAddress.length).to.be.greaterThan(0)
+    expect(typeof txRecipt.transactionIndex).to.eq('number')
+    expect(typeof txRecipt.transactionHash).to.eq('string')
+    expect(typeof txRecipt.blockHash).to.eq('string')
+    expect(typeof txRecipt.blockNumber).to.eq('number')
+    expect(typeof txRecipt.contractAddress).to.eq('string')
+    expect(typeof txRecipt.cumulativeGasUsed).to.eq('number')
+    expect(typeof txRecipt.gasUsed).to.eq('number')
+    expect(typeof txRecipt.status).to.eq('number')
   })
 
   it('gets the trasaction', async () => {
     const x = await requestManager.eth_getTransactionByHash(ERC20Contract.transactionHash)
     expect(typeof x).eq('object')
     expect(x.hash).eq(ERC20Contract.transactionHash)
+    expect(x.gasPrice instanceof BigNumber).to.eq(true)
+    expect(x.value instanceof BigNumber).to.eq(true)
+    expect(typeof x.gas).to.eq('number')
+    expect(typeof x.blockNumber).to.eq('number')
+    expect(typeof x.blockHash).to.eq('string')
+    expect(typeof x.hash).to.eq('string')
+    expect(typeof x.transactionIndex).to.eq('number')
   })
 
   it('should get 0 mana balance by default', async () => {
@@ -84,24 +100,6 @@ function doTest(requestManager: RequestManager) {
       const balance = await ERC20Contract.balanceOf('0x0')
       expect(balance.toString()).eq('0')
     }
-  })
-
-  it('should fail by pointing to a contract to wrong address', async function() {
-    this.timeout(100000)
-
-    const address = '0xebc757b8bfd562158b1bfded4e1cafe332d9845a'
-    const fakeMANAFacade: any = await new ContractFactory(requestManager, require('./fixtures/ERC20.json').abi).at(
-      address
-    )
-
-    const x = future()
-
-    fakeMANAFacade
-      .balanceOf(address)
-      .then(() => x.reject(new Error('didnt fail')))
-      .catch(() => x.resolve(void 0))
-
-    await x
   })
 
   it('should work with injected methods from ABI', async function() {
@@ -121,10 +119,15 @@ function doTest(requestManager: RequestManager) {
     {
       const mintResult = await ERC20Contract.mint(account, 10, { from: account })
       expect(typeof mintResult).eq('string')
+      const tx = await requestManager.getConfirmedTransaction(mintResult)
+      expect(tx.status).to.eq('confirmed')
+      expect(typeof tx.receipt).to.eq('object')
+      expect(tx.receipt.status).to.eq(1)
     }
     {
       const mintResult = await ERC20Contract.mint(account, 10, { from: account })
       expect(typeof mintResult).eq('string')
+      await requestManager.waitForCompletion(mintResult)
     }
     {
       const totalSupply = await ERC20Contract.totalSupply()

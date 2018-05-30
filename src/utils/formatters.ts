@@ -42,7 +42,7 @@ export function inputDefaultBlockNumberFormatter(blockNumber) {
 }
 
 export function inputBlockNumberFormatter(blockNumber) {
-  if (blockNumber === undefined) {
+  if (blockNumber === undefined || blockNumber == null) {
     return undefined
   } else if (isPredefinedBlockNumber(blockNumber)) {
     return blockNumber
@@ -78,6 +78,10 @@ export function inputCallFormatter(options) {
       options[key] = utils.fromDecimal(options[key])
     })
 
+  if (options.data && !options.data.startsWith('0x') && /^[A-Za-z0-9]+$/.test(options.data)) {
+    options.data = '0x' + options.data
+  }
+
   return options
 }
 
@@ -112,6 +116,10 @@ export function inputTransactionFormatter(options) {
     .forEach(function(key) {
       options[key] = utils.fromDecimal(options[key])
     })
+
+  if (options.data && !options.data.startsWith('0x') && /^[A-Za-z0-9]+$/.test(options.data)) {
+    options.data = '0x' + options.data
+  }
 
   return options
 }
@@ -155,6 +163,8 @@ export function outputTransactionReceiptFormatter(receipt) {
       return outputLogFormatter(log)
     })
   }
+
+  receipt.status = utils.toDecimal(receipt.status)
 
   return receipt
 }

@@ -43,12 +43,10 @@ export class NodeConnectionFactory {
         }
       ],
       network_id: 3,
-      logger: {
-        log(...args) {
-          // tslint:disable-next-line
-          console.log(...args)
-        }
-      },
+      // logger: {
+      //   log(...args) {
+      //   }
+      // },
       vmErrorsOnRPCResponse: true,
       ws: true,
       ...options

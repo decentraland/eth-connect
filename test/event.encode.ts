@@ -1,6 +1,7 @@
 import chai = require('chai')
 const assert = chai.assert
 import { SolidityEvent } from '../dist/SolidityEvent'
+import { FilterOptions } from '../dist/Schema'
 
 let address = '0x1234567890123456789012345678901234567890'
 let signature = '0xffff'
@@ -240,7 +241,7 @@ describe('lib/web3/event', function() {
           return signature.slice(2)
         }
 
-        let result = event.encode(test.indexed, test.options)
+        let result = event.encode(test.indexed, test.options as FilterOptions)
         assert.deepEqual(result, test.expected)
       })
     })

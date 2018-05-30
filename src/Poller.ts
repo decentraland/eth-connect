@@ -131,21 +131,6 @@ export class Poller {
       defer.finally(() => this.requestManager.requests.delete(payload.id))
 
       this.requestManager.requests.set(payload.id, defer)
-
-      if (this.requestManager.debug) {
-        // tslint:disable-next-line:no-console
-        console.log('SEND >> ' + JSON.stringify(payload))
-
-        defer
-          .then(data => {
-            // tslint:disable-next-line:no-console
-            console.log('RECV << ' + JSON.stringify(data))
-          })
-          .catch(err => {
-            // tslint:disable-next-line:no-console
-            console.log('ERR << ' + JSON.stringify(err))
-          })
-      }
     })
 
     this.requestManager.provider.sendAsync(payload, (error, results) => {

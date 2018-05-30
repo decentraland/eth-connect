@@ -27,6 +27,7 @@ import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
 import { EthFilter } from './Filter'
+import { FilterOptions } from './Schema'
 
 /**
  * This prototype should be used to create event filters
@@ -101,7 +102,7 @@ export class SolidityEvent {
    * @param {object} options
    * @return {object} everything combined together and encoded
    */
-  encode(indexed = {}, options = {}) {
+  encode(indexed = {}, options: FilterOptions = {}) {
     let result = {
       topics: [],
       address: this.address
@@ -186,7 +187,7 @@ export class SolidityEvent {
    * @param {object} options
    * @return {object} filter object
    */
-  async execute(indexed, options) {
+  async execute(indexed, options: FilterOptions) {
     let o = this.encode(indexed, options)
     let formatter = this.decode.bind(this)
     return new EthFilter(this.requestManager, o, formatter)

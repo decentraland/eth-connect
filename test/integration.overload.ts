@@ -114,13 +114,13 @@ function doTest(requestManager: RequestManager) {
     console.log(`> Coinbase`, coinbase)
     const balance = await requestManager.eth_getBalance(coinbase, 'latest')
     console.log(`> Balance ${balance}`)
-    expect(balance.toString()).to.eq('100012300001')
+    expect(balance.toNumber()).to.gt(0)
   })
 
   it('should unlock the account', async () => {
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
-    const accountUnlocked = await requestManager.personal_unlockAccount(account)
+    const accountUnlocked = await requestManager.personal_unlockAccount(account, '', 300)
     console.log(`> Unlocking account status=${accountUnlocked}`)
     // tslint:disable-next-line:no-unused-expression
     expect(accountUnlocked).to.be.true

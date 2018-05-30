@@ -2,11 +2,11 @@ import { RequestManager, utils } from '../dist'
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 import BigNumber from 'bignumber.js'
 import { expect } from 'chai'
+import { toRPC } from '../dist/providers/common'
 
 describe('test types', () => {
   const nodeConnectionFactory = new NodeConnectionFactory()
   const requestManager = new RequestManager(nodeConnectionFactory.createProvider())
-  requestManager.debug = false
 
   let address = '0xebc757b8bfd562158b1bfded4e1cafe332d9845a'
 
@@ -18,6 +18,19 @@ describe('test types', () => {
     // tslint:disable-next-line:no-unused-expression
     expect(account).to.eq(address, "pre-setted account matches test's address")
     expect(account.length).to.gt(0)
+  })
+
+  it('test toRPC', async () => {
+    // TODO: Move this to its own file
+    expect(() => toRPC({ id: null } as any)).to.throw()
+    expect(() => toRPC({ id: 1.1 } as any)).to.throw()
+    expect(() => toRPC({ id: 'asd' } as any)).to.throw()
+    expect(() => toRPC({ id: 1, method: '' } as any)).to.throw()
+    expect(() => toRPC({ id: 1, method: null } as any)).to.throw()
+    expect(() => toRPC({ id: 1, method: 123 } as any)).to.throw()
+    expect(() => toRPC({ id: 1, method: 'without params' } as any)).to.throw()
+    expect(() => toRPC({ id: 1, method: 'validMethod', params: 1 } as any)).to.throw()
+    expect(() => toRPC({ id: 1, method: 'validMethod', params: null } as any)).to.throw()
   })
 
   function test(method: keyof RequestManager, type: string | typeof BigNumber, ...args) {

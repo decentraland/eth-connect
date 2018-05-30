@@ -13,9 +13,13 @@ export type WebSocketProviderOptions = {
 }
 
 export class WebSocketProvider {
+  isDisposed = false
+
   responseCallbacks = new Map<number, IFuture<any>>()
   notificationCallbacks = new Set<Callback>()
   connection: IFuture<WebSocket>
+
+  debug = false
 
   private lastChunk: string = ''
   private lastChunkTimeout: any
@@ -24,8 +28,16 @@ export class WebSocketProvider {
     this.connect()
   }
 
+  dispose() {
+    this.isDisposed = true
+    // tslint:disable-next-line:no-floating-promises
+    this.connection.then($ => $.close())
+  }
+
+  /* istanbul ignore next */
   // tslint:disable-next-line:prefer-function-over-method
   send() {
+    /* istanbul ignore next */
     throw new Error('Sync requests are deprecated')
   }
 
@@ -60,15 +72,23 @@ export class WebSocketProvider {
       didFinish = defer
     }
 
-    didFinish.then($ => callback(null, $)).catch(err => callback(err))
+    didFinish.then($ => callback(null, $), err => callback(err))
 
-    this.connection
-      .then(ws => {
-        toSend.forEach($ => ws.send(JSON.stringify($)))
-      })
-      .catch(err => {
+    this.connection.then(
+      ws => {
+        toSend.forEach($ => {
+          const s = JSON.stringify($)
+
+          /* istanbul ignore if */
+          // tslint:disable-next-line:no-console
+          if (this.debug) console.log('SEND >> ' + s)
+          ws.send(s)
+        })
+      },
+      err => {
         callback(err)
-      })
+      }
+    )
   }
 
   /**
@@ -127,12 +147,16 @@ export class WebSocketProvider {
 
       const defer = this.responseCallbacks.get(id)
 
-      if (!defer) return
+      if (!defer) {
+        // tslint:disable-next-line:no-console
+        console.error('Error: Received a response for an unknown request', message)
+        return
+      }
 
       this.responseCallbacks.delete(id)
 
       if ('error' in message) {
-        defer.reject(message.error)
+        defer.reject(Object.assign(new Error(message.error.message || message.error), message.error))
       } else if ('result' in message) {
         defer.resolve(message)
       }
@@ -155,7 +179,9 @@ export class WebSocketProvider {
     this.responseCallbacks.clear()
 
     // reset all requests and callbacks
-    this.connect()
+    if (!this.isDisposed) {
+      this.connect()
+    }
   }
 
   private connect() {
@@ -194,6 +220,10 @@ export class WebSocketProvider {
     // LISTEN FOR CONNECTION RESPONSES
     connection.onmessage = e => {
       let data = typeof e.data === 'string' ? e.data : ''
+
+      /* istanbul ignore if */
+      // tslint:disable-next-line:no-console
+      if (this.debug) console.log('RECV << ' + e.data)
 
       this.parseResponse(data).forEach(result => {
         // get the id which matches the returned id

@@ -8,9 +8,13 @@ export class SolidityTypeString extends SolidityType {
       outputFormatter: f.formatOutputString
     })
   }
+
+  // tslint:disable-next-line:prefer-function-over-method
   isType(name: string) {
     return !!name.match(/^string(\[([0-9]*)\])*$/)
   }
+
+  // tslint:disable-next-line:prefer-function-over-method
   isDynamicType() {
     return true
   }

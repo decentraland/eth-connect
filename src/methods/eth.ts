@@ -206,7 +206,8 @@ export namespace eth {
 
   export const eth_submitWork = new Method({
     callName: 'eth_submitWork',
-    params: 3
+    params: 3,
+    outputFormatter: utils.toBoolean
   })
 
   export const eth_getWork = new Method({
@@ -219,7 +220,8 @@ export namespace eth {
   })
 
   export const eth_mining = new Property({
-    getter: 'eth_mining'
+    getter: 'eth_mining',
+    outputFormatter: utils.toBoolean
   })
 
   export const eth_hashrate = new Property({
@@ -351,7 +353,8 @@ export namespace eth {
   export const shh_post = new Method({
     callName: 'shh_post',
     params: 1,
-    inputFormatter: [null]
+    inputFormatter: [null],
+    outputFormatter: utils.toBoolean
   })
 
   export const personal_newAccount = new Method({
@@ -379,7 +382,8 @@ export namespace eth {
   export const personal_unlockAccount = new Method({
     callName: 'personal_unlockAccount',
     params: 3,
-    inputFormatter: [formatters.inputAddressFormatter, null, null]
+    inputFormatter: [formatters.inputAddressFormatter, null, utils.toNullDecimal],
+    outputFormatter: utils.toBoolean
   })
 
   export const personal_sendTransaction = new Method({
@@ -391,7 +395,8 @@ export namespace eth {
   export const personal_lockAccount = new Method({
     callName: 'personal_lockAccount',
     params: 1,
-    inputFormatter: [formatters.inputAddressFormatter]
+    inputFormatter: [formatters.inputAddressFormatter],
+    outputFormatter: utils.toBoolean
   })
 
   export const personal_listAccounts = new Property({
@@ -399,7 +404,8 @@ export namespace eth {
   })
 
   export const net_listening = new Property({
-    getter: 'net_listening'
+    getter: 'net_listening',
+    outputFormatter: utils.toBoolean
   })
 
   export const net_peerCount = new Property({
@@ -409,42 +415,51 @@ export namespace eth {
 
   export const eth_newFilter = new Method({
     callName: 'eth_newFilter',
-    params: 1
+    params: 1,
+    outputFormatter: utils.toHex
   })
 
   export const eth_getLogs = new Method({
     callName: 'eth_getLogs',
-    params: 1
+    params: 1,
+    inputFormatter: [utils.toHex]
   })
 
   export const eth_newBlockFilter = new Method({
     callName: 'eth_newBlockFilter',
-    params: 0
+    params: 0,
+    outputFormatter: utils.toHex
   })
 
   export const eth_newPendingTransactionFilter = new Method({
     callName: 'eth_newPendingTransactionFilter',
-    params: 0
+    params: 0,
+    outputFormatter: utils.toHex
   })
 
   export const eth_uninstallFilter = new Method({
     callName: 'eth_uninstallFilter',
-    params: 1
+    params: 1,
+    inputFormatter: [utils.toHex],
+    outputFormatter: utils.toBoolean
   })
 
   export const eth_getFilterLogs = new Method({
     callName: 'eth_getFilterLogs',
-    params: 1
+    params: 1,
+    inputFormatter: [utils.toHex]
   })
 
   export const eth_getFilterChanges = new Method({
     callName: 'eth_getFilterChanges',
-    params: 1
+    params: 1,
+    inputFormatter: [utils.toHex]
   })
 
   export const eth_submitHashrate = new Method({
     callName: 'eth_submitHashrate',
-    params: 2
+    params: 2,
+    outputFormatter: utils.toBoolean
   })
 
   export const shh_newIdentity = new Method({
@@ -454,7 +469,8 @@ export namespace eth {
 
   export const shh_hasIdentity = new Method({
     callName: 'shh_hasIdentity',
-    params: 1
+    params: 1,
+    outputFormatter: utils.toBoolean
   })
 
   export const shh_newGroup = new Method({
@@ -464,17 +480,20 @@ export namespace eth {
 
   export const shh_addToGroup = new Method({
     callName: 'shh_addToGroup',
-    params: 0
+    params: 1,
+    outputFormatter: utils.toBoolean
   })
 
   export const shh_newFilter = new Method({
     callName: 'shh_newFilter',
-    params: 1
+    params: 1,
+    outputFormatter: utils.toHex
   })
 
   export const shh_uninstallFilter = new Method({
     callName: 'shh_uninstallFilter',
-    params: 1
+    params: 1,
+    outputFormatter: utils.toBoolean
   })
 
   export const shh_newMessageFilter = new Method({
