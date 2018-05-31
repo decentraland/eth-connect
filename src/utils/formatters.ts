@@ -18,6 +18,7 @@
 import utils = require('../utils/utils')
 import config = require('../utils/config')
 import BigNumber from 'bignumber.js'
+import { Address, Tag, Quantity, Numeral, TxHash, BlockObject } from '../Schema'
 
 /**
  * Should the format output to a big number
@@ -26,22 +27,22 @@ import BigNumber from 'bignumber.js'
  * @param {string|number|BigNumber}
  * @returns {BigNumber} object
  */
-export function outputBigNumberFormatter(num): BigNumber {
+export function outputBigNumberFormatter(num: string | number): BigNumber {
   return utils.toBigNumber(num)
 }
 
-export function isPredefinedBlockNumber(blockNumber) {
+export function isPredefinedBlockNumber(blockNumber: Numeral | string): blockNumber is Tag {
   return blockNumber === 'latest' || blockNumber === 'pending' || blockNumber === 'earliest'
 }
 
-export function inputDefaultBlockNumberFormatter(blockNumber) {
+export function inputDefaultBlockNumberFormatter(blockNumber: Quantity | Tag) {
   if (blockNumber === undefined) {
     return config.defaultBlock
   }
   return inputBlockNumberFormatter(blockNumber)
 }
 
-export function inputBlockNumberFormatter(blockNumber) {
+export function inputBlockNumberFormatter(blockNumber: Quantity | Tag) {
   if (blockNumber === undefined || blockNumber == null) {
     return undefined
   } else if (isPredefinedBlockNumber(blockNumber)) {
@@ -176,7 +177,7 @@ export function outputTransactionReceiptFormatter(receipt) {
  * @param {object} block
  * @returns {object}
  */
-export function outputBlockFormatter(block) {
+export function outputBlockFormatter(block: any): BlockObject {
   // transform to number
   block.gasLimit = utils.toDecimal(block.gasLimit)
   block.gasUsed = utils.toDecimal(block.gasUsed)
@@ -269,7 +270,7 @@ export function outputPostFormatter(post) {
   return post
 }
 
-export function inputAddressFormatter(address) {
+export function inputAddressFormatter(address: Address): string {
   if (utils.isStrictAddress(address)) {
     return address
   } else if (utils.isAddress(address)) {
@@ -292,4 +293,17 @@ export function outputSyncingFormatter(result) {
   }
 
   return result
+}
+
+export const Inputs = {
+  address: inputAddressFormatter,
+  blockNumber: inputBlockNumberFormatter,
+  boolean: (x: any) => !!x,
+  txHash: (x: string): TxHash => x
+}
+
+export const Outputs = {
+  blockObject: outputBlockFormatter,
+  data: (x: any): string => x,
+  number: utils.toDecimal
 }
