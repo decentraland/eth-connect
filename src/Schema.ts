@@ -8,6 +8,9 @@ export type TxHash = string
 export type Address = string
 export type Quantity = number
 
+/** All valid representation of number  */
+export type Numeral = number | string | BigNumber
+
 export type Syncing = {
   startingBlock: Quantity
   currentBlock: Quantity

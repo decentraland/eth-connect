@@ -20,6 +20,7 @@ import utf8 = require('utf8')
 
 import CryptoJS = require('crypto-js')
 import _sha3 = require('crypto-js/sha3')
+import { Numeral } from '../Schema'
 
 export function sha3(value: string, options?: { encoding?: 'hex' }) {
   let mutValue = value
@@ -417,7 +418,7 @@ export function toWei(num: number | string, unit: string) {
  * @param {Number|String|BigNumber} a number, string, HEX string or BigNumber
  * @return {BigNumber} BigNumber
  */
-export function toBigNumber(_num: number | string | BigNumber): BigNumber {
+export function toBigNumber(_num: Numeral): BigNumber {
   let num: any = _num || 0
 
   if (isBigNumber(num)) {
