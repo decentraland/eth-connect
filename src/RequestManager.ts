@@ -119,19 +119,25 @@ export class RequestManager {
   @inject eth_blockNumber: () => Promise<Quantity>
 
   /** Returns the balance of the account of given address. */
-  @inject eth_getBalance: (address: Address, block: Quantity | Tag) => Promise<BigNumber>
+  eth_getBalance: (address: Address, block: Quantity | Tag) => Promise<BigNumber> = eth.eth_getBalance(this)
 
   /** Returns the value from a storage position at a given address. */
   @inject eth_getStorageAt: (address: Address, position: Quantity, block: Quantity | Tag) => Promise<Data>
 
   /** Returns the number of transactions sent from an address. */
-  @inject eth_getTransactionCount: (address: Address, block: Quantity | Tag) => Promise<Quantity>
+  eth_getTransactionCount: (address: Address, block: Quantity | Tag) => Promise<Quantity> = eth.eth_getTransactionCount(
+    this
+  )
 
   /** Returns the number of transactions in a block from a block matching the given block hash. */
-  @inject eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<Quantity>
+  eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<Quantity> = eth.eth_getBlockTransactionCountByHash(
+    this
+  )
 
   /** Returns the number of transactions in a block matching the given block number. */
-  @inject eth_getBlockTransactionCountByNumber: (block: Quantity | Tag) => Promise<Quantity>
+  eth_getBlockTransactionCountByNumber: (
+    block: Quantity | Tag
+  ) => Promise<Quantity> = eth.eth_getBlockTransactionCountByNumber(this)
 
   /** Returns the number of uncles in a block from a block matching the given block hash. */
   @inject eth_getUncleCountByBlockHash: (blockHash: TxHash) => Promise<Quantity>
@@ -171,10 +177,16 @@ export class RequestManager {
   @inject eth_estimateGas: (data: Partial<TransactionCallOptions> & Partial<TransactionOptions>) => Promise<Quantity>
 
   /** Returns information about a block by hash. */
-  @inject eth_getBlockByHash: (blockHash: TxHash, fullTransactionObjects: boolean) => Promise<BlockObject>
+  eth_getBlockByHash: (
+    blockHash: TxHash,
+    fullTransactionObjects: boolean
+  ) => Promise<BlockObject> = eth.eth_getBlockByHash(this)
 
   /** Returns information about a block by block number. */
-  @inject eth_getBlockByNumber: (block: Quantity | Tag, fullTransactionObjects: boolean) => Promise<BlockObject>
+  eth_getBlockByNumber: (
+    block: Quantity | Tag,
+    fullTransactionObjects: boolean
+  ) => Promise<BlockObject> = eth.eth_getBlockByNumber(this)
 
   /** Returns the information about a transaction requested by transaction hash. */
   @inject eth_getTransactionByHash: (hash: TxHash) => Promise<TransactionObject>

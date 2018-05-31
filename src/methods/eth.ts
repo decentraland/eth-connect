@@ -17,65 +17,100 @@
 // tslint:disable:variable-name
 
 import formatters = require('../utils/formatters')
+import { Inputs, Outputs } from '../utils/formatters'
 import utils = require('../utils/utils')
 import { Method } from '../Method'
+
 import { Property } from '../Property'
 
+// @ts-ignore: needed for typing (TODO check how to delete it)
+import BigNumber from 'bignumber.js'
+import { RequestManager } from '..'
+
+export type Input<A> = (val: A) => any
+export type OutputFormatter<X> = (val: any) => X
+
+const asNumber = (x: any): number => x
+const asBigNumber = (x: any): BigNumber => x
+const identity = <A>(x: A): A => x
+
+function newMethod<A1, X>(opts: {
+  name: string
+  inputs: [Input<A1>]
+  output: OutputFormatter<X>
+}): (rm: RequestManager) => (a1: A1) => Promise<X>
+function newMethod<A1, A2, X>(opts: {
+  name: string
+  inputs: [Input<A1>, Input<A2>]
+  output: OutputFormatter<X>
+}): (rm: RequestManager) => (a1: A1, a2: A2) => Promise<X>
+function newMethod<A1, A2, A3, X>(opts: {
+  name: string
+  inputs: [Input<A1>, Input<A2>, Input<A3>]
+  output: OutputFormatter<X>
+}): (rm: RequestManager) => (a1: A1, a2: A2, a3: A3) => Promise<X>
+function newMethod<A1, A2, A3, A4, X>(opts: {
+  name: string
+  inputs: [Input<A1>, Input<A2>, Input<A3>, Input<A4>]
+  output: OutputFormatter<X>
+}): (rm: RequestManager) => (a1: A1, a2: A2, a3: A3, a4: A4) => Promise<X>
+function newMethod(opts: {
+  name: string
+  inputs: Input<any>[]
+  output: OutputFormatter<any>
+}): (rm: RequestManager) => (...args: any[]) => Promise<any> {
+  return (rm: RequestManager) => async (...args) => {
+    const payload = {
+      method: opts.name,
+      params: opts.inputs.map((format, i) => format(args[i]))
+    }
+    const result = await rm.sendAsync(payload)
+    return opts.output(result)
+  }
+}
+
 export namespace eth {
-  export const eth_getBalance = new Method({
-    callName: 'eth_getBalance',
-    params: 2,
-    inputFormatter: [formatters.inputAddressFormatter, formatters.inputDefaultBlockNumberFormatter],
-    outputFormatter: formatters.outputBigNumberFormatter
+  export const eth_getBalance = newMethod({
+    name: 'eth_getBalance',
+    inputs: [Inputs.address, Inputs.blockNumber],
+    output: formatters.outputBigNumberFormatter
   })
 
   export const eth_getStorageAt = new Method({
     callName: 'eth_getStorageAt',
     params: 3,
-    inputFormatter: [formatters.inputAddressFormatter, utils.toHex, formatters.inputDefaultBlockNumberFormatter]
+    inputFormatter: [Inputs.address, utils.toHex, Inputs.blockNumber]
   })
 
-  export const eth_getCode = new Method({
-    callName: 'eth_getCode',
-    params: 2,
-    inputFormatter: [formatters.inputAddressFormatter, formatters.inputDefaultBlockNumberFormatter]
+  export const eth_getCode = newMethod({
+    name: 'eth_getCode',
+    inputs: [Inputs.address, Inputs.blockNumber],
+    output: Outputs.data
   })
 
-  export const eth_getBlockByHash = new Method({
-    callName: 'eth_getBlockByHash',
-    params: 2,
-    inputFormatter: [
-      formatters.inputBlockNumberFormatter,
-      function(val) {
-        return !!val
-      }
-    ],
-    outputFormatter: formatters.outputBlockFormatter
+  export const eth_getBlockByHash = newMethod({
+    name: 'eth_getBlockByHash',
+    inputs: [Inputs.txHash, Inputs.boolean],
+    output: Outputs.blockObject
   })
 
-  export const eth_getBlockByNumber = new Method({
-    callName: 'eth_getBlockByNumber',
-    params: 2,
-    inputFormatter: [
-      formatters.inputBlockNumberFormatter,
-      function(val) {
-        return !!val
-      }
-    ],
-    outputFormatter: formatters.outputBlockFormatter
+  export const eth_getBlockByNumber = newMethod({
+    name: 'eth_getBlockByNumber',
+    inputs: [Inputs.blockNumber, Inputs.boolean],
+    output: Outputs.blockObject
   })
 
   export const eth_getUncleByBlockHashAndIndex = new Method({
     callName: 'eth_getUncleByBlockHashAndIndex',
     params: 2,
-    inputFormatter: [formatters.inputBlockNumberFormatter, utils.toHex],
+    inputFormatter: [Inputs.blockNumber, utils.toHex],
     outputFormatter: formatters.outputBlockFormatter
   })
 
   export const eth_getUncleByBlockNumberAndIndex = new Method({
     callName: 'eth_getUncleByBlockNumberAndIndex',
     params: 2,
-    inputFormatter: [formatters.inputBlockNumberFormatter, utils.toHex],
+    inputFormatter: [Inputs.blockNumber, utils.toHex],
     outputFormatter: formatters.outputBlockFormatter
   })
 
@@ -85,32 +120,30 @@ export namespace eth {
     inputFormatter: []
   })
 
-  export const eth_getBlockTransactionCountByHash = new Method({
-    callName: 'eth_getBlockTransactionCountByHash',
-    params: 1,
-    inputFormatter: [formatters.inputBlockNumberFormatter],
-    outputFormatter: utils.toDecimal
+  export const eth_getBlockTransactionCountByHash = newMethod({
+    name: 'eth_getBlockTransactionCountByHash',
+    inputs: [Inputs.txHash],
+    output: Outputs.number
   })
 
-  export const eth_getBlockTransactionCountByNumber = new Method({
-    callName: 'eth_getBlockTransactionCountByNumber',
-    params: 1,
-    inputFormatter: [formatters.inputBlockNumberFormatter],
-    outputFormatter: utils.toDecimal
+  export const eth_getBlockTransactionCountByNumber = newMethod({
+    name: 'eth_getBlockTransactionCountByNumber',
+    inputs: [Inputs.blockNumber],
+    output: Outputs.number
   })
 
   export const eth_getUncleCountByBlockHash = new Method({
     callName: 'eth_getUncleCountByBlockHash',
     params: 1,
-    inputFormatter: [formatters.inputBlockNumberFormatter],
-    outputFormatter: utils.toDecimal
+    inputFormatter: [Inputs.blockNumber],
+    outputFormatter: Outputs.number
   })
 
   export const eth_getUncleCountByBlockNumber = new Method({
     callName: 'eth_getUncleCountByBlockNumber',
     params: 1,
-    inputFormatter: [formatters.inputBlockNumberFormatter],
-    outputFormatter: utils.toDecimal
+    inputFormatter: [Inputs.blockNumber],
+    outputFormatter: Outputs.number
   })
 
   export const eth_getTransactionByHash = new Method({
@@ -122,14 +155,14 @@ export namespace eth {
   export const eth_getTransactionByBlockHashAndIndex = new Method({
     callName: 'eth_getTransactionByBlockHashAndIndex',
     params: 2,
-    inputFormatter: [formatters.inputBlockNumberFormatter, utils.toHex],
+    inputFormatter: [Inputs.blockNumber, utils.toHex],
     outputFormatter: formatters.outputTransactionFormatter
   })
 
   export const eth_getTransactionByBlockNumberAndIndex = new Method({
     callName: 'eth_getTransactionByBlockNumberAndIndex',
     params: 2,
-    inputFormatter: [formatters.inputBlockNumberFormatter, utils.toHex],
+    inputFormatter: [Inputs.blockNumber, utils.toHex],
     outputFormatter: formatters.outputTransactionFormatter
   })
 
@@ -139,11 +172,10 @@ export namespace eth {
     outputFormatter: formatters.outputTransactionReceiptFormatter
   })
 
-  export const eth_getTransactionCount = new Method({
-    callName: 'eth_getTransactionCount',
-    params: 2,
-    inputFormatter: [formatters.inputAddressFormatter, formatters.inputDefaultBlockNumberFormatter],
-    outputFormatter: utils.toDecimal
+  export const eth_getTransactionCount = newMethod({
+    name: 'eth_getTransactionCount',
+    inputs: [Inputs.address, formatters.inputDefaultBlockNumberFormatter],
+    output: Outputs.number
   })
 
   export const eth_sendRawTransaction = new Method({
@@ -173,7 +205,7 @@ export namespace eth {
   export const eth_sign = new Method({
     callName: 'eth_sign',
     params: 2,
-    inputFormatter: [formatters.inputAddressFormatter, null]
+    inputFormatter: [Inputs.address, null]
   })
 
   export const eth_call = new Method({
@@ -186,7 +218,7 @@ export namespace eth {
     callName: 'eth_estimateGas',
     params: 1,
     inputFormatter: [formatters.inputCallFormatter],
-    outputFormatter: utils.toDecimal
+    outputFormatter: Outputs.number
   })
 
   export const eth_compileSolidity = new Method({
@@ -226,7 +258,7 @@ export namespace eth {
 
   export const eth_hashrate = new Property({
     getter: 'eth_hashrate',
-    outputFormatter: utils.toDecimal
+    outputFormatter: Outputs.number
   })
 
   export const eth_syncing = new Property({
@@ -245,12 +277,12 @@ export namespace eth {
 
   export const eth_blockNumber = new Property({
     getter: 'eth_blockNumber',
-    outputFormatter: utils.toDecimal
+    outputFormatter: Outputs.number
   })
 
   export const eth_protocolVersion = new Property({
     getter: 'eth_protocolVersion',
-    outputFormatter: utils.toDecimal
+    outputFormatter: Outputs.number
   })
 
   export const web3_clientVersion = new Property({
@@ -259,13 +291,13 @@ export namespace eth {
 
   export const net_version = new Property({
     getter: 'net_version',
-    outputFormatter: utils.toDecimal
+    outputFormatter: Outputs.number
   })
 
   export const shh_version = new Method({
     callName: 'shh_version',
     params: 0,
-    outputFormatter: utils.toDecimal
+    outputFormatter: Outputs.number
   })
 
   export const shh_info = new Method({
@@ -371,7 +403,7 @@ export namespace eth {
   export const personal_sign = new Method({
     callName: 'personal_sign',
     params: 3,
-    inputFormatter: [null, formatters.inputAddressFormatter, null]
+    inputFormatter: [null, Inputs.address, null]
   })
 
   export const personal_ecRecover = new Method({
@@ -410,7 +442,7 @@ export namespace eth {
 
   export const net_peerCount = new Property({
     getter: 'net_peerCount',
-    outputFormatter: utils.toDecimal
+    outputFormatter: Outputs.number
   })
 
   export const eth_newFilter = new Method({
