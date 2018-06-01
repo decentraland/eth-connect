@@ -1,12 +1,11 @@
 # eth-connect, a TypeScript-based web3 library [![Build Status](https://travis-ci.org/decentraland/web3-ts.svg?branch=master)](https://travis-ci.org/decentraland/web3-ts)
 
-# Getting started
-
-> `npm i eth-connect`
-
 # Not ready for production!
 
 We are still developing this tool. Watch the project to receive updates.
+
+    npm i eth-connect
+
 
 # Examples
 
