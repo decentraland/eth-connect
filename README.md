@@ -1,6 +1,6 @@
 # eth-connect, a TypeScript-based web3 library
 
-[![Build Status](https://travis-ci.org/decentraland/web3-ts.svg?branch=master)](https://travis-ci.org/decentraland/web3-ts)
+[![Build Status](https://travis-ci.org/decentraland/eth-connect.svg?branch=master)](https://travis-ci.org/decentraland/eth-connect)
 
 [![codecov](https://codecov.io/gh/decentraland/eth-connect/branch/master/graph/badge.svg)](https://codecov.io/gh/decentraland/eth-connect)
 
