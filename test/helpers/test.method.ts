@@ -2,7 +2,7 @@ import chai = require('chai')
 const assert = chai.assert
 
 import { FakeHttpProvider } from './FakeHttpProvider'
-import { RequestManager } from '../../dist'
+import { RequestManager } from '../../src'
 
 export function runTests(testName: string, tests: { result; call; formattedArgs; args; formattedResult }[]) {
   describe(testName, function() {

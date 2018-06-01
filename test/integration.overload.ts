@@ -3,7 +3,7 @@ import chai = require('chai')
 
 const expect = chai.expect
 
-import { ContractFactory, RequestManager } from '../dist'
+import { ContractFactory, RequestManager } from '../src'
 import { testAllProviders } from './helpers/testAllProviders'
 
 /*

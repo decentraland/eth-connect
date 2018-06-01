@@ -1,7 +1,7 @@
 import chai = require('chai')
 const assert = chai.assert
-import { SolidityEvent } from '../dist/SolidityEvent'
-import { FilterOptions } from '../dist/Schema'
+import { SolidityEvent } from '../src/SolidityEvent'
+import { FilterOptions } from '../src/Schema'
 
 let address = '0x1234567890123456789012345678901234567890'
 let signature = '0xffff'

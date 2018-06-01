@@ -2,9 +2,9 @@ import chai = require('chai')
 import 'isomorphic-fetch'
 // tslint:disable
 
-import { RequestManager, utils } from '../dist'
+import { RequestManager, utils } from '../src'
 import { testAllProviders } from './helpers/testAllProviders'
-import { WebSocketProvider } from '../dist/providers/WebSocketProvider'
+import { WebSocketProvider } from '../src/providers/WebSocketProvider'
 
 describe('integration.personal', function() {
   testAllProviders(doTest)

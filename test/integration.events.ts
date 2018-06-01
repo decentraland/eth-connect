@@ -3,11 +3,11 @@ import chai = require('chai')
 
 const expect = chai.expect
 
-import { ContractFactory, RequestManager, Contract } from '../dist'
-import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../dist/Filter'
+import { ContractFactory, RequestManager, Contract } from '../src'
+import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../src/Filter'
 import { testAllProviders } from './helpers/testAllProviders'
-import { future } from '../dist/utils/future'
-import WebSocketProvider from '../dist/providers/WebSocketProvider'
+import { future } from '../src/utils/future'
+import WebSocketProvider from '../src/providers/WebSocketProvider'
 
 /*
 pragma solidity ^0.4.21;

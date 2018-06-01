@@ -1,8 +1,8 @@
-import { RequestManager, utils } from '../dist'
+import { RequestManager, utils } from '../src'
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 import BigNumber from 'bignumber.js'
 import { expect } from 'chai'
-import { toRPC } from '../dist/providers/common'
+import { toRPC } from '../src/providers/common'
 
 describe('test types', () => {
   const nodeConnectionFactory = new NodeConnectionFactory()

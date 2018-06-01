@@ -1,7 +1,7 @@
 import chai = require('chai')
 const assert = chai.assert
 import BigNumber from 'bignumber.js'
-import { SolidityEvent } from '../dist/SolidityEvent'
+import { SolidityEvent } from '../src/SolidityEvent'
 
 let name = 'event1'
 let address = '0x1234567890123456789012345678901234567890'

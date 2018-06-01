@@ -4,7 +4,7 @@ import 'isomorphic-fetch'
 
 const expect = chai.expect
 
-import { ContractFactory, RequestManager } from '../dist'
+import { ContractFactory, RequestManager } from '../src'
 import BigNumber from 'bignumber.js'
 import { testAllProviders } from './helpers/testAllProviders'
 

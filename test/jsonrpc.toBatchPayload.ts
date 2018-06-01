@@ -1,5 +1,5 @@
 import { assert } from 'chai'
-import * as Jsonrpc from '../dist/utils/jsonrpc'
+import * as Jsonrpc from '../src/utils/jsonrpc'
 
 describe('jsonrpc', function() {
   describe('toBatchPayload', function() {

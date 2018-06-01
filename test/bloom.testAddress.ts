@@ -1,5 +1,5 @@
 import chai = require('chai')
-import bloom = require('../dist/utils/bloom')
+import bloom = require('../src/utils/bloom')
 const assert = chai.assert
 
 let addressTests = [

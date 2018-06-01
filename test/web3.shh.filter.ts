@@ -3,8 +3,8 @@ import chai = require('chai')
 const assert = chai.assert
 
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
-import { RequestManager } from '../dist'
-import { SHHFilter } from '../dist/Filter'
+import { RequestManager } from '../src'
+import { SHHFilter } from '../src/Filter'
 
 describe('shh.filter', function() {
   it('test shh', async function() {

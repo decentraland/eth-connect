@@ -1,7 +1,7 @@
 import chai = require('chai')
 const assert = chai.assert
-import formatters = require('../dist/solidity/formatters.js')
-import { SolidityParam } from '../dist/solidity/param'
+import formatters = require('../src/solidity/formatters')
+import { SolidityParam } from '../src/solidity/param'
 
 let tests = [
   { input: 1, result: new SolidityParam('0000000000000000000000000000000000000000000000000000000000000001') },

@@ -1,8 +1,8 @@
 import chai = require('chai')
 const assert = chai.assert
 import BigNumber from 'bignumber.js'
-import { AllSolidityEvents } from '../dist/AllSolidityEvents'
-import { RequestManager } from '../dist'
+import { AllSolidityEvents } from '../src/AllSolidityEvents'
+import { RequestManager } from '../src'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 
 const provider = new FakeHttpProvider()

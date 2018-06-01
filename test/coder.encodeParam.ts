@@ -1,6 +1,6 @@
 import chai = require('chai')
 const assert = chai.assert
-import coder = require('../dist/solidity/coder')
+import coder = require('../src/solidity/coder')
 
 describe('lib/solidity/coder', function() {
   describe('encodeParam', function() {

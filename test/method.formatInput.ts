@@ -1,6 +1,6 @@
 import chai = require('chai')
 const assert = chai.assert
-import { Method } from '../dist'
+import { Method } from '../src'
 
 describe('lib/web3/method', function() {
   describe('formatInput', function() {
