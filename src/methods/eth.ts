@@ -30,10 +30,6 @@ import { RequestManager } from '..'
 export type Input<A> = (val: A) => any
 export type OutputFormatter<X> = (val: any) => X
 
-const asNumber = (x: any): number => x
-const asBigNumber = (x: any): BigNumber => x
-const identity = <A>(x: A): A => x
-
 function newMethod<A1, X>(opts: {
   name: string
   inputs: [Input<A1>]
