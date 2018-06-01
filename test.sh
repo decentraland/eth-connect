@@ -20,8 +20,8 @@ docker run \
     --dev
 
 # run the tests
-npm run test
 npm run coverage
+npm run test-codecov
 
 # stop the node
 (docker container kill geth-dev && docker container rm geth-dev) || true
