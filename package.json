@@ -10,9 +10,10 @@
     "build": "tsc --project tsconfig-build.json",
     "watch": "tsc --project tsconfig-build.json",
     "lint": "tslint",
-    "test": "mocha",
+    "test": "mocha --reporter list",
     "coverage": "nyc mocha",
-    "test-coveralls": "nyc report --reporter=text-lcov | coveralls --verbose"
+    "test-coveralls": "nyc report --reporter=text-lcov | coveralls --verbose",
+    "test-codecov": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
   },
   "files": ["dist"],
   "dependencies": {
