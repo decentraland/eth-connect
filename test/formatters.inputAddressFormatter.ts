@@ -1,6 +1,6 @@
 import chai = require('chai')
 const assert = chai.assert
-import * as formatters from '../dist/utils/formatters'
+import * as formatters from '../src/utils/formatters'
 
 let tests = [
   // { input: 'XE7338O073KYGTWWZN0F2WZ0R8PX5ZPPZS', result: '0x00c5496aee77c1ba1f0854206a26dda82a81d6d8' },

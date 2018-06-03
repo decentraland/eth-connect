@@ -1,5 +1,5 @@
 import { assert } from 'chai'
-import * as formatters from '../dist/utils/formatters'
+import * as formatters from '../src/utils/formatters'
 
 describe('formatters', function() {
   describe('outputPostFormatter', function() {

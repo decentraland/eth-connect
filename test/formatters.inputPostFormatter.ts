@@ -1,6 +1,6 @@
 import chai = require('chai')
 const assert = chai.assert
-import * as formatters from '../dist/utils/formatters'
+import * as formatters from '../src/utils/formatters'
 
 describe('formatters', function() {
   describe('inputPostFormatter', function() {

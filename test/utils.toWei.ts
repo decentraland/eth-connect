@@ -1,5 +1,5 @@
 import chai = require('chai')
-import utils = require('../dist/utils/utils')
+import utils = require('../src/utils/utils')
 const assert = chai.assert
 
 describe('lib/utils/utils', function() {

@@ -1,6 +1,6 @@
 import chai = require('chai')
 const assert = chai.assert
-import { sha3 } from '../dist/utils/utils'
+import { sha3 } from '../src/utils/utils'
 
 describe('sha3', function() {
   it('hash fidelity check', function() {

@@ -1,5 +1,5 @@
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
-import { RequestManager } from '../dist'
+import { RequestManager } from '../src'
 
 describe('eth', function() {
   describe('getSyncing', function() {

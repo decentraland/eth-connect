@@ -1,4 +1,4 @@
-import { utils } from '../dist'
+import { utils } from '../src'
 import testMethod = require('./helpers/test.method')
 
 let method = 'post'

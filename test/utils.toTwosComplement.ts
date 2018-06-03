@@ -6,7 +6,7 @@
  * Created by danielbruce on 2017-09-25.
  */
 import chai = require('chai')
-import utils = require('../dist/utils/utils')
+import utils = require('../src/utils/utils')
 import BigNumber from 'bignumber.js'
 const assert = chai.assert
 

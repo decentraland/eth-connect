@@ -1,7 +1,7 @@
 import chai = require('chai')
 const assert = chai.assert
 
-import { RequestManager } from '../dist'
+import { RequestManager } from '../src'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 
 let tests = [

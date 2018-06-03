@@ -1,6 +1,6 @@
 import chai = require('chai')
 const assert = chai.assert
-import * as Jsonrpc from '../dist/utils/jsonrpc'
+import * as Jsonrpc from '../src/utils/jsonrpc'
 
 describe('lib/web3/jsonrpc', function() {
   describe('id', function() {

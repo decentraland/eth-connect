@@ -2,10 +2,10 @@ import 'isomorphic-fetch'
 // tslint:disable
 
 import { NodeConnectionFactory } from '../helpers/NodeConnectionFactory'
-import { ContractFactory, RequestManager } from '../../dist'
+import { ContractFactory, RequestManager } from '../../src'
 
-import { HTTPProvider } from '../../dist/providers/HTTPProvider'
-import { WebSocketProvider } from '../../dist/providers/WebSocketProvider'
+import { HTTPProvider } from '../../src/providers/HTTPProvider'
+import { WebSocketProvider } from '../../src/providers/WebSocketProvider'
 import { w3cwebsocket } from 'websocket'
 
 export function testAllProviders(doTest: (x: RequestManager) => void) {

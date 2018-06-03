@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
-import { RequestManager, ContractFactory } from '../dist'
+import { RequestManager, ContractFactory } from '../src'
 
 const provider = new FakeHttpProvider()
 

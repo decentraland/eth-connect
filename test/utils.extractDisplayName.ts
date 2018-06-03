@@ -1,5 +1,5 @@
 import { assert } from 'chai'
-import utils = require('../dist/utils/utils')
+import utils = require('../src/utils/utils')
 
 describe('lib/utils/utils', function() {
   describe('extractDisplayName', function() {

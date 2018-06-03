@@ -1,12 +1,12 @@
 import chai = require('chai')
 const assert = chai.assert
-import { RequestManager, ContractFactory } from '../dist'
-import { future } from '../dist/utils/future'
+import { RequestManager, ContractFactory } from '../src'
+import { future } from '../src/utils/future'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 import { FakeHttpProvider2 } from './helpers/FakeHttpProvider2'
 
 import BigNumber from 'bignumber.js'
-import { sha3 } from '../dist/utils/utils'
+import { sha3 } from '../src/utils/utils'
 
 let desc = [
   {

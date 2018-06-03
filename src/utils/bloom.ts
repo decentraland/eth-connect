@@ -24,7 +24,7 @@
  * @class [bloom] bloom
  */
 
-import utils = require('./utils.js')
+import utils = require('./utils')
 
 function codePointToInt(codePoint) {
   if (codePoint >= 48 && codePoint <= 57) {
