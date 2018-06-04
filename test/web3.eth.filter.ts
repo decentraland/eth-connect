@@ -6,8 +6,8 @@ import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../src/Filter'
 import { future } from '../src/utils/future'
 
-describe('eth.filter', function() {
-  it('Test EthFilter', async function() {
+describe('eth.filter', function () {
+  it.skip('Test EthFilter', async function () {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
@@ -64,7 +64,7 @@ describe('eth.filter', function() {
     await didCallUninstall
   })
 
-  it('Test EthFilter polling', async function() {
+  it.skip('Test EthFilter polling', async function () {
     this.timeout(100000)
     // given
     const provider = new FakeHttpProvider()
@@ -133,7 +133,7 @@ describe('eth.filter', function() {
     await didCallUninstall
   })
 
-  it('EthBlockFilter', async function() {
+  it('EthBlockFilter', async function () {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
@@ -157,7 +157,7 @@ describe('eth.filter', function() {
     await didCallUninstall
   })
 
-  it('EthPendingTransactionFilter', async function() {
+  it('EthPendingTransactionFilter', async function () {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)

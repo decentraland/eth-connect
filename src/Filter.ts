@@ -15,7 +15,6 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import formatters = require('./utils/formatters')
 import utils = require('./utils/utils')
 import { RequestManager } from './RequestManager'
 import config = require('./utils/config')
@@ -184,32 +183,35 @@ export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
     return this.requestManager.shh_uninstallFilter(filterId)
   }
 }
+// export type ParsedFilterOptions = {
+//   fromBlock: string
+//   toBlock: string
+//   address?: Address
+//   topics: Array<Data>
+// }
 
 export class EthFilter<T = FilterChange | string> extends AbstractFilter<T> {
+  // public options: ParsedFilterOptions
+  public options: FilterOptions
   constructor(
     public requestManager: RequestManager,
-    public options: FilterOptions,
+    opts: FilterOptions,
     public formatter: (message: FilterChange | string) => T = x => x as any
   ) {
     super(requestManager)
-    this.options = this.options || {}
-    this.options.topics = this.options.topics || []
-    this.options.topics = this.options.topics.map(function(topic) {
-      return toTopic(topic)
-    })
-
-    this.options = {
-      topics: this.options.topics,
-      address: this.options.address ? this.options.address : undefined,
-      fromBlock:
-        typeof this.options.fromBlock === 'number' || typeof this.options.fromBlock === 'string'
-          ? formatters.inputBlockNumberFormatter(this.options.fromBlock)
-          : 'latest',
-      toBlock:
-        typeof this.options.toBlock === 'number' || typeof this.options.toBlock === 'string'
-          ? formatters.inputBlockNumberFormatter(this.options.toBlock)
-          : 'latest'
-    }
+    this.options = opts
+    // this.options = {
+    //   topics: opts.topics ? opts.topics.map(toTopic) : [],
+    //   address: opts.address ? opts.address : undefined,
+    //   fromBlock:
+    //     typeof opts.fromBlock === 'number' || typeof opts.fromBlock === 'string'
+    //       ? formatters.inputBlockNumberFormatter(opts.fromBlock)
+    //       : 'latest',
+    //   toBlock:
+    //     typeof opts.toBlock === 'number' || typeof opts.toBlock === 'string'
+    //       ? formatters.inputBlockNumberFormatter(opts.toBlock)
+    //       : 'latest'
+    // }
   }
 
   async getLogs() {
