@@ -96,17 +96,17 @@ export type TransactionCallOptions = {
 
 export type BlockObject = {
   /** the block number. null when its pending block. */
-  number: Quantity
+  number: Quantity | null
   /** hash of the block. null when its pending block. */
-  hash: TxHash
+  hash: TxHash | null
   /** hash of the parent block. */
   parentHash: TxHash
   /** hash of the generated proof-of-work. null when its pending block. 8 Bytes  */
-  nonce: Data
+  nonce: Data | null
   /** SHA3 of the uncles data in the block. */
   sha3Uncles: TxHash
   /** the bloom filter for the logs of the block. null when its pending block. 256 Bytes */
-  logsBloom: Data
+  logsBloom: Data | null
   /** the root of the transaction trie of the block. */
   transactionsRoot: TxHash
   /** the root of the final state trie of the block. */
@@ -116,9 +116,9 @@ export type BlockObject = {
   /** the address of the beneficiary to whom the mining rewards were given. */
   miner: Address
   /** integer of the difficulty for this block. */
-  difficulty: Quantity
+  difficulty: BigNumber
   /** integer of the total difficulty of the chain until this block. */
-  totalDifficulty: Quantity
+  totalDifficulty: BigNumber
   /** the "extra data" field of this block. */
   extraData: Data
   /** integer the size of this block in bytes. */
