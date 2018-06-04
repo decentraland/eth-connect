@@ -17,7 +17,6 @@
 
 import utils = require('./utils/utils')
 import errors = require('./utils/errors')
-import formatters = require('./utils/formatters')
 
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
@@ -57,7 +56,7 @@ export class SolidityFunction {
 
   extractDefaultBlock(args: any[]) {
     if (args.length > this._inputTypes.length && !utils.isObject(args[args.length - 1])) {
-      return formatters.inputDefaultBlockNumberFormatter(args.pop()) // modify the args array!
+      return args.pop() || 'latest' // modify the args array!
     }
   }
 
