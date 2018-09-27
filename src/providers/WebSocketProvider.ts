@@ -1,6 +1,11 @@
 import { Callback, RPCMessage, toRPC } from './common'
 import { IFuture, future } from '../utils/future'
 
+export interface IWebSocket {
+    close()
+    send(s: any)
+}
+
 export type WebSocketProviderOptions = {
   /**
    * WebSocketConstructor, used in Node.js where WebSocket is not globally available
@@ -12,12 +17,12 @@ export type WebSocketProviderOptions = {
   protocol?: string
 }
 
-export class WebSocketProvider {
+export class WebSocketProvider<T extends IWebSocket> {
   isDisposed = false
 
   responseCallbacks = new Map<number, IFuture<any>>()
   notificationCallbacks = new Set<Callback>()
-  connection: IFuture<WebSocket>
+  connection: IFuture<T>
 
   debug = false
 
@@ -171,7 +176,7 @@ export class WebSocketProvider {
    */
   private timeout() {
     if (!this.connection || !this.connection.isPending) {
-      this.connection = future<WebSocket>()
+      this.connection = future<T>()
     }
 
     const timeoutError = new Error('Connection timeout')
@@ -191,12 +196,12 @@ export class WebSocketProvider {
     }
 
     if (!this.connection || !this.connection.isPending) {
-      this.connection = future<WebSocket>()
+      this.connection = future<T>()
     }
 
     this.lastChunk = ''
 
-    let ctor: typeof WebSocket =
+    let ctor =
       this.options.WebSocketConstructor || (typeof WebSocket !== 'undefined' ? WebSocket : void 0)
 
     if (!ctor) {
