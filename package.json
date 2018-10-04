@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rm -rf dist/",
     "build": "tsc --project tsconfig-build.json",
-    "watch": "tsc --project tsconfig-build.json",
+    "watch": "tsc --project tsconfig-build.json --watch",
     "lint": "tslint",
     "test": "mocha --reporter list",
     "coverage": "nyc mocha",
