@@ -2,8 +2,8 @@ import { Callback, RPCMessage, toRPC } from './common'
 import { IFuture, future } from '../utils/future'
 
 export interface IWebSocket {
-    close()
-    send(s: any)
+  close()
+  send(s: any)
 }
 
 export type WebSocketProviderOptions = {
@@ -174,12 +174,12 @@ export class WebSocketProvider<T extends IWebSocket> {
    * Timeout all requests when the end/error event is fired
    * @method _timeout
    */
-  private timeout() {
+  private timeout(error?: Error) {
     if (!this.connection || !this.connection.isPending) {
       this.connection = future<T>()
     }
 
-    const timeoutError = new Error('Connection timeout')
+    const timeoutError = error || new Error('Connection timeout')
     this.responseCallbacks.forEach($ => $.reject(timeoutError))
     this.responseCallbacks.clear()
 
@@ -201,8 +201,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
     this.lastChunk = ''
 
-    let ctor =
-      this.options.WebSocketConstructor || (typeof WebSocket !== 'undefined' ? WebSocket : void 0)
+    let ctor = this.options.WebSocketConstructor || (typeof WebSocket !== 'undefined' ? WebSocket : void 0)
 
     if (!ctor) {
       throw new Error('Please provide a WebSocketConstructor')
@@ -214,8 +213,8 @@ export class WebSocketProvider<T extends IWebSocket> {
       this.connection.resolve(connection)
     }
 
-    connection.onerror = () => {
-      this.timeout()
+    connection.onerror = error => {
+      this.timeout(error)
     }
 
     connection.onclose = () => {
