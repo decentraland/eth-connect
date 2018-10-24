@@ -1,7 +1,7 @@
 {
   "name": "eth-connect",
   "namespace": "ethereum",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Ethereum JavaScript API, middleware to talk to a ethereum node using an async provider",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
