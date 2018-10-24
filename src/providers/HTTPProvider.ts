@@ -71,7 +71,7 @@ export class HTTPProvider {
             // tslint:disable-next-line:no-console
             if (this.debug) console.log('RECV << ' + JSON.stringify(json))
             if (json.error) {
-              callback(json)
+              callback(Object.assign(new Error(json.error.json || json.error), json.error))
             } else {
               callback(null, json)
             }
