@@ -219,8 +219,8 @@ export class WebSocketProvider<T extends IWebSocket> {
       this.timeout(error)
     }
 
-    connection.onclose = () => {
-      this.timeout()
+    connection.onclose = event => {
+      this.timeout(new Error(`Connection closed (${(event && event.reason) || 'Unknown reason'})`))
     }
 
     // LISTEN FOR CONNECTION RESPONSES
