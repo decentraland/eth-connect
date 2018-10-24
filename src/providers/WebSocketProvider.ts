@@ -35,8 +35,10 @@ export class WebSocketProvider<T extends IWebSocket> {
 
   dispose() {
     this.isDisposed = true
+    const connection = this.connection
+    this.timeout(new Error('Provider disposed.'))
     // tslint:disable-next-line:no-floating-promises
-    this.connection.then($ => $.close())
+    connection.then($ => $.close())
   }
 
   /* istanbul ignore next */
