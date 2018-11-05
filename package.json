@@ -1,21 +1,23 @@
 {
   "name": "eth-connect",
   "namespace": "ethereum",
-  "version": "0.3.0",
+  "version": "0.3.3",
   "description": "Ethereum JavaScript API, middleware to talk to a ethereum node using an async provider",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
     "prebuild": "rm -rf dist/",
     "build": "tsc --project tsconfig-build.json",
-    "watch": "tsc --project tsconfig-build.json",
+    "watch": "tsc --project tsconfig-build.json --watch",
     "lint": "tslint",
     "test": "mocha --reporter list",
     "coverage": "nyc mocha",
     "test-coveralls": "nyc report --reporter=text-lcov | coveralls --verbose",
     "test-codecov": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "bignumber.js": "^7.0.1",
     "crypto-js": "^3.1.9-1",
@@ -27,9 +29,19 @@
     "printWidth": 120
   },
   "nyc": {
-    "extension": [".ts", ".tsx"],
-    "exclude": ["**/*.d.ts", "**/dist/**", "**/test/**"],
-    "reporter": ["html", "text"],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/dist/**",
+      "**/test/**"
+    ],
+    "reporter": [
+      "html",
+      "text"
+    ],
     "all": true
   },
   "devDependencies": {
@@ -58,6 +70,10 @@
   "bugs": {
     "url": "https://github.com/decentraland/web3-ts/issues"
   },
-  "keywords": ["ethereum", "javascript", "API"],
+  "keywords": [
+    "ethereum",
+    "javascript",
+    "API"
+  ],
   "license": "LGPL-3.0"
 }
