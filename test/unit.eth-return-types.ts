@@ -59,7 +59,7 @@ describe('test types', () => {
 
   test('web3_clientVersion', 'string')
   test('web3_sha3', 'string', 'asd')
-  test('net_version', 'number')
+  test('net_version', 'string')
   test('net_peerCount', 'number')
   test('net_listening', 'boolean')
   test('eth_protocolVersion', 'number')

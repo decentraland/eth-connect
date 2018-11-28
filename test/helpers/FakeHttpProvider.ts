@@ -130,8 +130,8 @@ export class FakeHttpProvider {
       const responseIsArray = utils.isArray(this.response)
 
       if (responseIsArray !== requestIsArray) {
-        console.log(`Req: ${JSON.stringify(payload)}`)
-        console.log(`Res: ${JSON.stringify(this.response)}`)
+        console['log'](`Req: ${JSON.stringify(payload)}`)
+        console['log'](`Res: ${JSON.stringify(this.response)}`)
         throw new Error(`Request is array (${requestIsArray}) != response is array (${responseIsArray})`)
       }
 

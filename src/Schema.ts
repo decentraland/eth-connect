@@ -161,6 +161,54 @@ export type TransactionObject = {
   s?: Data
 }
 
+export type Transaction =
+  | DroppedTransaction
+  | ReplacedTransaction
+  | QueuedTransaction
+  | PendingTransaction
+  | ConfirmedTransaction
+  | RevertedTransaction
+
+export type TransactionTypes = {
+  queued: 'queued'
+  dropped: 'dropped'
+  replaced: 'replaced'
+  pending: 'pending'
+  reverted: 'reverted'
+  confirmed: 'confirmed'
+}
+
+export type DroppedTransaction = {
+  type: TransactionTypes['dropped']
+  hash: string
+  nonce: number
+}
+
+export type ReplacedTransaction = {
+  type: TransactionTypes['replaced']
+  hash: string
+  nonce: number
+}
+
+export type QueuedTransaction = {
+  type: TransactionTypes['queued']
+  hash: string
+  nonce: number
+}
+
+export type PendingTransaction = TransactionObject & {
+  type: TransactionTypes['pending']
+}
+
+export type RevertedTransaction = TransactionObject & {
+  type: TransactionTypes['reverted']
+}
+
+export type ConfirmedTransaction = TransactionObject & {
+  type: TransactionTypes['confirmed']
+  receipt: TransactionReceipt
+}
+
 export type FilterLog = {}
 
 export type FilterOptions = {

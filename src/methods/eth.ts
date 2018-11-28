@@ -258,8 +258,7 @@ export namespace eth {
   })
 
   export const net_version = new Property({
-    getter: 'net_version',
-    outputFormatter: utils.toDecimal
+    getter: 'net_version'
   })
 
   export const shh_version = new Method({
