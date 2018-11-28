@@ -38,7 +38,14 @@ import {
   Syncing,
   TxHash,
   Address,
-  FilterOptions
+  FilterOptions,
+  QueuedTransaction,
+  PendingTransaction,
+  ReplacedTransaction,
+  Transaction,
+  RevertedTransaction,
+  ConfirmedTransaction,
+  TransactionType
 } from './Schema'
 import BigNumber from 'bignumber.js'
 import { sleep } from './utils/sleep'
@@ -86,7 +93,7 @@ export class RequestManager {
   @inject web3_sha3: (data: Data) => Promise<Data>
 
   /** Returns the current network id. */
-  @inject net_version: () => Promise<number>
+  @inject net_version: () => Promise<string>
 
   /** Returns number of peers currently connected to the client. */
   @inject net_peerCount: () => Promise<Quantity>
@@ -459,6 +466,88 @@ export class RequestManager {
 
       await sleep(TRANSACTION_FETCH_DELAY)
     }
+  }
+
+  /**
+   * Returns a transaction in any of the possible states.
+   * @param hash - The transaction hash
+   */
+  async getTransaction(hash: string): Promise<Transaction> {
+    let currentNonce
+    let status
+    try {
+      const account = eth.eth_accounts[0]
+      currentNonce = await this.eth_getTransactionCount(account, 'latest')
+    } catch (error) {
+      currentNonce = null
+    }
+
+    try {
+      status = await this.eth_getTransactionByHash(hash)
+      // not found
+      if (status == null) {
+        return null
+      }
+    } catch (e) {
+      return null
+    }
+
+    if (status.blockNumber == null) {
+      if (currentNonce != null) {
+        // replaced
+        if (status.nonce < currentNonce) {
+          const tx: ReplacedTransaction = {
+            hash,
+            type: TransactionType.replaced,
+            nonce: status.nonce
+          }
+          return tx
+        }
+
+        // queued
+        if (status.nonce > currentNonce) {
+          const tx: QueuedTransaction = {
+            hash,
+            type: TransactionType.queued,
+            nonce: status.nonce
+          }
+          return tx
+        }
+      }
+
+      // pending
+      const tx: PendingTransaction = {
+        type: TransactionType.pending,
+        ...status
+      }
+      return tx
+    }
+
+    let receipt
+
+    try {
+      receipt = await this.eth_getTransactionReceipt(hash)
+
+      // reverted
+      if (receipt == null || receipt.status === 0x0) {
+        const tx: RevertedTransaction = {
+          type: TransactionType.reverted,
+          ...status
+        }
+        return tx
+      }
+    } catch (e) {
+      // TODO: should this be null or reverted?
+      return null
+    }
+
+    // confirmed
+    const tx: ConfirmedTransaction = {
+      type: TransactionType.confirmed,
+      ...status,
+      receipt
+    }
+    return tx
   }
 
   /*
