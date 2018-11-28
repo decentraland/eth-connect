@@ -498,7 +498,7 @@ export class RequestManager {
         if (status.nonce < currentNonce) {
           const tx: ReplacedTransaction = {
             hash,
-            type: TransactionType.REPLACED,
+            type: TransactionType.replaced,
             nonce: status.nonce
           }
           return tx
@@ -508,7 +508,7 @@ export class RequestManager {
         if (status.nonce > currentNonce) {
           const tx: QueuedTransaction = {
             hash,
-            type: TransactionType.QUEUED,
+            type: TransactionType.queued,
             nonce: status.nonce
           }
           return tx
@@ -517,7 +517,7 @@ export class RequestManager {
 
       // pending
       const tx: PendingTransaction = {
-        type: TransactionType.PENDING,
+        type: TransactionType.pending,
         ...status
       }
       return tx
@@ -531,7 +531,7 @@ export class RequestManager {
       // reverted
       if (receipt == null || receipt.status === 0x0) {
         const tx: RevertedTransaction = {
-          type: TransactionType.REVERTED,
+          type: TransactionType.reverted,
           ...status
         }
         return tx
@@ -543,7 +543,7 @@ export class RequestManager {
 
     // confirmed
     const tx: ConfirmedTransaction = {
-      type: TransactionType.CONFIRMED,
+      type: TransactionType.confirmed,
       ...status,
       receipt
     }
