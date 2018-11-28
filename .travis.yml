@@ -1,4 +1,3 @@
-
 sudo: required
 
 services:
@@ -6,13 +5,13 @@ services:
 
 language: node_js
 node_js:
-- 8
+  - 8
 
 cache:
   directories:
-  - node_modules
+    - node_modules
 
 script:
-- npm install codecov -g
-- npm run build
-- ./test.sh
+  - npm install codecov -g
+  - npm run build
+  - ./test.sh
