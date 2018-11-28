@@ -169,43 +169,43 @@ export type Transaction =
   | ConfirmedTransaction
   | RevertedTransaction
 
-export type TransactionTypes = {
-  queued: 'queued'
-  dropped: 'dropped'
-  replaced: 'replaced'
-  pending: 'pending'
-  reverted: 'reverted'
-  confirmed: 'confirmed'
+export enum TransactionType {
+  QUEUED = 'queued',
+  DROPPED = 'dropped',
+  REPLACED = 'replaced',
+  PENDING = 'pending',
+  REVERTED = 'reverted',
+  CONFIRMED = 'confirmed'
 }
 
 export type DroppedTransaction = {
-  type: TransactionTypes['dropped']
+  type: TransactionType.DROPPED
   hash: string
   nonce: number
 }
 
 export type ReplacedTransaction = {
-  type: TransactionTypes['replaced']
+  type: TransactionType.REPLACED
   hash: string
   nonce: number
 }
 
 export type QueuedTransaction = {
-  type: TransactionTypes['queued']
+  type: TransactionType.QUEUED
   hash: string
   nonce: number
 }
 
 export type PendingTransaction = TransactionObject & {
-  type: TransactionTypes['pending']
+  type: TransactionType.PENDING
 }
 
 export type RevertedTransaction = TransactionObject & {
-  type: TransactionTypes['reverted']
+  type: TransactionType.REVERTED
 }
 
 export type ConfirmedTransaction = TransactionObject & {
-  type: TransactionTypes['confirmed']
+  type: TransactionType.CONFIRMED
   receipt: TransactionReceipt
 }
 

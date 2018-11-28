@@ -44,7 +44,8 @@ import {
   ReplacedTransaction,
   Transaction,
   RevertedTransaction,
-  ConfirmedTransaction
+  ConfirmedTransaction,
+  TransactionType
 } from './Schema'
 import BigNumber from 'bignumber.js'
 import { sleep } from './utils/sleep'
@@ -497,7 +498,7 @@ export class RequestManager {
         if (status.nonce < currentNonce) {
           const tx: ReplacedTransaction = {
             hash,
-            type: 'replaced',
+            type: TransactionType.REPLACED,
             nonce: status.nonce
           }
           return tx
@@ -507,7 +508,7 @@ export class RequestManager {
         if (status.nonce > currentNonce) {
           const tx: QueuedTransaction = {
             hash,
-            type: 'queued',
+            type: TransactionType.QUEUED,
             nonce: status.nonce
           }
           return tx
@@ -516,7 +517,7 @@ export class RequestManager {
 
       // pending
       const tx: PendingTransaction = {
-        type: 'pending',
+        type: TransactionType.PENDING,
         ...status
       }
       return tx
@@ -530,7 +531,7 @@ export class RequestManager {
       // reverted
       if (receipt == null || receipt.status === 0x0) {
         const tx: RevertedTransaction = {
-          type: 'reverted',
+          type: TransactionType.REVERTED,
           ...status
         }
         return tx
@@ -542,7 +543,7 @@ export class RequestManager {
 
     // confirmed
     const tx: ConfirmedTransaction = {
-      type: 'confirmed',
+      type: TransactionType.CONFIRMED,
       ...status,
       receipt
     }
