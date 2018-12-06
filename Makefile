@@ -56,7 +56,7 @@ ci:
 		# initialize geth node
 		docker run \
         -d --name geth-dev \
-        -v "$(pwd)":/eth_common \
+        -v "$(PWD)":/eth_common \
         -p 8545:8545 -p 8546:8546 \
             ethereum/client-go \
         --identity="TEST_NODE" --networkid="53611" \
