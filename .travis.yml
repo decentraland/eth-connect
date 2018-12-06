@@ -13,5 +13,5 @@ cache:
 
 script:
   - npm install codecov -g
-  - npm run build
+  - make build
   - ./test.sh
