@@ -4,17 +4,6 @@
   "version": "0.3.3",
   "description": "Ethereum JavaScript API, middleware to talk to a ethereum node using an async provider",
   "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "scripts": {
-    "prebuild": "rm -rf dist/",
-    "build": "tsc --project tsconfig-build.json",
-    "watch": "tsc --project tsconfig-build.json --watch",
-    "lint": "tslint",
-    "test": "mocha --reporter list",
-    "coverage": "nyc mocha",
-    "test-coveralls": "nyc report --reporter=text-lcov | coveralls --verbose",
-    "test-codecov": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
-  },
   "files": [
     "dist"
   ],
@@ -45,9 +34,9 @@
     "all": true
   },
   "devDependencies": {
+    "decentraland-rpc": "^3.0.1",
     "@types/chai": "^4.1.3",
     "@types/mocha": "^5.2.0",
-    "@types/node": "^10.1.0",
     "chai": "^4.1.2",
     "coveralls": "^3.0.1",
     "dcl-tslint-config-standard": "^1.0.1",

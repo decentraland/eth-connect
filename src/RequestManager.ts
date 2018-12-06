@@ -38,18 +38,25 @@ import {
   Syncing,
   TxHash,
   Address,
-  FilterOptions
+  FilterOptions,
+  ConfirmedTransaction,
+  TransactionType,
+  RevertedTransaction,
+  PendingTransaction,
+  QueuedTransaction,
+  ReplacedTransaction,
+  Transaction
 } from './Schema'
 import BigNumber from 'bignumber.js'
 import { sleep } from './utils/sleep'
 
 export let TRANSACTION_FETCH_DELAY: number = 2 * 1000
 
-export const TRANSACTION_STATUS = Object.freeze({
-  pending: 'pending' as 'pending',
-  confirmed: 'confirmed' as 'confirmed',
-  failed: 'failed' as 'failed'
-})
+export enum TRANSACTION_STATUS {
+  pending = 'pending',
+  confirmed = 'confirmed',
+  failed = 'failed'
+}
 
 export type TransactionAndReceipt = TransactionObject & { receipt: TransactionReceipt }
 export type FinishedTransactionAndReceipt = TransactionAndReceipt & { status: keyof typeof TRANSACTION_STATUS }
@@ -72,6 +79,7 @@ export function inject(target: Object, propertyKey: string | symbol) {
 export type BlockIdentifier = 'latest' | 'earliest' | 'pending' | string
 
 /**
+ * @public
  * It's responsible for passing messages to providers
  * It's also responsible for polling the ethereum node for incoming messages
  * Default poll timeout is 1 second
@@ -144,7 +152,7 @@ export class RequestManager {
   /**
    * The sign method calculates an Ethereum specific signature with:
    *
-   * sign(keccak256("\x19Ethereum Signed Message:\n" + len(message) + message))).
+   * sign(keccak256("Ethereum Signed Message:" + len(message) + message))).
    *
    * By adding a prefix to the message makes the calculated signature recognisable as an Ethereum specific signature.
    * This prevents misuse where a malicious DApp can sign arbitrary data (e.g. transaction) and use the signature to
@@ -346,7 +354,7 @@ export class RequestManager {
 
   /**
    * The sign method calculates an Ethereum specific signature with:
-   *   sign(keccack256("\x19Ethereum Signed Message:\n" + len(message) + message))).
+   *   sign(keccack256("Ethereum Signed Message:" + len(message) + message))).
    *
    * By adding a prefix to the message makes the calculated signature recognisable as an Ethereum specific signature.
    * This prevents misuse where a malicious DApp can sign arbitrary data (e.g. transaction) and use the signature to
@@ -369,9 +377,7 @@ export class RequestManager {
   /**
    * Should be used to asynchronously send request
    *
-   * @method sendAsync
-   * @param {object} data
-   * @param {Function} callback
+   * @param data - The RPC message to be sent
    */
   async sendAsync(data: jsonRpc.RPCSendableMessage) {
     /* istanbul ignore if */
@@ -408,22 +414,18 @@ export class RequestManager {
   /**
    * Should be used to set provider of request manager
    *
-   * @method setProvider
-   * @param {object}
+   * @param p - The provider
    */
-  /* istanbul ignore next */
-  setProvider(p) {
+  setProvider(p: any) {
     this.provider = p
   }
 
   /**
    * Waits until the transaction finishes. Returns if it was successfull.
    * Throws if the transaction fails or if it lacks any of the supplied events
-   * @param  {string} txId - Transaction id to watch
-   * @param  {Array<string>|string} events - Events to watch. See {@link txUtils#getLogEvents}
-   * @return {object} data - Current transaction data. See {@link txUtils#getTransaction}
+   * @param txId - Transaction id to watch
    */
-  async getConfirmedTransaction(txId: string) {
+  async getConfirmedTransaction(txId: string): Promise<FinishedTransactionAndReceipt> {
     const tx = await this.waitForCompletion(txId)
 
     if (this.isFailure(tx)) {
@@ -435,9 +437,8 @@ export class RequestManager {
 
   /**
    * Wait until a transaction finishes by either being mined or failing
-   * @param  {string} txId - Transaction id to watch
-   * @param  {number} [retriesOnEmpty] - Number of retries when a transaction status returns empty
-   * @return {Promise<object>} data - Current transaction data. See {@link txUtils#getTransaction}
+   * @param txId - Transaction id to watch
+   * @param retriesOnEmpty - Number of retries when a transaction status returns empty
    */
   async waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt> {
     const isDropped = await this.isTxDropped(txId, retriesOnEmpty)
@@ -461,11 +462,92 @@ export class RequestManager {
     }
   }
 
-  /*
-   * Wait retryAttemps*TRANSACTION_FETCH_DELAY for a transaction status to be in the mempool
-   * @param  {string} txId - Transaction id to watch
-   * @param  {number} [retryAttemps=15] - Number of retries when a transaction status returns empty
-   * @return {Promise<boolean>}
+  /**
+   * Returns a transaction in any of the possible states.
+   * @param hash - The transaction hash
+   */
+  async getTransaction(hash: string): Promise<Transaction> {
+    let currentNonce
+    let status
+    try {
+      const account = eth.eth_accounts[0]
+      currentNonce = await this.eth_getTransactionCount(account, 'latest')
+    } catch (error) {
+      currentNonce = null
+    }
+
+    try {
+      status = await this.eth_getTransactionByHash(hash)
+      // not found
+      if (status == null) {
+        return null
+      }
+    } catch (e) {
+      return null
+    }
+
+    if (status.blockNumber == null) {
+      if (currentNonce != null) {
+        // replaced
+        if (status.nonce < currentNonce) {
+          const tx: ReplacedTransaction = {
+            hash,
+            type: TransactionType.replaced,
+            nonce: status.nonce
+          }
+          return tx
+        }
+
+        // queued
+        if (status.nonce > currentNonce) {
+          const tx: QueuedTransaction = {
+            hash,
+            type: TransactionType.queued,
+            nonce: status.nonce
+          }
+          return tx
+        }
+      }
+
+      // pending
+      const tx: PendingTransaction = {
+        type: TransactionType.pending,
+        ...status
+      }
+      return tx
+    }
+
+    let receipt
+
+    try {
+      receipt = await this.eth_getTransactionReceipt(hash)
+
+      // reverted
+      if (receipt == null || receipt.status === 0x0) {
+        const tx: RevertedTransaction = {
+          type: TransactionType.reverted,
+          ...status
+        }
+        return tx
+      }
+    } catch (e) {
+      // TODO: should this be null or reverted?
+      return null
+    }
+
+    // confirmed
+    const tx: ConfirmedTransaction = {
+      type: TransactionType.confirmed,
+      ...status,
+      receipt
+    }
+    return tx
+  }
+
+  /**
+   * Wait retryAttemps * TRANSACTION_FETCH_DELAY for a transaction status to be in the mempool
+   * @param txId - Transaction id to watch
+   * @param retryAttemps - Number of retries when a transaction status returns empty
    */
   async isTxDropped(txId: string, _retryAttemps: number = 15): Promise<boolean> {
     let retryAttemps = _retryAttemps
@@ -486,7 +568,7 @@ export class RequestManager {
 
   /**
    * Get the transaction status and receipt
-   * @param  {string} txId - Transaction id
+   * @param txId - Transaction id
    */
   // prettier-ignore
   async getTransactionAndReceipt(txId: string): Promise<TransactionAndReceipt> {
@@ -501,22 +583,20 @@ export class RequestManager {
   /**
    * Expects the result of getTransaction's geth command and returns true if the transaction is still pending.
    * It'll also check for a pending status prop against {@link txUtils#TRANSACTION_STATUS}
-   * @param {object} tx - The transaction object
-   * @return boolean
+   * @param tx - The transaction object
    */
   // tslint:disable-next-line:prefer-function-over-method
-  isPending(tx: TransactionAndReceipt) {
+  isPending(tx: TransactionAndReceipt): boolean {
     return tx && tx.blockNumber === null
   }
 
   /**
    * Expects the result of getTransactionRecepeit's geth command and returns true if the transaction failed.
    * It'll also check for a failed status prop against {@link txUtils#TRANSACTION_STATUS}
-   * @param {object} tx - The transaction object
-   * @return boolean
+   * @param tx - The transaction object
    */
   // tslint:disable-next-line:prefer-function-over-method
-  isFailure(tx: TransactionAndReceipt) {
+  isFailure(tx: TransactionAndReceipt): boolean {
     return tx && (!tx.receipt || tx.receipt.status === 0)
   }
 }

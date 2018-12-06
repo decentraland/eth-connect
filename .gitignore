@@ -26,3 +26,5 @@ test/**/*.map
 test/**/*.d.ts
 .nyc_output
 eth_common/.ethereum
+bundled
+src/temp

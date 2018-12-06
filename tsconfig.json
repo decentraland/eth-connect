@@ -16,8 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "lib": ["es2017", "dom"],
     "plugins": [{ "name": "tslint-language-service" }]
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules/**/*"]
 }

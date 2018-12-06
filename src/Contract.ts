@@ -8,9 +8,7 @@ import { FilterOptions } from './Schema'
 /**
  * Should be called to add functions to contract object
  *
- * @method addFunctionsToContract
- * @param {Contract} contract
- * @param {Array} abi
+ * @param contract - The contract instance
  */
 function addFunctionsToContract(contract: Contract) {
   contract.abi
@@ -28,9 +26,7 @@ function addFunctionsToContract(contract: Contract) {
 /**
  * Should be called to add events to contract object
  *
- * @method addEventsToContract
- * @param {Contract} contract
- * @param {Array} abi
+ * @param contract - The contract instance
  */
 function addEventsToContract(contract: Contract) {
   let events = contract.abi.filter(function(json) {
@@ -53,11 +49,8 @@ function addEventsToContract(contract: Contract) {
 export type EventFilterCreator = (indexed: { [key: string]: any }, options?: FilterOptions) => Promise<EthFilter>
 
 /**
+ * @public
  * Should be called to create new contract instance
- *
- * @method Contract
- * @param {Array} abi
- * @param {Address} contract address
  */
 export class Contract {
   allEvents: (options: FilterOptions) => Promise<EthFilter>

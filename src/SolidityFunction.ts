@@ -15,12 +15,13 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import utils = require('./utils/utils')
-import errors = require('./utils/errors')
-import formatters = require('./utils/formatters')
+import * as utils from './utils/utils'
+import * as formatters from './utils/formatters'
+import * as errors from './utils/errors'
 
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
+import { Contract } from '.'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
@@ -64,9 +65,7 @@ export class SolidityFunction {
   /**
    * Should be called to check if the number of arguments is correct
    *
-   * @method validateArgs
-   * @param {Array} arguments
-   * @throws {Error} if it is not
+   * @param arguments - An array of arguments
    */
   validateArgs(args: any[]) {
     if (args.some($ => typeof $ === 'undefined')) {
@@ -85,9 +84,8 @@ export class SolidityFunction {
   /**
    * Should be used to create payload from arguments
    *
-   * @method toPayload
-   * @param {Array} solidity function params
-   * @param {object} optional payload options
+   * @param solidity - function params
+   * @param optional - payload options
    */
   toPayload(args: any[]) {
     let options = {
@@ -111,9 +109,6 @@ export class SolidityFunction {
 
   /**
    * Should be used to get function signature
-   *
-   * @method signature
-   * @return {string} function signature
    */
   signature(): string {
     return utils.sha3(this._name).slice(0, 8)
@@ -132,11 +127,9 @@ export class SolidityFunction {
   /**
    * Calls a contract function or to sendTransaction to solidity function
    *
-   * @method call
-   * @param {...Object} Contract function arguments
-   * @return {string} output bytes
+   * @param requestManager - The RequestManager instance
    */
-  async execute(requestManager: RequestManager, ...args) {
+  async execute(requestManager: RequestManager, ...args: any[]) {
     if (!requestManager) {
       throw new Error(`Cannot call function ${this.displayName()} because there is no requestManager`)
     }
@@ -161,8 +154,6 @@ export class SolidityFunction {
 
   /**
    * Should be used to estimateGas of solidity function
-   *
-   * @method estimateGas
    */
   estimateGas(...args) {
     let payload = this.toPayload(args)
@@ -172,11 +163,8 @@ export class SolidityFunction {
 
   /**
    * Return the encoded data of the call
-   *
-   * @method getData
-   * @return {string} the encoded data
    */
-  getData(...args) {
+  getData(...args: any[]): string {
     let payload = this.toPayload(args)
 
     return payload.data
@@ -184,9 +172,6 @@ export class SolidityFunction {
 
   /**
    * Should be used to get function display name
-   *
-   * @method displayName
-   * @return {string} display name of the function
    */
   displayName(): string {
     return utils.extractDisplayName(this._name)
@@ -194,9 +179,6 @@ export class SolidityFunction {
 
   /**
    * Should be used to get function type name
-   *
-   * @method typeName
-   * @return {string} type name of the function
    */
   typeName(): string {
     return utils.extractTypeName(this._name) || 'void'
@@ -205,10 +187,9 @@ export class SolidityFunction {
   /**
    * Should be called to attach function to contract
    *
-   * @method attachToContract
-   * @param {Contract}
+   * @param contract - The contract instance
    */
-  attachToContract(contract) {
+  attachToContract(contract: Contract) {
     let displayName = this.displayName()
     const fun = this
 

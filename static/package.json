@@ -1,0 +1,14 @@
+{
+  "name": "eth-connect",
+  "version": "1.0.0",
+  "main": "index.js",
+  "typings": "./eth-connect.d.ts",
+  "scripts": {
+    "bundle-declarations": "api-extractor run --typescript-compiler-folder ./node_modules/typescript --local && npm run cleanup",
+    "cleanup": "mv lib/index.js . && rm -rf lib && rm -rf dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.0.0"
+  }
+}

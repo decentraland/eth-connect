@@ -18,6 +18,9 @@
 import errors = require('./utils/errors')
 import { RequestManager } from './RequestManager'
 
+/**
+ * @public
+ */
 export class Method {
   callName: string
   params: number
@@ -36,9 +39,7 @@ export class Method {
   /**
    * Should be called to check if the number of arguments is correct
    *
-   * @method validateArgs
-   * @param {Array} arguments
-   * @throws {Error} if it is not
+   * @param arguments - The list of arguments
    */
   validateArgs(args: any[]) {
     if (args.length !== this.params) {
@@ -49,9 +50,7 @@ export class Method {
   /**
    * Should be called to format input args of method
    *
-   * @method formatInput
-   * @param {Array}
-   * @return {Array}
+   * @param args - The array of arguments
    */
   formatInput(args: any[]) {
     if (!this.inputFormatter) {
@@ -66,20 +65,16 @@ export class Method {
   /**
    * Should be called to format output(result) of method
    *
-   * @method formatOutput
-   * @param {object}
-   * @return {object}
+   * @param result - The result to be formatted
    */
-  formatOutput(result) {
+  formatOutput(result: any) {
     return this.outputFormatter && result ? this.outputFormatter(result) : result
   }
 
   /**
    * Should create payload from given input args
    *
-   * @method toPayload
-   * @param {Array} args
-   * @return {object}
+   * @param args - The given input arguments
    */
   toPayload(args: any[]) {
     let params = this.formatInput(args)

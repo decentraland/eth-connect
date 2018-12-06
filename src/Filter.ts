@@ -15,8 +15,8 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import formatters = require('./utils/formatters')
-import utils = require('./utils/utils')
+import * as utils from './utils/utils'
+import * as formatters from './utils/formatters'
 import { RequestManager } from './RequestManager'
 import config = require('./utils/config')
 import { FilterOptions, FilterChange, TxHash, SHHFilterOptions, Data, SHHFilterMessage } from './Schema'
@@ -32,10 +32,9 @@ function safeAsync(fn: () => Promise<any>) {
 /**
  * Converts a given topic to a hex string, but also allows null values.
  *
- * @param {Mixed} value
- * @return {string}
+ * @param value - The given value
  */
-function toTopic(value: any) {
+function toTopic(value: any): string {
   if (value === null || typeof value === 'undefined') return null
 
   const strValue = String(value).toString()
@@ -118,8 +117,6 @@ export abstract class AbstractFilter<T> {
 
   /**
    * Adds the callback and sets up the methods, to iterate over the results.
-   *
-   * @method pollFilter
    */
   private async poll() {
     if (this.isStarted) {

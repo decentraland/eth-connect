@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "outDir": "../bundled/lib"
+  },
+  "extends": "../tsconfig-build.json"
+}

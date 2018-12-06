@@ -46,11 +46,11 @@ const accounts = await requestManager.eth_accounts()
 
 # How to build project
 
-Run: `npm run build`
+Run: `make build`
 
 or if you are on dev mode
 
-`npm run build -- --watch`
+`make watch`
 
 Take in consideration that this will only build src files, if you also want to run build test
 files just for fun do:
@@ -65,4 +65,4 @@ On one terminal run:
 
 On a second terminal run:
 
-`npm run test` or `npm run test -- --watch`
+`make test` or `make test -- --watch`

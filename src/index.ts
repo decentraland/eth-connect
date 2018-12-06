@@ -17,7 +17,7 @@
 
 import { HTTPProvider } from './providers/HTTPProvider'
 import { WebSocketProvider } from './providers/WebSocketProvider'
-import * as utils from './utils/utils'
+export * from './utils/utils'
 
 export { RequestManager } from './RequestManager'
 export { Contract } from './Contract'
@@ -26,9 +26,12 @@ export { Method } from './Method'
 export { Property } from './Property'
 export { eth } from './methods/eth'
 
+/**
+ * @public
+ */
 const providers = {
   HTTPProvider,
   WebSocketProvider
 }
 
-export { utils, providers }
+export { providers }

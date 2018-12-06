@@ -18,23 +18,27 @@
 import utils = require('../utils/utils')
 import config = require('../utils/config')
 import BigNumber from 'bignumber.js'
+import { BlockIdentifier } from '../RequestManager'
 
 /**
- * Should the format output to a big number
+ * Should format the output to a big number
  *
- * @method outputBigNumberFormatter
- * @param {string|number|BigNumber}
- * @returns {BigNumber} object
+ * @param output - The provided output
  */
-export function outputBigNumberFormatter(num): BigNumber {
-  return utils.toBigNumber(num)
+export function outputBigNumberFormatter(output: string | number | BigNumber): BigNumber {
+  return utils.toBigNumber(output)
 }
 
-export function isPredefinedBlockNumber(blockNumber) {
+/**
+ * Returns true if the provided blockNumber is 'latest', 'pending' or 'earliest
+ *
+ * @param blockNumber - The given blocknumber
+ */
+export function isPredefinedBlockNumber(blockNumber: BlockIdentifier): boolean {
   return blockNumber === 'latest' || blockNumber === 'pending' || blockNumber === 'earliest'
 }
 
-export function inputDefaultBlockNumberFormatter(blockNumber) {
+export function inputDefaultBlockNumberFormatter(blockNumber: BlockIdentifier) {
   if (blockNumber === undefined) {
     return config.defaultBlock
   }
@@ -52,12 +56,8 @@ export function inputBlockNumberFormatter(blockNumber) {
 
 /**
  * Formats the input of a transaction and converts all values to HEX
- *
- * @method inputCallFormatter
- * @param {object} transaction options
- * @returns object
  */
-export function inputCallFormatter(options) {
+export function inputCallFormatter(options: { from: string; to: string; data: string }) {
   options.from = options.from
 
   if (options.from) {
@@ -88,9 +88,7 @@ export function inputCallFormatter(options) {
 /**
  * Formats the input of a transaction and converts all values to HEX
  *
- * @method inputTransactionFormatter
- * @param {object} transaction options
- * @returns object
+ * @param transaction - options
  */
 export function inputTransactionFormatter(options) {
   if (typeof options !== 'object') {
@@ -127,9 +125,7 @@ export function inputTransactionFormatter(options) {
 /**
  * Formats the output of a transaction to its proper values
  *
- * @method outputTransactionFormatter
- * @param {object} tx
- * @returns {object}
+ * @param tx - The transaction
  */
 export function outputTransactionFormatter(tx) {
   if (tx.blockNumber !== null) {
@@ -148,9 +144,7 @@ export function outputTransactionFormatter(tx) {
 /**
  * Formats the output of a transaction receipt to its proper values
  *
- * @method outputTransactionReceiptFormatter
- * @param {object} receipt
- * @returns {object}
+ * @param receipt - The transaction receipt
  */
 export function outputTransactionReceiptFormatter(receipt) {
   if (receipt.blockNumber !== null) receipt.blockNumber = utils.toDecimal(receipt.blockNumber)
@@ -170,11 +164,7 @@ export function outputTransactionReceiptFormatter(receipt) {
 }
 
 /**
- * Formats the output of a block to its proper values
- *
- * @method outputBlockFormatter
- * @param {object} block
- * @returns {object}
+ * Formats the output of a block to its proper value
  */
 export function outputBlockFormatter(block) {
   // transform to number
@@ -198,10 +188,6 @@ export function outputBlockFormatter(block) {
 
 /**
  * Formats the output of a log
- *
- * @method outputLogFormatter
- * @param {object} log object
- * @returns {object} log
  */
 export function outputLogFormatter(log) {
   if (log.blockNumber) {
@@ -221,12 +207,8 @@ export function outputLogFormatter(log) {
 
 /**
  * Formats the input of a whisper post and converts all values to HEX
- *
- * @method inputPostFormatter
- * @param {object} transaction object
- * @returns {object}
  */
-export function inputPostFormatter(post) {
+export function inputPostFormatter(post: any) {
   post.ttl = utils.fromDecimal(post.ttl)
   post.workToProve = utils.fromDecimal(post.workToProve)
   post.priority = utils.fromDecimal(post.priority)
@@ -247,12 +229,8 @@ export function inputPostFormatter(post) {
 
 /**
  * Formats the output of a received post message
- *
- * @method outputPostFormatter
- * @param {object}
- * @returns {object}
  */
-export function outputPostFormatter(post) {
+export function outputPostFormatter(post: any) {
   post.expiry = utils.toDecimal(post.expiry)
   post.sent = utils.toDecimal(post.sent)
   post.ttl = utils.toDecimal(post.ttl)

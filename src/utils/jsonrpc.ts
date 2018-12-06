@@ -24,11 +24,6 @@ export type RPCSendableMessage = {
 
 /**
  * Should be called to valid json create payload object
- *
- * @method toPayload
- * @param {Function} method of jsonrpc call, required
- * @param {Array} params, an array of method params, optional
- * @returns {object} valid jsonrpc payload object
  */
 export function toPayload(method: string, params: any[]) {
   if (!method) {
@@ -51,10 +46,6 @@ export function toPayload(method: string, params: any[]) {
 
 /**
  * Should be called to check if jsonrpc response is valid
- *
- * @method isValidResponse
- * @param {object}
- * @returns {Boolean} true if response is valid, otherwise false
  */
 export function isValidResponse(response) {
   return Array.isArray(response) ? response.every(validateSingleMessage) : validateSingleMessage(response)
@@ -73,9 +64,7 @@ export function isValidResponse(response) {
 /**
  * Should be called to create batch payload object
  *
- * @method toBatchPayload
- * @param {Array} messages, an array of objects with method (required) and params (optional) fields
- * @returns {Array} batch payload
+ * @param messages - An array of objects with method (required) and params (optional) fields
  */
 export function toBatchPayload(messages: RPCSendableMessage[]) {
   return messages.map(function(message) {

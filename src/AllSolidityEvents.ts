@@ -15,8 +15,8 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import formatters = require('./utils/formatters')
-import utils = require('./utils/utils')
+import * as utils from './utils/utils'
+import * as formatters from './utils/formatters'
 
 import { SolidityEvent } from './SolidityEvent'
 import { RequestManager } from './RequestManager'
