@@ -16,7 +16,7 @@
 */
 
 /// required to define ETH_BIGNUMBER_ROUNDING_MODE
-import { BigNumber } from 'bignumber.js'
+import { BigNumberRoundingMode, BigNumberRoundingModeType } from '../utils/BigNumber'
 
 export const ETH_UNITS = [
   'wei',
@@ -51,7 +51,7 @@ export const ETH_UNITS = [
 export const ETH_PADDING = 32
 export const ETH_SIGNATURE_LENGTH = 4
 export const ETH_BIGNUMBER_ROUNDING_MODE = {
-  ROUNDING_MODE: BigNumber.ROUND_DOWN
+  ROUNDING_MODE: BigNumberRoundingMode.ROUND_DOWN as BigNumberRoundingModeType
 }
 export const ETH_POLLING_TIMEOUT = 1000 / 2
 export let defaultBlock = 'latest'

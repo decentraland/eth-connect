@@ -17,7 +17,7 @@
 
 import utils = require('../utils/utils')
 import config = require('../utils/config')
-import BigNumber from 'bignumber.js'
+import { BigNumber as BigNumberType, BigNumberValueType } from './BigNumber'
 import { BlockIdentifier } from '../RequestManager'
 
 /**
@@ -25,7 +25,7 @@ import { BlockIdentifier } from '../RequestManager'
  *
  * @param output - The provided output
  */
-export function outputBigNumberFormatter(output: string | number | BigNumber): BigNumber {
+export function outputBigNumberFormatter(output: BigNumberValueType): BigNumberType {
   return utils.toBigNumber(output)
 }
 

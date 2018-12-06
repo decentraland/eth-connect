@@ -16,6 +16,7 @@
 */
 
 import { BigNumber } from 'bignumber.js'
+import { BigNumber as BigNumberType } from './BigNumber'
 import utf8 = require('utf8')
 
 import CryptoJS = require('crypto-js')
@@ -219,7 +220,7 @@ export function isHex(value: string) {
  * @public
  * Converts value to it's decimal representation in string
  */
-export function toNullDecimal(value: number | string | BigNumber) {
+export function toNullDecimal(value: number | string | BigNumberType) {
   if (value === undefined || value === null) return value
   return toBigNumber(value).toNumber()
 }
@@ -228,7 +229,7 @@ export function toNullDecimal(value: number | string | BigNumber) {
  * @public
  * Converts value to it's decimal representation in string
  */
-export function toDecimal(value: number | string | BigNumber) {
+export function toDecimal(value: number | string | BigNumberType) {
   return toBigNumber(value).toNumber()
 }
 
@@ -236,7 +237,7 @@ export function toDecimal(value: number | string | BigNumber) {
  * @public
  * Converts value to it's hex  representation in string
  */
-export function toData(val: string | number | BigNumber) {
+export function toData(val: string | number | BigNumberType) {
   if (typeof val === 'string') {
     if (!val.startsWith('0x') && /^[A-Za-z0-9]+$/.test(val)) {
       return '0x' + val
@@ -249,7 +250,7 @@ export function toData(val: string | number | BigNumber) {
  * @public
  * Converts value to it's boolean representation (x != 0)
  */
-export function toBoolean(value: number | string | BigNumber | boolean) {
+export function toBoolean(value: number | string | BigNumberType | boolean) {
   if (typeof value === 'boolean') return value
   return toBigNumber(value).toNumber() !== 0
 }
@@ -258,7 +259,7 @@ export function toBoolean(value: number | string | BigNumber | boolean) {
  * @public
  * Converts value to it's hex representation
  */
-export function fromDecimal(value: string | number | BigNumber) {
+export function fromDecimal(value: string | number | BigNumberType) {
   let num = toBigNumber(value)
   let result = num.toString(16)
 
@@ -271,7 +272,7 @@ export function fromDecimal(value: string | number | BigNumber) {
  *
  * And even stringifys objects before.
  */
-export function toHex(val: string | number | BigNumber) {
+export function toHex(val: string | number | BigNumberType) {
   /*jshint maxcomplexity: 8 */
 
   if (isBoolean(val)) return fromDecimal(+val)
@@ -295,7 +296,7 @@ export function toHex(val: string | number | BigNumber) {
  * @public
  * Returns value of unit in Wei
  */
-export function getValueOfUnit(_unit: string) {
+export function getValueOfUnit(_unit: string): BigNumberType {
   let unit = _unit ? _unit.toLowerCase() : 'ether'
   let unitValue = unitMap[unit]
   if (unitValue === undefined) {
@@ -357,7 +358,7 @@ export function toWei(num: number | string, unit: string) {
  * @public
  * Takes an input and transforms it into an bignumber
  */
-export function toBigNumber(_num: number | string | BigNumber): BigNumber {
+export function toBigNumber(_num: number | string | BigNumberType): BigNumberType {
   let num: any = _num || 0
 
   if (isBigNumber(num)) {
@@ -375,8 +376,8 @@ export function toBigNumber(_num: number | string | BigNumber): BigNumber {
  * @public
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
  */
-export function toTwosComplement(num: number | string | BigNumber) {
-  let bigNumber = toBigNumber(num).integerValue()
+export function toTwosComplement(num: number | string | BigNumberType): BigNumberType {
+  let bigNumber = toBigNumber(num).integerValue() as BigNumber
 
   if (bigNumber.isLessThan(0)) {
     return new BigNumber('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', 16).plus(bigNumber).plus(1)
@@ -389,7 +390,7 @@ export function toTwosComplement(num: number | string | BigNumber) {
  * @public
  * Checks if the given string is strictly an address
  */
-export function isStrictAddress(address) {
+export function isStrictAddress(address: any) {
   return /^0x[0-9a-f]{40}$/i.test(address)
 }
 
@@ -397,7 +398,7 @@ export function isStrictAddress(address) {
  * @public
  * Checks if the given string is an address
  */
-export function isAddress(address) {
+export function isAddress(address: any) {
   if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
     // check if it has the basic requirements of an address
     return false
@@ -471,10 +472,10 @@ export function toAddress(address) {
 
 /**
  * @public
- * Returns true if object is BigNumber, otherwise false
+ * Returns true if object is BigNumberType, otherwise false
  */
-export function isBigNumber(object) {
-  return object instanceof BigNumber || (object && object.constructor && object.constructor.name === 'BigNumber')
+export function isBigNumber(object: any) {
+  return object instanceof BigNumber || (object && object.constructor && object.constructor.name === 'BigNumberType')
 }
 
 /**
