@@ -7,6 +7,7 @@ const expect = chai.expect
 import { ContractFactory, RequestManager } from '../src'
 import BigNumber from 'bignumber.js'
 import { testAllProviders } from './helpers/testAllProviders'
+import { ConfirmedTransaction } from '../src/Schema'
 
 declare var require
 
@@ -74,7 +75,7 @@ function doTest(requestManager: RequestManager) {
     expect(typeof txRecipt.status).to.eq('number')
   })
 
-  it('gets the trasaction', async () => {
+  it('gets the trasaction by hash', async () => {
     const x = await requestManager.eth_getTransactionByHash(ERC20Contract.transactionHash)
     expect(typeof x).eq('object')
     expect(x.hash).eq(ERC20Contract.transactionHash)
@@ -85,6 +86,55 @@ function doTest(requestManager: RequestManager) {
     expect(typeof x.blockHash).to.eq('string')
     expect(typeof x.hash).to.eq('string')
     expect(typeof x.transactionIndex).to.eq('number')
+  })
+
+  it('gets the transaction ', async () => {
+    const { receipt, ...tx } = (await requestManager.getTransaction(
+      ERC20Contract.transactionHash
+    )) as ConfirmedTransaction
+
+    const transactionFields = [
+      'type',
+      'hash',
+      'nonce',
+      'blockHash',
+      'blockNumber',
+      'transactionIndex',
+      'from',
+      'to',
+      'value',
+      'gas',
+      'gasPrice',
+      'input'
+    ]
+
+    const receiptFields = [
+      'transactionHash',
+      'transactionIndex',
+      'blockHash',
+      'blockNumber',
+      'gasUsed',
+      'cumulativeGasUsed',
+      'contractAddress',
+      'logs',
+      'status',
+      'logsBloom'
+    ]
+
+    for (let i = 0; i < transactionFields.length; i++) {
+      const key = transactionFields[i]
+      expect(tx[key], `tx.${key} should exist`).to.not.eq('undefined')
+    }
+
+    for (let i = 0; i < receiptFields.length; i++) {
+      const key = receiptFields[i]
+      expect(receipt[key], `receipt.${key} should exist`).to.not.eq('undefined')
+    }
+  })
+
+  it('getTransaction should return null for an unknown transaction', async function() {
+    const tx = await requestManager.getTransaction('0xfaceb00c')
+    expect(tx).to.be.null // tslint:disable-line
   })
 
   it('should get 0 mana balance by default', async () => {

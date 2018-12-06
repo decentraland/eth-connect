@@ -39,13 +39,13 @@ import {
   TxHash,
   Address,
   FilterOptions,
-  ConfirmedTransaction,
-  TransactionType,
-  RevertedTransaction,
-  PendingTransaction,
   QueuedTransaction,
+  PendingTransaction,
   ReplacedTransaction,
-  Transaction
+  Transaction,
+  RevertedTransaction,
+  ConfirmedTransaction,
+  TransactionType
 } from './Schema'
 import BigNumber from 'bignumber.js'
 import { sleep } from './utils/sleep'
@@ -66,7 +66,7 @@ export function inject(target: Object, propertyKey: string | symbol) {
 
   /* istanbul ignore if */
   if (!method) {
-    throw new Error(`Could not find the method/property named ${propertyKey}`)
+    throw new Error(`Could not find the method/property named ${propertyKey.toString()}`)
   }
 
   Object.defineProperty(target, propertyKey, {
@@ -94,7 +94,7 @@ export class RequestManager {
   @inject web3_sha3: (data: Data) => Promise<Data>
 
   /** Returns the current network id. */
-  @inject net_version: () => Promise<number>
+  @inject net_version: () => Promise<string>
 
   /** Returns number of peers currently connected to the client. */
   @inject net_peerCount: () => Promise<Quantity>
@@ -149,6 +149,7 @@ export class RequestManager {
 
   /** Returns code at a given address. */
   @inject eth_getCode: (address: Address, block: Quantity | Tag) => Promise<Data>
+
   /**
    * The sign method calculates an Ethereum specific signature with:
    *
@@ -159,6 +160,8 @@ export class RequestManager {
    * impersonate the victim.
    *
    * Note the address to sign with must be unlocked.
+   *
+   * @deprecated see https://github.com/ethereum/go-ethereum/pull/2940
    */
   @inject eth_sign: (address: Address, message: Data) => Promise<Data>
 
