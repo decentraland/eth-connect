@@ -7,15 +7,19 @@ TSLINT = $(NODE) --max-old-space-size=4096 node_modules/.bin/tslint
 COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
 
 clean:
-		$(COMPILER) build.clean.json
+		@(rm -rf coverage || true)
+		@(rm -rf dist || true)
+		@(rm -rf .nyc_output || true)
+		@(rm *.lcov || true)
+		@(rm -rf bundled || true)
+		@find test -name '*.js' -delete
+		@find test -name '*.js.map' -delete
 
 build: clean
-		rm -rf dist/
 		${TSC} --project tsconfig-build.json
 		${TSC} --project tsconfig.json --noEmit # build everything with tests
 
-build-bundled:
-		rm -rf bundled
+build-bundled: build
 		${COMPILER} build.json
 		$(MAKE) provision-bundled
 		$(MAKE) bundle-declarations
@@ -48,28 +52,28 @@ test-codecov:
 		${NYC} report --reporter=text-lcov > coverage.lcov && codecov
 
 local-node:
-    # ensure geth image
-		docker pull ethereum/client-go
+		# ensure ethereum/client-go image
+		@docker pull ethereum/client-go
 
-		# kill the previous geth node
-		(docker container kill geth-dev || true)
-		(docker container rm geth-dev || true)
+		# kill the previous ethereum/client-go container if exist
+		@(docker container kill geth-dev || true)
+		@(docker container rm geth-dev || true)
 
-		# initialize geth node
-		docker run \
-        -d --name geth-dev \
-        -v "$(PWD)":/eth_common \
-        -p 8545:8545 -p 8546:8546 \
-            ethereum/client-go \
-        --identity="TEST_NODE" --networkid="53611" \
-        --rpc --rpcaddr 0.0.0.0 --rpcapi admin,debug,eth,miner,net,personal,shh,txpool,web3 \
-        --ws  --wsaddr 0.0.0.0  --wsapi admin,debug,eth,miner,net,personal,shh,txpool,web3 --wsorigins \* \
-        --mine --minerthreads=1 \
-        --dev
+		# initialize ethereum/client-go node
+		@docker run \
+				-d --name geth-dev \
+				-v "$(PWD)":/eth_common \
+				-p 8545:8545 -p 8546:8546 \
+						ethereum/client-go \
+				--identity="TEST_NODE" --networkid="53611" \
+				--rpc --rpcaddr 0.0.0.0 --rpcapi admin,debug,eth,miner,net,personal,shh,txpool,web3 \
+				--ws  --wsaddr 0.0.0.0  --wsapi admin,debug,eth,miner,net,personal,shh,txpool,web3 --wsorigins \* \
+				--mine --minerthreads=1 \
+				--dev
 
 kill-docker:
 		# stop the node
-		(docker container kill geth-dev && docker container rm geth-dev) || true
+		@(docker container kill geth-dev && docker container rm geth-dev) || true
 
 ci: | build local-node coverage test-codecov kill-docker
 

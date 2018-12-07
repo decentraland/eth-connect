@@ -17,9 +17,8 @@ export function future<T = any>(): IFuture<T> {
     resolver = ok
     rejecter = err
   })
-
-  promise.then(() => (promise.isPending = false))
-  promise.catch(() => (promise.isPending = false))
+    .then(() => (promise.isPending = false))
+    .catch(() => (promise.isPending = false))
 
   promise.resolve = resolver
   promise.reject = rejecter

@@ -48,21 +48,8 @@ const accounts = await requestManager.eth_accounts()
 
 Run: `make build`
 
-or if you are on dev mode
-
-`make watch`
-
-Take in consideration that this will only build src files, if you also want to run build test
-files just for fun do:
-
-`./node_modules/.bin/tsc --watch`
-
 # How to run tests
 
 On one terminal run:
 
-`./start-local-node.sh` It starts a geth node using Docker
-
-On a second terminal run:
-
-`make test` or `make test -- --watch`
+`make test-local`
