@@ -143,13 +143,13 @@ export type TransactionObject = {
   /** hash of the transaction. */
   hash: TxHash
   /** the number of transactions made by the sender prior to this one. */
-  nonce: Quantity
+  nonce: number
   /** hash of the block where this transaction was in. null when its pending. */
   blockHash: TxHash
   /** block number where this transaction was in. null when its pending. */
-  blockNumber: Quantity
+  blockNumber: number
   /** integer of the transactions index position in the block. null when its pending. */
-  transactionIndex: Quantity
+  transactionIndex: number
   /** address of the sender. */
   from: Address
   /** address of the receiver. null when its a contract creation transaction. */

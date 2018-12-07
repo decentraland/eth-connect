@@ -133,7 +133,7 @@ function doTest(requestManager: RequestManager) {
   })
 
   it('getTransaction should return null for an unknown transaction', async function() {
-    const tx = await requestManager.getTransaction('0xfaceb00c')
+    const tx = await requestManager.getTransaction('0xfaceb00cfaceb00cfaceb00cfaceb00cfaceb00cfaceb00cfaceb00cfaceb00c')
     expect(tx).to.be.null // tslint:disable-line
   })
 

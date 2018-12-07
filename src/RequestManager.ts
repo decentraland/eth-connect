@@ -125,19 +125,19 @@ export class RequestManager {
   @inject eth_getStorageAt: (address: Address, position: Quantity, block: BlockIdentifier) => Promise<Data>
 
   /** Returns the number of transactions sent from an address. */
-  @inject eth_getTransactionCount: (address: Address, block: BlockIdentifier) => Promise<Quantity>
+  @inject eth_getTransactionCount: (address: Address, block: BlockIdentifier) => Promise<number>
 
   /** Returns the number of transactions in a block from a block matching the given block hash. */
-  @inject eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<Quantity>
+  @inject eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<number>
 
   /** Returns the number of transactions in a block matching the given block number. */
-  @inject eth_getBlockTransactionCountByNumber: (block: BlockIdentifier) => Promise<Quantity>
+  @inject eth_getBlockTransactionCountByNumber: (block: BlockIdentifier) => Promise<number>
 
   /** Returns the number of uncles in a block from a block matching the given block hash. */
-  @inject eth_getUncleCountByBlockHash: (blockHash: TxHash) => Promise<Quantity>
+  @inject eth_getUncleCountByBlockHash: (blockHash: TxHash) => Promise<number>
 
   /** Returns the number of uncles in a block from a block matching the given block number. */
-  @inject eth_getUncleCountByBlockNumber: (block: BlockIdentifier) => Promise<Quantity>
+  @inject eth_getUncleCountByBlockNumber: (block: BlockIdentifier) => Promise<number>
 
   /** Returns code at a given address. */
   @inject eth_getCode: (address: Address, block: BlockIdentifier) => Promise<Data>
@@ -462,11 +462,14 @@ export class RequestManager {
    * @param hash - The transaction hash
    */
   async getTransaction(hash: string): Promise<Transaction> {
-    let currentNonce
-    let status
+    let currentNonce: number
+    let status: TransactionObject
     try {
-      const account = eth.eth_accounts[0]
-      currentNonce = await this.eth_getTransactionCount(account, 'latest')
+      const accounts = await this.eth_accounts()
+      const account = accounts[0]
+      if (account) {
+        currentNonce = await this.eth_getTransactionCount(account, 'latest')
+      }
     } catch (error) {
       currentNonce = null
     }
