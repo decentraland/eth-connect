@@ -1,4 +1,4 @@
-import { RequestManager, isAddress, isHex} from '../src'
+import { RequestManager, isHex, isAddress } from '../src'
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 import BigNumber from 'bignumber.js'
 import { expect } from 'chai'

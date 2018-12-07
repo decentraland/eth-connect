@@ -24,6 +24,12 @@ import { Contract } from './Contract'
 import { EthFilter } from './Filter'
 import { FilterOptions } from './Schema'
 
+export type EventData = {
+  data: string
+  topics: string[]
+  address: string
+}
+
 export class AllSolidityEvents {
   constructor(public _requestManager: RequestManager, public _json, public _address: string) {}
 
@@ -42,7 +48,7 @@ export class AllSolidityEvents {
     return result
   }
 
-  decode(data: { data: string; topics: string[]; address: string }) {
+  decode(data: EventData) {
     data.data = data.data || ''
 
     let eventTopic = utils.isArray(data.topics) && utils.isString(data.topics[0]) ? data.topics[0].slice(2) : ''

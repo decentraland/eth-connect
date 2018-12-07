@@ -56,7 +56,7 @@ export class SolidityFunction {
     this._address = address
   }
 
-  extractDefaultBlock(args: any[]) {
+  extractDefaultBlock(args: any[]): string {
     if (args.length > this._inputTypes.length && !utils.isObject(args[args.length - 1])) {
       return formatters.inputDefaultBlockNumberFormatter(args.pop()) // modify the args array!
     }

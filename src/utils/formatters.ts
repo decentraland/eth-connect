@@ -18,7 +18,7 @@
 import utils = require('../utils/utils')
 import config = require('../utils/config')
 import { BigNumber as BigNumberType, BigNumberValueType } from './BigNumber'
-import { BlockIdentifier } from '../RequestManager'
+import { Quantity, Tag } from '../Schema'
 
 /**
  * Should format the output to a big number
@@ -34,22 +34,22 @@ export function outputBigNumberFormatter(output: BigNumberValueType): BigNumberT
  *
  * @param blockNumber - The given blocknumber
  */
-export function isPredefinedBlockNumber(blockNumber: BlockIdentifier): boolean {
+export function isPredefinedBlockNumber(blockNumber: Quantity | Tag): blockNumber is Tag {
   return blockNumber === 'latest' || blockNumber === 'pending' || blockNumber === 'earliest'
 }
 
-export function inputDefaultBlockNumberFormatter(blockNumber: BlockIdentifier) {
+export function inputDefaultBlockNumberFormatter(blockNumber?: Quantity | Tag): string | Tag {
   if (blockNumber === undefined) {
     return config.defaultBlock
   }
   return inputBlockNumberFormatter(blockNumber)
 }
 
-export function inputBlockNumberFormatter(blockNumber) {
+export function inputBlockNumberFormatter(blockNumber: Quantity | Tag): string | null {
   if (blockNumber === undefined || blockNumber == null) {
     return undefined
   } else if (isPredefinedBlockNumber(blockNumber)) {
-    return blockNumber
+    return blockNumber as Tag
   }
   return utils.toHex(blockNumber)
 }

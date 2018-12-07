@@ -9,15 +9,16 @@ COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
 clean:
 		$(COMPILER) build.clean.json
 
-build:
-		rm -rf dist/ 
+build: clean
+		rm -rf dist/
 		${TSC} --project tsconfig-build.json
+		${TSC} --project tsconfig.json --noEmit # build everything with tests
 
 build-bundled:
 		rm -rf bundled
 		${COMPILER} build.json
-		${MAKE} provision-bundled
-		${MAKE} bundle-declarations
+		$(MAKE) provision-bundled
+		$(MAKE) bundle-declarations
 
 provision-bundled:
 		cp ./static/package.json ./bundled/package.json
@@ -66,12 +67,12 @@ local-node:
         --mine --minerthreads=1 \
         --dev
 
-ci:
-		${MAKE} local-node
-	  ${MAKE} coverage
-	  ${MAKE} test-codecov
+kill-docker:
+		# stop the node
+		(docker container kill geth-dev && docker container rm geth-dev) || true
 
-	  # stop the node
-	  (docker container kill geth-dev && docker container rm geth-dev) || true
+ci: | build local-node coverage test-codecov kill-docker
 
-.PHONY: coverage
+test-local: | build local-node test kill-docker
+
+.PHONY: ci test coverage test-coveralls watch lint build clean kill-docker local-node

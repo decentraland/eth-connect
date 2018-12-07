@@ -15,6 +15,7 @@ export type ConnectionOptions = {
   unlocked_accounts?: Array<string>
   db_path?: string
   account_keys_path?: string
+  default_balance_ether?: number
   vmErrorsOnRPCResponse?: boolean
   ws: boolean
 }
@@ -38,7 +39,7 @@ export class NodeConnectionFactory {
     this.connectionOptions = {
       accounts: [
         {
-          balance: 100012300001 /* gas */,
+          balance: '0xFFFFFFFFFFFFFFFFFFFFFFFF',
           secretKey: '0x8485898485bbe08a0a9b97fdf695aec8e9f1d196c589d4b6ff50a0232518b682'
         }
       ],
@@ -47,6 +48,7 @@ export class NodeConnectionFactory {
       //   log(...args) {
       //   }
       // },
+      default_balance_ether: 999999,
       vmErrorsOnRPCResponse: true,
       ws: true,
       ...options

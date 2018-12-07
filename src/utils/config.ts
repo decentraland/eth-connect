@@ -54,4 +54,4 @@ export const ETH_BIGNUMBER_ROUNDING_MODE = {
   ROUNDING_MODE: BigNumberRoundingMode.ROUND_DOWN as BigNumberRoundingModeType
 }
 export const ETH_POLLING_TIMEOUT = 1000 / 2
-export let defaultBlock = 'latest'
+export let defaultBlock: 'latest' = 'latest'

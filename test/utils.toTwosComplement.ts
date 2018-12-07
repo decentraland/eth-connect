@@ -2,12 +2,9 @@
  * Created by danielbruce on 2017-09-25.
  */
 
-/**
- * Created by danielbruce on 2017-09-25.
- */
 import chai = require('chai')
-import utils = require('../src/utils/utils')
 import BigNumber from 'bignumber.js'
+import { toTwosComplement } from '../src/utils/utils'
 const assert = chai.assert
 
 let tests = [
@@ -59,7 +56,7 @@ describe('lib/utils/utils', function() {
   describe('toTwosComplement', function() {
     tests.forEach(function(test) {
       it('printing ' + test.value, function() {
-        assert(test.expected.eq(utils.toTwosComplement(test.value) as BigNumber))
+        assert(test.expected.eq(toTwosComplement(test.value) as any))
       })
     })
   })

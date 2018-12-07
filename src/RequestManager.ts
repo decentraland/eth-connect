@@ -30,7 +30,6 @@ import {
   SHHPost,
   FilterChange,
   TransactionReceipt,
-  Tag,
   BlockObject,
   TransactionObject,
   TransactionCallOptions,
@@ -45,21 +44,16 @@ import {
   Transaction,
   RevertedTransaction,
   ConfirmedTransaction,
-  TransactionType
+  TransactionType,
+  BlockIdentifier,
+  TRANSACTION_STATUS,
+  FinishedTransactionAndReceipt,
+  TransactionAndReceipt
 } from './Schema'
 import { BigNumber } from './utils/BigNumber'
 import { sleep } from './utils/sleep'
 
 export let TRANSACTION_FETCH_DELAY: number = 2 * 1000
-
-export enum TRANSACTION_STATUS {
-  pending = 'pending',
-  confirmed = 'confirmed',
-  failed = 'failed'
-}
-
-export type TransactionAndReceipt = TransactionObject & { receipt: TransactionReceipt }
-export type FinishedTransactionAndReceipt = TransactionAndReceipt & { status: keyof typeof TRANSACTION_STATUS }
 
 export function inject(target: Object, propertyKey: string | symbol) {
   const method = eth[propertyKey]
@@ -75,8 +69,6 @@ export function inject(target: Object, propertyKey: string | symbol) {
     }
   })
 }
-
-export type BlockIdentifier = 'latest' | 'earliest' | 'pending' | string
 
 /**
  * @public
@@ -127,28 +119,28 @@ export class RequestManager {
   @inject eth_blockNumber: () => Promise<Quantity>
 
   /** Returns the balance of the account of given address. */
-  @inject eth_getBalance: (address: Address, block: Quantity | Tag) => Promise<BigNumber>
+  @inject eth_getBalance: (address: Address, block: BlockIdentifier) => Promise<BigNumber>
 
   /** Returns the value from a storage position at a given address. */
-  @inject eth_getStorageAt: (address: Address, position: Quantity, block: Quantity | Tag) => Promise<Data>
+  @inject eth_getStorageAt: (address: Address, position: Quantity, block: BlockIdentifier) => Promise<Data>
 
   /** Returns the number of transactions sent from an address. */
-  @inject eth_getTransactionCount: (address: Address, block: Quantity | Tag) => Promise<Quantity>
+  @inject eth_getTransactionCount: (address: Address, block: BlockIdentifier) => Promise<Quantity>
 
   /** Returns the number of transactions in a block from a block matching the given block hash. */
   @inject eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<Quantity>
 
   /** Returns the number of transactions in a block matching the given block number. */
-  @inject eth_getBlockTransactionCountByNumber: (block: Quantity | Tag) => Promise<Quantity>
+  @inject eth_getBlockTransactionCountByNumber: (block: BlockIdentifier) => Promise<Quantity>
 
   /** Returns the number of uncles in a block from a block matching the given block hash. */
   @inject eth_getUncleCountByBlockHash: (blockHash: TxHash) => Promise<Quantity>
 
   /** Returns the number of uncles in a block from a block matching the given block number. */
-  @inject eth_getUncleCountByBlockNumber: (block: Quantity | Tag) => Promise<Quantity>
+  @inject eth_getUncleCountByBlockNumber: (block: BlockIdentifier) => Promise<Quantity>
 
   /** Returns code at a given address. */
-  @inject eth_getCode: (address: Address, block: Quantity | Tag) => Promise<Data>
+  @inject eth_getCode: (address: Address, block: BlockIdentifier) => Promise<Data>
 
   /**
    * The sign method calculates an Ethereum specific signature with:
@@ -172,7 +164,7 @@ export class RequestManager {
   @inject eth_sendRawTransaction: (rawTransaction: Data) => Promise<TxHash>
 
   /** Executes a new message call immediately without creating a transaction on the block chain. */
-  @inject eth_call: (options: TransactionCallOptions, block: Quantity | Tag) => Promise<Data>
+  @inject eth_call: (options: TransactionCallOptions, block: BlockIdentifier) => Promise<Data>
   /**
    * Generates and returns an estimate of how much gas is necessary to allow the transaction to complete.
    * The transaction will not be added to the blockchain. Note that the estimate may be significantly more
@@ -185,7 +177,7 @@ export class RequestManager {
   @inject eth_getBlockByHash: (blockHash: TxHash, fullTransactionObjects: boolean) => Promise<BlockObject>
 
   /** Returns information about a block by block number. */
-  @inject eth_getBlockByNumber: (block: Quantity | Tag, fullTransactionObjects: boolean) => Promise<BlockObject>
+  @inject eth_getBlockByNumber: (block: BlockIdentifier, fullTransactionObjects: boolean) => Promise<BlockObject>
 
   /** Returns the information about a transaction requested by transaction hash. */
   @inject eth_getTransactionByHash: (hash: TxHash) => Promise<TransactionObject>
@@ -195,7 +187,7 @@ export class RequestManager {
 
   /** Returns information about a transaction by block number and transaction index position. */
   @inject
-  eth_getTransactionByBlockNumberAndIndex: (block: Quantity | Tag, txIndex: Quantity) => Promise<TransactionObject>
+  eth_getTransactionByBlockNumberAndIndex: (block: BlockIdentifier, txIndex: Quantity) => Promise<TransactionObject>
   /**
    * Returns the receipt of a transaction by transaction hash.
    * Note That the receipt is not available for pending transactions.
@@ -206,7 +198,7 @@ export class RequestManager {
   @inject eth_getUncleByBlockHashAndIndex: (blockHash: TxHash, index: Quantity) => Promise<BlockObject>
 
   /** Returns information about a uncle of a block by number and uncle index position. */
-  @inject eth_getUncleByBlockNumberAndIndex: (block: Quantity | Tag, index: Quantity) => Promise<BlockObject>
+  @inject eth_getUncleByBlockNumberAndIndex: (block: BlockIdentifier, index: Quantity) => Promise<BlockObject>
 
   /** Returns a list of available compilers in the client. */
   @inject eth_getCompilers: () => Promise<Array<string>>

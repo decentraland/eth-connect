@@ -1,5 +1,5 @@
-import { toHex } from '../src'
 import testMethod = require('./helpers/test.method')
+import { toHex } from '../src'
 
 let method = 'post'
 

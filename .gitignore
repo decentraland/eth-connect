@@ -28,3 +28,5 @@ test/**/*.d.ts
 eth_common/.ethereum
 bundled
 src/temp
+**/*.lcov
+coverage.lcov
