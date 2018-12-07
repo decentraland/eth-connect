@@ -4,6 +4,7 @@ TSC = $(NODE) --max-old-space-size=4096 node_modules/.bin/tsc
 MOCHA = $(NODE) --max-old-space-size=4096 node_modules/.bin/mocha
 NYC = $(NODE) --max-old-space-size=4096 node_modules/.bin/nyc
 TSLINT = $(NODE) --max-old-space-size=4096 node_modules/.bin/tslint
+COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
 
 clean:
 		$(COMPILER) build.clean.json
@@ -37,15 +38,15 @@ test:
 		${MOCHA} --reporter list
 
 coverage:
-		${NYC} mocha
+		$(NYC) node_modules/.bin/mocha
 
 test-coveralls:
-		${NYC} report --reporter=text-lcov | coveralls --verbose
+		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose
 
 test-codecov:
 		${NYC} report --reporter=text-lcov > coverage.lcov && codecov
 
-ci:
+local-node:
     # ensure geth image
 		docker pull ethereum/client-go
 
@@ -65,9 +66,12 @@ ci:
         --mine --minerthreads=1 \
         --dev
 
-	  # run the tests
+ci:
+		${MAKE} local-node
 	  ${MAKE} coverage
 	  ${MAKE} test-codecov
 
 	  # stop the node
 	  (docker container kill geth-dev && docker container rm geth-dev) || true
+
+.PHONY: coverage

@@ -2,7 +2,7 @@ import chai = require('chai')
 import 'isomorphic-fetch'
 // tslint:disable
 
-import { RequestManager, utils } from '../src'
+import { RequestManager, isStrictAddress, isArray } from '../src'
 import { testAllProviders } from './helpers/testAllProviders'
 import { WebSocketProvider } from '../src/providers/WebSocketProvider'
 
@@ -16,13 +16,13 @@ function doTest(requestManager: RequestManager) {
   it('should create an account', async () => {
     // this should not fail, that's all
     account = await requestManager.personal_newAccount('test')
-    chai.assert(utils.isStrictAddress(account), 'is strict address')
+    chai.assert(isStrictAddress(account), 'is strict address')
   })
 
   it('should get the list of accounts', async () => {
     // this should not fail, that's all
     let accounts = await requestManager.personal_listAccounts()
-    chai.assert(utils.isArray(accounts), 'returns an array of accounts')
+    chai.assert(isArray(accounts), 'returns an array of accounts')
     chai.assert(accounts.length > 0, 'has accounts')
     chai.assert(accounts.includes(account), 'has our created account')
   })

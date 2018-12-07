@@ -59,7 +59,7 @@ describe('lib/utils/utils', function() {
   describe('toTwosComplement', function() {
     tests.forEach(function(test) {
       it('printing ' + test.value, function() {
-        assert(test.expected.eq(utils.toTwosComplement(test.value)))
+        assert(test.expected.eq(utils.toTwosComplement(test.value) as BigNumber))
       })
     })
   })
