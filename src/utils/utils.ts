@@ -482,10 +482,8 @@ export function isBigNumber(object: any) {
  * @public
  * Returns true if object is string, otherwise false
  */
-export function isString(object: string): true
-export function isString(object: any): false
-export function isString(object: any): boolean {
-  return typeof object === 'string' || (object && object.constructor && object.constructor.name === 'String')
+export function isString(value: any): value is string {
+  return typeof value === 'string' || (value && value.constructor && value.constructor.name === 'String')
 }
 
 /**

@@ -18,20 +18,19 @@ clean:
 build: clean
 		${TSC} --project tsconfig-build.json
 		${TSC} --project tsconfig.json --noEmit # build everything with tests
-
-build-bundled: build
 		${COMPILER} build.json
 		$(MAKE) provision-bundled
-		$(MAKE) bundle-declarations
 
 provision-bundled:
 		cp ./static/package.json ./bundled/package.json
 		cp ./static/api-extractor.json ./bundled/api-extractor.json
 		cp ./static/tsconfig.json ./bundled/tsconfig.json
-		cd ./bundled && npm i
-
-bundle-declarations:
-		cd ./bundled && npm run bundle-declarations
+		cd ./bundled && npm i @microsoft/api-extractor
+		cd ./bundled && ./node_modules/.bin/api-extractor run --typescript-compiler-folder ./node_modules/typescript --local
+		mv ./bundled/lib/index.js ./bundled
+		rm -rf ./bundled/lib
+		rm -rf ./bundled/api-extractor.json
+		rm -rf ./bundled/dist
 
 watch:
 		${TSC} --project tsconfig-build.json --watch
