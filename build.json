@@ -3,6 +3,7 @@
     "name": "Compile",
     "kind": "Webpack",
     "file": "./src/index.ts",
-    "target": "web"
+    "target": "esm",
+    "library": "ethconnect"
   }
 ]

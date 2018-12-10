@@ -49,7 +49,7 @@ export function inputBlockNumberFormatter(blockNumber: Quantity | Tag): string |
   if (blockNumber === undefined || blockNumber == null) {
     return undefined
   } else if (isPredefinedBlockNumber(blockNumber)) {
-    return blockNumber as Tag
+    return blockNumber
   }
   return utils.toHex(blockNumber)
 }
