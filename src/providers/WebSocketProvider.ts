@@ -17,6 +17,9 @@ export type WebSocketProviderOptions = {
   protocol?: string
 }
 
+/**
+ * @public
+ */
 export class WebSocketProvider<T extends IWebSocket> {
   isDisposed = false
 

@@ -15,7 +15,7 @@ export type Syncing = {
   highestBlock: Quantity
 }
 
-export enum TRANSACTION_STATUS {
+export enum TransactionStatus {
   pending = 'pending',
   confirmed = 'confirmed',
   failed = 'failed'
@@ -217,9 +217,8 @@ export type ConfirmedTransaction = TransactionObject & {
 }
 
 export type FilterLog = {}
-
 export type TransactionAndReceipt = TransactionObject & { receipt: TransactionReceipt }
-export type FinishedTransactionAndReceipt = TransactionAndReceipt & { status: keyof typeof TRANSACTION_STATUS }
+export type FinishedTransactionAndReceipt = TransactionAndReceipt & { status: TransactionStatus }
 export type BlockIdentifier = Quantity | Tag
 
 export type FilterOptions = {

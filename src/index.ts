@@ -26,12 +26,7 @@ export { Method } from './Method'
 export { Property } from './Property'
 export { eth } from './methods/eth'
 
-/**
- * @public
- */
-const providers = {
+export {
   HTTPProvider,
   WebSocketProvider
 }
-
-export { providers }

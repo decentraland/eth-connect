@@ -17,8 +17,8 @@
 
 // tslint:disable:variable-name
 
-import jsonRpc = require('./utils/jsonrpc')
-import errors = require('./utils/errors')
+import { RPCSendableMessage, toPayload, isValidResponse } from './utils/jsonrpc'
+import { InvalidProvider, InvalidResponse } from './utils/errors'
 import { IFuture, future } from './utils/future'
 import { eth } from './methods/eth'
 
@@ -46,7 +46,7 @@ import {
   ConfirmedTransaction,
   TransactionType,
   BlockIdentifier,
-  TRANSACTION_STATUS,
+  TransactionStatus,
   FinishedTransactionAndReceipt,
   TransactionAndReceipt
 } from './Schema'
@@ -374,13 +374,13 @@ export class RequestManager {
    *
    * @param data - The RPC message to be sent
    */
-  async sendAsync(data: jsonRpc.RPCSendableMessage) {
+  async sendAsync(data: RPCSendableMessage) {
     /* istanbul ignore if */
     if (!this.provider) {
-      throw errors.InvalidProvider()
+      throw InvalidProvider()
     }
 
-    let payload = jsonRpc.toPayload(data.method, data.params)
+    let payload = toPayload(data.method, data.params)
 
     const defer = future()
 
@@ -395,8 +395,8 @@ export class RequestManager {
       }
 
       /* istanbul ignore if */
-      if (!jsonRpc.isValidResponse(result)) {
-        defer.reject(errors.InvalidResponse(result))
+      if (!isValidResponse(result)) {
+        defer.reject(InvalidResponse(result))
         return
       }
 
@@ -440,7 +440,7 @@ export class RequestManager {
 
     if (isDropped) {
       const tx = await this.getTransactionAndReceipt(txId)
-      return { ...tx, status: TRANSACTION_STATUS.failed }
+      return { ...tx, status: TransactionStatus.failed }
     }
 
     while (true) {
@@ -449,7 +449,7 @@ export class RequestManager {
       if (!this.isPending(tx) && tx.receipt) {
         return {
           ...tx,
-          status: this.isFailure(tx) ? TRANSACTION_STATUS.failed : TRANSACTION_STATUS.confirmed
+          status: this.isFailure(tx) ? TransactionStatus.failed : TransactionStatus.confirmed
         }
       }
 
