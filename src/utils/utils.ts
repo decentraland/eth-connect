@@ -475,7 +475,7 @@ export function toAddress(address) {
  * Returns true if object is BigNumberType, otherwise false
  */
 export function isBigNumber(object: any) {
-  return object instanceof BigNumber || (object && object.constructor && object.constructor.name === 'BigNumber')
+  return object instanceof BigNumber
 }
 
 /**
