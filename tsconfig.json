@@ -19,5 +19,5 @@
     "plugins": [{ "name": "tslint-language-service" }],
     "noEmit": true
   },
-  "exclude": ["node_modules/**/*"]
+  "exclude": ["node_modules/**/*", "static/**/*"]
 }

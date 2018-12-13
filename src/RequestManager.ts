@@ -77,6 +77,7 @@ export function inject(target: Object, propertyKey: string | symbol) {
  * Default poll timeout is 1 second
  */
 export class RequestManager {
+  // @internal
   requests = new Map<number, IFuture<any>>()
 
   /** Returns the current client version. */

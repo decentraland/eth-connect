@@ -1,9 +1,17 @@
 [
   {
-    "name": "Compile",
+    "name": "Compile ESM",
     "kind": "Webpack",
     "file": "./src/index.ts",
     "target": "esm",
-    "library": "ethconnect"
+    "library": "ethconnect",
+    "fileName": "eth-connect.esm.js"
+  },
+  {
+    "name": "Compile UMD",
+    "kind": "Webpack",
+    "file": "./src/index.ts",
+    "target": "web",
+    "fileName": "eth-connect.js"
   }
 ]

@@ -23,7 +23,9 @@ export type WebSocketProviderOptions = {
 export class WebSocketProvider<T extends IWebSocket> {
   isDisposed = false
 
+  // @internal
   responseCallbacks = new Map<number, IFuture<any>>()
+  // @internal
   notificationCallbacks = new Set<Callback>()
   connection: IFuture<T>
 
