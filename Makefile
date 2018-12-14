@@ -38,7 +38,7 @@ lint:
 		${TSLINT}
 
 test:
-		node --experimental-modules node_modules/mocha/bin/_mocha --reporter list
+		TS_NODE_PROJECT='./tsconfig-test.json' node --experimental-modules node_modules/mocha/bin/_mocha --reporter list
 
 coverage:
 		$(NYC) node_modules/.bin/mocha
