@@ -17,7 +17,8 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "plugins": [{ "name": "tslint-language-service" }],
-    "noEmit": true
+    "noEmit": true,
+    "allowJs": true
   },
   "exclude": ["node_modules/**/*", "static/**/*"]
 }

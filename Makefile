@@ -38,7 +38,7 @@ lint:
 		${TSLINT}
 
 test:
-		${MOCHA} --reporter list
+		node --experimental-modules node_modules/mocha/bin/_mocha --reporter list
 
 coverage:
 		$(NYC) node_modules/.bin/mocha
