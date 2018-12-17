@@ -32,6 +32,7 @@ provision-bundled:
 		@mv ./dist/lib/eth-connect.js ./dist
 		@mv ./dist/lib/eth-connect.esm.js ./dist
 		@rm -rf ./dist/lib
+		@rm ./dist/tsconfig.json
 		@rm -rf ./dist/node_modules
 		@rm -rf ./dist/api-extractor.json
 		@rm -rf ./dist/dist

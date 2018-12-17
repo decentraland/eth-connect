@@ -1,7 +1,23 @@
 {
-  "extends": "../tsconfig.json",
-  "include": ["**/*.ts"],
   "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "diagnostics": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "sourceMap": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "stripInternal": true,
+    "pretty": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "noEmit": true,
     "lib": ["es2017", "dom"]
-  }
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules/**/*", "static/**/*"]
 }
