@@ -9,7 +9,7 @@ import { WebSocketProvider } from '../../src/providers/WebSocketProvider'
 import { w3cwebsocket } from 'websocket'
 
 export function testAllProviders(doTest: (x: RequestManager) => void) {
-  describe('provider: injected ganache', function() {
+  describe('ganache(injected):', function() {
     const nodeConnectionFactory = new NodeConnectionFactory()
     const provider = nodeConnectionFactory.createProvider()
     const rm = new RequestManager(provider)
@@ -30,7 +30,7 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     })
   })
 
-  describe('provider: http', function() {
+  describe('ganache(http):', function() {
     const nodeConnectionFactory = new NodeConnectionFactory()
     const provider = nodeConnectionFactory.createServer()
 
@@ -49,7 +49,7 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     })
   })
 
-  describe('provider: ws', function() {
+  describe('geth(ws):', function() {
     const provider = new WebSocketProvider('ws://127.0.0.1:8546', { WebSocketConstructor: w3cwebsocket })
     const rm = new RequestManager(provider)
 

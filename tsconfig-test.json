@@ -2,22 +2,19 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2017",
-    "outDir": "./dist",
-    "diagnostics": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "inlineSourceMap": false,
     "inlineSources": false,
     "sourceMap": true,
-    "declaration": true,
     "moduleResolution": "node",
     "stripInternal": true,
-    "pretty": true,
     "forceConsistentCasingInFileNames": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "plugins": [{ "name": "tslint-language-service" }],
-    "noEmit": true
+    "noEmit": true,
+    "allowJs": true
   },
   "exclude": ["node_modules/**/*", "static/**/*"]
 }

@@ -14,7 +14,7 @@ describe('lib/web3/formatters', function() {
   describe('inputDefaultBlockNumberFormatter', function() {
     tests.forEach(function(test) {
       it('should turn ' + test.value + ' to ' + test.expected, function() {
-        assert.strictEqual(formatters.inputDefaultBlockNumberFormatter(test.value), test.expected)
+        assert.strictEqual(formatters.inputDefaultBlockNumberFormatter(test.value as any), test.expected)
       })
     })
   })

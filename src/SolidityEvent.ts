@@ -20,8 +20,8 @@
  * @date 2014
  */
 
-import utils = require('./utils/utils')
-import formatters = require('./utils/formatters')
+import * as utils from './utils/utils'
+import * as formatters from './utils/formatters'
 
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
@@ -50,11 +50,9 @@ export class SolidityEvent {
   /**
    * Should be used to get filtered param types
    *
-   * @method types
-   * @param {Bool} decide if returned typed should be indexed
-   * @return {Array} array of types
+   * @param decide - True if returned typed should be indexed
    */
-  types(indexed) {
+  types(indexed): string[] {
     return this._params
       .filter(function(i) {
         return i.indexed === indexed
@@ -66,43 +64,32 @@ export class SolidityEvent {
 
   /**
    * Should be used to get event display name
-   *
-   * @method displayName
-   * @return {string} event display name
    */
-  displayName() {
+  displayName(): string {
     return utils.extractDisplayName(this._name)
   }
 
   /**
    * Should be used to get event type name
-   *
-   * @method typeName
-   * @return {string} event type name
    */
-  typeName() {
+  typeName(): string {
     return utils.extractTypeName(this._name) || 'void'
   }
 
   /**
    * Should be used to get event signature
-   *
-   * @method signature
-   * @return {string} event signature
    */
-  signature() {
+  signature(): string {
     return utils.sha3(this._name)
   }
 
   /**
    * Should be used to encode indexed params and options to one final object
    *
-   * @method encode
    * @param {object} indexed
    * @param {object} options
-   * @return {object} everything combined together and encoded
    */
-  encode(indexed = {}, options: FilterOptions = {}) {
+  encode(indexed: Record<string, any> = {}, options: FilterOptions = {}): { topics: string[]; address: string } {
     let result = {
       topics: [],
       address: this.address
@@ -145,11 +132,13 @@ export class SolidityEvent {
   /**
    * Should be used to decode indexed params and options
    *
-   * @method decode
    * @param {object} data
-   * @return {object} result object with decoded indexed && not indexed params
    */
-  decode(data: { data: string; topics?: string[]; address: string }) {
+  decode(data: {
+    data: string
+    topics?: string[]
+    address: string
+  }): { event: string; address: string; args: string[] } {
     data.data = data.data || ''
     data.topics = data.topics || []
 
@@ -182,12 +171,10 @@ export class SolidityEvent {
   /**
    * Should be used to create new filter object from event
    *
-   * @method execute
    * @param {object} indexed
    * @param {object} options
-   * @return {object} filter object
    */
-  async execute(indexed, options: FilterOptions) {
+  async execute(indexed: Record<string, any>, options: FilterOptions): Promise<EthFilter> {
     let o = this.encode(indexed, options)
     let formatter = this.decode.bind(this)
     return new EthFilter(this.requestManager, o, formatter)

@@ -26,3 +26,6 @@ test/**/*.map
 test/**/*.d.ts
 .nyc_output
 eth_common/.ethereum
+src/temp
+**/*.lcov
+coverage.lcov

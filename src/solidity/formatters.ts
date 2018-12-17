@@ -16,6 +16,7 @@
 */
 
 import { BigNumber } from 'bignumber.js'
+import { BigNumber as BigNumberType } from '../utils/BigNumber'
 import utils = require('../utils/utils')
 import config = require('../utils/config')
 import { SolidityParam } from './param'
@@ -24,12 +25,8 @@ import { SolidityParam } from './param'
  * Formats input value to byte representation of int
  * If value is negative, return it's two's complement
  * If the value is floating point, round it down
- *
- * @method formatInputInt
- * @param {string|number|BigNumber} value that needs to be formatted
- * @returns {SolidityParam}
  */
-export function formatInputInt(value) {
+export function formatInputInt(value: string | number | BigNumberType) {
   BigNumber.config(config.ETH_BIGNUMBER_ROUNDING_MODE)
   let result = utils.padLeft(utils.toTwosComplement(value).toString(16), 64)
   return new SolidityParam(result)
@@ -37,12 +34,8 @@ export function formatInputInt(value) {
 
 /**
  * Formats input bytes
- *
- * @method formatInputBytes
- * @param {string}
- * @returns {SolidityParam}
  */
-export function formatInputBytes(value) {
+export function formatInputBytes(value: string) {
   let result = utils.toHex(value).substr(2)
   let l = Math.floor((result.length + 63) / 64)
   result = utils.padRight(result, l * 64)
@@ -51,12 +44,8 @@ export function formatInputBytes(value) {
 
 /**
  * Formats input bytes
- *
- * @method formatDynamicInputBytes
- * @param {string}
- * @returns {SolidityParam}
  */
-export function formatInputDynamicBytes(value) {
+export function formatInputDynamicBytes(value: string) {
   let result = utils.toHex(value).substr(2)
   let length = result.length / 2
   let l = Math.floor((result.length + 63) / 64)
@@ -66,12 +55,8 @@ export function formatInputDynamicBytes(value) {
 
 /**
  * Formats input value to byte representation of string
- *
- * @method formatInputString
- * @param {string}
- * @returns {SolidityParam}
  */
-export function formatInputString(value) {
+export function formatInputString(value: string) {
   let result = utils.fromUtf8(value).substr(2)
   let length = result.length / 2
   let l = Math.floor((result.length + 63) / 64)
@@ -81,12 +66,8 @@ export function formatInputString(value) {
 
 /**
  * Formats input value to byte representation of bool
- *
- * @method formatInputBool
- * @param {Boolean}
- * @returns {SolidityParam}
  */
-export function formatInputBool(value) {
+export function formatInputBool(value: boolean) {
   let result = '000000000000000000000000000000000000000000000000000000000000000' + (value ? '1' : '0')
   return new SolidityParam(result)
 }
@@ -94,34 +75,24 @@ export function formatInputBool(value) {
 /**
  * Formats input value to byte representation of real
  * Values are multiplied by 2^m and encoded as integers
- *
- * @method formatInputReal
- * @param {string|number|BigNumber}
- * @returns {SolidityParam}
  */
-export function formatInputReal(value) {
+export function formatInputReal(value: string | number) {
   return formatInputInt(new BigNumber(value).times(new BigNumber(2).pow(128)))
 }
 
 /**
  * Check if input value is negative
  *
- * @method signedIsNegative
- * @param {string} value is hex format
- * @returns {Boolean} true if it is negative, otherwise false
+ * @param value - The value is hex format
  */
-export function signedIsNegative(value) {
+export function signedIsNegative(value: string) {
   return new BigNumber(value.substr(0, 1), 16).toString(2).substr(0, 1) === '1'
 }
 
 /**
  * Formats right-aligned output bytes to int
- *
- * @method formatOutputInt
- * @param {SolidityParam} param
- * @returns {BigNumber} right-aligned output bytes formatted to big number
  */
-export function formatOutputInt(param) {
+export function formatOutputInt(param): BigNumberType {
   let value = param.staticPart() || '0'
 
   // check if it's negative number
@@ -136,58 +107,40 @@ export function formatOutputInt(param) {
 
 /**
  * Formats right-aligned output bytes to uint
- *
- * @method formatOutputUInt
- * @param {SolidityParam}
- * @returns {BigNumeber} right-aligned output bytes formatted to uint
  */
-export function formatOutputUInt(param) {
+export function formatOutputUInt(param: any) {
   let value = param.staticPart() || '0'
   return new BigNumber(value, 16)
 }
 
 /**
  * Formats right-aligned output bytes to real
- *
- * @method formatOutputReal
- * @param {SolidityParam}
- * @returns {BigNumber} input bytes formatted to real
  */
-export function formatOutputReal(param) {
+export function formatOutputReal(param: any) {
   return formatOutputInt(param).dividedBy(new BigNumber(2).pow(128))
 }
 
 /**
  * Formats right-aligned output bytes to ureal
- *
- * @method formatOutputUReal
- * @param {SolidityParam}
- * @returns {BigNumber} input bytes formatted to ureal
  */
-export function formatOutputUReal(param) {
+export function formatOutputUReal(param: any) {
   return formatOutputUInt(param).dividedBy(new BigNumber(2).pow(128))
 }
 
 /**
  * Should be used to format output bool
- *
- * @method formatOutputBool
- * @param {SolidityParam}
- * @returns {Boolean} right-aligned input bytes formatted to bool
  */
-export function formatOutputBool(param) {
+export function formatOutputBool(param: any) {
   return param.staticPart() === '0000000000000000000000000000000000000000000000000000000000000001' ? true : false
 }
 
 /**
  * Should be used to format output bytes
  *
- * @method formatOutputBytes
- * @param {SolidityParam} left-aligned hex representation of string
- * @param {string} name type name
- * @returns {string} hex string
+ * @param param - The left-aligned hex representation of string
+ * @param name - The type name
  */
-export function formatOutputBytes(param, name) {
+export function formatOutputBytes(param: any, name: string) {
   let matches = name.match(/^bytes([0-9]*)/)
   let size = parseInt(matches[1], 10)
   return '0x' + param.staticPart().slice(0, 2 * size)
@@ -196,11 +149,9 @@ export function formatOutputBytes(param, name) {
 /**
  * Should be used to format output bytes
  *
- * @method formatOutputDynamicBytes
- * @param {SolidityParam} left-aligned hex representation of string
- * @returns {string} hex string
+ * @param param - The left-aligned hex representation of string
  */
-export function formatOutputDynamicBytes(param) {
+export function formatOutputDynamicBytes(param: any) {
   let length = new BigNumber(param.dynamicPart().slice(0, 64), 16).toNumber() * 2
   return '0x' + param.dynamicPart().substr(64, length)
 }
@@ -208,11 +159,9 @@ export function formatOutputDynamicBytes(param) {
 /**
  * Should be used to format output string
  *
- * @method formatOutputString
- * @param {SolidityParam} left-aligned hex representation of string
- * @returns {string} ascii string
+ * @param param - The left-aligned hex representation of string
  */
-export function formatOutputString(param) {
+export function formatOutputString(param: any) {
   let length = new BigNumber(param.dynamicPart().slice(0, 64), 16).toNumber() * 2
   return utils.toUtf8(param.dynamicPart().substr(64, length))
 }
@@ -220,11 +169,9 @@ export function formatOutputString(param) {
 /**
  * Should be used to format output address
  *
- * @method formatOutputAddress
- * @param {SolidityParam} right-aligned input bytes
- * @returns {string} address
+ * @param param - The right-aligned input bytes
  */
-export function formatOutputAddress(param) {
+export function formatOutputAddress(param: any) {
   let value = param.staticPart()
   return '0x' + value.slice(value.length - 40, value.length)
 }

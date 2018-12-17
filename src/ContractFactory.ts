@@ -20,7 +20,7 @@
  * @date 2014
  */
 
-import utils = require('./utils/utils')
+import * as utils from './utils/utils'
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
@@ -29,13 +29,9 @@ import { TransactionOptions, TxHash, Data } from './Schema'
 
 /**
  * Should be called to check if the contract gets properly deployed on the blockchain.
- *
- * @method checkForContractAddress
- * @param {object} contract
- * @param {Function} callback
- * @returns {Undefined}
+ * @param requestManager - The reference to a RequestManager instance
  */
-async function checkForContractAddress(requestManager: RequestManager, txId: TxHash) {
+async function checkForContractAddress(requestManager: RequestManager, txId: TxHash): Promise<string> {
   const receiptFuture = future()
 
   let count = 0
@@ -78,12 +74,9 @@ async function checkForContractAddress(requestManager: RequestManager, txId: TxH
 
 /**
  * Should be called to encode constructor params
- *
- * @method encodeConstructorParams
- * @param {Array} abi
- * @param {Array} constructor params
+ * @param abi - The given contract ABI
  */
-function encodeConstructorParams(abi, params) {
+function encodeConstructorParams(abi: any[], params: any[]) {
   return (
     abi
       .filter(function(json) {
@@ -101,22 +94,13 @@ function encodeConstructorParams(abi, params) {
 }
 
 /**
+ * @public
  * Should be called to create new ContractFactory instance
- *
- * @method ContractFactory
- * @param {Array} abi
  */
 export class ContractFactory {
   constructor(public requestManager: RequestManager, public abi: any[]) {}
   /**
    * Should be called to create new contract on a blockchain
-   *
-   * @method new
-   * @param {Any} contract constructor param1 (optional)
-   * @param {Any} contract constructor param2 (optional)
-   * @param {object} contract transaction object (required)
-   * @param {Function} callback
-   * @returns {Contract} returns contract instance
    */
   async deploy(param1, param2, options: TransactionOptions): Promise<Contract>
   async deploy(param1, options: TransactionOptions): Promise<Contract>
@@ -173,11 +157,7 @@ export class ContractFactory {
   /**
    * Should be called to get access to existing contract on a blockchain
    *
-   * @method at
-   * @param {Address} contract address (required)
-   * @param {Function} callback {optional)
-   * @returns {Contract} returns contract if no callback was passed,
-   * otherwise calls callback function (err, contract)
+   * @param address - The contract address
    */
   async at(address: string): Promise<Contract> {
     if (!utils.isAddress(address)) {
@@ -189,8 +169,6 @@ export class ContractFactory {
 
   /**
    * Gets the data, which is data to deploy plus constructor params
-   *
-   * @method getData
    */
   async getData(...args: any[]): Promise<Data> {
     let options = { data: undefined }

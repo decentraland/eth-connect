@@ -6,6 +6,8 @@ export type HTTPProviderOptions = {
 }
 
 /**
+ * @public
+ *
  * HttpProvider should be used to send rpc calls over http
  */
 export class HTTPProvider {
@@ -24,10 +26,6 @@ export class HTTPProvider {
 
   /**
    * Should be used to make async request
-   *
-   * @method send
-   * @param {Object} payload
-   * @param {Function} callback triggered on end with (err, result)
    */
   sendAsync(payload: RPCMessage | RPCMessage[], callback: Callback) {
     try {

@@ -1,5 +1,5 @@
 import { RequestManager } from './RequestManager'
-import utils = require('./utils/utils')
+import * as utils from './utils/utils'
 import config = require('./utils/config')
 import errors = require('./utils/errors')
 import { toBatchPayload, isValidResponse } from './utils/jsonrpc'
@@ -24,14 +24,14 @@ export class Poller {
    * Should be used to start polling
    *
    * @method startPolling
-   * @param {object} data
-   * @param {number} pollId
-   * @param {Function} callback
-   * @param {Function} uninstall
+   * @param data - The given data
+   * @param pollId - The poll id
+   * @param callback - The function to be called
+   * @param uninstall - The function to be called when the poller is removed
    *
    * @todo cleanup number of params
    */
-  startPolling(data, pollId: string, callback: (err, data) => void, uninstall: Function) {
+  startPolling(data: any, pollId: string, callback: (err, data) => void, uninstall: Function) {
     this.polls[pollId] = {
       data: data,
       id: pollId,
@@ -48,7 +48,6 @@ export class Poller {
   /**
    * Should be used to stop polling for filter with given id
    *
-   * @method stopPolling
    * @param {number} pollId
    */
   stopPolling(pollId: string | number) {
@@ -63,8 +62,6 @@ export class Poller {
 
   /**
    * Should be called to reset the polling mechanism of the request manager
-   *
-   * @method reset
    */
   reset(keepIsSyncing = false) {
     /*jshint maxcomplexity:5 */
@@ -87,8 +84,6 @@ export class Poller {
 
   /**
    * Should be called to poll for changes on filter with given id
-   *
-   * @method poll
    */
   poll() {
     this.timeout = setTimeout(this.poll.bind(this), config.ETH_POLLING_TIMEOUT)

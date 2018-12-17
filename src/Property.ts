@@ -22,6 +22,9 @@ export interface IPropertyOptions {
   outputFormatter?: Function
 }
 
+/**
+ * @public
+ */
 export class Property {
   getter: string
   outputFormatter: Function | null
@@ -34,9 +37,7 @@ export class Property {
   /**
    * Should be called to format output(result) of method
    *
-   * @method formatOutput
-   * @param {object}
-   * @return {object}
+   * @param result - The result to be formatted
    */
   formatOutput(result: any) {
     return this.outputFormatter && result !== null && result !== undefined ? this.outputFormatter(result) : result

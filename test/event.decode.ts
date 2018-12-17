@@ -191,7 +191,7 @@ describe('lib/web3/event', function() {
         let event = new SolidityEvent(null, test.abi as any, address)
 
         let result = event.decode(test.data as any)
-        assert.deepEqual(result, test.expected)
+        assert.deepEqual(result, test.expected as any)
       })
     })
   })

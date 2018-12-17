@@ -17,8 +17,8 @@
 
 // tslint:disable:variable-name
 
-import jsonRpc = require('./utils/jsonrpc')
-import errors = require('./utils/errors')
+import { RPCSendableMessage, toPayload, isValidResponse } from './utils/jsonrpc'
+import { InvalidProvider, InvalidResponse } from './utils/errors'
 import { IFuture, future } from './utils/future'
 import { eth } from './methods/eth'
 
@@ -30,7 +30,6 @@ import {
   SHHPost,
   FilterChange,
   TransactionReceipt,
-  Tag,
   BlockObject,
   TransactionObject,
   TransactionCallOptions,
@@ -45,21 +44,16 @@ import {
   Transaction,
   RevertedTransaction,
   ConfirmedTransaction,
-  TransactionType
+  TransactionType,
+  BlockIdentifier,
+  TransactionStatus,
+  FinishedTransactionAndReceipt,
+  TransactionAndReceipt
 } from './Schema'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from './utils/BigNumber'
 import { sleep } from './utils/sleep'
 
 export let TRANSACTION_FETCH_DELAY: number = 2 * 1000
-
-export const TRANSACTION_STATUS = Object.freeze({
-  pending: 'pending' as 'pending',
-  confirmed: 'confirmed' as 'confirmed',
-  failed: 'failed' as 'failed'
-})
-
-export type TransactionAndReceipt = TransactionObject & { receipt: TransactionReceipt }
-export type FinishedTransactionAndReceipt = TransactionAndReceipt & { status: keyof typeof TRANSACTION_STATUS }
 
 export function inject(target: Object, propertyKey: string | symbol) {
   const method = eth[propertyKey]
@@ -76,14 +70,14 @@ export function inject(target: Object, propertyKey: string | symbol) {
   })
 }
 
-export type BlockIdentifier = 'latest' | 'earliest' | 'pending' | string
-
 /**
+ * @public
  * It's responsible for passing messages to providers
  * It's also responsible for polling the ethereum node for incoming messages
  * Default poll timeout is 1 second
  */
 export class RequestManager {
+  // @internal
   requests = new Map<number, IFuture<any>>()
 
   /** Returns the current client version. */
@@ -126,33 +120,33 @@ export class RequestManager {
   @inject eth_blockNumber: () => Promise<Quantity>
 
   /** Returns the balance of the account of given address. */
-  @inject eth_getBalance: (address: Address, block: Quantity | Tag) => Promise<BigNumber>
+  @inject eth_getBalance: (address: Address, block: BlockIdentifier) => Promise<BigNumber>
 
   /** Returns the value from a storage position at a given address. */
-  @inject eth_getStorageAt: (address: Address, position: Quantity, block: Quantity | Tag) => Promise<Data>
+  @inject eth_getStorageAt: (address: Address, position: Quantity, block: BlockIdentifier) => Promise<Data>
 
   /** Returns the number of transactions sent from an address. */
-  @inject eth_getTransactionCount: (address: Address, block: Quantity | Tag) => Promise<Quantity>
+  @inject eth_getTransactionCount: (address: Address, block: BlockIdentifier) => Promise<number>
 
   /** Returns the number of transactions in a block from a block matching the given block hash. */
-  @inject eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<Quantity>
+  @inject eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<number>
 
   /** Returns the number of transactions in a block matching the given block number. */
-  @inject eth_getBlockTransactionCountByNumber: (block: Quantity | Tag) => Promise<Quantity>
+  @inject eth_getBlockTransactionCountByNumber: (block: BlockIdentifier) => Promise<number>
 
   /** Returns the number of uncles in a block from a block matching the given block hash. */
-  @inject eth_getUncleCountByBlockHash: (blockHash: TxHash) => Promise<Quantity>
+  @inject eth_getUncleCountByBlockHash: (blockHash: TxHash) => Promise<number>
 
   /** Returns the number of uncles in a block from a block matching the given block number. */
-  @inject eth_getUncleCountByBlockNumber: (block: Quantity | Tag) => Promise<Quantity>
+  @inject eth_getUncleCountByBlockNumber: (block: BlockIdentifier) => Promise<number>
 
   /** Returns code at a given address. */
-  @inject eth_getCode: (address: Address, block: Quantity | Tag) => Promise<Data>
+  @inject eth_getCode: (address: Address, block: BlockIdentifier) => Promise<Data>
 
   /**
    * The sign method calculates an Ethereum specific signature with:
    *
-   * sign(keccak256("\x19Ethereum Signed Message:\n" + len(message) + message))).
+   * sign(keccak256("Ethereum Signed Message:" + len(message) + message))).
    *
    * By adding a prefix to the message makes the calculated signature recognisable as an Ethereum specific signature.
    * This prevents misuse where a malicious DApp can sign arbitrary data (e.g. transaction) and use the signature to
@@ -171,7 +165,7 @@ export class RequestManager {
   @inject eth_sendRawTransaction: (rawTransaction: Data) => Promise<TxHash>
 
   /** Executes a new message call immediately without creating a transaction on the block chain. */
-  @inject eth_call: (options: TransactionCallOptions, block: Quantity | Tag) => Promise<Data>
+  @inject eth_call: (options: TransactionCallOptions, block: BlockIdentifier) => Promise<Data>
   /**
    * Generates and returns an estimate of how much gas is necessary to allow the transaction to complete.
    * The transaction will not be added to the blockchain. Note that the estimate may be significantly more
@@ -184,7 +178,7 @@ export class RequestManager {
   @inject eth_getBlockByHash: (blockHash: TxHash, fullTransactionObjects: boolean) => Promise<BlockObject>
 
   /** Returns information about a block by block number. */
-  @inject eth_getBlockByNumber: (block: Quantity | Tag, fullTransactionObjects: boolean) => Promise<BlockObject>
+  @inject eth_getBlockByNumber: (block: BlockIdentifier, fullTransactionObjects: boolean) => Promise<BlockObject>
 
   /** Returns the information about a transaction requested by transaction hash. */
   @inject eth_getTransactionByHash: (hash: TxHash) => Promise<TransactionObject>
@@ -194,7 +188,7 @@ export class RequestManager {
 
   /** Returns information about a transaction by block number and transaction index position. */
   @inject
-  eth_getTransactionByBlockNumberAndIndex: (block: Quantity | Tag, txIndex: Quantity) => Promise<TransactionObject>
+  eth_getTransactionByBlockNumberAndIndex: (block: BlockIdentifier, txIndex: Quantity) => Promise<TransactionObject>
   /**
    * Returns the receipt of a transaction by transaction hash.
    * Note That the receipt is not available for pending transactions.
@@ -205,7 +199,7 @@ export class RequestManager {
   @inject eth_getUncleByBlockHashAndIndex: (blockHash: TxHash, index: Quantity) => Promise<BlockObject>
 
   /** Returns information about a uncle of a block by number and uncle index position. */
-  @inject eth_getUncleByBlockNumberAndIndex: (block: Quantity | Tag, index: Quantity) => Promise<BlockObject>
+  @inject eth_getUncleByBlockNumberAndIndex: (block: BlockIdentifier, index: Quantity) => Promise<BlockObject>
 
   /** Returns a list of available compilers in the client. */
   @inject eth_getCompilers: () => Promise<Array<string>>
@@ -356,7 +350,7 @@ export class RequestManager {
 
   /**
    * The sign method calculates an Ethereum specific signature with:
-   *   sign(keccack256("\x19Ethereum Signed Message:\n" + len(message) + message))).
+   *   sign(keccack256("Ethereum Signed Message:" + len(message) + message))).
    *
    * By adding a prefix to the message makes the calculated signature recognisable as an Ethereum specific signature.
    * This prevents misuse where a malicious DApp can sign arbitrary data (e.g. transaction) and use the signature to
@@ -379,17 +373,15 @@ export class RequestManager {
   /**
    * Should be used to asynchronously send request
    *
-   * @method sendAsync
-   * @param {object} data
-   * @param {Function} callback
+   * @param data - The RPC message to be sent
    */
-  async sendAsync(data: jsonRpc.RPCSendableMessage) {
+  async sendAsync(data: RPCSendableMessage) {
     /* istanbul ignore if */
     if (!this.provider) {
-      throw errors.InvalidProvider()
+      throw InvalidProvider()
     }
 
-    let payload = jsonRpc.toPayload(data.method, data.params)
+    let payload = toPayload(data.method, data.params)
 
     const defer = future()
 
@@ -404,8 +396,8 @@ export class RequestManager {
       }
 
       /* istanbul ignore if */
-      if (!jsonRpc.isValidResponse(result)) {
-        defer.reject(errors.InvalidResponse(result))
+      if (!isValidResponse(result)) {
+        defer.reject(InvalidResponse(result))
         return
       }
 
@@ -418,22 +410,18 @@ export class RequestManager {
   /**
    * Should be used to set provider of request manager
    *
-   * @method setProvider
-   * @param {object}
+   * @param p - The provider
    */
-  /* istanbul ignore next */
-  setProvider(p) {
+  setProvider(p: any) {
     this.provider = p
   }
 
   /**
    * Waits until the transaction finishes. Returns if it was successfull.
    * Throws if the transaction fails or if it lacks any of the supplied events
-   * @param  {string} txId - Transaction id to watch
-   * @param  {Array<string>|string} events - Events to watch. See {@link txUtils#getLogEvents}
-   * @return {object} data - Current transaction data. See {@link txUtils#getTransaction}
+   * @param txId - Transaction id to watch
    */
-  async getConfirmedTransaction(txId: string) {
+  async getConfirmedTransaction(txId: string): Promise<FinishedTransactionAndReceipt> {
     const tx = await this.waitForCompletion(txId)
 
     if (this.isFailure(tx)) {
@@ -445,16 +433,15 @@ export class RequestManager {
 
   /**
    * Wait until a transaction finishes by either being mined or failing
-   * @param  {string} txId - Transaction id to watch
-   * @param  {number} [retriesOnEmpty] - Number of retries when a transaction status returns empty
-   * @return {Promise<object>} data - Current transaction data. See {@link txUtils#getTransaction}
+   * @param txId - Transaction id to watch
+   * @param retriesOnEmpty - Number of retries when a transaction status returns empty
    */
   async waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt> {
     const isDropped = await this.isTxDropped(txId, retriesOnEmpty)
 
     if (isDropped) {
       const tx = await this.getTransactionAndReceipt(txId)
-      return { ...tx, status: TRANSACTION_STATUS.failed }
+      return { ...tx, status: TransactionStatus.failed }
     }
 
     while (true) {
@@ -463,7 +450,7 @@ export class RequestManager {
       if (!this.isPending(tx) && tx.receipt) {
         return {
           ...tx,
-          status: this.isFailure(tx) ? TRANSACTION_STATUS.failed : TRANSACTION_STATUS.confirmed
+          status: this.isFailure(tx) ? TransactionStatus.failed : TransactionStatus.confirmed
         }
       }
 
@@ -476,11 +463,14 @@ export class RequestManager {
    * @param hash - The transaction hash
    */
   async getTransaction(hash: string): Promise<Transaction> {
-    let currentNonce
-    let status
+    let currentNonce: number
+    let status: TransactionObject
     try {
-      const account = eth.eth_accounts[0]
-      currentNonce = await this.eth_getTransactionCount(account, 'latest')
+      const accounts = await this.eth_accounts()
+      const account = accounts[0]
+      if (account) {
+        currentNonce = await this.eth_getTransactionCount(account, 'latest')
+      }
     } catch (error) {
       currentNonce = null
     }
@@ -553,11 +543,10 @@ export class RequestManager {
     return tx
   }
 
-  /*
-   * Wait retryAttemps*TRANSACTION_FETCH_DELAY for a transaction status to be in the mempool
-   * @param  {string} txId - Transaction id to watch
-   * @param  {number} [retryAttemps=15] - Number of retries when a transaction status returns empty
-   * @return {Promise<boolean>}
+  /**
+   * Wait retryAttemps * TRANSACTION_FETCH_DELAY for a transaction status to be in the mempool
+   * @param txId - Transaction id to watch
+   * @param retryAttemps - Number of retries when a transaction status returns empty
    */
   async isTxDropped(txId: string, _retryAttemps: number = 15): Promise<boolean> {
     let retryAttemps = _retryAttemps
@@ -578,7 +567,7 @@ export class RequestManager {
 
   /**
    * Get the transaction status and receipt
-   * @param  {string} txId - Transaction id
+   * @param txId - Transaction id
    */
   // prettier-ignore
   async getTransactionAndReceipt(txId: string): Promise<TransactionAndReceipt> {
@@ -593,22 +582,20 @@ export class RequestManager {
   /**
    * Expects the result of getTransaction's geth command and returns true if the transaction is still pending.
    * It'll also check for a pending status prop against {@link txUtils#TRANSACTION_STATUS}
-   * @param {object} tx - The transaction object
-   * @return boolean
+   * @param tx - The transaction object
    */
   // tslint:disable-next-line:prefer-function-over-method
-  isPending(tx: TransactionAndReceipt) {
+  isPending(tx: TransactionAndReceipt): boolean {
     return tx && tx.blockNumber === null
   }
 
   /**
    * Expects the result of getTransactionRecepeit's geth command and returns true if the transaction failed.
    * It'll also check for a failed status prop against {@link txUtils#TRANSACTION_STATUS}
-   * @param {object} tx - The transaction object
-   * @return boolean
+   * @param tx - The transaction object
    */
   // tslint:disable-next-line:prefer-function-over-method
-  isFailure(tx: TransactionAndReceipt) {
+  isFailure(tx: TransactionAndReceipt): boolean {
     return tx && (!tx.receipt || tx.receipt.status === 0)
   }
 }

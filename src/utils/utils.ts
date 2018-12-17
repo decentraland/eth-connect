@@ -16,11 +16,15 @@
 */
 
 import { BigNumber } from 'bignumber.js'
+import { BigNumber as BigNumberType } from './BigNumber'
 import utf8 = require('utf8')
 
 import CryptoJS = require('crypto-js')
 import _sha3 = require('crypto-js/sha3')
 
+/**
+ * @public
+ */
 export function sha3(value: string, options?: { encoding?: 'hex' }) {
   let mutValue = value
 
@@ -67,37 +71,24 @@ let unitMap = {
 }
 
 /**
+ * @public
  * Should be called to pad string to expected length
- *
- * @method padLeft
- * @param {string} str to be padded
- * @param {number} characters that result string should have
- * @param {string} sign, by default 0
- * @returns {string} right aligned string
  */
 export function padLeft(str: string, chars: number, sign?: string) {
   return new Array(chars - str.length + 1).join(sign ? sign : '0') + str
 }
 
 /**
+ * @public
  * Should be called to pad string to expected length
- *
- * @method padRight
- * @param {string} str to be padded
- * @param {number} characters that result string should have
- * @param {string} sign, by default 0
- * @returns {string} right aligned string
  */
 export function padRight(str: string, chars: number, sign?: string) {
   return str + new Array(chars - str.length + 1).join(sign ? sign : '0')
 }
 
 /**
+ * @public
  * Should be called to get utf8 from it's hex representation
- *
- * @method toUtf8
- * @param {string} string in hex
- * @returns {string} ascii string representation of hex value
  */
 export function toUtf8(hex: string) {
   // Find termination
@@ -117,11 +108,8 @@ export function toUtf8(hex: string) {
 }
 
 /**
+ * @public
  * Should be called to get ascii from it's hex representation
- *
- * @method toAscii
- * @param {string} string in hex
- * @returns {string} ascii string representation of hex value
  */
 export function toAscii(hex: string) {
   // Find termination
@@ -140,12 +128,8 @@ export function toAscii(hex: string) {
 }
 
 /**
+ * @public
  * Should be called to get hex representation (prefixed by 0x) of utf8 string
- *
- * @method fromUtf8
- * @param {string} string
- * @param {Boolean} allowZero to convert code point zero to 00 instead of end of string
- * @returns {string} hex representation of input string
  */
 export function fromUtf8(_str: string, allowZero = false) {
   let str = utf8.encode(_str)
@@ -169,12 +153,8 @@ export function fromUtf8(_str: string, allowZero = false) {
 }
 
 /**
+ * @public
  * Should be called to get hex representation (prefixed by 0x) of ascii string
- *
- * @method fromAscii
- * @param {string} string
- * @param {number} optional padding
- * @returns {string} hex representation of input string
  */
 export function fromAscii(str: string, num: number = 0) {
   let hex = ''
@@ -188,11 +168,8 @@ export function fromAscii(str: string, num: number = 0) {
 }
 
 /**
+ * @public
  * Should be used to create full function/event name from json abi
- *
- * @method transformToFullName
- * @param {object} json-abi
- * @return {string} full fnction/event name
  */
 export function transformToFullName(json: { name: string; inputs: any[] }) {
   if (json.name.indexOf('(') !== -1) {
@@ -208,11 +185,8 @@ export function transformToFullName(json: { name: string; inputs: any[] }) {
 }
 
 /**
+ * @public
  * Should be called to get display name of contract function
- *
- * @method extractDisplayName
- * @param {string} name of function/event
- * @returns {string} display name for function/event eg. multiply(uint256) -> multiply
  */
 export function extractDisplayName(name: string) {
   let stBracket = name.indexOf('(')
@@ -221,11 +195,8 @@ export function extractDisplayName(name: string) {
 }
 
 /**
+ * @public
  * Should be called to get type name of contract function
- *
- * @method extractTypeName
- * @param {string} name of function/event
- * @returns {string} type name for function/event eg. multiply(uint256) -> uint256
  */
 export function extractTypeName(name: string) {
   let stBracket = name.indexOf('(')
@@ -236,11 +207,8 @@ export function extractTypeName(name: string) {
 }
 
 /**
+ * @public
  * Converts value to it's decimal representation in string
- *
- * @method toDecimal
- * @param {string|number|BigNumber}
- * @return {string}
  */
 export function isHex(value: string) {
   if (typeof value === 'string') {
@@ -249,31 +217,27 @@ export function isHex(value: string) {
 }
 
 /**
+ * @public
  * Converts value to it's decimal representation in string
- *
- * @method toDecimal
- * @param {string|number|BigNumber}
- * @return {string}
  */
-export function toNullDecimal(value: number | string | BigNumber) {
+export function toNullDecimal(value: number | string | BigNumberType) {
   if (value === undefined || value === null) return value
-  return toBigNumber(value).toNumber()
-}
-/**
- * Converts value to it's decimal representation in string
- *
- * @method toDecimal
- * @param {string|number|BigNumber}
- * @return {string}
- */
-export function toDecimal(value: number | string | BigNumber) {
   return toBigNumber(value).toNumber()
 }
 
 /**
+ * @public
+ * Converts value to it's decimal representation in string
+ */
+export function toDecimal(value: number | string | BigNumberType) {
+  return toBigNumber(value).toNumber()
+}
+
+/**
+ * @public
  * Converts value to it's hex  representation in string
  */
-export function toData(val: string | number | BigNumber) {
+export function toData(val: string | number | BigNumberType) {
   if (typeof val === 'string') {
     if (!val.startsWith('0x') && /^[A-Za-z0-9]+$/.test(val)) {
       return '0x' + val
@@ -283,25 +247,19 @@ export function toData(val: string | number | BigNumber) {
 }
 
 /**
+ * @public
  * Converts value to it's boolean representation (x != 0)
- *
- * @method toBoolean
- * @param {string|number|BigNumber}
- * @return {string}
  */
-export function toBoolean(value: number | string | BigNumber | boolean) {
+export function toBoolean(value: number | string | BigNumberType | boolean) {
   if (typeof value === 'boolean') return value
   return toBigNumber(value).toNumber() !== 0
 }
 
 /**
+ * @public
  * Converts value to it's hex representation
- *
- * @method fromDecimal
- * @param {string|number|BigNumber}
- * @return {string}
  */
-export function fromDecimal(value: string | number | BigNumber) {
+export function fromDecimal(value: string | number | BigNumberType) {
   let num = toBigNumber(value)
   let result = num.toString(16)
 
@@ -309,15 +267,12 @@ export function fromDecimal(value: string | number | BigNumber) {
 }
 
 /**
+ * @public
  * Auto converts any given value into it's hex representation.
  *
  * And even stringifys objects before.
- *
- * @method toHex
- * @param {string|number|BigNumber|Object}
- * @return {string}
  */
-export function toHex(val: string | number | BigNumber) {
+export function toHex(val: string | number | BigNumberType) {
   /*jshint maxcomplexity: 8 */
 
   if (isBoolean(val)) return fromDecimal(+val)
@@ -338,14 +293,10 @@ export function toHex(val: string | number | BigNumber) {
 }
 
 /**
+ * @public
  * Returns value of unit in Wei
- *
- * @method getValueOfUnit
- * @param {string} unit the unit to convert to, default ether
- * @returns {BigNumber} value of the unit (in Wei)
- * @throws error if the unit is not correct:w
  */
-export function getValueOfUnit(_unit: string) {
+export function getValueOfUnit(_unit: string): BigNumberType {
   let unit = _unit ? _unit.toLowerCase() : 'ether'
   let unitValue = unitMap[unit]
   if (unitValue === undefined) {
@@ -357,6 +308,7 @@ export function getValueOfUnit(_unit: string) {
 }
 
 /**
+ * @public
  * Takes a number of wei and converts it to any other ether unit.
  *
  * Possible units are:
@@ -372,10 +324,6 @@ export function getValueOfUnit(_unit: string) {
  * - gether
  * - tether
  *
- * @method fromWei
- * @param {Number|String} num can be a number, number string or a HEX of a decimal
- * @param {string} unit the unit to convert to, default ether
- * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
  */
 export function fromWei(num: number | string, unit: string) {
   let returnValue = toBigNumber(num).dividedBy(getValueOfUnit(unit))
@@ -384,6 +332,7 @@ export function fromWei(num: number | string, unit: string) {
 }
 
 /**
+ * @public
  * Takes a number of a unit and converts it to wei.
  *
  * Possible units are:
@@ -398,11 +347,6 @@ export function fromWei(num: number | string, unit: string) {
  * - mether
  * - gether
  * - tether
- *
- * @method toWei
- * @param {Number|String|BigNumber} num can be a number, number string or a HEX of a decimal
- * @param {string} unit the unit to convert from, default ether
- * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
  */
 export function toWei(num: number | string, unit: string) {
   let returnValue = toBigNumber(num).times(getValueOfUnit(unit))
@@ -411,13 +355,10 @@ export function toWei(num: number | string, unit: string) {
 }
 
 /**
+ * @public
  * Takes an input and transforms it into an bignumber
- *
- * @method toBigNumber
- * @param {Number|String|BigNumber} a number, string, HEX string or BigNumber
- * @return {BigNumber} BigNumber
  */
-export function toBigNumber(_num: number | string | BigNumber): BigNumber {
+export function toBigNumber(_num: number | string | BigNumberType): BigNumberType {
   let num: any = _num || 0
 
   if (isBigNumber(num)) {
@@ -432,14 +373,11 @@ export function toBigNumber(_num: number | string | BigNumber): BigNumber {
 }
 
 /**
+ * @public
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
- *
- * @method toTwosComplement
- * @param {Number|String|BigNumber}
- * @return {BigNumber}
  */
-export function toTwosComplement(num: number | string | BigNumber) {
-  let bigNumber = toBigNumber(num).integerValue()
+export function toTwosComplement(num: number | string | BigNumberType): BigNumberType {
+  let bigNumber = toBigNumber(num).integerValue() as BigNumber
 
   if (bigNumber.isLessThan(0)) {
     return new BigNumber('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', 16).plus(bigNumber).plus(1)
@@ -449,24 +387,18 @@ export function toTwosComplement(num: number | string | BigNumber) {
 }
 
 /**
+ * @public
  * Checks if the given string is strictly an address
- *
- * @method isStrictAddress
- * @param {string} address the given HEX adress
- * @return {Boolean}
  */
-export function isStrictAddress(address) {
+export function isStrictAddress(address: any) {
   return /^0x[0-9a-f]{40}$/i.test(address)
 }
 
 /**
+ * @public
  * Checks if the given string is an address
- *
- * @method isAddress
- * @param {string} address the given HEX adress
- * @return {Boolean}
  */
-export function isAddress(address) {
+export function isAddress(address: any) {
   if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
     // check if it has the basic requirements of an address
     return false
@@ -480,11 +412,8 @@ export function isAddress(address) {
 }
 
 /**
+ * @public
  * Checks if the given string is a checksummed address
- *
- * @method isChecksumAddress
- * @param {string} address the given HEX adress
- * @return {Boolean}
  */
 export function isChecksumAddress(_address: string) {
   // Check each case
@@ -504,11 +433,8 @@ export function isChecksumAddress(_address: string) {
 }
 
 /**
+ * @public
  * Makes a checksum address
- *
- * @method toChecksumAddress
- * @param {string} address the given HEX adress
- * @return {string}
  */
 export function toChecksumAddress(_address: string) {
   if (typeof _address === 'undefined') return ''
@@ -529,11 +455,8 @@ export function toChecksumAddress(_address: string) {
 }
 
 /**
+ * @public
  * Transforms given string to valid 20 bytes-length addres with 0x prefix
- *
- * @method toAddress
- * @param {string} address
- * @return {string} formatted address
  */
 export function toAddress(address) {
   if (isStrictAddress(address)) {
@@ -548,79 +471,56 @@ export function toAddress(address) {
 }
 
 /**
- * Returns true if object is BigNumber, otherwise false
- *
- * @method isBigNumber
- * @param {object}
- * @return {Boolean}
+ * @public
+ * Returns true if object is BigNumberType, otherwise false
  */
-export function isBigNumber(object) {
-  return object instanceof BigNumber || (object && object.constructor && object.constructor.name === 'BigNumber')
+export function isBigNumber(object: any) {
+  return object instanceof BigNumber
 }
 
 /**
+ * @public
  * Returns true if object is string, otherwise false
- *
- * @method isString
- * @param {object}
- * @return {Boolean}
  */
-export function isString(object: string): true
-export function isString(object: any): false
-export function isString(object: any): boolean {
-  return typeof object === 'string' || (object && object.constructor && object.constructor.name === 'String')
+export function isString(value: any): value is string {
+  return typeof value === 'string' || (value && value.constructor && value.constructor.name === 'String')
 }
 
 /**
+ * @public
  * Returns true if object is function, otherwise false
- *
- * @method isFunction
- * @param {object}
- * @return {Boolean}
  */
 export function isFunction(object) {
   return typeof object === 'function'
 }
 
 /**
+ * @public
  * Returns true if object is Objet, otherwise false
- *
- * @method isObject
- * @param {object}
- * @return {Boolean}
  */
 export function isObject(object) {
   return object !== null && !Array.isArray(object) && typeof object === 'object'
 }
 
 /**
+ * @public
  * Returns true if object is boolean, otherwise false
- *
- * @method isBoolean
- * @param {object}
- * @return {Boolean}
  */
 export function isBoolean(object) {
   return typeof object === 'boolean'
 }
 
 /**
+ * @public
  * Returns true if object is array, otherwise false
- *
- * @method isArray
- * @param {object}
- * @return {Boolean}
  */
 export function isArray(object) {
   return Array.isArray(object)
 }
 
 /**
+ * @public
  * Returns true if given string is valid json object
- *
- * @method isJson
- * @param {string}
- * @return {Boolean}
  */
 export function isJson(str) {
   try {
@@ -631,11 +531,8 @@ export function isJson(str) {
 }
 
 /**
+ * @public
  * Returns true if given string is a valid Ethereum block header bloom.
- *
- * @method isBloom
- * @param {string} hex encoded bloom filter
- * @return {Boolean}
  */
 export function isBloom(bloom) {
   if (!/^(0x)?[0-9a-f]{512}$/i.test(bloom)) {
@@ -647,13 +544,10 @@ export function isBloom(bloom) {
 }
 
 /**
+ * @public
  * Returns true if given string is a valid log topic.
- *
- * @method isTopic
- * @param {string} hex encoded topic
- * @return {Boolean}
  */
-export function isTopic(topic) {
+export function isTopic(topic: string) {
   if (!/^(0x)?[0-9a-f]{64}$/i.test(topic)) {
     return false
   } else if (/^(0x)?[0-9a-f]{64}$/.test(topic) || /^(0x)?[0-9A-F]{64}$/.test(topic)) {

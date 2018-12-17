@@ -1,5 +1,3 @@
-/*jshint bitwise: false*/
-
 /*
     This file is part of web3.js.
 
@@ -19,9 +17,6 @@
 
 /**
  * Ethereum bloom filter support.
- *
- * @module bloom
- * @class [bloom] bloom
  */
 
 import utils = require('./utils')
@@ -45,7 +40,7 @@ function codePointToInt(codePoint) {
   throw new Error('invalid bloom')
 }
 
-function testBytes(bloom, bytes) {
+function testBytes(bloom: string, bytes: string) {
   let hash = utils.sha3(bytes, { encoding: 'hex' })
 
   for (let i = 0; i < 12; i += 4) {
@@ -54,7 +49,7 @@ function testBytes(bloom, bytes) {
 
     // test if bitpos in bloom is active
     let code = codePointToInt(bloom.charCodeAt(bloom.length - 1 - Math.floor(bitpos / 4)))
-    let offset = 1 << (bitpos % 4)
+    let offset = 1 << bitpos % 4
 
     if ((code & offset) !== offset) {
       return false
@@ -68,12 +63,10 @@ function testBytes(bloom, bytes) {
  * Returns true if address is part of the given bloom.
  * note: false positives are possible.
  *
- * @method testAddress
- * @param {string} hex encoded bloom
- * @param {string} address in hex notation
- * @returns {Boolean} topic is (probably) part of the block
+ * @param bloom - hex encoded bloom
+ * @param address - address in hex notation
  */
-export function testAddress(bloom, address) {
+export function testAddress(bloom: string, address: string): boolean {
   if (!utils.isBloom(bloom)) throw new Error(`Invalid bloom: ${JSON.stringify(bloom)}`)
   if (!utils.isAddress(address)) throw new Error(`Invalid address: ${JSON.stringify(address)}`)
 
@@ -84,12 +77,11 @@ export function testAddress(bloom, address) {
  * Returns true if the topic is part of the given bloom.
  * note: false positives are possible.
  *
- * @method hasTopic
- * @param {string} hex encoded bloom
- * @param {string} address in hex notation
- * @returns {Boolean} topic is (probably) part of the block
+ * @param bloom - hex encoded bloom
+ * @param topic - address in hex notation
+ * @returns topic is (probably) part of the block
  */
-export function testTopic(bloom, topic) {
+export function testTopic(bloom: string, topic: string) {
   if (!utils.isBloom(bloom)) throw new Error('invalid bloom')
   if (!utils.isTopic(topic)) throw new Error('invalid topic')
 

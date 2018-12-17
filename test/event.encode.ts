@@ -242,7 +242,7 @@ describe('lib/web3/event', function() {
         }
 
         let result = event.encode(test.indexed, test.options as FilterOptions)
-        assert.deepEqual(result, test.expected)
+        assert.deepEqual(result, test.expected as any)
       })
     })
   })

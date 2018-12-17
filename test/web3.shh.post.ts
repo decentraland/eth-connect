@@ -1,5 +1,5 @@
-import { utils } from '../src'
 import testMethod = require('./helpers/test.method')
+import { toHex } from '../src'
 
 let method = 'post'
 
@@ -10,7 +10,7 @@ let tests = [
         symKeyID: '123123123ff',
         sig: '44ffdd55',
         topic: '0xffdd11',
-        payload: utils.toHex('12345'),
+        payload: toHex('12345'),
         ttl: 100,
         minPow: 0.5,
         powTarget: 3,
@@ -22,7 +22,7 @@ let tests = [
         symKeyID: '123123123ff',
         sig: '44ffdd55',
         topic: '0xffdd11',
-        payload: utils.toHex('12345'),
+        payload: toHex('12345'),
         ttl: 100,
         minPow: 0.5,
         powTarget: 3,

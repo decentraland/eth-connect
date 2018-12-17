@@ -21,6 +21,9 @@ import utils = require('../utils/utils')
 import { Method } from '../Method'
 import { Property } from '../Property'
 
+/**
+ * @public
+ */
 export namespace eth {
   export const eth_getBalance = new Method({
     callName: 'eth_getBalance',

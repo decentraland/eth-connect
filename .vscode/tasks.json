@@ -7,7 +7,7 @@
       "label": "build",
       "type": "shell",
       "identifier": "build",
-      "command": "npm run build",
+      "command": "make build",
       "problemMatcher": ["$tsc"],
       "group": "build"
     }

@@ -46,23 +46,10 @@ const accounts = await requestManager.eth_accounts()
 
 # How to build project
 
-Run: `npm run build`
-
-or if you are on dev mode
-
-`npm run build -- --watch`
-
-Take in consideration that this will only build src files, if you also want to run build test
-files just for fun do:
-
-`./node_modules/.bin/tsc --watch`
+Run: `make build`
 
 # How to run tests
 
 On one terminal run:
 
-`./start-local-node.sh` It starts a geth node using Docker
-
-On a second terminal run:
-
-`npm run test` or `npm run test -- --watch`
+`make test-local`

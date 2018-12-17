@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js'
+import { BigNumber as BigNumberType } from './utils/BigNumber'
 
 /** Hex string */
 export type Data = string
@@ -6,12 +6,19 @@ export type Data = string
 export type TxHash = string
 /** Hex string of 20 bytes */
 export type Address = string
-export type Quantity = number
+export type Hex = string
+export type Quantity = number | Hex
 
 export type Syncing = {
   startingBlock: Quantity
   currentBlock: Quantity
   highestBlock: Quantity
+}
+
+export enum TransactionStatus {
+  pending = 'pending',
+  confirmed = 'confirmed',
+  failed = 'failed'
 }
 
 export type Tag = 'latest' | 'earliest' | 'pending'
@@ -136,21 +143,21 @@ export type TransactionObject = {
   /** hash of the transaction. */
   hash: TxHash
   /** the number of transactions made by the sender prior to this one. */
-  nonce: Quantity
+  nonce: number
   /** hash of the block where this transaction was in. null when its pending. */
   blockHash: TxHash
   /** block number where this transaction was in. null when its pending. */
-  blockNumber: Quantity
+  blockNumber: number
   /** integer of the transactions index position in the block. null when its pending. */
-  transactionIndex: Quantity
+  transactionIndex: number
   /** address of the sender. */
   from: Address
   /** address of the receiver. null when its a contract creation transaction. */
   to: Address | null
   /** value transferred in Wei. */
-  value: BigNumber
+  value: BigNumberType
   /** gas price provided by the sender in Wei. */
-  gasPrice: BigNumber
+  gasPrice: BigNumberType
   /** gas provided by the sender. */
   gas: Quantity
   /** the data send along with the transaction. */
@@ -210,12 +217,15 @@ export type ConfirmedTransaction = TransactionObject & {
 }
 
 export type FilterLog = {}
+export type TransactionAndReceipt = TransactionObject & { receipt: TransactionReceipt }
+export type FinishedTransactionAndReceipt = TransactionAndReceipt & { status: TransactionStatus }
+export type BlockIdentifier = Quantity | Tag
 
 export type FilterOptions = {
   /** (optional, default: "latest") Integer block number, or "latest" for the last mined block or "pending", "earliest" for not yet mined transactions. */
-  fromBlock?: Quantity | Tag
+  fromBlock?: BlockIdentifier
   /** (optional, default: "latest") Integer block number, or "latest" for the last mined block or "pending", "earliest" for not yet mined transactions. */
-  toBlock?: Quantity | Tag
+  toBlock?: BlockIdentifier
   /** (optional) Contract address or a list of addresses from which logs should originate. */
   address?: Data | Address
   /** (optional) Array of 32 Bytes DATA topics. Topics are order-dependent. Each topic can also be an array of DATA with "or" options. */

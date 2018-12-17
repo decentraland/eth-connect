@@ -1,4 +1,4 @@
-import { RequestManager, utils } from '../src'
+import { RequestManager, isHex, isAddress } from '../src'
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 import BigNumber from 'bignumber.js'
 import { expect } from 'chai'
@@ -40,9 +40,9 @@ describe('test types', () => {
       const result = await requestManager[method](...args)
       try {
         if (type === 'address') {
-          expect(utils.isAddress(result)).to.eq(true, 'is address')
+          expect(isAddress(result)).to.eq(true, 'is address')
         } else if (type === 'data') {
-          expect(utils.isHex(result)).to.eq(true, 'is data with shape 0x..')
+          expect(isHex(result)).to.eq(true, 'is data with shape 0x..')
         } else if (type === 'array') {
           expect(result instanceof Array).to.eq(true, 'is instance of array')
         } else if (type === BigNumber) {
@@ -82,7 +82,6 @@ describe('test types', () => {
   test('eth_getCode', 'string', address, 'latest')
 
   test('eth_sign', 'string', address, 'asd')
-  // test('eth_getUncleCountByBlockHash', 'number', '0xc2c4e2b5e9c942dcff179b360975b402b7e77b99dca09f85bbb72f603a688238')
   test('eth_getBlockByHash', 'object', '0x0', true)
   test('eth_getCompilers', 'array')
   test('eth_newFilter', 'data', {})
@@ -94,6 +93,5 @@ describe('test types', () => {
   test('eth_uninstallFilter', 'boolean', '0x01')
   test('eth_uninstallFilter', 'boolean', '0x02')
   test('eth_uninstallFilter', 'boolean', '0x03')
-  // test('eth_getWork', 'array')
   test('shh_version', 'number')
 })

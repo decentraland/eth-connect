@@ -1,21 +1,18 @@
 import chai = require('chai')
 import 'isomorphic-fetch'
 // tslint:disable
-
 const expect = chai.expect
+// @ts-ignore
+import EthConnect from '../dist/eth-connect.esm'
+import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 
-import { ContractFactory, RequestManager } from '../src'
-import BigNumber from 'bignumber.js'
-import { testAllProviders } from './helpers/testAllProviders'
-import { ConfirmedTransaction } from '../src/Schema'
-
-declare var require
-
-describe('integration.erc20', function() {
-  testAllProviders(doTest)
+describe('e2e.erc20', function() {
+  const nodeConnectionFactory = new NodeConnectionFactory()
+  const provider = nodeConnectionFactory.createProvider()
+  doTest(new EthConnect.RequestManager(provider))
 })
 
-function doTest(requestManager: RequestManager) {
+function doTest(requestManager) {
   it('should get the network', async () => {
     // this should not fail, that's all
     await requestManager.net_version()
@@ -40,8 +37,6 @@ function doTest(requestManager: RequestManager) {
     expect(accountUnlocked).to.be.true
   })
 
-  // let manaAddress = '0x0'
-
   let ERC20Contract = null
 
   it('deploys a new contract', async function() {
@@ -52,12 +47,10 @@ function doTest(requestManager: RequestManager) {
     const abi = require('./fixtures/ERC20.json').abi
     const bytecode = require('./fixtures/ERC20.json').bytecode
 
-    const factory = new ContractFactory(requestManager, abi)
+    const factory = new EthConnect.ContractFactory(requestManager, abi)
     ERC20Contract = await factory.deploy({ data: bytecode, from: account, to: null })
 
     console.log(`> Tx: ${ERC20Contract.transactionHash}`)
-
-    // manaAddress = txRecipt.contractAddress
   })
 
   it('gets the receipt', async () => {
@@ -79,8 +72,9 @@ function doTest(requestManager: RequestManager) {
     const x = await requestManager.eth_getTransactionByHash(ERC20Contract.transactionHash)
     expect(typeof x).eq('object')
     expect(x.hash).eq(ERC20Contract.transactionHash)
-    expect(x.gasPrice instanceof BigNumber).to.eq(true)
-    expect(x.value instanceof BigNumber).to.eq(true)
+    console.log(x.gasPrice)
+    expect(EthConnect.isBigNumber(x.gasPrice)).to.eq(true)
+    expect(EthConnect.isBigNumber(x.value)).to.eq(true)
     expect(typeof x.gas).to.eq('number')
     expect(typeof x.blockNumber).to.eq('number')
     expect(typeof x.blockHash).to.eq('string')
@@ -89,9 +83,7 @@ function doTest(requestManager: RequestManager) {
   })
 
   it('gets the transaction ', async () => {
-    const { receipt, ...tx } = (await requestManager.getTransaction(
-      ERC20Contract.transactionHash
-    )) as ConfirmedTransaction
+    const { receipt, ...tx } = (await requestManager.getTransaction(ERC20Contract.transactionHash)) as any
 
     const transactionFields = [
       'type',
@@ -144,7 +136,7 @@ function doTest(requestManager: RequestManager) {
       const balance = await ERC20Contract.balanceOf(account)
 
       expect(balance.toString()).eq('0')
-      expect(balance instanceof BigNumber).eq(true)
+      expect(EthConnect.isBigNumber(balance)).eq(true)
     }
     {
       const balance = await ERC20Contract.balanceOf('0x0')
