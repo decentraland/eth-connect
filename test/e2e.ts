@@ -6,8 +6,6 @@ const expect = chai.expect
 import EthConnect from '../dist/eth-connect.esm'
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 
-console.log(EthConnect)
-
 describe('e2e.erc20', function() {
   const nodeConnectionFactory = new NodeConnectionFactory()
   const provider = nodeConnectionFactory.createProvider()
