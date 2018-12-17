@@ -1,5 +1,5 @@
 {
-  "name": "eth-connect",
+  "private": true,
   "namespace": "ethereum",
   "version": "0.3.4",
   "description": "Ethereum JavaScript API, middleware to talk to a ethereum node using an async provider",

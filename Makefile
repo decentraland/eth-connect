@@ -7,6 +7,7 @@ TSLINT = $(NODE) --max-old-space-size=4096 node_modules/.bin/tslint
 COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
 
 clean:
+		@echo '> Cleaning'
 		@(rm -rf coverage || true)
 		@(rm -rf .nyc_output || true)
 		@(rm *.lcov || true)
@@ -15,21 +16,25 @@ clean:
 		@find test -name '*.js.map' -delete
 
 build: clean
+		@echo '> Building'
 		${COMPILER} build.json
 		$(MAKE) provision-bundled
 
 provision-bundled:
-		cp ./static/package.json ./dist/package.json
-		cp ./static/api-extractor.json ./dist/api-extractor.json
-		cp ./static/tsconfig.json ./dist/tsconfig.json
-		cp ./static/esm.ts ./dist/esm.ts
-		cd ./dist && npm i @microsoft/api-extractor
-		cd ./dist && ./node_modules/.bin/api-extractor run --typescript-compiler-folder ./node_modules/typescript --local
-		mv ./dist/lib/eth-connect.js ./dist
-		mv ./dist/lib/eth-connect.esm.js ./dist
-		rm -rf ./dist/libui
-		rm -rf ./dist/api-extractor.json
-		rm -rf ./dist/dist
+		@echo '> Generating bundles'
+		@cp ./static/package.json ./dist/package.json
+		@cp ./static/api-extractor.json ./dist/api-extractor.json
+		@cp ./static/tsconfig.json ./dist/tsconfig.json
+		@cp ./static/esm.ts ./dist/esm.ts
+		@cd ./dist && npm i @microsoft/api-extractor
+		@cd ./dist && ./node_modules/.bin/api-extractor run --typescript-compiler-folder ./node_modules/typescript --local
+		@cd ./dist && npm rm @microsoft/api-extractor
+		@mv ./dist/lib/eth-connect.js ./dist
+		@mv ./dist/lib/eth-connect.esm.js ./dist
+		@rm -rf ./dist/lib
+		@rm -rf ./dist/node_modules
+		@rm -rf ./dist/api-extractor.json
+		@rm -rf ./dist/dist
 
 watch:
 		${TSC} --project tsconfig-build.json --watch

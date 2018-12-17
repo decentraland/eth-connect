@@ -1,6 +1,6 @@
 {
   "name": "eth-connect",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "main": "./eth-connect.js",
   "typings": "./eth-connect.d.ts"
 }
