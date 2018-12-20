@@ -9,7 +9,7 @@ _eth-connect_ is a TypeScript-based [web3](https://github.com/ethereum/web3.js) 
 
 You can follow the same [JavaScript API documentation](https://github.com/ethereum/wiki/wiki/JavaScript-API) until TypeScript docs are released.
 
-# Installation
+## Installation
 
 From NPM:
 
@@ -23,7 +23,7 @@ As a browser module:
 <script src="https://unpkg.com/eth-connect@4.0.0/eth-connect.js"></script>
 ```
 
-# Examples
+## Examples
 
 The best examples are in the integration tests folder, anyway here are some simple examples:
 
@@ -75,7 +75,7 @@ const requestManager = new RequestManager(web3.currentProvider)
 const accounts = await requestManager.eth_accounts()
 ```
 
-# How to build project
+## How to build project
 
 Clone the project and run in terminal:
 
@@ -83,12 +83,46 @@ Clone the project and run in terminal:
 make build
 ```
 
-# How to run tests
+## How to run tests
 
 ```bash
 make test-local
 ```
 
-# Project Status
+## Comparison
+
+|                 |  `web3`  | `eth-connect` |
+| --------------- | :------: | :-----------: |
+| Browser support |    ✔     |       ✔       |
+| Promise API     |    ✖     |       ✔       |
+| TS/JS Docs      |    ✖     |       ✔       |
+| Wiki Docs       |    ✔     |       ?       |
+| Downloads       | ![][wd]  |    ![][ed]    |
+| Coverage        | ![][wc]  |    ![][ec]    |
+| Build           | ![][wb]  |    ![][eb]    |
+| Dependents      | ![][wdp] |   ![][edp]    |
+| Install size    | ![][wis] |   ![][eis]    |
+
+<!-- DOWNLOADS -->
+[wd]: https://img.shields.io/npm/dm/web3.svg
+[ed]: https://img.shields.io/npm/dm/eth-connect.svg
+
+<!-- COVERAGE -->
+[wc]: https://coveralls.io/repos/ethereum/web3.js/badge.svg?branch=master
+[ec]: https://codecov.io/gh/decentraland/eth-connect/branch/master/graph/badge.svg
+
+<!-- BUILD -->
+[wb]: https://travis-ci.org/ethereum/web3.js.svg
+[eb]: https://travis-ci.org/decentraland/eth-connect.svg?branch=master
+
+<!-- DEPENDENTS -->
+[wdp]: https://badgen.net/npm/dependents/web3
+[edp]: https://badgen.net/npm/dependents/eth-connect
+
+<!-- INSTALL SIZE -->
+[wis]: https://packagephobia.now.sh/badge?p=web3
+[eis]: https://packagephobia.now.sh/badge?p=eth-connect
+
+## Project Status
 
 You may find some issues using this library since is still under development.
