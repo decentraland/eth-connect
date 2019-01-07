@@ -7,26 +7,26 @@
 
 _eth-connect_ is a TypeScript-based [web3](https://github.com/ethereum/web3.js) library alternative which implements the [Generic JSON RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) spec as well.
 
-You can follow the same [JavaScript API documentation](https://github.com/ethereum/wiki/wiki/JavaScript-API) until TypeScript docs are released.
+You can follow the [JavaScript API documentation](https://github.com/ethereum/wiki/wiki/JavaScript-API) until TypeScript docs are released.
 
 ## Design goals
 
 - A Typed web3.js alternative
-- Having the less as possible convention-invented functions (follow as much as possible the RPC specs)
-- With WS and HTTP providers
+- Have as few convention-invented functions as possible (by following the RPC specs as much as possible)
+- Leverage WS and HTTP providers
 - Portable (support and work equally in both browser and node)
 - Painless `eth` usage: Using contract factories, well-split event types (block, transaction and contracts plus topics)
 - `async/await` out of the box
 
 ## Installation
 
-From NPM:
+Using NPM:
 
 ```bash
 npm i eth-connect@next
 ```
 
-As a browser module:
+Importing as a browser module:
 
 ```html
 <script src="https://unpkg.com/eth-connect@next/eth-connect.js"></script>
@@ -34,9 +34,10 @@ As a browser module:
 
 ## Examples
 
-The best examples are in the integration tests folder, anyway here are some simple examples:
+Below are some simple illustrative examples. 
+You can also find more complete examples are in the integration `/tests` folder. 
 
-### Initializing with a provider
+### Initialize with a provider
 
 ```ts
 import { RequestManager } from 'eth-connect'
@@ -59,7 +60,7 @@ const requestManager = new RequestManager(providerInstance)
 const someBalance = await requestManager.eth_getBalance(someAddress)
 ```
 
-### Initializing a contract
+### Initialize a contract
 
 ```ts
 import { RequestManager, ContractFactory } from 'eth-connect'
@@ -74,7 +75,7 @@ const instance = await factory.at(address)
 console.log('Calling a method', await instance.mint(myAddress))
 ```
 
-### Getting the accounts
+### Get the accounts
 
 ```ts
 import { RequestManager } from 'eth-connect'
@@ -84,15 +85,15 @@ const requestManager = new RequestManager(web3.currentProvider)
 const accounts = await requestManager.eth_accounts()
 ```
 
-## How to build project
+## Build a project
 
-Clone the project and run in terminal:
+Clone this GitHub project and run the following in the terminal:
 
 ```bash
 make build
 ```
 
-## How to run tests
+## Run tests
 
 ```bash
 make test-local
@@ -139,6 +140,6 @@ make test-local
 
 ## Project Status
 
-Docs are [here](docs/index.md).
+You can find full documentation [here](docs/index.md).
 
-You may find some issues using this library since is still under development.
+You may find issues while using this library, as it's still under development. Please report any issues you come accross.
