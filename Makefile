@@ -28,6 +28,8 @@ provision-bundled:
 		@cp ./static/esm.ts ./dist/esm.ts
 		@cd ./dist && npm install --no-save @microsoft/api-extractor
 		@cd ./dist && ./node_modules/.bin/api-extractor run --typescript-compiler-folder ./node_modules/typescript --local
+		npx @microsoft/api-documenter markdown --input-folder dist/dist --output-folder docs
+		@mv docs/eth-connect.md docs/index.md
 		@mv ./dist/lib/eth-connect.js ./dist
 		@mv ./dist/lib/eth-connect.esm.js ./dist
 		@rm -rf ./dist/lib

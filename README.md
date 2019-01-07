@@ -139,6 +139,6 @@ make test-local
 
 ## Project Status
 
-Docs are [here](https://github.com/denoland/deno/blob/master/docs.md).
+Docs are [here](docs/index.md).
 
 You may find some issues using this library since is still under development.
