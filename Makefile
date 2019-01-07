@@ -26,7 +26,7 @@ provision-bundled:
 		@cp ./static/api-extractor.json ./dist/api-extractor.json
 		@cp ./static/tsconfig.json ./dist/tsconfig.json
 		@cp ./static/esm.ts ./dist/esm.ts
-		@cd ./dist && npm --no-save @microsoft/api-extractor
+		@cd ./dist && npm install --no-save @microsoft/api-extractor
 		@cd ./dist && ./node_modules/.bin/api-extractor run --typescript-compiler-folder ./node_modules/typescript --local
 		@mv ./dist/lib/eth-connect.js ./dist
 		@mv ./dist/lib/eth-connect.esm.js ./dist
