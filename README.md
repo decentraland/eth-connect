@@ -9,18 +9,27 @@ _eth-connect_ is a TypeScript-based [web3](https://github.com/ethereum/web3.js) 
 
 You can follow the same [JavaScript API documentation](https://github.com/ethereum/wiki/wiki/JavaScript-API) until TypeScript docs are released.
 
+## Design goals
+
+- A Typed web3.js alternative
+- Having the less as possible convention-invented functions (follow as much as possible the RPC specs)
+- With WS and HTTP providers
+- Portable (support and work equally in both browser and node)
+- Painless `eth` usage: Using contract factories, well-split event types (block, transaction and contracts plus topics)
+- `async/await` out of the box
+
 ## Installation
 
 From NPM:
 
 ```bash
-npm i eth-connect
+npm i eth-connect@next
 ```
 
 As a browser module:
 
 ```html
-<script src="https://unpkg.com/eth-connect@4.0.0/eth-connect.js"></script>
+<script src="https://unpkg.com/eth-connect@next/eth-connect.js"></script>
 ```
 
 ## Examples
@@ -41,10 +50,10 @@ const myBalance = await requestManager.eth_getBalance(myAddress)
 or
 
 ```ts
-import { RequestManager, providers } from 'eth-connect'
+import { RequestManager, HTTPProvider } from 'eth-connect'
 
 const provider = 'my-own-RPC-url'
-const providerInstance = new providers.HTTPProvider(provider)
+const providerInstance = new HTTPProvider(provider)
 const requestManager = new RequestManager(providerInstance)
 
 const someBalance = await requestManager.eth_getBalance(someAddress)
@@ -104,25 +113,32 @@ make test-local
 | Install size    | ![][wis] |   ![][eis]    |
 
 <!-- DOWNLOADS -->
+
 [wd]: https://img.shields.io/npm/dm/web3.svg
 [ed]: https://img.shields.io/npm/dm/eth-connect.svg
 
 <!-- COVERAGE -->
+
 [wc]: https://coveralls.io/repos/ethereum/web3.js/badge.svg?branch=master
 [ec]: https://codecov.io/gh/decentraland/eth-connect/branch/master/graph/badge.svg
 
 <!-- BUILD -->
+
 [wb]: https://travis-ci.org/ethereum/web3.js.svg
 [eb]: https://travis-ci.org/decentraland/eth-connect.svg?branch=master
 
 <!-- DEPENDENTS -->
+
 [wdp]: https://badgen.net/npm/dependents/web3
 [edp]: https://badgen.net/npm/dependents/eth-connect
 
 <!-- INSTALL SIZE -->
+
 [wis]: https://packagephobia.now.sh/badge?p=web3
 [eis]: https://packagephobia.now.sh/badge?p=eth-connect
 
 ## Project Status
+
+Docs are [here](https://github.com/denoland/deno/blob/master/docs.md).
 
 You may find some issues using this library since is still under development.
