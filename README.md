@@ -34,8 +34,8 @@ Importing as a browser module:
 
 ## Examples
 
-Below are some simple illustrative examples. 
-You can also find more complete examples are in the integration `/tests` folder. 
+Below are some simple illustrative examples.
+You can also find more complete examples are in the integration `/tests` folder.
 
 ### Initialize with a provider
 
@@ -85,9 +85,9 @@ const requestManager = new RequestManager(web3.currentProvider)
 const accounts = await requestManager.eth_accounts()
 ```
 
-## Build a project
+## Build the project
 
-Clone this GitHub project and run the following in the terminal:
+Clone this project and run the following in the terminal:
 
 ```bash
 make build
