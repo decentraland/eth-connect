@@ -1,6 +1,19 @@
 {
   "name": "eth-connect",
   "version": "4.0.0",
+  "description": "Ethereum TypeScript API, middleware to talk to a ethereum node using an async provider",
+  "repository": "decentraland/eth-connect",
+  "homepage": "https://github.com/decentraland/eth-connect",
+  "bugs": "https://github.com/decentraland/eth-connect/issues",
+  "keywords": [
+    "ethereum",
+    "typescript",
+    "web3",
+    "json-rpc",
+    "eth",
+    "API"
+  ],
+  "license": "LGPL-3.0",
   "main": "./eth-connect.js",
   "typings": "./eth-connect.d.ts"
 }
