@@ -138,8 +138,10 @@ make test-local
 [wis]: https://packagephobia.now.sh/badge?p=web3
 [eis]: https://packagephobia.now.sh/badge?p=eth-connect
 
-## Project Status
+## Full documentation
 
-You can find full documentation [here](docs/index.md).
+Follow this link to read the full documentation for eth-connect [here](docs/index.md).
+
+## Project Status
 
 You may find issues while using this library, as it's still under development. Please report any issues you come accross.
