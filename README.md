@@ -29,7 +29,7 @@ npm i eth-connect@next
 Importing as a browser module:
 
 ```html
-<script src="https://unpkg.com/eth-connect@next/eth-connect.js"></script>
+<script src="https://unpkg.com/eth-connect@latest/eth-connect.js"></script>
 ```
 
 ## Examples
