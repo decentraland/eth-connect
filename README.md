@@ -23,7 +23,7 @@ You can follow the [JavaScript API documentation](https://github.com/ethereum/wi
 Using NPM:
 
 ```bash
-npm i eth-connect@next
+npm i eth-connect
 ```
 
 Importing as a browser module:
