@@ -3,7 +3,7 @@ import * as utils from './utils/utils'
 import config = require('./utils/config')
 import errors = require('./utils/errors')
 import { toBatchPayload, isValidResponse } from './utils/jsonrpc'
-import { future } from './utils/future'
+import { future } from 'fp-future'
 
 export type PollData = {
   data: any

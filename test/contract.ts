@@ -1,7 +1,7 @@
 import chai = require('chai')
 const assert = chai.assert
 import { RequestManager, ContractFactory } from '../src'
-import { future } from '../src/utils/future'
+import { future } from 'fp-future'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 import { FakeHttpProvider2 } from './helpers/FakeHttpProvider2'
 

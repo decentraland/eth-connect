@@ -24,7 +24,7 @@ import * as utils from './utils/utils'
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
-import { future } from './utils/future'
+import { future } from 'fp-future'
 import { TransactionOptions, TxHash, Data } from './Schema'
 
 /**
@@ -163,8 +163,7 @@ export class ContractFactory {
     if (!utils.isAddress(address)) {
       throw new TypeError(`Invalid address ${JSON.stringify(address)}`)
     }
-    let contract = new Contract(this.requestManager, this.abi, address)
-    return contract
+    return new Contract(this.requestManager, this.abi, address)
   }
 
   /**

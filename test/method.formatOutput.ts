@@ -26,20 +26,5 @@ describe('lib/web3/method', function() {
       // then
       assert.deepEqual(result, expectedArgs)
     })
-
-    it('should do nothing if there is no formatter', function() {
-      // given
-      let method = new Method({
-        callName: 'dummy',
-        params: 3
-      })
-      let args = [1, 2, 3]
-
-      // when
-      let result = method.formatOutput(args)
-
-      // then
-      assert.deepEqual(result, args)
-    })
   })
 })

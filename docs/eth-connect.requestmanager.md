@@ -12,9 +12,6 @@ It's responsible for passing messages to providers It's also responsible for pol
 |  [`eth_blockNumber`](./eth-connect.requestmanager.eth_blocknumber.md) |  | `() => Promise<Quantity>` | Returns the number of most recent block. |
 |  [`eth_call`](./eth-connect.requestmanager.eth_call.md) |  | `(options: TransactionCallOptions, block: BlockIdentifier) => Promise<Data>` | Executes a new message call immediately without creating a transaction on the block chain. |
 |  [`eth_coinbase`](./eth-connect.requestmanager.eth_coinbase.md) |  | `() => Promise<Address>` | Returns the client coinbase address. |
-|  [`eth_compileLLL`](./eth-connect.requestmanager.eth_compilelll.md) |  | `(code: string) => Promise<Data>` | Returns compiled LLL code. |
-|  [`eth_compileSerpent`](./eth-connect.requestmanager.eth_compileserpent.md) |  | `(code: string) => Promise<Data>` | Returns compiled serpent code. |
-|  [`eth_compileSolidity`](./eth-connect.requestmanager.eth_compilesolidity.md) |  | `(code: string) => Promise<any>` | Returns compiled solidity code. |
 |  [`eth_estimateGas`](./eth-connect.requestmanager.eth_estimategas.md) |  | `(data: Partial<TransactionCallOptions> & Partial<TransactionOptions>) => Promise<Quantity>` | Generates and returns an estimate of how much gas is necessary to allow the transaction to complete. The transaction will not be added to the blockchain. Note that the estimate may be significantly more than the amount of gas actually used by the transaction, for a variety of reasons including EVM mechanics and node performance. |
 |  [`eth_gasPrice`](./eth-connect.requestmanager.eth_gasprice.md) |  | `() => Promise<BigNumber>` | Returns the current price per gas in wei. |
 |  [`eth_getBalance`](./eth-connect.requestmanager.eth_getbalance.md) |  | `(address: Address, block: BlockIdentifier) => Promise<BigNumber>` | Returns the balance of the account of given address. |
@@ -23,7 +20,6 @@ It's responsible for passing messages to providers It's also responsible for pol
 |  [`eth_getBlockTransactionCountByHash`](./eth-connect.requestmanager.eth_getblocktransactioncountbyhash.md) |  | `(blockHash: TxHash) => Promise<number>` | Returns the number of transactions in a block from a block matching the given block hash. |
 |  [`eth_getBlockTransactionCountByNumber`](./eth-connect.requestmanager.eth_getblocktransactioncountbynumber.md) |  | `(block: BlockIdentifier) => Promise<number>` | Returns the number of transactions in a block matching the given block number. |
 |  [`eth_getCode`](./eth-connect.requestmanager.eth_getcode.md) |  | `(address: Address, block: BlockIdentifier) => Promise<Data>` | Returns code at a given address. |
-|  [`eth_getCompilers`](./eth-connect.requestmanager.eth_getcompilers.md) |  | `() => Promise<Array<string>>` | Returns a list of available compilers in the client. |
 |  [`eth_getFilterChanges`](./eth-connect.requestmanager.eth_getfilterchanges.md) |  | `(filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>` | Polling method for a filter, which returns an array of logs which occurred since last poll. |
 |  [`eth_getFilterLogs`](./eth-connect.requestmanager.eth_getfilterlogs.md) |  | `(filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>` | Returns an array of all logs matching filter with given id. |
 |  [`eth_getLogs`](./eth-connect.requestmanager.eth_getlogs.md) |  | `(options: FilterOptions) => Promise<Array<TxHash> | Array<FilterChange>>` | Returns an array of all logs matching a given filter object. |

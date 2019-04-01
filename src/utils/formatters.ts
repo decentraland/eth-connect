@@ -128,6 +128,8 @@ export function inputTransactionFormatter(options) {
  * @param tx - The transaction
  */
 export function outputTransactionFormatter(tx) {
+  if (!tx) return null
+
   if (tx.blockNumber !== null) {
     tx.blockNumber = utils.toDecimal(tx.blockNumber)
   }
@@ -147,6 +149,8 @@ export function outputTransactionFormatter(tx) {
  * @param receipt - The transaction receipt
  */
 export function outputTransactionReceiptFormatter(receipt) {
+  if (!receipt) return null
+
   if (receipt.blockNumber !== null) receipt.blockNumber = utils.toDecimal(receipt.blockNumber)
   if (receipt.transactionIndex !== null) receipt.transactionIndex = utils.toDecimal(receipt.transactionIndex)
   receipt.cumulativeGasUsed = utils.toDecimal(receipt.cumulativeGasUsed)
@@ -167,6 +171,7 @@ export function outputTransactionReceiptFormatter(receipt) {
  * Formats the output of a block to its proper value
  */
 export function outputBlockFormatter(block) {
+  if (!block) return null
   // transform to number
   block.gasLimit = utils.toDecimal(block.gasLimit)
   block.gasUsed = utils.toDecimal(block.gasUsed)
@@ -190,6 +195,8 @@ export function outputBlockFormatter(block) {
  * Formats the output of a log
  */
 export function outputLogFormatter(log) {
+  if (!log) return null
+
   if (log.blockNumber) {
     log.blockNumber = utils.toDecimal(log.blockNumber)
   }
@@ -209,6 +216,8 @@ export function outputLogFormatter(log) {
  * Formats the input of a whisper post and converts all values to HEX
  */
 export function inputPostFormatter(post: any) {
+  if (!post) return null
+
   post.ttl = utils.fromDecimal(post.ttl)
   post.workToProve = utils.fromDecimal(post.workToProve)
   post.priority = utils.fromDecimal(post.priority)
@@ -231,6 +240,8 @@ export function inputPostFormatter(post: any) {
  * Formats the output of a received post message
  */
 export function outputPostFormatter(post: any) {
+  if (!post) return null
+
   post.expiry = utils.toDecimal(post.expiry)
   post.sent = utils.toDecimal(post.sent)
   post.ttl = utils.toDecimal(post.ttl)

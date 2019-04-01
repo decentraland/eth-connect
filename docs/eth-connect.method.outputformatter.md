@@ -5,5 +5,5 @@
 
 **Signature:**
 ```javascript
-outputFormatter: Function | null
+outputFormatter: (something: any) => V
 ```

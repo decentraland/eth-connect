@@ -35,13 +35,15 @@ export namespace eth {
   export const eth_getStorageAt = new Method({
     callName: 'eth_getStorageAt',
     params: 3,
-    inputFormatter: [formatters.inputAddressFormatter, utils.toHex, formatters.inputDefaultBlockNumberFormatter]
+    inputFormatter: [formatters.inputAddressFormatter, utils.toHex, formatters.inputDefaultBlockNumberFormatter],
+    outputFormatter: utils.toData
   })
 
   export const eth_getCode = new Method({
     callName: 'eth_getCode',
     params: 2,
-    inputFormatter: [formatters.inputAddressFormatter, formatters.inputDefaultBlockNumberFormatter]
+    inputFormatter: [formatters.inputAddressFormatter, formatters.inputDefaultBlockNumberFormatter],
+    outputFormatter: utils.toData
   })
 
   export const eth_getBlockByHash = new Method({
@@ -80,12 +82,6 @@ export namespace eth {
     params: 2,
     inputFormatter: [formatters.inputBlockNumberFormatter, utils.toHex],
     outputFormatter: formatters.outputBlockFormatter
-  })
-
-  export const eth_getCompilers = new Method({
-    callName: 'eth_getCompilers',
-    params: 0,
-    inputFormatter: []
   })
 
   export const eth_getBlockTransactionCountByHash = new Method({
@@ -152,37 +148,36 @@ export namespace eth {
   export const eth_sendRawTransaction = new Method({
     callName: 'eth_sendRawTransaction',
     params: 1,
-    inputFormatter: [null]
+    inputFormatter: [null],
+    outputFormatter: utils.toData
   })
 
   export const web3_sha3 = new Method({
     callName: 'web3_sha3',
     params: 1,
-    inputFormatter: [null]
+    inputFormatter: [null],
+    outputFormatter: utils.toData
   })
 
   export const eth_sendTransaction = new Method({
     callName: 'eth_sendTransaction',
     params: 1,
-    inputFormatter: [formatters.inputTransactionFormatter]
-  })
-
-  export const eth_signTransaction = new Method({
-    callName: 'eth_signTransaction',
-    params: 1,
-    inputFormatter: [formatters.inputTransactionFormatter]
+    inputFormatter: [formatters.inputTransactionFormatter],
+    outputFormatter: utils.toData
   })
 
   export const eth_sign = new Method({
     callName: 'eth_sign',
     params: 2,
-    inputFormatter: [formatters.inputAddressFormatter, null]
+    inputFormatter: [formatters.inputAddressFormatter, null],
+    outputFormatter: utils.toData
   })
 
   export const eth_call = new Method({
     callName: 'eth_call',
     params: 2,
-    inputFormatter: [formatters.inputCallFormatter, formatters.inputDefaultBlockNumberFormatter]
+    inputFormatter: [formatters.inputCallFormatter, formatters.inputDefaultBlockNumberFormatter],
+    outputFormatter: utils.toData
   })
 
   export const eth_estimateGas = new Method({
@@ -190,21 +185,6 @@ export namespace eth {
     params: 1,
     inputFormatter: [formatters.inputCallFormatter],
     outputFormatter: utils.toDecimal
-  })
-
-  export const eth_compileSolidity = new Method({
-    callName: 'eth_compileSolidity',
-    params: 1
-  })
-
-  export const eth_compileLLL = new Method({
-    callName: 'eth_compileLLL',
-    params: 1
-  })
-
-  export const eth_compileSerpent = new Method({
-    callName: 'eth_compileSerpent',
-    params: 1
   })
 
   export const eth_submitWork = new Method({
@@ -215,11 +195,13 @@ export namespace eth {
 
   export const eth_getWork = new Method({
     callName: 'eth_getWork',
-    params: 0
+    params: 1,
+    outputFormatter: utils.toArray
   })
 
   export const eth_coinbase = new Property({
-    getter: 'eth_coinbase'
+    getter: 'eth_coinbase',
+    outputFormatter: utils.toAddress
   })
 
   export const eth_mining = new Property({
@@ -243,7 +225,8 @@ export namespace eth {
   })
 
   export const eth_accounts = new Property({
-    getter: 'eth_accounts'
+    getter: 'eth_accounts',
+    outputFormatter: utils.toArray
   })
 
   export const eth_blockNumber = new Property({
@@ -257,97 +240,19 @@ export namespace eth {
   })
 
   export const web3_clientVersion = new Property({
-    getter: 'web3_clientVersion'
+    getter: 'web3_clientVersion',
+    outputFormatter: utils.toString
   })
 
   export const net_version = new Property({
-    getter: 'net_version'
+    getter: 'net_version',
+    outputFormatter: utils.toString
   })
 
   export const shh_version = new Method({
     callName: 'shh_version',
     params: 0,
     outputFormatter: utils.toDecimal
-  })
-
-  export const shh_info = new Method({
-    callName: 'shh_info',
-    params: 0
-  })
-
-  export const shh_setMaxMessageSize = new Method({
-    callName: 'shh_setMaxMessageSize',
-    params: 1
-  })
-
-  export const shh_setMinPoW = new Method({
-    callName: 'shh_setMinPoW',
-    params: 1
-  })
-
-  export const shh_markTrustedPeer = new Method({
-    callName: 'shh_markTrustedPeer',
-    params: 1
-  })
-
-  export const shh_newKeyPair = new Method({
-    callName: 'shh_newKeyPair',
-    params: 0
-  })
-
-  export const shh_addPrivateKey = new Method({
-    callName: 'shh_addPrivateKey',
-    params: 1
-  })
-
-  export const shh_deleteKeyPair = new Method({
-    callName: 'shh_deleteKeyPair',
-    params: 1
-  })
-
-  export const shh_hasKeyPair = new Method({
-    callName: 'shh_hasKeyPair',
-    params: 1
-  })
-
-  export const shh_getPublicKey = new Method({
-    callName: 'shh_getPublicKey',
-    params: 1
-  })
-
-  export const shh_getPrivateKey = new Method({
-    callName: 'shh_getPrivateKey',
-    params: 1
-  })
-
-  export const shh_newSymKey = new Method({
-    callName: 'shh_newSymKey',
-    params: 0
-  })
-
-  export const shh_addSymKey = new Method({
-    callName: 'shh_addSymKey',
-    params: 1
-  })
-
-  export const shh_generateSymKeyFromPassword = new Method({
-    callName: 'shh_generateSymKeyFromPassword',
-    params: 1
-  })
-
-  export const shh_hasSymKey = new Method({
-    callName: 'shh_hasSymKey',
-    params: 1
-  })
-
-  export const shh_getSymKey = new Method({
-    callName: 'shh_getSymKey',
-    params: 1
-  })
-
-  export const shh_deleteSymKey = new Method({
-    callName: 'shh_deleteSymKey',
-    params: 1
   })
 
   // subscribe and unsubscribe missing
@@ -362,23 +267,27 @@ export namespace eth {
   export const personal_newAccount = new Method({
     callName: 'personal_newAccount',
     params: 1,
-    inputFormatter: [null]
+    inputFormatter: [null],
+    outputFormatter: utils.toAddress
   })
 
   export const personal_importRawKey = new Method({
     callName: 'personal_importRawKey',
-    params: 2
+    params: 2,
+    outputFormatter: utils.toAddress
   })
 
   export const personal_sign = new Method({
     callName: 'personal_sign',
     params: 3,
-    inputFormatter: [null, formatters.inputAddressFormatter, null]
+    inputFormatter: [null, formatters.inputAddressFormatter, null],
+    outputFormatter: utils.toData
   })
 
   export const personal_ecRecover = new Method({
     callName: 'personal_ecRecover',
-    params: 2
+    params: 2,
+    outputFormatter: utils.toAddress
   })
 
   export const personal_unlockAccount = new Method({
@@ -391,7 +300,8 @@ export namespace eth {
   export const personal_sendTransaction = new Method({
     callName: 'personal_sendTransaction',
     params: 2,
-    inputFormatter: [formatters.inputTransactionFormatter, null]
+    inputFormatter: [formatters.inputTransactionFormatter, null],
+    outputFormatter: utils.toData
   })
 
   export const personal_lockAccount = new Method({
@@ -402,7 +312,8 @@ export namespace eth {
   })
 
   export const personal_listAccounts = new Property({
-    getter: 'personal_listAccounts'
+    getter: 'personal_listAccounts',
+    outputFormatter: utils.toArray
   })
 
   export const net_listening = new Property({
@@ -424,7 +335,8 @@ export namespace eth {
   export const eth_getLogs = new Method({
     callName: 'eth_getLogs',
     params: 1,
-    inputFormatter: [utils.toHex]
+    inputFormatter: [utils.toHex],
+    outputFormatter: utils.toArray
   })
 
   export const eth_newBlockFilter = new Method({
@@ -449,13 +361,15 @@ export namespace eth {
   export const eth_getFilterLogs = new Method({
     callName: 'eth_getFilterLogs',
     params: 1,
-    inputFormatter: [utils.toHex]
+    inputFormatter: [utils.toHex],
+    outputFormatter: utils.toArray
   })
 
   export const eth_getFilterChanges = new Method({
     callName: 'eth_getFilterChanges',
     params: 1,
-    inputFormatter: [utils.toHex]
+    inputFormatter: [utils.toHex],
+    outputFormatter: utils.toArray
   })
 
   export const eth_submitHashrate = new Method({
@@ -466,7 +380,8 @@ export namespace eth {
 
   export const shh_newIdentity = new Method({
     callName: 'shh_newIdentity',
-    params: 0
+    params: 0,
+    outputFormatter: utils.toData
   })
 
   export const shh_hasIdentity = new Method({
@@ -477,7 +392,8 @@ export namespace eth {
 
   export const shh_newGroup = new Method({
     callName: 'shh_newGroup',
-    params: 0
+    params: 0,
+    outputFormatter: utils.toData
   })
 
   export const shh_addToGroup = new Method({
@@ -498,101 +414,27 @@ export namespace eth {
     outputFormatter: utils.toBoolean
   })
 
-  export const shh_newMessageFilter = new Method({
-    callName: 'shh_newMessageFilter',
-    params: 1
-  })
-
-  export const shh_deleteMessageFilter = new Method({
-    callName: 'shh_deleteMessageFilter',
-    params: 1
-  })
-
   export const shh_getLogs = new Method({
     callName: 'shh_getLogs',
-    params: 1
+    params: 1,
+    outputFormatter: utils.toArray
   })
 
   export const shh_getFilterMessages = new Method({
     callName: 'shh_getFilterMessages',
-    params: 1
+    params: 1,
+    outputFormatter: utils.toArray
   })
 
   export const shh_getFilterChanges = new Method({
     callName: 'shh_getFilterChanges',
-    params: 1
+    params: 1,
+    outputFormatter: utils.toArray
   })
 
   export const shh_getMessages = new Method({
     callName: 'shh_getMessages',
-    params: 1
-  })
-
-  export const bzz_blockNetworkRead = new Method({
-    callName: 'bzz_blockNetworkRead',
     params: 1,
-    inputFormatter: [null]
-  })
-
-  export const bzz_syncEnabled = new Method({
-    callName: 'bzz_syncEnabled',
-    params: 1,
-    inputFormatter: [null]
-  })
-
-  export const bzz_swapEnabled = new Method({
-    callName: 'bzz_swapEnabled',
-    params: 1,
-    inputFormatter: [null]
-  })
-
-  export const bzz_download = new Method({
-    callName: 'bzz_download',
-    params: 2,
-    inputFormatter: [null, null]
-  })
-
-  export const bzz_upload = new Method({
-    callName: 'bzz_upload',
-    params: 2,
-    inputFormatter: [null, null]
-  })
-
-  export const bzz_retrieve = new Method({
-    callName: 'bzz_retrieve',
-    params: 1,
-    inputFormatter: [null]
-  })
-
-  export const bzz_store = new Method({
-    callName: 'bzz_store',
-    params: 2,
-    inputFormatter: [null, null]
-  })
-
-  export const bzz_get = new Method({
-    callName: 'bzz_get',
-    params: 1,
-    inputFormatter: [null]
-  })
-
-  export const bzz_put = new Method({
-    callName: 'bzz_put',
-    params: 2,
-    inputFormatter: [null, null]
-  })
-
-  export const bzz_modify = new Method({
-    callName: 'bzz_modify',
-    params: 4,
-    inputFormatter: [null, null, null, null]
-  })
-
-  export const bzz_hive = new Property({
-    getter: 'bzz_hive'
-  })
-
-  export const bzz_info = new Property({
-    getter: 'bzz_info'
+    outputFormatter: utils.toArray
   })
 }

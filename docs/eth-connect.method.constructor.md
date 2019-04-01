@@ -10,7 +10,7 @@ constructor(options: {
         callName: string;
         params: number;
         inputFormatter?: any[];
-        outputFormatter?: any;
+        outputFormatter: (val: any) => V;
     });
 ```
 
@@ -18,5 +18,5 @@ constructor(options: {
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  `options` | `{`<p/>`        callName: string;`<p/>`        params: number;`<p/>`        inputFormatter?: any[];`<p/>`        outputFormatter?: any;`<p/>`    }` |  |
+|  `options` | `{`<p/>`        callName: string;`<p/>`        params: number;`<p/>`        inputFormatter?: any[];`<p/>`        outputFormatter: (val: any) => V;`<p/>`    }` |  |
 

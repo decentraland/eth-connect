@@ -1,5 +1,5 @@
 import { Callback, RPCMessage, toRPC } from './common'
-import { IFuture, future } from '../utils/future'
+import { IFuture, future } from 'fp-future'
 
 export interface IWebSocket {
   close()
