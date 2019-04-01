@@ -12,6 +12,7 @@
     "kind": "Webpack",
     "file": "./src/index.ts",
     "target": "web",
-    "fileName": "eth-connect.js"
+    "fileName": "eth-connect.js",
+    "globalObject": "this"
   }
 ]
