@@ -21,7 +21,6 @@ import utf8 = require('utf8')
 
 import CryptoJS = require('crypto-js')
 import _sha3 = require('crypto-js/sha3')
-import { Address } from 'src/Schema'
 
 /**
  * @public
@@ -479,7 +478,7 @@ export function toArray(value: any): any[] {
  * @public
  * Transforms given string to valid 20 bytes-length addres with 0x prefix
  */
-export function toAddress(address: Address): Address {
+export function toAddress(address: string): string {
   if (isStrictAddress(address)) {
     return address
   }
