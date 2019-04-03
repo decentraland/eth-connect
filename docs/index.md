@@ -56,7 +56,7 @@
 |  [`toData`](./eth-connect.todata.md) | `string` | Converts value to it's hex representation in string |
 |  [`toDecimal`](./eth-connect.todecimal.md) | `number` | Converts value to it's decimal representation in string |
 |  [`toHex`](./eth-connect.tohex.md) | `string` | Auto converts any given value into it's hex representation.<p/>And even stringifys objects before. |
-|  [`toNullDecimal`](./eth-connect.tonulldecimal.md) | `string | number | BigNumberType` | Converts value to it's decimal representation in string |
+|  [`toNullDecimal`](./eth-connect.tonulldecimal.md) | `number` | Converts value to it's decimal representation in string |
 |  [`toTwosComplement`](./eth-connect.totwoscomplement.md) | `BigNumberType` | Takes and input transforms it into bignumber and if it is negative value, into two's complement |
 |  [`toUtf8`](./eth-connect.toutf8.md) | `any` | Should be called to get utf8 from it's hex representation |
 |  [`toWei`](./eth-connect.towei.md) | `string | BigNumberType` | Takes a number of a unit and converts it to wei.<p/>Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |

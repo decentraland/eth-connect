@@ -8,7 +8,7 @@ Converts value to it's decimal representation in string
 ```javascript
 toNullDecimal
 ```
-**Returns:** `string | number | BigNumberType`
+**Returns:** `number`
 
 ## Parameters
 

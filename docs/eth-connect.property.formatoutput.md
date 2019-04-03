@@ -6,9 +6,9 @@ Should be called to format output(result) of method
 
 **Signature:**
 ```javascript
-formatOutput(result: any): V;
+formatOutput(result: any): V | null;
 ```
-**Returns:** `V`
+**Returns:** `V | null`
 
 ## Parameters
 

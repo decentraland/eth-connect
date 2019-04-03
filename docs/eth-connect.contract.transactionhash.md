@@ -5,5 +5,5 @@
 
 **Signature:**
 ```javascript
-transactionHash: string
+transactionHash: string | null
 ```

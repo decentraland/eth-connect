@@ -14,5 +14,5 @@ isBloom
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  `bloom` | `any` |  |
+|  `bloom` | `string` |  |
 

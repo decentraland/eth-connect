@@ -5,7 +5,5 @@
 
 **Signature:**
 ```javascript
-events: {
-        [key: string]: EventFilterCreator;
-    }
+events: Record<string, EventFilterCreator & Record<string, EventFilterCreator>>
 ```

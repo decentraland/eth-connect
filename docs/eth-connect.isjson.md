@@ -14,5 +14,5 @@ isJson
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  `str` | `any` |  |
+|  `str` | `string` |  |
 

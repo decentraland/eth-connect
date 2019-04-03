@@ -6,9 +6,9 @@ Returns a transaction in any of the possible states.
 
 **Signature:**
 ```javascript
-getTransaction(hash: string): Promise<Transaction>;
+getTransaction(hash: string): Promise<Transaction | null>;
 ```
-**Returns:** `Promise<Transaction>`
+**Returns:** `Promise<Transaction | null>`
 
 ## Parameters
 

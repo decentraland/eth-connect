@@ -11,9 +11,9 @@ Should be called to create new contract instance
 |  [`abi`](./eth-connect.contract.abi.md) |  | `any[]` |  |
 |  [`address`](./eth-connect.contract.address.md) |  | `string` |  |
 |  [`allEvents`](./eth-connect.contract.allevents.md) |  | `(options: FilterOptions) => Promise<EthFilter>` |  |
-|  [`events`](./eth-connect.contract.events.md) |  | `{`<p/>`        [key: string]: EventFilterCreator;`<p/>`    }` |  |
+|  [`events`](./eth-connect.contract.events.md) |  | `Record<string, EventFilterCreator & Record<string, EventFilterCreator>>` |  |
 |  [`requestManager`](./eth-connect.contract.requestmanager.md) |  | `RequestManager` |  |
-|  [`transactionHash`](./eth-connect.contract.transactionhash.md) |  | `string` |  |
+|  [`transactionHash`](./eth-connect.contract.transactionhash.md) |  | `string | null` |  |
 
 ## Methods
 

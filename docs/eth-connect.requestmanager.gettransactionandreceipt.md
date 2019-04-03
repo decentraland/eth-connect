@@ -6,9 +6,9 @@ Get the transaction status and receipt
 
 **Signature:**
 ```javascript
-getTransactionAndReceipt(txId: string): Promise<TransactionAndReceipt>;
+getTransactionAndReceipt(txId: string): Promise<TransactionAndReceipt | null>;
 ```
-**Returns:** `Promise<TransactionAndReceipt>`
+**Returns:** `Promise<TransactionAndReceipt | null>`
 
 ## Parameters
 
