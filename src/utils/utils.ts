@@ -465,11 +465,11 @@ export function toChecksumAddress(_address: string) {
 
 /**
  * @public
- * Transforms given string to valid 20 bytes-length addres with 0x prefix
+ * Ensures the result will be an array
  */
 export function toArray(value: any): any[] {
   if (!Array.isArray(value)) {
-    throw new Error(`Value was not an array: ${value}`)
+    throw new Error(`Value was not an array: ${JSON.stringify(value)}`)
   }
   return value
 }

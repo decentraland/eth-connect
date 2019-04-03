@@ -2,7 +2,7 @@
 
 # toArray function
 
-Transforms given string to valid 20 bytes-length addres with 0x prefix
+Ensures the result will be an array
 
 **Signature:**
 ```javascript

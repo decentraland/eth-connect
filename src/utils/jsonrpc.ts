@@ -58,6 +58,7 @@ export function isValidResponse(response) {
       typeof message.id === 'number' &&
       (message.result != null || message.result !== undefined)
     ) // only undefined is not valid json object
+    // the null is not a valid response for rpc nodes
   }
 }
 
