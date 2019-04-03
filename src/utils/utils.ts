@@ -21,6 +21,7 @@ import utf8 = require('utf8')
 
 import CryptoJS = require('crypto-js')
 import _sha3 = require('crypto-js/sha3')
+import { Address } from 'src/Schema'
 
 /**
  * @public
@@ -229,7 +230,7 @@ export function toNullDecimal(value: number | string | BigNumberType) {
  * @public
  * Converts value to it's decimal representation in string
  */
-export function toDecimal(value: number | string | BigNumberType) {
+export function toDecimal(value: number | string | BigNumberType): number {
   return toBigNumber(value).toNumber()
 }
 
@@ -478,7 +479,7 @@ export function toArray(value: any): any[] {
  * @public
  * Transforms given string to valid 20 bytes-length addres with 0x prefix
  */
-export function toAddress(address) {
+export function toAddress(address: Address): Address {
   if (isStrictAddress(address)) {
     return address
   }

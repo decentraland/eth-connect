@@ -87,7 +87,7 @@ export class Method<V> {
     }
   }
 
-  async execute(requestManager: RequestManager, ...args: any[]) {
+  async execute(requestManager: RequestManager, ...args: any[]): Promise<V | null> {
     let payload = this.toPayload(args)
     if (!requestManager) throw new Error('Missing RequestManager in method#exec')
     const result = await requestManager.sendAsync(payload)

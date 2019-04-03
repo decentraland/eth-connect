@@ -13,6 +13,9 @@ export type Syncing = {
   startingBlock: Quantity
   currentBlock: Quantity
   highestBlock: Quantity
+
+  knownStates?: Quantity
+  pulledStates?: Quantity
 }
 
 export enum TransactionStatus {

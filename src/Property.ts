@@ -39,11 +39,11 @@ export class Property<V> {
    *
    * @param result - The result to be formatted
    */
-  formatOutput(result: any) {
+  formatOutput(result: any): V {
     return this.outputFormatter(result)
   }
 
-  async execute(requestManager: RequestManager) {
+  async execute(requestManager: RequestManager): Promise<V> {
     const result = await requestManager.sendAsync({
       method: this.getter,
       params: []

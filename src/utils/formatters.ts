@@ -18,7 +18,7 @@
 import utils = require('../utils/utils')
 import config = require('../utils/config')
 import { BigNumber as BigNumberType, BigNumberValueType } from './BigNumber'
-import { Quantity, Tag } from '../Schema'
+import { Quantity, Tag, TransactionReceipt, BlockObject, Syncing, TransactionObject } from '../Schema'
 
 /**
  * Should format the output to a big number
@@ -127,7 +127,7 @@ export function inputTransactionFormatter(options) {
  *
  * @param tx - The transaction
  */
-export function outputTransactionFormatter(tx) {
+export function outputTransactionFormatter(tx: TransactionObject): TransactionObject {
   if (!tx) return null
 
   if (tx.blockNumber !== null) {
@@ -148,7 +148,7 @@ export function outputTransactionFormatter(tx) {
  *
  * @param receipt - The transaction receipt
  */
-export function outputTransactionReceiptFormatter(receipt) {
+export function outputTransactionReceiptFormatter(receipt: TransactionReceipt): TransactionReceipt {
   if (!receipt) return null
 
   if (receipt.blockNumber !== null) receipt.blockNumber = utils.toDecimal(receipt.blockNumber)
@@ -170,7 +170,7 @@ export function outputTransactionReceiptFormatter(receipt) {
 /**
  * Formats the output of a block to its proper value
  */
-export function outputBlockFormatter(block) {
+export function outputBlockFormatter(block: BlockObject): BlockObject {
   if (!block) return null
   // transform to number
   block.gasLimit = utils.toDecimal(block.gasLimit)
@@ -179,8 +179,8 @@ export function outputBlockFormatter(block) {
   block.timestamp = utils.toDecimal(block.timestamp)
   if (block.number !== null) block.number = utils.toDecimal(block.number)
 
-  block.difficulty = utils.toBigNumber(block.difficulty)
-  block.totalDifficulty = utils.toBigNumber(block.totalDifficulty)
+  block.difficulty = utils.toDecimal(block.difficulty)
+  block.totalDifficulty = utils.toDecimal(block.totalDifficulty)
 
   if (utils.isArray(block.transactions)) {
     block.transactions.forEach(function(item) {
@@ -267,7 +267,7 @@ export function inputAddressFormatter(address) {
   throw new Error(`Invalid address: ${JSON.stringify(address)}`)
 }
 
-export function outputSyncingFormatter(result) {
+export function outputSyncingFormatter(result: false | Syncing) {
   if (!result) {
     return result
   }
@@ -275,6 +275,7 @@ export function outputSyncingFormatter(result) {
   result.startingBlock = utils.toDecimal(result.startingBlock)
   result.currentBlock = utils.toDecimal(result.currentBlock)
   result.highestBlock = utils.toDecimal(result.highestBlock)
+
   if (result.knownStates) {
     result.knownStates = utils.toDecimal(result.knownStates)
     result.pulledStates = utils.toDecimal(result.pulledStates)

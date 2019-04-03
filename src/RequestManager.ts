@@ -26,15 +26,10 @@ import {
   SHHFilterOptions,
   Data,
   Quantity,
-  SHHFilterMessage,
   SHHPost,
-  FilterChange,
-  TransactionReceipt,
-  BlockObject,
   TransactionObject,
   TransactionCallOptions,
   TransactionOptions,
-  Syncing,
   TxHash,
   Address,
   FilterOptions,
@@ -50,12 +45,13 @@ import {
   FinishedTransactionAndReceipt,
   TransactionAndReceipt
 } from './Schema'
-import { BigNumber } from './utils/BigNumber'
 import { sleep } from './utils/sleep'
 
 export let TRANSACTION_FETCH_DELAY: number = 2 * 1000
 
-export function inject(target: Object, propertyKey: string | symbol) {
+type EthMethods = typeof eth
+
+export function inject(target: Object, propertyKey: keyof EthMethods) {
   const method = eth[propertyKey]
 
   /* istanbul ignore if */
@@ -70,6 +66,8 @@ export function inject(target: Object, propertyKey: string | symbol) {
   })
 }
 
+type EthMethod<T extends keyof EthMethods> = ReturnType<EthMethods[T]['execute']>
+
 /**
  * @public
  * It's responsible for passing messages to providers
@@ -81,67 +79,73 @@ export class RequestManager {
   requests = new Map<number, IFuture<any>>()
 
   /** Returns the current client version. */
-  @inject web3_clientVersion: () => Promise<string>
+  @inject web3_clientVersion: () => EthMethod<'web3_clientVersion'>
 
   /** Returns Keccak-256 (not the standardized SHA3-256) of the given data. */
-  @inject web3_sha3: (data: Data) => Promise<Data>
+  @inject web3_sha3: (data: Data) => EthMethod<'web3_sha3'>
 
   /** Returns the current network id. */
-  @inject net_version: () => Promise<string>
+  @inject net_version: () => EthMethod<'net_version'>
 
   /** Returns number of peers currently connected to the client. */
-  @inject net_peerCount: () => Promise<Quantity>
+  @inject net_peerCount: () => EthMethod<'net_peerCount'>
 
   /** Returns true if client is actively listening for network connections. */
-  @inject net_listening: () => Promise<boolean>
+  @inject net_listening: () => EthMethod<'net_listening'>
 
   /** Returns the current ethereum protocol version. */
-  @inject eth_protocolVersion: () => Promise<number>
+  @inject eth_protocolVersion: () => EthMethod<'eth_protocolVersion'>
 
   /** Returns an object with data about the sync status or false. */
-  @inject eth_syncing: () => Promise<false | Syncing>
+  @inject eth_syncing: () => EthMethod<'eth_syncing'>
 
   /** Returns the client coinbase address. */
-  @inject eth_coinbase: () => Promise<Address>
+  @inject eth_coinbase: () => EthMethod<'eth_coinbase'>
 
   /** Returns true if client is actively mining new blocks. */
-  @inject eth_mining: () => Promise<boolean>
+  @inject eth_mining: () => EthMethod<'eth_mining'>
 
   /** Returns the number of hashes per second that the node is mining with. */
-  @inject eth_hashrate: () => Promise<Quantity>
+  @inject eth_hashrate: () => EthMethod<'eth_hashrate'>
 
   /** Returns the current price per gas in wei. */
-  @inject eth_gasPrice: () => Promise<BigNumber>
+  @inject eth_gasPrice: () => EthMethod<'eth_gasPrice'>
 
   /** Returns a list of addresses owned by client. */
-  @inject eth_accounts: () => Promise<Address[]>
+  @inject eth_accounts: () => EthMethod<'eth_accounts'>
 
   /** Returns the number of most recent block. */
-  @inject eth_blockNumber: () => Promise<Quantity>
+  @inject eth_blockNumber: () => EthMethod<'eth_blockNumber'>
 
   /** Returns the balance of the account of given address. */
-  @inject eth_getBalance: (address: Address, block: BlockIdentifier) => Promise<BigNumber>
+  @inject eth_getBalance: (address: Address, block: BlockIdentifier) => EthMethod<'eth_getBalance'>
 
   /** Returns the value from a storage position at a given address. */
-  @inject eth_getStorageAt: (address: Address, position: Quantity, block: BlockIdentifier) => Promise<Data>
+  @inject eth_getStorageAt: (
+    address: Address,
+    position: Quantity,
+    block: BlockIdentifier
+  ) => EthMethod<'eth_getStorageAt'>
 
   /** Returns the number of transactions sent from an address. */
-  @inject eth_getTransactionCount: (address: Address, block: BlockIdentifier) => Promise<number>
+  @inject eth_getTransactionCount: (address: Address, block: BlockIdentifier) => EthMethod<'eth_getTransactionCount'>
 
   /** Returns the number of transactions in a block from a block matching the given block hash. */
-  @inject eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<number>
+  @inject eth_getBlockTransactionCountByHash: (blockHash: TxHash) => EthMethod<'eth_getBlockTransactionCountByHash'>
 
   /** Returns the number of transactions in a block matching the given block number. */
-  @inject eth_getBlockTransactionCountByNumber: (block: BlockIdentifier) => Promise<number>
+  @inject eth_getBlockTransactionCountByNumber: (
+    block: BlockIdentifier
+  ) => EthMethod<'eth_getBlockTransactionCountByNumber'>
 
   /** Returns the number of uncles in a block from a block matching the given block hash. */
-  @inject eth_getUncleCountByBlockHash: (blockHash: TxHash) => Promise<number>
+  @inject eth_getUncleCountByBlockHash: (blockHash: TxHash) => EthMethod<'eth_getUncleCountByBlockHash'>
 
   /** Returns the number of uncles in a block from a block matching the given block number. */
-  @inject eth_getUncleCountByBlockNumber: (block: BlockIdentifier) => Promise<number>
+  @inject eth_getUncleCountByBlockNumber: (block: BlockIdentifier) => EthMethod<'eth_getUncleCountByBlockNumber'>
 
   /** Returns code at a given address. */
-  @inject eth_getCode: (address: Address, block: BlockIdentifier) => Promise<Data>
+  @inject eth_getCode: (address: Address, block: BlockIdentifier) => EthMethod<'eth_getCode'>
 
   /**
    * The sign method calculates an Ethereum specific signature with:
@@ -156,35 +160,43 @@ export class RequestManager {
    *
    * @deprecated see https://github.com/ethereum/go-ethereum/pull/2940
    */
-  @inject eth_sign: (address: Address, message: Data) => Promise<Data>
+  @inject eth_sign: (address: Address, message: Data) => EthMethod<'eth_sign'>
 
   /** Creates new message call transaction or a contract creation, if the data field contains code. */
-  @inject eth_sendTransaction: (options: TransactionOptions) => Promise<TxHash>
+  @inject eth_sendTransaction: (options: TransactionOptions) => EthMethod<'eth_sendTransaction'>
 
   /** Creates new message call transaction or a contract creation for signed transactions. */
-  @inject eth_sendRawTransaction: (rawTransaction: Data) => Promise<TxHash>
+  @inject eth_sendRawTransaction: (rawTransaction: Data) => EthMethod<'eth_sendRawTransaction'>
 
   /** Executes a new message call immediately without creating a transaction on the block chain. */
-  @inject eth_call: (options: TransactionCallOptions, block: BlockIdentifier) => Promise<Data>
+  @inject eth_call: (options: TransactionCallOptions, block: BlockIdentifier) => EthMethod<'eth_call'>
   /**
    * Generates and returns an estimate of how much gas is necessary to allow the transaction to complete.
    * The transaction will not be added to the blockchain. Note that the estimate may be significantly more
    * than the amount of gas actually used by the transaction, for a variety of reasons including EVM mechanics
    * and node performance.
    */
-  @inject eth_estimateGas: (data: Partial<TransactionCallOptions> & Partial<TransactionOptions>) => Promise<Quantity>
+  @inject eth_estimateGas: (
+    data: Partial<TransactionCallOptions> & Partial<TransactionOptions>
+  ) => EthMethod<'eth_estimateGas'>
 
   /** Returns information about a block by hash. */
-  @inject eth_getBlockByHash: (blockHash: TxHash, fullTransactionObjects: boolean) => Promise<BlockObject>
+  @inject eth_getBlockByHash: (blockHash: TxHash, fullTransactionObjects: boolean) => EthMethod<'eth_getBlockByHash'>
 
   /** Returns information about a block by block number. */
-  @inject eth_getBlockByNumber: (block: BlockIdentifier, fullTransactionObjects: boolean) => Promise<BlockObject>
+  @inject eth_getBlockByNumber: (
+    block: BlockIdentifier,
+    fullTransactionObjects: boolean
+  ) => EthMethod<'eth_getBlockByNumber'>
 
   /** Returns the information about a transaction requested by transaction hash. */
-  @inject eth_getTransactionByHash: (hash: TxHash) => Promise<TransactionObject>
+  @inject eth_getTransactionByHash: (hash: TxHash) => EthMethod<'eth_getTransactionByHash'>
 
   /** Returns information about a transaction by block hash and transaction index position. */
-  @inject eth_getTransactionByBlockHashAndIndex: (blockHash: TxHash, txIndex: Quantity) => Promise<TransactionObject>
+  @inject eth_getTransactionByBlockHashAndIndex: (
+    blockHash: TxHash,
+    txIndex: Quantity
+  ) => EthMethod<'eth_getTransactionByBlockHashAndIndex'>
 
   /** Returns information about a transaction by block number and transaction index position. */
   @inject
@@ -193,13 +205,19 @@ export class RequestManager {
    * Returns the receipt of a transaction by transaction hash.
    * Note That the receipt is not available for pending transactions.
    */
-  @inject eth_getTransactionReceipt: (hash: TxHash) => Promise<TransactionReceipt>
+  @inject eth_getTransactionReceipt: (hash: TxHash) => EthMethod<'eth_getTransactionReceipt'>
 
   /** Returns information about a uncle of a block by hash and uncle index position. */
-  @inject eth_getUncleByBlockHashAndIndex: (blockHash: TxHash, index: Quantity) => Promise<BlockObject>
+  @inject eth_getUncleByBlockHashAndIndex: (
+    blockHash: TxHash,
+    index: Quantity
+  ) => EthMethod<'eth_getUncleByBlockHashAndIndex'>
 
   /** Returns information about a uncle of a block by number and uncle index position. */
-  @inject eth_getUncleByBlockNumberAndIndex: (block: BlockIdentifier, index: Quantity) => Promise<BlockObject>
+  @inject eth_getUncleByBlockNumberAndIndex: (
+    block: BlockIdentifier,
+    index: Quantity
+  ) => EthMethod<'eth_getUncleByBlockNumberAndIndex'>
 
   /**
    * Creates a filter object, based on filter options, to notify when the state changes (logs). To check if the state
@@ -215,36 +233,36 @@ export class RequestManager {
    * [A, B] "A in first position AND B in second position (and anything after)"
    * [[A, B], [A, B]] "(A OR B) in first position AND (A OR B) in second position (and anything after)"
    */
-  @inject eth_newFilter: (options: FilterOptions) => Promise<Data> // this should be quantity
+  @inject eth_newFilter: (options: FilterOptions) => Promise<Data> // EthMethod<'eth_newFilter'>
 
   /**
    * Creates a filter in the node, to notify when a new block arrives. To check if the state has changed, call
    * eth_getFilterChanges.
    */
-  @inject eth_newBlockFilter: () => Promise<Data> // this should be quantity
+  @inject eth_newBlockFilter: () => Promise<Data> // EthMethod<'eth_newBlockFilter'>
 
   /**
    * Creates a filter in the node, to notify when new pending transactions arrive. To check if the state has changed,
    * call eth_getFilterChanges.
    */
-  @inject eth_newPendingTransactionFilter: () => Promise<Data> // this should be quantity
+  @inject eth_newPendingTransactionFilter: () => Promise<Data> // EthMethod<'eth_newPendingTransactionFilter'>
 
   /**
    * Uninstalls a filter with given id. Should always be called when watch is no longer needed. Additonally Filters
    * timeout when they aren't requested with eth_getFilterChanges for a period of time.
    */
-  @inject eth_uninstallFilter: (filterId: Data) => Promise<boolean>
+  @inject eth_uninstallFilter: (filterId: Data) => EthMethod<'eth_uninstallFilter'>
 
   /**
    * Polling method for a filter, which returns an array of logs which occurred since last poll.
    */
-  @inject eth_getFilterChanges: (filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>
+  @inject eth_getFilterChanges: (filterId: Data) => EthMethod<'eth_getFilterChanges'>
 
   /** Returns an array of all logs matching filter with given id. */
-  @inject eth_getFilterLogs: (filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>
+  @inject eth_getFilterLogs: (filterId: Data) => EthMethod<'eth_getFilterLogs'>
 
   /** Returns an array of all logs matching a given filter object. */
-  @inject eth_getLogs: (options: FilterOptions) => Promise<Array<TxHash> | Array<FilterChange>>
+  @inject eth_getLogs: (options: FilterOptions) => EthMethod<'eth_getLogs'>
 
   /**
    * Returns the hash of the current block, the seedHash, and the boundary condition to be met ("target").
@@ -256,36 +274,36 @@ export class RequestManager {
    * DATA, 32 Bytes - the seed hash used for the DAG.
    * DATA, 32 Bytes - the boundary condition ("target"), 2^256 / difficulty.
    */
-  @inject eth_getWork: (blockHeaderHash: Data) => Promise<Array<TxHash>>
+  @inject eth_getWork: (blockHeaderHash: Data) => EthMethod<'eth_getWork'>
 
   /** Used for submitting a proof-of-work solution. */
-  @inject eth_submitWork: (data: Data, powHash: TxHash, digest: TxHash) => Promise<boolean>
+  @inject eth_submitWork: (data: Data, powHash: TxHash, digest: TxHash) => EthMethod<'eth_submitWork'>
 
   /** Used for submitting mining hashrate. */
-  @inject eth_submitHashrate: (hashRate: Data, id: Data) => Promise<boolean>
+  @inject eth_submitHashrate: (hashRate: Data, id: Data) => EthMethod<'eth_submitHashrate'>
 
   /** Sends a whisper message. */
-  @inject shh_post: (data: SHHPost) => Promise<boolean>
+  @inject shh_post: (data: SHHPost) => EthMethod<'shh_post'>
 
   /** Returns the current whisper protocol version. */
-  @inject shh_version: () => Promise<string>
+  @inject shh_version: () => EthMethod<'shh_version'>
 
   /** Creates new whisper identity in the client. */
-  @inject shh_newIdentity: () => Promise<Data>
+  @inject shh_newIdentity: () => EthMethod<'shh_newIdentity'>
 
   /** Checks if the client hold the private keys for a given identity. */
-  @inject shh_hasIdentity: (identity: Data) => Promise<boolean>
-  @inject shh_newGroup: () => Promise<Data>
-  @inject shh_addToGroup: (group: Data) => Promise<boolean>
+  @inject shh_hasIdentity: (identity: Data) => EthMethod<'shh_hasIdentity'>
+  @inject shh_newGroup: () => EthMethod<'shh_newGroup'>
+  @inject shh_addToGroup: (group: Data) => EthMethod<'shh_addToGroup'>
 
   /** Creates filter to notify, when client receives whisper message matching the filter options. */
-  @inject shh_newFilter: (options: SHHFilterOptions) => Promise<Data> // this should be quantity
+  @inject shh_newFilter: (options: SHHFilterOptions) => Promise<Data> // EthMethod<'shh_newFilter'>
 
   /**
    * Uninstalls a filter with given id. Should always be called when watch is no longer needed.
    * Additonally Filters timeout when they aren't requested with shh_getFilterChanges for a period of time.
    */
-  @inject shh_uninstallFilter: (filterId: Data) => Promise<boolean>
+  @inject shh_uninstallFilter: (filterId: Data) => EthMethod<'shh_uninstallFilter'>
 
   /**
    * Polling method for whisper filters. Returns new messages since the last call of this method.
@@ -293,10 +311,10 @@ export class RequestManager {
    * Note calling the shh_getMessages method, will reset the buffer for this method, so that you won't receive duplicate
    * messages.
    */
-  @inject shh_getFilterChanges: (filterId: Data) => Promise<Array<SHHFilterMessage>>
+  @inject shh_getFilterChanges: (filterId: Data) => EthMethod<'shh_getFilterChanges'>
 
   /** Get all messages matching a filter. Unlike shh_getFilterChanges this returns all messages. */
-  @inject shh_getMessages: (filterId: Data) => Promise<Array<SHHFilterMessage>>
+  @inject shh_getMessages: (filterId: Data) => EthMethod<'shh_getMessages'>
 
   /**
    * Decrypts the key with the given address from the key store.
@@ -309,7 +327,11 @@ export class RequestManager {
    *
    * The account can be used with eth_sign and eth_sendTransaction while it is unlocked.
    */
-  @inject personal_unlockAccount: (account: Address, passPhrase?: Data, seconds?: Quantity) => Promise<boolean>
+  @inject personal_unlockAccount: (
+    account: Address,
+    passPhrase?: Data,
+    seconds?: Quantity
+  ) => EthMethod<'personal_unlockAccount'>
 
   /**
    * Generates a new private key and stores it in the key store directory. The key file is encrypted with the given
@@ -317,25 +339,28 @@ export class RequestManager {
    *
    * At the geth console, newAccount will prompt for a passphrase when it is not supplied as the argument.
    */
-  @inject personal_newAccount: (passPhrase: Data) => Promise<Address>
+  @inject personal_newAccount: (passPhrase: Data) => EthMethod<'personal_newAccount'>
 
   /** Returns all the Ethereum account addresses of all keys in the key store. */
-  @inject personal_listAccounts: () => Promise<Array<Address>>
+  @inject personal_listAccounts: () => EthMethod<'personal_listAccounts'>
 
   /** Removes the private key with given address from memory. The account can no longer be used to send transactions. */
-  @inject personal_lockAccount: (address: Address) => Promise<boolean>
+  @inject personal_lockAccount: (address: Address) => EthMethod<'personal_lockAccount'>
 
   /**
    * Imports the given unencrypted private key (hex string) into the key store, encrypting it with the passphrase.
    * Returns the address of the new account.
    */
-  @inject personal_importRawKey: (keydata: Data, passPhrase: Data) => Promise<Address>
+  @inject personal_importRawKey: (keydata: Data, passPhrase: Data) => EthMethod<'personal_importRawKey'>
 
   /**
    * Imports the given unencrypted private key (hex string) into the key store, encrypting it with the passphrase.
    * Returns the address of the new account.
    */
-  @inject personal_sendTransaction: (txObject: TransactionOptions, passPhrase: Data) => Promise<TxHash>
+  @inject personal_sendTransaction: (
+    txObject: TransactionOptions,
+    passPhrase: Data
+  ) => EthMethod<'personal_sendTransaction'>
 
   /**
    * The sign method calculates an Ethereum specific signature with:
@@ -347,13 +372,13 @@ export class RequestManager {
    *
    * See ecRecover to verify the signature.
    */
-  @inject personal_sign: (data: Data, signerAddress: Address, passPhrase: Data) => Promise<Data>
+  @inject personal_sign: (data: Data, signerAddress: Address, passPhrase: Data) => EthMethod<'personal_sign'>
 
   /**
    * ecRecover returns the address associated with the private key that was used to calculate the signature in
    * personal_sign.
    */
-  @inject personal_ecRecover: (message: Data, signature: Data) => Promise<Address>
+  @inject personal_ecRecover: (message: Data, signature: Data) => EthMethod<'personal_ecRecover'>
 
   constructor(public provider: any) {
     // stub

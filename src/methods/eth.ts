@@ -20,6 +20,7 @@ import formatters = require('../utils/formatters')
 import utils = require('../utils/utils')
 import { Method } from '../Method'
 import { Property } from '../Property'
+import { SHHFilterMessage, FilterChange, TxHash, Address } from '../Schema'
 
 /**
  * @public
@@ -193,7 +194,7 @@ export namespace eth {
     outputFormatter: utils.toBoolean
   })
 
-  export const eth_getWork = new Method({
+  export const eth_getWork = new Method<TxHash[]>({
     callName: 'eth_getWork',
     params: 1,
     outputFormatter: utils.toArray
@@ -224,7 +225,7 @@ export namespace eth {
     outputFormatter: formatters.outputBigNumberFormatter
   })
 
-  export const eth_accounts = new Property({
+  export const eth_accounts = new Property<Address[]>({
     getter: 'eth_accounts',
     outputFormatter: utils.toArray
   })
@@ -311,7 +312,7 @@ export namespace eth {
     outputFormatter: utils.toBoolean
   })
 
-  export const personal_listAccounts = new Property({
+  export const personal_listAccounts = new Property<string[]>({
     getter: 'personal_listAccounts',
     outputFormatter: utils.toArray
   })
@@ -332,7 +333,7 @@ export namespace eth {
     outputFormatter: utils.toHex
   })
 
-  export const eth_getLogs = new Method({
+  export const eth_getLogs = new Method<TxHash[] | FilterChange[]>({
     callName: 'eth_getLogs',
     params: 1,
     inputFormatter: [utils.toHex],
@@ -358,14 +359,14 @@ export namespace eth {
     outputFormatter: utils.toBoolean
   })
 
-  export const eth_getFilterLogs = new Method({
+  export const eth_getFilterLogs = new Method<TxHash[] | FilterChange[]>({
     callName: 'eth_getFilterLogs',
     params: 1,
     inputFormatter: [utils.toHex],
     outputFormatter: utils.toArray
   })
 
-  export const eth_getFilterChanges = new Method({
+  export const eth_getFilterChanges = new Method<TxHash[] | FilterChange[]>({
     callName: 'eth_getFilterChanges',
     params: 1,
     inputFormatter: [utils.toHex],
@@ -426,13 +427,13 @@ export namespace eth {
     outputFormatter: utils.toArray
   })
 
-  export const shh_getFilterChanges = new Method({
+  export const shh_getFilterChanges = new Method<SHHFilterMessage[]>({
     callName: 'shh_getFilterChanges',
     params: 1,
     outputFormatter: utils.toArray
   })
 
-  export const shh_getMessages = new Method({
+  export const shh_getMessages = new Method<SHHFilterMessage[]>({
     callName: 'shh_getMessages',
     params: 1,
     outputFormatter: utils.toArray
