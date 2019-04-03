@@ -21,18 +21,18 @@ import { RequestManager } from './RequestManager'
 /**
  * @public
  */
-export class Method {
+export class Method<V> {
   callName: string
   params: number
   inputFormatter: Function[] | null
-  outputFormatter?: Function | null
+  outputFormatter: (something: any) => V
   requestManager: RequestManager
 
-  constructor(options: { callName: string; params: number; inputFormatter?: any[]; outputFormatter?: any }) {
+  constructor(options: { callName: string; params: number; inputFormatter?: any[]; outputFormatter: (val: any) => V }) {
     this.callName = options.callName
     this.params = options.params || 0
     this.inputFormatter = options.inputFormatter || null
-    this.outputFormatter = options.outputFormatter || null
+    this.outputFormatter = options.outputFormatter
     this.requestManager = null
   }
 
@@ -67,8 +67,8 @@ export class Method {
    *
    * @param result - The result to be formatted
    */
-  formatOutput(result: any) {
-    return this.outputFormatter && result ? this.outputFormatter(result) : result
+  formatOutput(result: any): V | null {
+    return result !== null ? this.outputFormatter(result) : null
   }
 
   /**

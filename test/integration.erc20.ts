@@ -7,7 +7,8 @@ const expect = chai.expect
 import { ContractFactory, RequestManager } from '../src'
 import BigNumber from 'bignumber.js'
 import { testAllProviders } from './helpers/testAllProviders'
-import { ConfirmedTransaction } from '../src/Schema'
+import { ConfirmedTransaction, TxHash } from '../src/Schema'
+import { testReturnType } from './unit.eth-return-types'
 
 declare var require
 
@@ -52,6 +53,7 @@ function doTest(requestManager: RequestManager) {
     const abi = require('./fixtures/ERC20.json').abi
     const bytecode = require('./fixtures/ERC20.json').bytecode
 
+    console.log(`> Account: ${account}`)
     const factory = new ContractFactory(requestManager, abi)
     ERC20Contract = await factory.deploy({ data: bytecode, from: account, to: null })
 
@@ -152,6 +154,8 @@ function doTest(requestManager: RequestManager) {
     }
   })
 
+  let txHash: TxHash = null
+
   it('should work with injected methods from ABI', async function() {
     this.timeout(1000000)
     const account = (await requestManager.eth_accounts())[0]
@@ -167,7 +171,7 @@ function doTest(requestManager: RequestManager) {
       expect(totalSupply.toNumber()).eq(0)
     }
     {
-      const mintResult = await ERC20Contract.mint(account, 10, { from: account })
+      const mintResult = (txHash = await ERC20Contract.mint(account, 10, { from: account }))
       expect(typeof mintResult).eq('string')
       const tx = await requestManager.getConfirmedTransaction(mintResult)
       expect(tx.status).to.eq('confirmed')
@@ -183,5 +187,12 @@ function doTest(requestManager: RequestManager) {
       const totalSupply = await ERC20Contract.totalSupply()
       expect(totalSupply.toNumber()).eq(20)
     }
+  })
+
+  it('waits the block', async () => {
+    const tx = await requestManager.waitForCompletion(txHash)
+
+    testReturnType(requestManager, 'eth_getBlockTransactionCountByHash', 'number', tx.blockHash)
+    testReturnType(requestManager, 'eth_getBlockTransactionCountByNumber', 'number', tx.blockNumber)
   })
 }

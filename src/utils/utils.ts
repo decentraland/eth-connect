@@ -235,6 +235,15 @@ export function toDecimal(value: number | string | BigNumberType) {
 
 /**
  * @public
+ * Converts value to string
+ */
+export function toString(value: number | string | BigNumberType) {
+  if (isBigNumber(value)) return (value as BigNumberType).toString(10)
+  return '' + value
+}
+
+/**
+ * @public
  * Converts value to it's hex  representation in string
  */
 export function toData(val: string | number | BigNumberType) {
@@ -452,6 +461,17 @@ export function toChecksumAddress(_address: string) {
     }
   }
   return checksumAddress
+}
+
+/**
+ * @public
+ * Ensures the result will be an array
+ */
+export function toArray(value: any): any[] {
+  if (!Array.isArray(value)) {
+    throw new Error(`Value was not an array: ${JSON.stringify(value)}`)
+  }
+  return value
 }
 
 /**

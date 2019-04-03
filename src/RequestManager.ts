@@ -19,7 +19,7 @@
 
 import { RPCSendableMessage, toPayload, isValidResponse } from './utils/jsonrpc'
 import { InvalidProvider, InvalidResponse } from './utils/errors'
-import { IFuture, future } from './utils/future'
+import { IFuture, future } from 'fp-future'
 import { eth } from './methods/eth'
 
 import {
@@ -201,18 +201,6 @@ export class RequestManager {
   /** Returns information about a uncle of a block by number and uncle index position. */
   @inject eth_getUncleByBlockNumberAndIndex: (block: BlockIdentifier, index: Quantity) => Promise<BlockObject>
 
-  /** Returns a list of available compilers in the client. */
-  @inject eth_getCompilers: () => Promise<Array<string>>
-
-  /** Returns compiled LLL code. */
-  @inject eth_compileLLL: (code: string) => Promise<Data>
-
-  /** Returns compiled solidity code. */
-  @inject eth_compileSolidity: (code: string) => Promise<any>
-
-  /** Returns compiled serpent code. */
-  @inject eth_compileSerpent: (code: string) => Promise<Data>
-
   /**
    * Creates a filter object, based on filter options, to notify when the state changes (logs). To check if the state
    * has changed, call eth_getFilterChanges.
@@ -262,12 +250,13 @@ export class RequestManager {
    * Returns the hash of the current block, the seedHash, and the boundary condition to be met ("target").
    *
    * @returns Array with the following properties:
+   * @alpha
    *
    * DATA, 32 Bytes - current block header pow-hash
    * DATA, 32 Bytes - the seed hash used for the DAG.
    * DATA, 32 Bytes - the boundary condition ("target"), 2^256 / difficulty.
    */
-  @inject eth_getWork: () => Promise<Array<TxHash>>
+  @inject eth_getWork: (blockHeaderHash: Data) => Promise<Array<TxHash>>
 
   /** Used for submitting a proof-of-work solution. */
   @inject eth_submitWork: (data: Data, powHash: TxHash, digest: TxHash) => Promise<boolean>
@@ -385,11 +374,11 @@ export class RequestManager {
 
     const defer = future()
 
-    defer.finally(() => this.requests.delete(payload.id))
-
     this.requests.set(payload.id, defer)
 
-    this.provider.sendAsync(payload, function(err, result) {
+    this.provider.sendAsync(payload, (err, result) => {
+      this.requests.delete(payload.id)
+
       if (err) {
         defer.reject(err)
         return
@@ -400,7 +389,6 @@ export class RequestManager {
         defer.reject(InvalidResponse(result))
         return
       }
-
       defer.resolve(result.result)
     })
 

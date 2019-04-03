@@ -4,7 +4,7 @@ const assert = chai.assert
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 
 import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../src/Filter'
-import { future } from '../src/utils/future'
+import { future } from 'fp-future'
 
 describe('eth.filter', function() {
   it('Test EthFilter', async function() {

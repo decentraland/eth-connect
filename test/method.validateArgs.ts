@@ -9,7 +9,8 @@ describe('lib/web3/method', function() {
       // given
       let method = new Method({
         callName: 'dummy',
-        params: 1
+        params: 1,
+        outputFormatter: x => x
       })
 
       let args = [1]
@@ -32,7 +33,8 @@ describe('lib/web3/method', function() {
       // given
       let method = new Method({
         callName: 'dummy',
-        params: 2
+        params: 2,
+        outputFormatter: x => x
       })
 
       let args = [1]

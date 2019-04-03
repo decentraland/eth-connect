@@ -20,7 +20,7 @@ import * as formatters from './utils/formatters'
 import { RequestManager } from './RequestManager'
 import config = require('./utils/config')
 import { FilterOptions, FilterChange, TxHash, SHHFilterOptions, Data, SHHFilterMessage } from './Schema'
-import { future, IFuture } from './utils/future'
+import { future, IFuture } from 'fp-future'
 
 function safeAsync(fn: () => Promise<any>) {
   return function() {

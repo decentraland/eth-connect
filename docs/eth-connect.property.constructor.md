@@ -6,12 +6,12 @@ Constructs a new instance of the [Property](./eth-connect.property.md) class
 
 **Signature:**
 ```javascript
-constructor(options: IPropertyOptions);
+constructor(options: IPropertyOptions<V>);
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  `options` | `IPropertyOptions` |  |
+|  `options` | `IPropertyOptions<V>` |  |
 

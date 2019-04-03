@@ -5,9 +5,9 @@
 
 **Signature:**
 ```javascript
-execute(requestManager: RequestManager, ...args: any[]): Promise<any>;
+execute(requestManager: RequestManager, ...args: any[]): Promise<V>;
 ```
-**Returns:** `Promise<any>`
+**Returns:** `Promise<V>`
 
 ## Parameters
 

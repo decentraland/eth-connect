@@ -45,10 +45,10 @@ lint:
 		${TSLINT}
 
 test:
-		export TS_NODE_PROJECT='./tsconfig-test.json'; node --experimental-modules node_modules/mocha/bin/_mocha --reporter list
+		export TS_NODE_PROJECT='./tsconfig-test.json'; node --experimental-modules node_modules/mocha/bin/_mocha --timeout 10000 --reporter list
 
 coverage:
-		export TS_NODE_PROJECT='./tsconfig-test.json'; node --experimental-modules node_modules/.bin/nyc node_modules/mocha/bin/_mocha --reporter list
+		export TS_NODE_PROJECT='./tsconfig-test.json'; node --experimental-modules node_modules/.bin/nyc node_modules/mocha/bin/_mocha --timeout 10000 --reporter list
 
 test-coveralls:
 		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose
