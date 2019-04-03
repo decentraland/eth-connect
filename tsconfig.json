@@ -12,6 +12,8 @@
     "declaration": true,
     "moduleResolution": "node",
     "stripInternal": true,
+    "strict": true,
+    "strictNullChecks": true,
     "pretty": true,
     "forceConsistentCasingInFileNames": true,
     "noUnusedParameters": true,

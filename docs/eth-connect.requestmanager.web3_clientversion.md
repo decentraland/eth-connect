@@ -6,5 +6,5 @@ Returns the current client version.
 
 **Signature:**
 ```javascript
-web3_clientVersion: () => Promise<string>
+web3_clientVersion: () => EthMethod<'web3_clientVersion'>
 ```

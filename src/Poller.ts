@@ -8,7 +8,7 @@ import { future } from 'fp-future'
 export type PollData = {
   data: any
   id: string
-  callback: (err, data) => void
+  callback: (err: Error | void, data?: any) => void
   uninstall: Function
 }
 
@@ -31,7 +31,7 @@ export class Poller {
    *
    * @todo cleanup number of params
    */
-  startPolling(data: any, pollId: string, callback: (err, data) => void, uninstall: Function) {
+  startPolling(data: any, pollId: string, callback: (err: Error | void, data?: any) => void, uninstall: Function) {
     this.polls[pollId] = {
       data: data,
       id: pollId,
@@ -117,7 +117,7 @@ export class Poller {
 
       defer
         .then(r => {
-          pollsData[ix].callback(null, r)
+          pollsData[ix].callback(void 0, r)
         })
         .catch(e => {
           pollsData[ix].callback(e, void 0)
@@ -128,7 +128,7 @@ export class Poller {
       this.requestManager.requests.set(payload.id, defer)
     })
 
-    this.requestManager.provider.sendAsync(payload, (error, results) => {
+    this.requestManager.provider.sendAsync(payload, (error: Error | void, results: any[]) => {
       if (error) {
         // tslint:disable-next-line:no-console
         console.error(error)
@@ -145,11 +145,12 @@ export class Poller {
       results.forEach(result => {
         const valid = isValidResponse(result)
         const defer = this.requestManager.requests.get(result.id)
-
-        if (!valid) {
-          defer.reject(errors.InvalidResponse(result))
-        } else {
-          defer.resolve(result.result)
+        if (defer) {
+          if (!valid) {
+            defer.reject(errors.InvalidResponse(result))
+          } else {
+            defer.resolve(result.result)
+          }
         }
       })
     })

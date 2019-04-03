@@ -8,5 +8,5 @@ Note calling the shh\_getMessages method, will reset the buffer for this method,
 
 **Signature:**
 ```javascript
-shh_getFilterChanges: (filterId: Data) => Promise<Array<SHHFilterMessage>>
+shh_getFilterChanges: (filterId: Data) => EthMethod<'shh_getFilterChanges'>
 ```

@@ -6,5 +6,5 @@ Returns information about a block by hash.
 
 **Signature:**
 ```javascript
-eth_getBlockByHash: (blockHash: TxHash, fullTransactionObjects: boolean) => Promise<BlockObject>
+eth_getBlockByHash: (blockHash: TxHash, fullTransactionObjects: boolean) => EthMethod<'eth_getBlockByHash'>
 ```

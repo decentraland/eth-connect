@@ -6,5 +6,5 @@ Returns the current price per gas in wei.
 
 **Signature:**
 ```javascript
-eth_gasPrice: () => Promise<BigNumber>
+eth_gasPrice: () => EthMethod<'eth_gasPrice'>
 ```

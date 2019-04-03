@@ -6,5 +6,5 @@ Executes a new message call immediately without creating a transaction on the bl
 
 **Signature:**
 ```javascript
-eth_call: (options: TransactionCallOptions, block: BlockIdentifier) => Promise<Data>
+eth_call: (options: TransactionCallOptions, block: BlockIdentifier) => EthMethod<'eth_call'>
 ```

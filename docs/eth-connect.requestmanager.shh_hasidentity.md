@@ -6,5 +6,5 @@ Checks if the client hold the private keys for a given identity.
 
 **Signature:**
 ```javascript
-shh_hasIdentity: (identity: Data) => Promise<boolean>
+shh_hasIdentity: (identity: Data) => EthMethod<'shh_hasIdentity'>
 ```

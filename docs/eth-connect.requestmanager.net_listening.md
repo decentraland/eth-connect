@@ -6,5 +6,5 @@ Returns true if client is actively listening for network connections.
 
 **Signature:**
 ```javascript
-net_listening: () => Promise<boolean>
+net_listening: () => EthMethod<'net_listening'>
 ```

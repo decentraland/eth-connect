@@ -6,5 +6,5 @@ Returns the balance of the account of given address.
 
 **Signature:**
 ```javascript
-eth_getBalance: (address: Address, block: BlockIdentifier) => Promise<BigNumber>
+eth_getBalance: (address: Address, block: BlockIdentifier) => EthMethod<'eth_getBalance'>
 ```

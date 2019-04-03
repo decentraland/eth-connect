@@ -26,7 +26,7 @@ export class SolidityTypeReal extends SolidityType {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  isType(name) {
+  isType(name: string) {
     return !!name.match(/real([0-9]*)?(\[([0-9]*)\])?/)
   }
 }

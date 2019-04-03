@@ -6,5 +6,5 @@ Removes the private key with given address from memory. The account can no longe
 
 **Signature:**
 ```javascript
-personal_lockAccount: (address: Address) => Promise<boolean>
+personal_lockAccount: (address: Address) => EthMethod<'personal_lockAccount'>
 ```

@@ -22,10 +22,10 @@ import utils = require('../utils/utils')
  * Should be used when encoding, decoding solidity bytes
  */
 export class SolidityParam {
-  value
-  offset: number = undefined
+  value: string
+  offset?: number
 
-  constructor(value, offset: number = undefined) {
+  constructor(value: string, offset?: number) {
     this.value = value || ''
     this.offset = offset // offset bytes
   }
@@ -48,7 +48,7 @@ export class SolidityParam {
    * @returns {string} bytes representation of offset
    */
   offsetAsBytes() {
-    return !this.isDynamic() ? '' : utils.padLeft(utils.toTwosComplement(this.offset).toString(16), 64)
+    return !this.isDynamic() ? '' : utils.padLeft(utils.toTwosComplement(this.offset!).toString(16), 64)
   }
 
   /**

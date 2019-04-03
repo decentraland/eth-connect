@@ -10,5 +10,5 @@ See ecRecover to verify the signature.
 
 **Signature:**
 ```javascript
-personal_sign: (data: Data, signerAddress: Address, passPhrase: Data) => Promise<Data>
+personal_sign: (data: Data, signerAddress: Address, passPhrase: Data) => EthMethod<'personal_sign'>
 ```

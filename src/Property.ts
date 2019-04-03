@@ -27,7 +27,7 @@ export interface IPropertyOptions<V> {
  */
 export class Property<V> {
   getter: string
-  outputFormatter: Function | null
+  outputFormatter: (a: any) => V | null
 
   constructor(options: IPropertyOptions<V>) {
     this.getter = options.getter
@@ -39,11 +39,11 @@ export class Property<V> {
    *
    * @param result - The result to be formatted
    */
-  formatOutput(result: any): V {
+  formatOutput(result: any): V | null {
     return this.outputFormatter(result)
   }
 
-  async execute(requestManager: RequestManager): Promise<V> {
+  async execute(requestManager: RequestManager): Promise<V | null> {
     const result = await requestManager.sendAsync({
       method: this.getter,
       params: []

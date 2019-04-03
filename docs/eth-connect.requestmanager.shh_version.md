@@ -6,5 +6,5 @@ Returns the current whisper protocol version.
 
 **Signature:**
 ```javascript
-shh_version: () => Promise<string>
+shh_version: () => EthMethod<'shh_version'>
 ```

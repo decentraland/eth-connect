@@ -46,18 +46,18 @@ function addEventsToContract(contract: Contract) {
     })
 }
 
-export type EventFilterCreator = (indexed: { [key: string]: any }, options?: FilterOptions) => Promise<EthFilter>
+export type EventFilterCreator = (indexed: { [key: string]: any }, options: FilterOptions) => Promise<EthFilter>
 
 /**
  * @public
  * Should be called to create new contract instance
  */
 export class Contract {
-  allEvents: (options: FilterOptions) => Promise<EthFilter>
+  allEvents?: (options: FilterOptions) => Promise<EthFilter>
 
-  events: { [key: string]: EventFilterCreator } = {}
+  events: Record<string, EventFilterCreator & Record<string, EventFilterCreator>> = {}
 
-  transactionHash: string = null
+  transactionHash: string | null = null
 
   constructor(public requestManager: RequestManager, public abi: any[], public address: string) {
     this.transactionHash = null

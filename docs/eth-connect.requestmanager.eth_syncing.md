@@ -6,5 +6,5 @@ Returns an object with data about the sync status or false.
 
 **Signature:**
 ```javascript
-eth_syncing: () => Promise<false | Syncing>
+eth_syncing: () => EthMethod<'eth_syncing'>
 ```

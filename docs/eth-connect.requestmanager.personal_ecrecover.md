@@ -6,5 +6,5 @@ ecRecover returns the address associated with the private key that was used to c
 
 **Signature:**
 ```javascript
-personal_ecRecover: (message: Data, signature: Data) => Promise<Address>
+personal_ecRecover: (message: Data, signature: Data) => EthMethod<'personal_ecRecover'>
 ```

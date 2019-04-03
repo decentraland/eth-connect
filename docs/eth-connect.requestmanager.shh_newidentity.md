@@ -6,5 +6,5 @@ Creates new whisper identity in the client.
 
 **Signature:**
 ```javascript
-shh_newIdentity: () => Promise<Data>
+shh_newIdentity: () => EthMethod<'shh_newIdentity'>
 ```

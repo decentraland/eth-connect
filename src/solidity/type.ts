@@ -5,10 +5,13 @@ import { SolidityParam } from './param'
  * SolidityType prototype is used to encode/decode solidity params of certain type
  */
 export class SolidityType {
-  _inputFormatter
-  _outputFormatter
+  _inputFormatter: (value: any, name: string) => any
+  _outputFormatter: (value: any, name: string) => any
 
-  constructor(config: { inputFormatter; outputFormatter }) {
+  constructor(config: {
+    inputFormatter: (value: any, name: string) => any
+    outputFormatter: (value: any, name: string) => any
+  }) {
     this._inputFormatter = config.inputFormatter
     this._outputFormatter = config.outputFormatter
   }
@@ -93,8 +96,9 @@ export class SolidityType {
     let nestedTypes = this.nestedTypes(name)
     if (nestedTypes) {
       const match = nestedTypes[nestedTypes.length - 1].match(/[0-9]{1,}/g)
-
-      return parseInt(match[match.length - 1] || '1', 10)
+      if (match) {
+        return parseInt(match[match.length - 1] || '1', 10)
+      }
     }
     return 1
   }
@@ -147,7 +151,7 @@ export class SolidityType {
    * @return {Array} array of nested types
    */
   // tslint:disable-next-line:prefer-function-over-method
-  nestedTypes(name: string): string[] {
+  nestedTypes(name: string): string[] | null {
     // return list of strings eg. "[]", "[3]", "[]", "[2]"
     return name.match(/(\[[0-9]*\])/g)
   }
@@ -160,7 +164,7 @@ export class SolidityType {
    * @param {string} name
    * @return {string} encoded value
    */
-  encode(value, name: string) {
+  encode(value: any, name: string): any {
     if (this.isDynamicArray(name)) {
       let length = value.length // in int
       let nestedName = this.nestedName(name)
@@ -168,7 +172,7 @@ export class SolidityType {
       let result = []
       result.push(f.formatInputInt(length).encode())
 
-      value.forEach(v => {
+      value.forEach((v: any) => {
         result.push(this.encode(v, nestedName))
       })
 
@@ -197,7 +201,7 @@ export class SolidityType {
    * @param {string} name type name
    * @returns {object} decoded value
    */
-  decode(bytes: string, offset: number, name: string) {
+  decode(bytes: string, offset: number, name: string): any {
     if (this.isDynamicArray(name)) {
       let arrayOffset = parseInt('0x' + bytes.substr(offset * 2, 64), 16) // in bytes
       let length = parseInt('0x' + bytes.substr(arrayOffset * 2, 64), 16) // in int
@@ -206,7 +210,7 @@ export class SolidityType {
       let nestedName = this.nestedName(name)
       let nestedStaticPartLength = this.staticPartLength(nestedName) // in bytes
       let roundedNestedStaticPartLength = Math.floor((nestedStaticPartLength + 31) / 32) * 32
-      let result = []
+      let result: any[] = []
 
       for (let i = 0; i < length * roundedNestedStaticPartLength; i += roundedNestedStaticPartLength) {
         result.push(this.decode(bytes, arrayStart + i, nestedName))
@@ -220,7 +224,7 @@ export class SolidityType {
       let nestedName = this.nestedName(name)
       let nestedStaticPartLength = this.staticPartLength(nestedName) // in bytes
       let roundedNestedStaticPartLength = Math.floor((nestedStaticPartLength + 31) / 32) * 32
-      let result = []
+      let result: any[] = []
 
       for (let i = 0; i < length * roundedNestedStaticPartLength; i += roundedNestedStaticPartLength) {
         result.push(this.decode(bytes, arrayStart + i, nestedName))

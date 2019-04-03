@@ -6,5 +6,5 @@ Imports the given unencrypted private key (hex string) into the key store, encry
 
 **Signature:**
 ```javascript
-personal_importRawKey: (keydata: Data, passPhrase: Data) => Promise<Address>
+personal_importRawKey: (keydata: Data, passPhrase: Data) => EthMethod<'personal_importRawKey'>
 ```

@@ -1,4 +1,4 @@
-declare let require
+declare let require: any
 
 import { Contract } from '../Contract'
 import { RequestManager } from '../RequestManager'

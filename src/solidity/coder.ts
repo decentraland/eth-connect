@@ -28,7 +28,7 @@ import { SolidityTypeUReal } from './ureal'
 import { SolidityTypeBytes } from './bytes'
 import { SolidityType } from './type'
 
-function isDynamic(solidityType: SolidityType, type) {
+function isDynamic(solidityType: SolidityType, type: string) {
   return solidityType.isDynamicType(type) || solidityType.isDynamicArray(type)
 }
 
@@ -70,7 +70,7 @@ export class SolidityCoder {
    * @param {object} plain param
    * @return {string} encoded plain param
    */
-  encodeParam(type: string, param) {
+  encodeParam(type: string, param: any) {
     return this.encodeParams([type], [param])
   }
 
@@ -101,7 +101,7 @@ export class SolidityCoder {
     return result
   }
 
-  encodeMultiWithOffset(types: string[], solidityTypes: SolidityType[], encodeds, _dynamicOffset: number) {
+  encodeMultiWithOffset(types: string[], solidityTypes: SolidityType[], encodeds: any[][], _dynamicOffset: number) {
     let dynamicOffset = _dynamicOffset
     let result = ''
 
@@ -129,7 +129,7 @@ export class SolidityCoder {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  encodeWithOffset(type: string, solidityType: SolidityType, encoded, offset: number) {
+  encodeWithOffset(type: string, solidityType: SolidityType, encoded: any[], offset: number) {
     /* jshint maxcomplexity: 17 */
     /* jshint maxdepth: 5 */
 
@@ -138,8 +138,8 @@ export class SolidityCoder {
     let mode = solidityType.isDynamicArray(type)
       ? encodingMode.dynamic
       : solidityType.isStaticArray(type)
-        ? encodingMode.static
-        : encodingMode.other
+      ? encodingMode.static
+      : encodingMode.other
 
     if (mode !== encodingMode.other) {
       let nestedName = solidityType.nestedName(type)

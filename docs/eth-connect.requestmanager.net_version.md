@@ -6,5 +6,5 @@ Returns the current network id.
 
 **Signature:**
 ```javascript
-net_version: () => Promise<string>
+net_version: () => EthMethod<'net_version'>
 ```

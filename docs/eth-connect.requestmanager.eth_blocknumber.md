@@ -6,5 +6,5 @@ Returns the number of most recent block.
 
 **Signature:**
 ```javascript
-eth_blockNumber: () => Promise<Quantity>
+eth_blockNumber: () => EthMethod<'eth_blockNumber'>
 ```

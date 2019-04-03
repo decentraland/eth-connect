@@ -6,5 +6,5 @@ Returns the receipt of a transaction by transaction hash. Note That the receipt 
 
 **Signature:**
 ```javascript
-eth_getTransactionReceipt: (hash: TxHash) => Promise<TransactionReceipt>
+eth_getTransactionReceipt: (hash: TxHash) => EthMethod<'eth_getTransactionReceipt'>
 ```

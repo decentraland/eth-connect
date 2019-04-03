@@ -6,5 +6,5 @@ Returns an array of all logs matching filter with given id.
 
 **Signature:**
 ```javascript
-eth_getFilterLogs: (filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>
+eth_getFilterLogs: (filterId: Data) => EthMethod<'eth_getFilterLogs'>
 ```

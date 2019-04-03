@@ -2,8 +2,8 @@ import { Callback, RPCMessage, toRPC } from './common'
 import { IFuture, future } from 'fp-future'
 
 export interface IWebSocket {
-  close()
-  send(s: any)
+  close(): void
+  send(s: any): void
 }
 
 export type WebSocketProviderOptions = {
@@ -27,7 +27,7 @@ export class WebSocketProvider<T extends IWebSocket> {
   responseCallbacks = new Map<number, IFuture<any>>()
   // @internal
   notificationCallbacks = new Set<Callback>()
-  connection: IFuture<T>
+  connection: IFuture<T> = future<T>()
 
   debug = false
 
@@ -42,8 +42,10 @@ export class WebSocketProvider<T extends IWebSocket> {
     this.isDisposed = true
     const connection = this.connection
     this.timeout(new Error('Provider disposed.'))
-    // tslint:disable-next-line:no-floating-promises
-    connection.then($ => $.close())
+    if (connection) {
+      // tslint:disable-next-line:no-floating-promises
+      connection.then($ => $.close())
+    }
   }
 
   /* istanbul ignore next */
@@ -109,7 +111,7 @@ export class WebSocketProvider<T extends IWebSocket> {
    * @param {String} data
    */
   private parseResponse(data: string) {
-    let returnValues = []
+    let returnValues: any[] = []
 
     // DE-CHUNKER
     let dechunkedData = data
@@ -126,7 +128,7 @@ export class WebSocketProvider<T extends IWebSocket> {
         data = this.lastChunk + data
       }
 
-      let result = null
+      let result: any = null
 
       try {
         result = JSON.parse(data)
@@ -145,7 +147,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
       // cancel timeout and set chunk to null
       clearTimeout(this.lastChunkTimeout)
-      this.lastChunk = null
+      this.lastChunk = ''
 
       if (result) returnValues.push(result)
     })
@@ -153,7 +155,7 @@ export class WebSocketProvider<T extends IWebSocket> {
     return returnValues
   }
 
-  private processMessage(message) {
+  private processMessage(message: { id: any; error: { message: any } }) {
     if ('id' in message) {
       const id = message.id
 
@@ -220,16 +222,16 @@ export class WebSocketProvider<T extends IWebSocket> {
       this.connection.resolve(connection)
     }
 
-    connection.onerror = error => {
+    connection.onerror = (error?: Error) => {
       this.timeout(error)
     }
 
-    connection.onclose = event => {
+    connection.onclose = (event: { reason: any }) => {
       this.timeout(new Error(`Connection closed (${(event && event.reason) || 'Unknown reason'})`))
     }
 
     // LISTEN FOR CONNECTION RESPONSES
-    connection.onmessage = e => {
+    connection.onmessage = (e: { data: string }) => {
       let data = typeof e.data === 'string' ? e.data : ''
 
       /* istanbul ignore if */

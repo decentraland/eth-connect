@@ -6,5 +6,5 @@ Returns the number of transactions sent from an address.
 
 **Signature:**
 ```javascript
-eth_getTransactionCount: (address: Address, block: BlockIdentifier) => Promise<number>
+eth_getTransactionCount: (address: Address, block: BlockIdentifier) => EthMethod<'eth_getTransactionCount'>
 ```

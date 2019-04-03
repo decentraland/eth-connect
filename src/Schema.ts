@@ -220,7 +220,7 @@ export type ConfirmedTransaction = TransactionObject & {
 }
 
 export type FilterLog = {}
-export type TransactionAndReceipt = TransactionObject & { receipt: TransactionReceipt }
+export type TransactionAndReceipt = TransactionObject & { receipt: TransactionReceipt | null }
 export type FinishedTransactionAndReceipt = TransactionAndReceipt & { status: TransactionStatus }
 export type BlockIdentifier = Quantity | Tag
 

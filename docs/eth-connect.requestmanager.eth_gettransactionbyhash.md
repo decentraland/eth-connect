@@ -6,5 +6,5 @@ Returns the information about a transaction requested by transaction hash.
 
 **Signature:**
 ```javascript
-eth_getTransactionByHash: (hash: TxHash) => Promise<TransactionObject>
+eth_getTransactionByHash: (hash: TxHash) => EthMethod<'eth_getTransactionByHash'>
 ```

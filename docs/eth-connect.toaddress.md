@@ -8,11 +8,11 @@ Transforms given string to valid 20 bytes-length addres with 0x prefix
 ```javascript
 toAddress
 ```
-**Returns:** `any`
+**Returns:** `string`
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  `address` | `any` |  |
+|  `address` | `string` |  |
 

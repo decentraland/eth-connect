@@ -6,5 +6,5 @@ Returns Keccak-256 (not the standardized SHA3-256) of the given data.
 
 **Signature:**
 ```javascript
-web3_sha3: (data: Data) => Promise<Data>
+web3_sha3: (data: Data) => EthMethod<'web3_sha3'>
 ```

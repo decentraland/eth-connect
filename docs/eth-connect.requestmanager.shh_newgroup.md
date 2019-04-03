@@ -5,5 +5,5 @@
 
 **Signature:**
 ```javascript
-shh_newGroup: () => Promise<Data>
+shh_newGroup: () => EthMethod<'shh_newGroup'>
 ```

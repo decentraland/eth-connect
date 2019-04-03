@@ -6,5 +6,5 @@ Returns code at a given address.
 
 **Signature:**
 ```javascript
-eth_getCode: (address: Address, block: BlockIdentifier) => Promise<Data>
+eth_getCode: (address: Address, block: BlockIdentifier) => EthMethod<'eth_getCode'>
 ```

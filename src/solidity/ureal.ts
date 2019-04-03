@@ -26,7 +26,7 @@ export class SolidityTypeUReal extends SolidityType {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  isType(name) {
+  isType(name: string) {
     return !!name.match(/^ureal([0-9]*)?(\[([0-9]*)\])*$/)
   }
 }

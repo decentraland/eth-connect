@@ -31,19 +31,19 @@ export type EventData = {
 }
 
 export class AllSolidityEvents {
-  constructor(public _requestManager: RequestManager, public _json, public _address: string) {}
+  constructor(public _requestManager: RequestManager, public _json: any, public _address: string) {}
 
-  encode(options: { fromBlock?; toBlock? } = {}) {
-    let result = {
+  encode(options: { fromBlock?: any; toBlock?: any } = {}) {
+    let result: {
+      address: string
+      fromBlock?: any
+      toBlock?: any
+    } = {
       address: this._address
     }
-    ;['fromBlock', 'toBlock']
-      .filter(function(f) {
-        return options[f] !== undefined
-      })
-      .forEach(function(f) {
-        result[f] = formatters.inputBlockNumberFormatter(options[f])
-      })
+
+    if (options.fromBlock !== undefined) result.fromBlock = formatters.inputBlockNumberFormatter(options.fromBlock)
+    if (options.toBlock !== undefined) result.toBlock = formatters.inputBlockNumberFormatter(options.toBlock)
 
     return result
   }
@@ -53,7 +53,7 @@ export class AllSolidityEvents {
 
     let eventTopic = utils.isArray(data.topics) && utils.isString(data.topics[0]) ? data.topics[0].slice(2) : ''
 
-    let match = this._json.filter(function(j) {
+    let match = this._json.filter(function(j: any) {
       return eventTopic === utils.sha3(utils.transformToFullName(j))
     })[0]
 

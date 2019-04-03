@@ -8,5 +8,5 @@ At the geth console, newAccount will prompt for a passphrase when it is not supp
 
 **Signature:**
 ```javascript
-personal_newAccount: (passPhrase: Data) => Promise<Address>
+personal_newAccount: (passPhrase: Data) => EthMethod<'personal_newAccount'>
 ```

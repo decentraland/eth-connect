@@ -6,5 +6,5 @@ Used for submitting mining hashrate.
 
 **Signature:**
 ```javascript
-eth_submitHashrate: (hashRate: Data, id: Data) => Promise<boolean>
+eth_submitHashrate: (hashRate: Data, id: Data) => EthMethod<'eth_submitHashrate'>
 ```

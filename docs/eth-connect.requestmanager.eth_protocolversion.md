@@ -6,5 +6,5 @@ Returns the current ethereum protocol version.
 
 **Signature:**
 ```javascript
-eth_protocolVersion: () => Promise<number>
+eth_protocolVersion: () => EthMethod<'eth_protocolVersion'>
 ```

@@ -6,5 +6,5 @@ Creates new message call transaction or a contract creation for signed transacti
 
 **Signature:**
 ```javascript
-eth_sendRawTransaction: (rawTransaction: Data) => Promise<TxHash>
+eth_sendRawTransaction: (rawTransaction: Data) => EthMethod<'eth_sendRawTransaction'>
 ```

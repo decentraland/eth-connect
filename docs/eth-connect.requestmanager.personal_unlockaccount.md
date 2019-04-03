@@ -12,5 +12,5 @@ The account can be used with eth\_sign and eth\_sendTransaction while it is unlo
 
 **Signature:**
 ```javascript
-personal_unlockAccount: (account: Address, passPhrase?: Data, seconds?: Quantity) => Promise<boolean>
+personal_unlockAccount: (account: Address, passPhrase?: Data, seconds?: Quantity) => EthMethod<'personal_unlockAccount'>
 ```

@@ -47,10 +47,10 @@ export function toPayload(method: string, params: any[]) {
 /**
  * Should be called to check if jsonrpc response is valid
  */
-export function isValidResponse(response) {
+export function isValidResponse(response: any) {
   return Array.isArray(response) ? response.every(validateSingleMessage) : validateSingleMessage(response)
 
-  function validateSingleMessage(message) {
+  function validateSingleMessage(message: any) {
     return (
       !!message &&
       !message.error &&

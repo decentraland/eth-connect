@@ -6,5 +6,5 @@ Uninstalls a filter with given id. Should always be called when watch is no long
 
 **Signature:**
 ```javascript
-shh_uninstallFilter: (filterId: Data) => Promise<boolean>
+shh_uninstallFilter: (filterId: Data) => EthMethod<'shh_uninstallFilter'>
 ```

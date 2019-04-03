@@ -18,7 +18,8 @@ export class SolidityTypeBool extends SolidityType {
       outputFormatter: f.formatOutputBool
     })
   }
-  isType(name) {
+  // tslint:disable-next-line:prefer-function-over-method
+  isType(name: string) {
     return !!name.match(/^bool(\[([0-9]*)\])*$/)
   }
 }

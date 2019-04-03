@@ -6,5 +6,5 @@ Returns the number of transactions in a block matching the given block number.
 
 **Signature:**
 ```javascript
-eth_getBlockTransactionCountByNumber: (block: BlockIdentifier) => Promise<number>
+eth_getBlockTransactionCountByNumber: (block: BlockIdentifier) => EthMethod<'eth_getBlockTransactionCountByNumber'>
 ```

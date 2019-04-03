@@ -6,5 +6,5 @@ Returns information about a transaction by block hash and transaction index posi
 
 **Signature:**
 ```javascript
-eth_getTransactionByBlockHashAndIndex: (blockHash: TxHash, txIndex: Quantity) => Promise<TransactionObject>
+eth_getTransactionByBlockHashAndIndex: (blockHash: TxHash, txIndex: Quantity) => EthMethod<'eth_getTransactionByBlockHashAndIndex'>
 ```

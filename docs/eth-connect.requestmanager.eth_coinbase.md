@@ -6,5 +6,5 @@ Returns the client coinbase address.
 
 **Signature:**
 ```javascript
-eth_coinbase: () => Promise<Address>
+eth_coinbase: () => EthMethod<'eth_coinbase'>
 ```

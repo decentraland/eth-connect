@@ -61,7 +61,7 @@ async function checkForContractAddress(requestManager: RequestManager, txId: TxH
   const receipt = await receiptFuture
   const code = await requestManager.eth_getCode(receipt.contractAddress, 'latest')
 
-  if (code.length > 3) {
+  if (code && code.length > 3) {
     return receipt.contractAddress
   }
 
@@ -83,7 +83,7 @@ function encodeConstructorParams(abi: any[], params: any[]) {
         return json.type === 'constructor' && json.inputs.length === params.length
       })
       .map(function(json) {
-        return json.inputs.map(function(input) {
+        return json.inputs.map(function(input: any) {
           return input.type
         })
       })
@@ -102,12 +102,12 @@ export class ContractFactory {
   /**
    * Should be called to create new contract on a blockchain
    */
-  async deploy(param1, param2, options: TransactionOptions): Promise<Contract>
-  async deploy(param1, options: TransactionOptions): Promise<Contract>
+  async deploy(param1: any, param2: any, options: TransactionOptions): Promise<Contract>
+  async deploy(param1: any, options: TransactionOptions): Promise<Contract>
   async deploy(options: TransactionOptions): Promise<Contract>
-  async deploy(...args) {
+  async deploy(...args: any[]) {
     // parse arguments
-    let options: TransactionOptions
+    let options: TransactionOptions | void
 
     let last = args[args.length - 1]
 
@@ -125,7 +125,7 @@ export class ContractFactory {
       throw new Error('Invalid options.data')
     }
 
-    if (options.value > 0) {
+    if (options.value && options.value > 0) {
       let constructorAbi =
         this.abi.filter(function(json) {
           return json.type === 'constructor' && json.inputs.length === args.length
@@ -141,11 +141,14 @@ export class ContractFactory {
     options.data += bytes
 
     if (!options.gas) {
-      options.gas = await this.requestManager.eth_estimateGas(options)
+      const estimatedGas = await this.requestManager.eth_estimateGas(options)
+      if (estimatedGas) options.gas = estimatedGas
     }
 
     // wait for the contract address and check if the code was deployed
     const hash = await this.requestManager.eth_sendTransaction(options)
+
+    if (!hash) throw new Error('Error while sending contract creation transaction. A TxHash was not retrieved')
 
     const address = await checkForContractAddress(this.requestManager, hash)
     const contract = await this.at(address)
@@ -170,7 +173,7 @@ export class ContractFactory {
    * Gets the data, which is data to deploy plus constructor params
    */
   async getData(...args: any[]): Promise<Data> {
-    let options = { data: undefined }
+    let options: { data?: string } | void
 
     const last = args[args.length - 1]
 
@@ -188,7 +191,7 @@ export class ContractFactory {
 
     const bytes = encodeConstructorParams(this.abi, args)
 
-    options.data += bytes
+    options.data = options.data + bytes
 
     return options.data
   }

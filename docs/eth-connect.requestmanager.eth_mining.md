@@ -6,5 +6,5 @@ Returns true if client is actively mining new blocks.
 
 **Signature:**
 ```javascript
-eth_mining: () => Promise<boolean>
+eth_mining: () => EthMethod<'eth_mining'>
 ```

@@ -52,7 +52,7 @@ export namespace eth {
     params: 2,
     inputFormatter: [
       formatters.inputBlockNumberFormatter,
-      function(val) {
+      function(val: any) {
         return !!val
       }
     ],
@@ -64,7 +64,7 @@ export namespace eth {
     params: 2,
     inputFormatter: [
       formatters.inputBlockNumberFormatter,
-      function(val) {
+      function(val: any) {
         return !!val
       }
     ],

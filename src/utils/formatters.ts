@@ -18,7 +18,15 @@
 import utils = require('../utils/utils')
 import config = require('../utils/config')
 import { BigNumber as BigNumberType, BigNumberValueType } from './BigNumber'
-import { Quantity, Tag, TransactionReceipt, BlockObject, Syncing, TransactionObject } from '../Schema'
+import {
+  Quantity,
+  Tag,
+  TransactionReceipt,
+  BlockObject,
+  Syncing,
+  TransactionObject,
+  TransactionOptions
+} from '../Schema'
 
 /**
  * Should format the output to a big number
@@ -42,12 +50,12 @@ export function inputDefaultBlockNumberFormatter(blockNumber?: Quantity | Tag): 
   if (blockNumber === undefined) {
     return config.defaultBlock
   }
-  return inputBlockNumberFormatter(blockNumber)
+  return inputBlockNumberFormatter(blockNumber) || config.defaultBlock
 }
 
 export function inputBlockNumberFormatter(blockNumber: Quantity | Tag): string | null {
   if (blockNumber === undefined || blockNumber == null) {
-    return undefined
+    return null
   } else if (isPredefinedBlockNumber(blockNumber)) {
     return blockNumber
   }
@@ -57,7 +65,15 @@ export function inputBlockNumberFormatter(blockNumber: Quantity | Tag): string |
 /**
  * Formats the input of a transaction and converts all values to HEX
  */
-export function inputCallFormatter(options: { from: string; to: string; data: string }) {
+export function inputCallFormatter(options: {
+  from: string
+  to: string
+  data: string
+  gasPrice?: any
+  gas?: any
+  value?: any
+  nonce?: any
+}) {
   options.from = options.from
 
   if (options.from) {
@@ -69,14 +85,10 @@ export function inputCallFormatter(options: { from: string; to: string; data: st
     options.to = inputAddressFormatter(options.to)
   }
 
-  // tslint:disable-next-line:semicolon
-  ;['gasPrice', 'gas', 'value', 'nonce']
-    .filter(function(key) {
-      return options[key] !== undefined
-    })
-    .forEach(function(key) {
-      options[key] = utils.fromDecimal(options[key])
-    })
+  if ('gasPrice' in options) options.gasPrice = utils.fromDecimal(options.gasPrice)
+  if ('gas' in options) options.gas = utils.fromDecimal(options.gas)
+  if ('value' in options) options.value = utils.fromDecimal(options.value)
+  if ('nonce' in options) options.nonce = utils.fromDecimal(options.nonce)
 
   if (options.data && !options.data.startsWith('0x') && /^[A-Za-z0-9]+$/.test(options.data)) {
     options.data = '0x' + options.data
@@ -90,7 +102,7 @@ export function inputCallFormatter(options: { from: string; to: string; data: st
  *
  * @param transaction - options
  */
-export function inputTransactionFormatter(options) {
+export function inputTransactionFormatter(options: TransactionOptions) {
   if (typeof options !== 'object') {
     throw new Error('Did not provide transaction options')
   }
@@ -106,14 +118,10 @@ export function inputTransactionFormatter(options) {
     options.to = inputAddressFormatter(options.to)
   }
 
-  // tslint:disable-next-line:semicolon
-  ;['gasPrice', 'gas', 'value', 'nonce']
-    .filter(function(key) {
-      return options[key] !== undefined
-    })
-    .forEach(function(key) {
-      options[key] = utils.fromDecimal(options[key])
-    })
+  if ('gasPrice' in options) options.gasPrice = utils.fromDecimal(options.gasPrice!)
+  if ('gas' in options) options.gas = utils.fromDecimal(options.gas!)
+  if ('value' in options) options.value = utils.fromDecimal(options.value!)
+  if ('nonce' in options) options.nonce = utils.fromDecimal(options.nonce!)
 
   if (options.data && !options.data.startsWith('0x') && /^[A-Za-z0-9]+$/.test(options.data)) {
     options.data = '0x' + options.data
@@ -127,7 +135,7 @@ export function inputTransactionFormatter(options) {
  *
  * @param tx - The transaction
  */
-export function outputTransactionFormatter(tx: TransactionObject): TransactionObject {
+export function outputTransactionFormatter(tx: TransactionObject): TransactionObject | null {
   if (!tx) return null
 
   if (tx.blockNumber !== null) {
@@ -148,7 +156,7 @@ export function outputTransactionFormatter(tx: TransactionObject): TransactionOb
  *
  * @param receipt - The transaction receipt
  */
-export function outputTransactionReceiptFormatter(receipt: TransactionReceipt): TransactionReceipt {
+export function outputTransactionReceiptFormatter(receipt: TransactionReceipt): TransactionReceipt | null {
   if (!receipt) return null
 
   if (receipt.blockNumber !== null) receipt.blockNumber = utils.toDecimal(receipt.blockNumber)
@@ -162,7 +170,7 @@ export function outputTransactionReceiptFormatter(receipt: TransactionReceipt): 
     })
   }
 
-  receipt.status = utils.toDecimal(receipt.status)
+  if ('status' in receipt) receipt.status = utils.toDecimal(receipt.status!)
 
   return receipt
 }
@@ -170,7 +178,7 @@ export function outputTransactionReceiptFormatter(receipt: TransactionReceipt): 
 /**
  * Formats the output of a block to its proper value
  */
-export function outputBlockFormatter(block: BlockObject): BlockObject {
+export function outputBlockFormatter(block: BlockObject): BlockObject | null {
   if (!block) return null
   // transform to number
   block.gasLimit = utils.toDecimal(block.gasLimit)
@@ -183,7 +191,7 @@ export function outputBlockFormatter(block: BlockObject): BlockObject {
   block.totalDifficulty = utils.toDecimal(block.totalDifficulty)
 
   if (utils.isArray(block.transactions)) {
-    block.transactions.forEach(function(item) {
+    block.transactions.forEach(function(item: TransactionObject | string) {
       if (!utils.isString(item)) return outputTransactionFormatter(item)
     })
   }
@@ -194,7 +202,7 @@ export function outputBlockFormatter(block: BlockObject): BlockObject {
 /**
  * Formats the output of a log
  */
-export function outputLogFormatter(log) {
+export function outputLogFormatter(log: any) {
   if (!log) return null
 
   if (log.blockNumber) {
@@ -212,53 +220,7 @@ export function outputLogFormatter(log) {
   return log
 }
 
-/**
- * Formats the input of a whisper post and converts all values to HEX
- */
-export function inputPostFormatter(post: any) {
-  if (!post) return null
-
-  post.ttl = utils.fromDecimal(post.ttl)
-  post.workToProve = utils.fromDecimal(post.workToProve)
-  post.priority = utils.fromDecimal(post.priority)
-
-  // fallback
-  if (!utils.isArray(post.topics)) {
-    post.topics = post.topics ? [post.topics as string] : []
-  }
-
-  // format the following options
-  post.topics = post.topics.map(function(topic) {
-    // convert only if not hex
-    return topic.indexOf('0x') === 0 ? topic : utils.fromUtf8(topic)
-  })
-
-  return post
-}
-
-/**
- * Formats the output of a received post message
- */
-export function outputPostFormatter(post: any) {
-  if (!post) return null
-
-  post.expiry = utils.toDecimal(post.expiry)
-  post.sent = utils.toDecimal(post.sent)
-  post.ttl = utils.toDecimal(post.ttl)
-  post.workProved = utils.toDecimal(post.workProved)
-
-  // format the following options
-  if (!post.topics) {
-    post.topics = []
-  }
-  post.topics = post.topics.map(function(topic) {
-    return utils.toAscii(topic)
-  })
-
-  return post
-}
-
-export function inputAddressFormatter(address) {
+export function inputAddressFormatter(address: string) {
   if (utils.isStrictAddress(address)) {
     return address
   } else if (utils.isAddress(address)) {
@@ -278,6 +240,8 @@ export function outputSyncingFormatter(result: false | Syncing) {
 
   if (result.knownStates) {
     result.knownStates = utils.toDecimal(result.knownStates)
+  }
+  if (result.pulledStates) {
     result.pulledStates = utils.toDecimal(result.pulledStates)
   }
 

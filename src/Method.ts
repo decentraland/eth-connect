@@ -26,14 +26,13 @@ export class Method<V> {
   params: number
   inputFormatter: Function[] | null
   outputFormatter: (something: any) => V
-  requestManager: RequestManager
+  requestManager?: RequestManager
 
   constructor(options: { callName: string; params: number; inputFormatter?: any[]; outputFormatter: (val: any) => V }) {
     this.callName = options.callName
     this.params = options.params || 0
     this.inputFormatter = options.inputFormatter || null
     this.outputFormatter = options.outputFormatter
-    this.requestManager = null
   }
 
   /**

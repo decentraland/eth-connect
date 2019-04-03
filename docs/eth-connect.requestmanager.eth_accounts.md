@@ -6,5 +6,5 @@ Returns a list of addresses owned by client.
 
 **Signature:**
 ```javascript
-eth_accounts: () => Promise<Address[]>
+eth_accounts: () => EthMethod<'eth_accounts'>
 ```

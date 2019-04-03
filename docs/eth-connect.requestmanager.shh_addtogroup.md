@@ -5,5 +5,5 @@
 
 **Signature:**
 ```javascript
-shh_addToGroup: (group: Data) => Promise<boolean>
+shh_addToGroup: (group: Data) => EthMethod<'shh_addToGroup'>
 ```

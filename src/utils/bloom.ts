@@ -21,7 +21,7 @@
 
 import utils = require('./utils')
 
-function codePointToInt(codePoint) {
+function codePointToInt(codePoint: number) {
   if (codePoint >= 48 && codePoint <= 57) {
     /*['0'..'9'] -> [0..9]*/
     return codePoint - 48

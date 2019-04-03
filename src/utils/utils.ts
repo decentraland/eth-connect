@@ -17,10 +17,9 @@
 
 import { BigNumber } from 'bignumber.js'
 import { BigNumber as BigNumberType } from './BigNumber'
-import utf8 = require('utf8')
-
-import CryptoJS = require('crypto-js')
-import _sha3 = require('crypto-js/sha3')
+const utf8 = require('utf8')
+const CryptoJS = require('crypto-js')
+const _sha3 = require('crypto-js/sha3')
 
 /**
  * @public
@@ -40,7 +39,7 @@ export function sha3(value: string, options?: { encoding?: 'hex' }) {
   }).toString()
 }
 
-let unitMap = {
+const unitMap = {
   noether: '0',
   wei: '1',
   kwei: '1000',
@@ -306,7 +305,7 @@ export function toHex(val: string | number | BigNumberType) {
  * Returns value of unit in Wei
  */
 export function getValueOfUnit(_unit: string): BigNumberType {
-  let unit = _unit ? _unit.toLowerCase() : 'ether'
+  let unit: keyof typeof unitMap = _unit ? (_unit.toLowerCase() as any) : 'ether'
   let unitValue = unitMap[unit]
   if (unitValue === undefined) {
     throw new Error(
@@ -510,7 +509,7 @@ export function isString(value: any): value is string {
  * @public
  * Returns true if object is function, otherwise false
  */
-export function isFunction(object) {
+export function isFunction(object: any) {
   return typeof object === 'function'
 }
 
@@ -518,7 +517,7 @@ export function isFunction(object) {
  * @public
  * Returns true if object is Objet, otherwise false
  */
-export function isObject(object) {
+export function isObject(object: any) {
   return object !== null && !Array.isArray(object) && typeof object === 'object'
 }
 
@@ -526,7 +525,7 @@ export function isObject(object) {
  * @public
  * Returns true if object is boolean, otherwise false
  */
-export function isBoolean(object) {
+export function isBoolean(object: any) {
   return typeof object === 'boolean'
 }
 
@@ -534,7 +533,7 @@ export function isBoolean(object) {
  * @public
  * Returns true if object is array, otherwise false
  */
-export function isArray(object) {
+export function isArray(object: any) {
   return Array.isArray(object)
 }
 
@@ -542,7 +541,7 @@ export function isArray(object) {
  * @public
  * Returns true if given string is valid json object
  */
-export function isJson(str) {
+export function isJson(str: string) {
   try {
     return !!JSON.parse(str)
   } catch (e) {
@@ -554,7 +553,7 @@ export function isJson(str) {
  * @public
  * Returns true if given string is a valid Ethereum block header bloom.
  */
-export function isBloom(bloom) {
+export function isBloom(bloom: string) {
   if (!/^(0x)?[0-9a-f]{512}$/i.test(bloom)) {
     return false
   } else if (/^(0x)?[0-9a-f]{512}$/.test(bloom) || /^(0x)?[0-9A-F]{512}$/.test(bloom)) {

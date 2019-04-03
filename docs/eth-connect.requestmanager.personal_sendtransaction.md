@@ -6,5 +6,5 @@ Imports the given unencrypted private key (hex string) into the key store, encry
 
 **Signature:**
 ```javascript
-personal_sendTransaction: (txObject: TransactionOptions, passPhrase: Data) => Promise<TxHash>
+personal_sendTransaction: (txObject: TransactionOptions, passPhrase: Data) => EthMethod<'personal_sendTransaction'>
 ```

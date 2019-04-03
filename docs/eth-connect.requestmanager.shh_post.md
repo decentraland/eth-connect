@@ -6,5 +6,5 @@ Sends a whisper message.
 
 **Signature:**
 ```javascript
-shh_post: (data: SHHPost) => Promise<boolean>
+shh_post: (data: SHHPost) => EthMethod<'shh_post'>
 ```

@@ -6,5 +6,5 @@ Creates new message call transaction or a contract creation, if the data field c
 
 **Signature:**
 ```javascript
-eth_sendTransaction: (options: TransactionOptions) => Promise<TxHash>
+eth_sendTransaction: (options: TransactionOptions) => EthMethod<'eth_sendTransaction'>
 ```

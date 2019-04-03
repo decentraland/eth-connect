@@ -6,5 +6,5 @@ Returns the number of uncles in a block from a block matching the given block ha
 
 **Signature:**
 ```javascript
-eth_getUncleCountByBlockHash: (blockHash: TxHash) => Promise<number>
+eth_getUncleCountByBlockHash: (blockHash: TxHash) => EthMethod<'eth_getUncleCountByBlockHash'>
 ```

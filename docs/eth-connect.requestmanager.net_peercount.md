@@ -6,5 +6,5 @@ Returns number of peers currently connected to the client.
 
 **Signature:**
 ```javascript
-net_peerCount: () => Promise<Quantity>
+net_peerCount: () => EthMethod<'net_peerCount'>
 ```

@@ -34,13 +34,16 @@ function safeAsync(fn: () => Promise<any>) {
  *
  * @param value - The given value
  */
-function toTopic(value: any): string {
+function toTopic(value: any): string | null {
   if (value === null || typeof value === 'undefined') return null
 
   const strValue = String(value).toString()
 
-  if (strValue.indexOf('0x') === 0) return strValue
-  else return utils.fromUtf8(strValue)
+  if (strValue.indexOf('0x') === 0) {
+    return strValue
+  } else {
+    return utils.fromUtf8(strValue)
+  }
 }
 
 export type FilterCallback = (messages: FilterChange[] | string[]) => void
@@ -49,7 +52,7 @@ export abstract class AbstractFilter<T> {
   public isStarted = false
   public isDisposed = false
 
-  public formatter: (x) => T
+  public formatter: ((x: any) => T) | null = null
 
   protected filterId: IFuture<Data> = future()
   protected callbacks: ((message: T) => void)[] = []
@@ -125,8 +128,9 @@ export abstract class AbstractFilter<T> {
 
         this.callbacks.forEach(cb => {
           if (this.formatter) {
+            const formatter = this.formatter
             result.forEach($ => {
-              cb(this.formatter($))
+              cb(formatter($))
             })
           } else {
             result.forEach($ => cb($))
@@ -152,9 +156,7 @@ export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
 
     this.options = this.options || { topics: [] }
     this.options.topics = this.options.topics || []
-    this.options.topics = this.options.topics.map(function(topic) {
-      return toTopic(topic)
-    })
+    this.options.topics = this.options.topics.map(toTopic) as any
 
     this.options = {
       topics: this.options.topics,
@@ -182,29 +184,27 @@ export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
   }
 }
 
-export class EthFilter<T = FilterChange | string> extends AbstractFilter<T> {
+export class EthFilter<T = any> extends AbstractFilter<T> {
   constructor(
     public requestManager: RequestManager,
     public options: FilterOptions,
-    public formatter: (message: FilterChange | string) => T = x => x as any
+    public formatter: ((message: FilterChange) => T) | ((message: string) => T) = (x: any) => x as any
   ) {
     super(requestManager)
     this.options = this.options || {}
     this.options.topics = this.options.topics || []
-    this.options.topics = this.options.topics.map(function(topic) {
-      return toTopic(topic)
-    })
+    this.options.topics = this.options.topics.map(toTopic) as any
 
     this.options = {
       topics: this.options.topics,
       address: this.options.address ? this.options.address : undefined,
       fromBlock:
         typeof this.options.fromBlock === 'number' || typeof this.options.fromBlock === 'string'
-          ? formatters.inputBlockNumberFormatter(this.options.fromBlock)
+          ? formatters.inputBlockNumberFormatter(this.options.fromBlock)!
           : 'latest',
       toBlock:
         typeof this.options.toBlock === 'number' || typeof this.options.toBlock === 'string'
-          ? formatters.inputBlockNumberFormatter(this.options.toBlock)
+          ? formatters.inputBlockNumberFormatter(this.options.toBlock)!
           : 'latest'
     }
   }
@@ -235,7 +235,10 @@ export class EthFilter<T = FilterChange | string> extends AbstractFilter<T> {
 
 export class EthPendingTransactionFilter extends EthFilter<TxHash> {
   constructor(requestManager: RequestManager) {
-    super(requestManager, null, arg => arg as TxHash)
+    super(requestManager, {}, (arg: string | FilterChange) => {
+      if (typeof arg === 'string') return arg
+      return arg.transactionHash
+    })
   }
   async getNewFilter() {
     return this.requestManager.eth_newPendingTransactionFilter()
@@ -244,7 +247,10 @@ export class EthPendingTransactionFilter extends EthFilter<TxHash> {
 
 export class EthBlockFilter extends EthFilter<TxHash> {
   constructor(requestManager: RequestManager) {
-    super(requestManager, null, arg => arg as TxHash)
+    super(requestManager, {}, (arg: string | FilterChange) => {
+      if (typeof arg === 'string') return arg
+      return arg.transactionHash
+    })
   }
 
   async getNewFilter() {

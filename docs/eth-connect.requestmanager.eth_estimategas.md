@@ -6,5 +6,5 @@ Generates and returns an estimate of how much gas is necessary to allow the tran
 
 **Signature:**
 ```javascript
-eth_estimateGas: (data: Partial<TransactionCallOptions> & Partial<TransactionOptions>) => Promise<Quantity>
+eth_estimateGas: (data: Partial<TransactionCallOptions> & Partial<TransactionOptions>) => EthMethod<'eth_estimateGas'>
 ```

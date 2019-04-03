@@ -6,5 +6,5 @@ Get all messages matching a filter. Unlike shh\_getFilterChanges this returns al
 
 **Signature:**
 ```javascript
-shh_getMessages: (filterId: Data) => Promise<Array<SHHFilterMessage>>
+shh_getMessages: (filterId: Data) => EthMethod<'shh_getMessages'>
 ```

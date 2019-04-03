@@ -28,6 +28,7 @@ import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
 import { EthFilter } from './Filter'
 import { FilterOptions } from './Schema'
+import { EventData } from './AllSolidityEvents'
 
 /**
  * This prototype should be used to create event filters
@@ -39,7 +40,7 @@ export class SolidityEvent {
 
   constructor(
     public requestManager: RequestManager,
-    json: { inputs: any[]; anonymous; name: string },
+    json: { inputs: any[]; anonymous: any; name: string },
     public address: string
   ) {
     this._params = json.inputs
@@ -52,7 +53,7 @@ export class SolidityEvent {
    *
    * @param decide - True if returned typed should be indexed
    */
-  types(indexed): string[] {
+  types(indexed: any): string[] {
     return this._params
       .filter(function(i) {
         return i.indexed === indexed
@@ -90,17 +91,13 @@ export class SolidityEvent {
    * @param {object} options
    */
   encode(indexed: Record<string, any> = {}, options: FilterOptions = {}): { topics: string[]; address: string } {
-    let result = {
+    let result: { topics: string[]; address: string; fromBlock?: any; toBlock?: any } = {
       topics: [],
       address: this.address
     }
-    ;['fromBlock', 'toBlock']
-      .filter(function(f) {
-        return options[f] !== undefined
-      })
-      .forEach(function(f) {
-        result[f] = formatters.inputBlockNumberFormatter(options[f])
-      })
+
+    if (options.fromBlock !== undefined) result.fromBlock = formatters.inputBlockNumberFormatter(options.fromBlock)
+    if (options.toBlock !== undefined) result.toBlock = formatters.inputBlockNumberFormatter(options.toBlock)
 
     if (!this._anonymous) {
       result.topics.push('0x' + this.signature())
@@ -117,7 +114,7 @@ export class SolidityEvent {
         }
 
         if (utils.isArray(value)) {
-          return value.map(function(v) {
+          return value.map(function(v: any) {
             return '0x' + coder.encodeParam(i.type, v)
           })
         }
@@ -134,11 +131,7 @@ export class SolidityEvent {
    *
    * @param {object} data
    */
-  decode(data: {
-    data: string
-    topics?: string[]
-    address: string
-  }): { event: string; address: string; args: string[] } {
+  decode(data: EventData): { event: string; address: string; args: string[] } {
     data.data = data.data || ''
     data.topics = data.topics || []
 
@@ -174,10 +167,10 @@ export class SolidityEvent {
    * @param {object} indexed
    * @param {object} options
    */
-  async execute(indexed: Record<string, any>, options: FilterOptions): Promise<EthFilter> {
+  async execute(indexed: Record<string, any>, options: FilterOptions) {
     let o = this.encode(indexed, options)
     let formatter = this.decode.bind(this)
-    return new EthFilter(this.requestManager, o, formatter)
+    return new EthFilter<ReturnType<typeof formatter>>(this.requestManager, o, formatter)
   }
 
   /**
@@ -190,7 +183,7 @@ export class SolidityEvent {
     let execute = this.execute.bind(this)
     let displayName = this.displayName()
     if (!contract.events[displayName]) {
-      contract.events[displayName] = execute
+      contract.events[displayName] = execute as typeof execute & Record<any, any>
     }
     contract.events[displayName][this.typeName()] = this.execute.bind(this, contract)
   }

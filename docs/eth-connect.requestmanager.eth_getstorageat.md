@@ -6,5 +6,5 @@ Returns the value from a storage position at a given address.
 
 **Signature:**
 ```javascript
-eth_getStorageAt: (address: Address, position: Quantity, block: BlockIdentifier) => Promise<Data>
+eth_getStorageAt: (address: Address, position: Quantity, block: BlockIdentifier) => EthMethod<'eth_getStorageAt'>
 ```

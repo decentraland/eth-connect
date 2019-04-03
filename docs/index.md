@@ -47,7 +47,7 @@
 |  [`padLeft`](./eth-connect.padleft.md) | `string` | Should be called to pad string to expected length |
 |  [`padRight`](./eth-connect.padright.md) | `string` | Should be called to pad string to expected length |
 |  [`sha3`](./eth-connect.sha3.md) | `any` |  |
-|  [`toAddress`](./eth-connect.toaddress.md) | `any` | Transforms given string to valid 20 bytes-length addres with 0x prefix |
+|  [`toAddress`](./eth-connect.toaddress.md) | `string` | Transforms given string to valid 20 bytes-length addres with 0x prefix |
 |  [`toArray`](./eth-connect.toarray.md) | `any[]` | Ensures the result will be an array |
 |  [`toAscii`](./eth-connect.toascii.md) | `string` | Should be called to get ascii from it's hex representation |
 |  [`toBigNumber`](./eth-connect.tobignumber.md) | `BigNumberType` | Takes an input and transforms it into an bignumber |

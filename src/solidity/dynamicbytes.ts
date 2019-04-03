@@ -10,7 +10,7 @@ export class SolidityTypeDynamicBytes extends SolidityType {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  isType(name) {
+  isType(name: string) {
     return !!name.match(/^bytes(\[([0-9]*)\])*$/)
   }
 

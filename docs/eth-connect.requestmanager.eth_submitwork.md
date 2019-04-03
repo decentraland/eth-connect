@@ -6,5 +6,5 @@ Used for submitting a proof-of-work solution.
 
 **Signature:**
 ```javascript
-eth_submitWork: (data: Data, powHash: TxHash, digest: TxHash) => Promise<boolean>
+eth_submitWork: (data: Data, powHash: TxHash, digest: TxHash) => EthMethod<'eth_submitWork'>
 ```

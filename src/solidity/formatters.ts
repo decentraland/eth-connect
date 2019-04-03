@@ -92,7 +92,7 @@ export function signedIsNegative(value: string) {
 /**
  * Formats right-aligned output bytes to int
  */
-export function formatOutputInt(param): BigNumberType {
+export function formatOutputInt(param: SolidityParam): BigNumberType {
   let value = param.staticPart() || '0'
 
   // check if it's negative number
@@ -142,8 +142,11 @@ export function formatOutputBool(param: any) {
  */
 export function formatOutputBytes(param: any, name: string) {
   let matches = name.match(/^bytes([0-9]*)/)
-  let size = parseInt(matches[1], 10)
-  return '0x' + param.staticPart().slice(0, 2 * size)
+  if (matches) {
+    let size = parseInt(matches[1], 10)
+    return '0x' + param.staticPart().slice(0, 2 * size)
+  }
+  return '0x' + param.staticPart()
 }
 
 /**

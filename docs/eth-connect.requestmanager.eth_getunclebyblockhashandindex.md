@@ -6,5 +6,5 @@ Returns information about a uncle of a block by hash and uncle index position.
 
 **Signature:**
 ```javascript
-eth_getUncleByBlockHashAndIndex: (blockHash: TxHash, index: Quantity) => Promise<BlockObject>
+eth_getUncleByBlockHashAndIndex: (blockHash: TxHash, index: Quantity) => EthMethod<'eth_getUncleByBlockHashAndIndex'>
 ```

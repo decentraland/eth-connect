@@ -6,5 +6,5 @@ Returns information about a block by block number.
 
 **Signature:**
 ```javascript
-eth_getBlockByNumber: (block: BlockIdentifier, fullTransactionObjects: boolean) => Promise<BlockObject>
+eth_getBlockByNumber: (block: BlockIdentifier, fullTransactionObjects: boolean) => EthMethod<'eth_getBlockByNumber'>
 ```

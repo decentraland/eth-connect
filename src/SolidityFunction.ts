@@ -22,6 +22,8 @@ import * as errors from './utils/errors'
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from '.'
+import { TransactionOptions } from './Schema'
+import { defaultBlock } from './utils/config'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
@@ -36,11 +38,11 @@ export class SolidityFunction {
 
   needsToBeTransaction: boolean
 
-  constructor(public requestManager: RequestManager, public json, address: string) {
-    this._inputTypes = json.inputs.map(function(i) {
+  constructor(public requestManager: RequestManager, public json: any, address: string) {
+    this._inputTypes = json.inputs.map(function(i: any) {
       return i.type
     })
-    this._outputTypes = json.outputs.map(function(i) {
+    this._outputTypes = json.outputs.map(function(i: any) {
       return i.type
     })
 
@@ -60,6 +62,7 @@ export class SolidityFunction {
     if (args.length > this._inputTypes.length && !utils.isObject(args[args.length - 1])) {
       return formatters.inputDefaultBlockNumberFormatter(args.pop()) // modify the args array!
     }
+    return defaultBlock
   }
 
   /**
@@ -88,12 +91,12 @@ export class SolidityFunction {
    * @param optional - payload options
    */
   toPayload(args: any[]) {
-    let options = {
-      to: undefined,
-      data: undefined,
-      value: undefined,
-      from: undefined
-    }
+    let options: {
+      to?: string
+      data?: string
+      value?: number
+      from?: string
+    } = {}
 
     if (args.length > this._inputTypes.length && utils.isObject(args[args.length - 1])) {
       options = args[args.length - 1]
@@ -114,7 +117,7 @@ export class SolidityFunction {
     return utils.sha3(this._name).slice(0, 8)
   }
 
-  unpackOutput(output: string) {
+  unpackOutput(output: string | null): any {
     if (!output) {
       return
     }
@@ -136,18 +139,18 @@ export class SolidityFunction {
 
     if (this.needsToBeTransaction) {
       const payload = this.toPayload(args)
-      if (payload.value > 0 && !this._payable) {
+      if (payload.value && payload.value > 0 && !this._payable) {
         throw new Error('Cannot send value to non-payable function')
       }
       if (!payload.from) {
         throw new Error('Missing "from" in transaction options')
       }
-      const txHash = await requestManager.eth_sendTransaction(payload)
+      const txHash = await requestManager.eth_sendTransaction(payload as TransactionOptions)
       return txHash
     } else {
       const defaultBlock = this.extractDefaultBlock(args)
       const payload = this.toPayload(args)
-      const output = await requestManager.eth_call(payload, defaultBlock)
+      const output = await requestManager.eth_call(payload as TransactionOptions, defaultBlock)
       return this.unpackOutput(output)
     }
   }
@@ -155,7 +158,7 @@ export class SolidityFunction {
   /**
    * Should be used to estimateGas of solidity function
    */
-  estimateGas(...args) {
+  estimateGas(...args: any[]) {
     let payload = this.toPayload(args)
 
     return this.requestManager.eth_estimateGas(payload)
@@ -164,7 +167,7 @@ export class SolidityFunction {
   /**
    * Return the encoded data of the call
    */
-  getData(...args: any[]): string {
+  getData(...args: any[]): string | undefined {
     let payload = this.toPayload(args)
 
     return payload.data
@@ -194,7 +197,7 @@ export class SolidityFunction {
     const fun = this
 
     const execute = Object.assign(
-      function(...args) {
+      function(this: Contract, ...args: any[]) {
         const requestManager = this.requestManager || fun.requestManager
 
         return fun.execute(requestManager, ...args)
@@ -202,10 +205,12 @@ export class SolidityFunction {
       { estimateGas: this.estimateGas.bind(this) }
     )
 
-    if (!contract[displayName]) {
-      contract[displayName] = execute
+    const injectableContract = contract as any
+
+    if (!injectableContract[displayName]) {
+      injectableContract[displayName] = execute
     }
 
-    contract[displayName][this.typeName()] = execute
+    injectableContract[displayName][this.typeName()] = execute
   }
 }

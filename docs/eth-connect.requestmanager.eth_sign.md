@@ -12,5 +12,5 @@ Note the address to sign with must be unlocked.
 
 **Signature:**
 ```javascript
-eth_sign: (address: Address, message: Data) => Promise<Data>
+eth_sign: (address: Address, message: Data) => EthMethod<'eth_sign'>
 ```
