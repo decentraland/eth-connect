@@ -1,6 +1,6 @@
 {
   "name": "eth-connect",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Ethereum TypeScript API, middleware to talk to a ethereum node using an async provider",
   "repository": "decentraland/eth-connect",
   "homepage": "https://github.com/decentraland/eth-connect",
