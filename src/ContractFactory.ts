@@ -63,7 +63,7 @@ async function checkForContractAddress(requestManager: RequestManager, txId: TxH
 
   // code can be null because of undefined behavior of eth nodes, 
   // the strict types requires us to check that code is not null before
-  // comparing it with a number `> 2`
+  // comparing it with a number `> 3` "0x0"
   if (code && code.length > 3) {
     return receipt.contractAddress
   }
