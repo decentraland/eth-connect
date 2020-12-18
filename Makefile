@@ -58,7 +58,7 @@ test-codecov:
 
 local-node:
 		# ensure ethereum/client-go image
-		@docker pull ethereum/client-go
+		@docker pull ethereum/client-go:v1.8.27
 
 		# kill the previous ethereum/client-go container if exist
 		@(docker container kill geth-dev || true)
@@ -69,7 +69,7 @@ local-node:
 				-d --name geth-dev \
 				-v "$(PWD)":/eth_common \
 				-p 8545:8545 -p 8546:8546 \
-						ethereum/client-go \
+						ethereum/client-go:v1.8.27 \
 				--identity="TEST_NODE" --networkid="53611" \
 				--rpc --rpcaddr 0.0.0.0 --rpcapi admin,debug,eth,miner,net,personal,shh,txpool,web3 \
 				--ws  --wsaddr 0.0.0.0  --wsapi admin,debug,eth,miner,net,personal,shh,txpool,web3 --wsorigins \* \
