@@ -15,5 +15,8 @@
   ],
   "license": "LGPL-3.0",
   "main": "./eth-connect.js",
-  "typings": "./eth-connect.d.ts"
+  "typings": "./eth-connect.d.ts",
+  "dependencies": {
+    "fp-future": "^1.0.1"
+  }
 }

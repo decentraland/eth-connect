@@ -26,9 +26,9 @@ provision-bundled:
 		@cp ./static/api-extractor.json ./dist/api-extractor.json
 		@cp ./static/tsconfig.json ./dist/tsconfig.json
 		@cp ./static/esm.ts ./dist/esm.ts
-		@cd ./dist && npm install --no-save @microsoft/api-extractor
-		@cd ./dist && ./node_modules/.bin/api-extractor run --typescript-compiler-folder ./node_modules/typescript --local
-		npx @microsoft/api-documenter markdown --input-folder dist/dist --output-folder docs
+		@cd ./dist && npm install --no-save @microsoft/api-extractor@6.3.0
+		@cd ./dist && ./node_modules/.bin/api-extractor run --typescript-compiler-folder ./node_modules/typescript --local && sed -i '' 's,import("../utils/BigNumber").BigNumber,BigNumber,g' eth-connect.d.ts
+		npx @microsoft/api-documenter@1.5.58 markdown --input-folder dist/dist --output-folder docs
 		@mv docs/eth-connect.md docs/index.md
 		@mv ./dist/lib/eth-connect.js ./dist
 		@mv ./dist/lib/eth-connect.esm.js ./dist
