@@ -4,6 +4,7 @@ import 'isomorphic-fetch'
 const expect = chai.expect
 // @ts-ignore
 import EthConnect from '../dist/eth-connect.esm'
+import type { RequestManager } from '../src'
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 
 describe('e2e.erc20', function() {
@@ -12,12 +13,7 @@ describe('e2e.erc20', function() {
   doTest(new EthConnect.RequestManager(provider))
 })
 
-function doTest(requestManager) {
-  it('should get the network', async () => {
-    // this should not fail, that's all
-    await requestManager.net_version()
-  })
-
+function doTest(requestManager: RequestManager) {
   it('should get the balance', async () => {
     const coinbase = await requestManager.eth_coinbase()
     console.log(`> Coinbase`, coinbase)

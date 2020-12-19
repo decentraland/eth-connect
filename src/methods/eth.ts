@@ -20,12 +20,13 @@ import formatters = require('../utils/formatters')
 import utils = require('../utils/utils')
 import { Method } from '../Method'
 import { Property } from '../Property'
+import { BigNumber as BigNumberType } from '../utils/BigNumber'
 
 /**
  * @public
  */
 export namespace eth {
-  export const eth_getBalance = new Method({
+  export const eth_getBalance = new Method<BigNumberType>({
     callName: 'eth_getBalance',
     params: 2,
     inputFormatter: [formatters.inputAddressFormatter, formatters.inputDefaultBlockNumberFormatter],

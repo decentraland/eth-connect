@@ -26,9 +26,9 @@ provision-bundled:
 		@cp ./static/api-extractor.json ./dist/api-extractor.json
 		@cp ./static/tsconfig.json ./dist/tsconfig.json
 		@cp ./static/esm.ts ./dist/esm.ts
-		@cd ./dist && npm install --no-save @microsoft/api-extractor
-		@cd ./dist && ./node_modules/.bin/api-extractor run --typescript-compiler-folder ./node_modules/typescript --local
-		npx @microsoft/api-documenter markdown --input-folder dist/dist --output-folder docs
+		@mkdir -p ./dist/etc
+		@cd ./dist && ../node_modules/.bin/api-extractor run --local --verbose --diagnostics
+		@cd ./dist && ../node_modules/.bin/api-documenter markdown --input-folder temp --output-folder ../docs
 		@mv docs/eth-connect.md docs/index.md
 		@mv ./dist/lib/eth-connect.js ./dist
 		@mv ./dist/lib/eth-connect.esm.js ./dist
@@ -71,8 +71,9 @@ local-node:
 				-p 8545:8545 -p 8546:8546 \
 						ethereum/client-go \
 				--identity="TEST_NODE" --networkid="53611" \
-				--rpc --rpcaddr 0.0.0.0 --rpcapi admin,debug,eth,miner,net,personal,shh,txpool,web3 \
-				--ws  --wsaddr 0.0.0.0  --wsapi admin,debug,eth,miner,net,personal,shh,txpool,web3 --wsorigins \* \
+        --allow-insecure-unlock \
+				--rpc --rpcaddr 0.0.0.0 --rpcapi="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" \
+				--ws  --wsaddr 0.0.0.0  --wsapi="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" --wsorigins \* \
 				--mine --minerthreads=1 \
 				--dev
 

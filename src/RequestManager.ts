@@ -50,7 +50,7 @@ import {
   FinishedTransactionAndReceipt,
   TransactionAndReceipt
 } from './Schema'
-import { BigNumber } from './utils/BigNumber'
+import type { BigNumber } from './utils/BigNumber'
 import { sleep } from './utils/sleep'
 
 export let TRANSACTION_FETCH_DELAY: number = 2 * 1000
