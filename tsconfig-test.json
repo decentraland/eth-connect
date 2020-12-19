@@ -8,6 +8,7 @@
     "inlineSources": false,
     "sourceMap": true,
     "moduleResolution": "node",
+    "strict": false,
     "stripInternal": true,
     "forceConsistentCasingInFileNames": true,
     "noUnusedParameters": true,
