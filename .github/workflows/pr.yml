@@ -22,4 +22,4 @@ jobs:
         run:  make ci
       - name: print diff if failed
         if: ${{ failure() }}
-        run: git diff
+        run: cp dist/temp/eth-connect.api.md report/eth-connect.api.md && git diff
