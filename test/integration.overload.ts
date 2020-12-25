@@ -104,11 +104,6 @@ function doTest(requestManager: RequestManager) {
     expect(account.length).to.gt(0)
   })
 
-  it('should get the network', async () => {
-    // this should not fail, that's all
-    await requestManager.net_version()
-  })
-
   it('should get the balance', async () => {
     const coinbase = await requestManager.eth_coinbase()
     console.log(`> Coinbase`, coinbase)

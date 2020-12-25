@@ -50,7 +50,7 @@ import {
   FinishedTransactionAndReceipt,
   TransactionAndReceipt
 } from './Schema'
-import { BigNumber } from './utils/BigNumber'
+import type { BigNumber } from './utils/BigNumber'
 import { sleep } from './utils/sleep'
 
 export let TRANSACTION_FETCH_DELAY: number = 2 * 1000
@@ -365,8 +365,11 @@ export class RequestManager {
    * @param data - The RPC message to be sent
    */
   async sendAsync(data: RPCSendableMessage) {
+
+    const provider = await this.provider
+
     /* istanbul ignore if */
-    if (!this.provider) {
+    if (!provider) {
       throw InvalidProvider()
     }
 
@@ -376,7 +379,7 @@ export class RequestManager {
 
     this.requests.set(payload.id, defer)
 
-    this.provider.sendAsync(payload, (err, result) => {
+    provider.sendAsync(payload, (err, result) => {
       this.requests.delete(payload.id)
 
       if (err) {
@@ -504,7 +507,7 @@ export class RequestManager {
       return tx
     }
 
-    let receipt
+    let receipt: TransactionReceipt
 
     try {
       receipt = await this.eth_getTransactionReceipt(hash)

@@ -111,9 +111,9 @@ export abstract class AbstractFilter<T> {
     }
   }
 
-  protected abstract async getNewFilter(): Promise<Data>
-  protected abstract async getChanges(): Promise<any>
-  protected abstract async uninstall(): Promise<any>
+  protected abstract getNewFilter(): Promise<Data>
+  protected abstract getChanges(): Promise<any>
+  protected abstract uninstall(): Promise<any>
 
   /**
    * Adds the callback and sets up the methods, to iterate over the results.

@@ -17,10 +17,6 @@ describe('integration.erc20', function() {
 })
 
 function doTest(requestManager: RequestManager) {
-  it('should get the network', async () => {
-    // this should not fail, that's all
-    await requestManager.net_version()
-  })
 
   it('should get the balance', async () => {
     const coinbase = await requestManager.eth_coinbase()
