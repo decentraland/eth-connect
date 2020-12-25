@@ -178,6 +178,11 @@ export namespace eth {
     shh_getMessages: Method<any[]>;
 }
 
+// @public (undocumented)
+export type EventFilterCreator = (indexed: {
+    [key: string]: any;
+}, options?: FilterOptions) => Promise<EthFilter>;
+
 // @public
 export function extractDisplayName(name: string): string;
 
@@ -485,10 +490,6 @@ export class WebSocketProvider<T extends IWebSocket> {
     url: string;
 }
 
-
-// Warnings were encountered during analysis:
-//
-// /Users/rutherford/code/eth-connect/src/Contract.ts:58:13 - (ae-forgotten-export) The symbol "EventFilterCreator" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

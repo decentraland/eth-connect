@@ -20,7 +20,7 @@ import { WebSocketProvider } from './providers/WebSocketProvider'
 export * from './utils/utils'
 
 export { RequestManager } from './RequestManager'
-export { Contract } from './Contract'
+export { Contract, EventFilterCreator } from './Contract'
 export { ContractFactory } from './ContractFactory'
 export { Method } from './Method'
 export { Property } from './Property'

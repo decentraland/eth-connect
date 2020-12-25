@@ -25,7 +25,7 @@ export declare class Contract
 |  [abi](./eth-connect.contract.abi.md) |  | any\[\] |  |
 |  [address](./eth-connect.contract.address.md) |  | string |  |
 |  [allEvents](./eth-connect.contract.allevents.md) |  | (options: FilterOptions) =&gt; Promise&lt;EthFilter&gt; |  |
-|  [events](./eth-connect.contract.events.md) |  | { \[key: string\]: EventFilterCreator; } |  |
+|  [events](./eth-connect.contract.events.md) |  | { \[key: string\]: [EventFilterCreator](./eth-connect.eventfiltercreator.md)<!-- -->; } |  |
 |  [requestManager](./eth-connect.contract.requestmanager.md) |  | [RequestManager](./eth-connect.requestmanager.md) |  |
 |  [transactionHash](./eth-connect.contract.transactionhash.md) |  | string |  |
 

@@ -65,3 +65,9 @@
 |  --- | --- |
 |  [eth](./eth-connect.eth.md) |  |
 
+## Type Aliases
+
+|  Type Alias | Description |
+|  --- | --- |
+|  [EventFilterCreator](./eth-connect.eventfiltercreator.md) |  |
+

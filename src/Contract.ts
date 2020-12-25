@@ -46,6 +46,9 @@ function addEventsToContract(contract: Contract) {
     })
 }
 
+/**
+ * @public
+ */
 export type EventFilterCreator = (indexed: { [key: string]: any }, options?: FilterOptions) => Promise<EthFilter>
 
 /**
