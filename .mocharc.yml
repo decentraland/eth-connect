@@ -1,0 +1,10 @@
+require:
+  - 'ts-node/register'
+  - './test/setup.ts'
+reporter:
+  - 'spec'
+  - list
+watch-files:
+  - 'dist/**/*.js'
+  - 'test/**/*.ts'
+spec: 'test/**/*.ts'

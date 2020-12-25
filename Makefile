@@ -51,9 +51,6 @@ lint:
 		${TSLINT}
 
 test:
-		export TS_NODE_PROJECT='./tsconfig-test.json'; node --experimental-modules node_modules/mocha/bin/_mocha --timeout 10000 --reporter list
-
-coverage:
 		export TS_NODE_PROJECT='./tsconfig-test.json'; node --experimental-modules node_modules/.bin/nyc node_modules/mocha/bin/_mocha --timeout 10000 --reporter list
 
 test-coveralls:
@@ -87,8 +84,8 @@ kill-docker:
 		# stop the node
 		@(docker container kill geth-dev && docker container rm geth-dev) || true
 
-ci: | build local-node coverage test-codecov kill-docker
+ci: | build local-node test test-codecov kill-docker
 
 test-local: | build local-node test kill-docker
 
-.PHONY: ci test coverage test-coveralls watch lint build clean kill-docker local-node
+.PHONY: ci test test-coveralls watch lint build clean kill-docker local-node
