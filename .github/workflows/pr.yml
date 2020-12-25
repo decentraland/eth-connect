@@ -2,7 +2,7 @@ on: [push, pull_request]
 
 name: PR Validation
 jobs:
-  install:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
