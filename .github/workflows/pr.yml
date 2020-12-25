@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - !master
+
+name: PR Validation
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: clean
+        run:  make clean
+      - name: install
+        run:  npm ci
+      - name: build & test
+        run:  make ci
