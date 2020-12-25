@@ -1,12 +1,12 @@
 on:
   push:
-  #   branches:
-  #     - master
-  # release:
-  #   types:
-  #     - created
+    branches:
+      - master
+  release:
+    types:
+      - created
 
-name: Deploy
+name: Publish NPM package
 jobs:
   install:
     runs-on: ubuntu-latest
@@ -22,9 +22,9 @@ jobs:
         run:  npm ci
       - name: build & test & publish
         run:  make ci
-      # - name: Publish
-      #   uses: menduz/oddish-action@master
-      #   with:
-      #     cwd: ./dist
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: Publish
+        uses: menduz/oddish-action@master
+        with:
+          cwd: ./dist
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
