@@ -92,8 +92,8 @@ export declare class RequestManager
 |  [getConfirmedTransaction(txId)](./eth-connect.requestmanager.getconfirmedtransaction.md) |  | Waits until the transaction finishes. Returns if it was successfull. Throws if the transaction fails or if it lacks any of the supplied events |
 |  [getTransaction(hash)](./eth-connect.requestmanager.gettransaction.md) |  | Returns a transaction in any of the possible states. |
 |  [getTransactionAndReceipt(txId)](./eth-connect.requestmanager.gettransactionandreceipt.md) |  | Get the transaction status and receipt |
-|  [isFailure(tx)](./eth-connect.requestmanager.isfailure.md) |  | Expects the result of getTransactionRecepeit's geth command and returns true if the transaction failed. It'll also check for a failed status prop against  |
-|  [isPending(tx)](./eth-connect.requestmanager.ispending.md) |  | Expects the result of getTransaction's geth command and returns true if the transaction is still pending. It'll also check for a pending status prop against  |
+|  [isFailure(tx)](./eth-connect.requestmanager.isfailure.md) |  | Expects the result of getTransactionRecepeit's geth command and returns true if the transaction failed. It'll also check for a failed status prop against TRANSACTION\_STATUS |
+|  [isPending(tx)](./eth-connect.requestmanager.ispending.md) |  | Expects the result of getTransaction's geth command and returns true if the transaction is still pending. It'll also check for a pending status prop against TRANSACTION\_STATUS |
 |  [isTxDropped(txId, \_retryAttemps)](./eth-connect.requestmanager.istxdropped.md) |  | Wait retryAttemps \* TRANSACTION\_FETCH\_DELAY for a transaction status to be in the mempool |
 |  [sendAsync(data)](./eth-connect.requestmanager.sendasync.md) |  | Should be used to asynchronously send request |
 |  [setProvider(p)](./eth-connect.requestmanager.setprovider.md) |  | Should be used to set provider of request manager |

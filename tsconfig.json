@@ -10,14 +10,23 @@
     "inlineSources": false,
     "sourceMap": true,
     "declaration": true,
+    "declarationMap": true,
     "moduleResolution": "node",
     "stripInternal": true,
     "pretty": true,
     "forceConsistentCasingInFileNames": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "plugins": [{ "name": "tslint-language-service" }],
+    "types": [],
+    "plugins": [
+      {
+        "name": "tslint-language-service"
+      }
+    ],
     "noEmit": true
   },
-  "exclude": ["node_modules/**/*", "static/**/*"]
+  "exclude": [
+    "node_modules/**/*",
+    "static/**/*"
+  ]
 }

@@ -105,8 +105,6 @@ export class WebSocketProvider<T extends IWebSocket> {
 
   /**
    * Will parse the response and make an array out of it.
-   * @method _parseResponse
-   * @param {String} data
    */
   private parseResponse(data: string) {
     let returnValues = []
@@ -179,7 +177,6 @@ export class WebSocketProvider<T extends IWebSocket> {
 
   /**
    * Timeout all requests when the end/error event is fired
-   * @method _timeout
    */
   private timeout(error?: Error) {
     if (!this.connection || !this.connection.isPending) {

@@ -6,6 +6,10 @@ NYC = $(NODE) --max-old-space-size=4096 node_modules/.bin/nyc
 TSLINT = $(NODE) --max-old-space-size=4096 node_modules/.bin/tslint
 COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
 
+ifneq ($(CI), true)
+LOCAL_ARG = --local --verbose --diagnostics
+endif
+
 clean:
 		@echo '> Cleaning'
 		@(rm -rf coverage || true)
@@ -27,9 +31,10 @@ provision-bundled:
 		@cp ./static/tsconfig.json ./dist/tsconfig.json
 		@cp ./static/esm.ts ./dist/esm.ts
 		@mkdir -p ./dist/etc
-		@cd ./dist && ../node_modules/.bin/api-extractor run --local --verbose --diagnostics
+		cd ./dist && ../node_modules/.bin/api-extractor run $(LOCAL_ARG) --typescript-compiler-folder ../node_modules/typescript
 		@cd ./dist && ../node_modules/.bin/api-documenter markdown --input-folder temp --output-folder ../docs
 		@mv docs/eth-connect.md docs/index.md
+		@cp static/docs_config.yml docs/_config.yml
 		@mv ./dist/lib/eth-connect.js ./dist
 		@mv ./dist/lib/eth-connect.esm.js ./dist
 		@mv ./dist/dist/eth-connect.d.ts ./dist

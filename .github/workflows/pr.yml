@@ -1,4 +1,8 @@
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - "master"
+  pull_request:
 
 name: PR Validation
 jobs:

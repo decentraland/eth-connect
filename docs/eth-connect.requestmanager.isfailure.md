@@ -4,7 +4,7 @@
 
 ## RequestManager.isFailure() method
 
-Expects the result of getTransactionRecepeit's geth command and returns true if the transaction failed. It'll also check for a failed status prop against 
+Expects the result of getTransactionRecepeit's geth command and returns true if the transaction failed. It'll also check for a failed status prop against TRANSACTION\_STATUS
 
 <b>Signature:</b>
 

@@ -572,7 +572,7 @@ export class RequestManager {
 
   /**
    * Expects the result of getTransaction's geth command and returns true if the transaction is still pending.
-   * It'll also check for a pending status prop against {@link txUtils#TRANSACTION_STATUS}
+   * It'll also check for a pending status prop against TRANSACTION_STATUS
    * @param tx - The transaction object
    */
   // tslint:disable-next-line:prefer-function-over-method
@@ -582,7 +582,7 @@ export class RequestManager {
 
   /**
    * Expects the result of getTransactionRecepeit's geth command and returns true if the transaction failed.
-   * It'll also check for a failed status prop against {@link txUtils#TRANSACTION_STATUS}
+   * It'll also check for a failed status prop against TRANSACTION_STATUS
    * @param tx - The transaction object
    */
   // tslint:disable-next-line:prefer-function-over-method

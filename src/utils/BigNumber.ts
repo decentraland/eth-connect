@@ -106,7 +106,7 @@ export interface BigNumber {
    * z.toString(10)                  // '1.2346'
    * ```
    *
-   * @param [base] The base, integer, 2 to 36 (or `ALPHABET.length`, see `ALPHABET`).
+   * @param base - The base, integer, 2 to 36 (or `ALPHABET.length`, see `ALPHABET`).
    */
   toString(base?: number): string
 
@@ -114,7 +114,7 @@ export interface BigNumber {
    * As `toString`, but does not accept a base argument and includes the minus sign for negative
    * zero.
    *
-   * ``ts
+   * ```ts
    * x = new BigNumber('-0')
    * x.toString()                    // '0'
    * x.valueOf()                     // '-0'
@@ -136,8 +136,8 @@ export interface BigNumber {
    * x.dividedBy(47, 16)             // '5'
    * ```
    *
-   * @param n A numeric value.
-   * @param [base] The base of n.
+   * @param n - A numeric value.
+   * @param base - The base of n.
    */
   dividedBy(n: BigNumberValueType, base?: number): BigNumber
 
@@ -158,7 +158,7 @@ export interface BigNumber {
    * x.integerValue(BigNumber.ROUND_DOWN)    // '-12'
    * ```
    *
-   * @param {BigNumber.RoundingMode} [rm] The roundng mode, an integer, 0 to 8.
+   * @param rm - The roundng mode, an integer, 0 to 8.
    */
   integerValue(rm?: BigNumberRoundingModeType): BigNumber
 
@@ -174,8 +174,8 @@ export interface BigNumber {
    * BigNumber(11.1, 2).isLessThan(11, 3)    // true
    * ```
    *
-   * @param n A numeric value.
-   * @param [base] The base of n.
+   * @param n - A numeric value.
+   * @param base - The base of n.
    */
   isLessThan(n: BigNumberValueType, base?: number): boolean
 
@@ -192,8 +192,8 @@ export interface BigNumber {
    * x.times('-a', 16)               // '-6'
    * ```
    *
-   * @param n A numeric value.
-   * @param [base] The base of n.
+   * @param n - A numeric value.
+   * @param base - The base of n.
    */
   times(n: BigNumberValueType, base?: number): BigNumber
 }
