@@ -22,6 +22,9 @@ jobs:
         run:  npm ci
       - name: build & test & publish
         run:  make ci
+      - name: print diff if failed
+        if: ${{ failure() }}
+        run: git diff
       - name: Publish
         uses: menduz/oddish-action@master
         with:

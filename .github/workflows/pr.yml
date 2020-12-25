@@ -20,3 +20,6 @@ jobs:
         run:  npm ci
       - name: build & test
         run:  make ci
+      - name: print diff if failed
+        if: ${{ failure() }}
+        run: git diff
