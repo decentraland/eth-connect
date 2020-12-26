@@ -4,6 +4,7 @@
 
 ## Hex type
 
+
 <b>Signature:</b>
 
 ```typescript

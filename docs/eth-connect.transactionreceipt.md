@@ -4,6 +4,7 @@
 
 ## TransactionReceipt type
 
+
 <b>Signature:</b>
 
 ```typescript

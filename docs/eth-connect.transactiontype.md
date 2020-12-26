@@ -4,6 +4,7 @@
 
 ## TransactionType enum
 
+
 <b>Signature:</b>
 
 ```typescript

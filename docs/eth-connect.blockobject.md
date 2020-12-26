@@ -4,6 +4,7 @@
 
 ## BlockObject type
 
+
 <b>Signature:</b>
 
 ```typescript

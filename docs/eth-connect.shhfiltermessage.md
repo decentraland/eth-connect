@@ -4,6 +4,7 @@
 
 ## SHHFilterMessage type
 
+
 <b>Signature:</b>
 
 ```typescript

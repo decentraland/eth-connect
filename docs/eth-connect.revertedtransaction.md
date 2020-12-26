@@ -4,6 +4,7 @@
 
 ## RevertedTransaction type
 
+
 <b>Signature:</b>
 
 ```typescript

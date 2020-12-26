@@ -4,6 +4,7 @@
 
 ## BlockIdentifier type
 
+
 <b>Signature:</b>
 
 ```typescript

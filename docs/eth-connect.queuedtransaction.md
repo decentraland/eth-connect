@@ -4,6 +4,7 @@
 
 ## QueuedTransaction type
 
+
 <b>Signature:</b>
 
 ```typescript

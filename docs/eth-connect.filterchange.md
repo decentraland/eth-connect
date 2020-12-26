@@ -4,6 +4,7 @@
 
 ## FilterChange type
 
+
 <b>Signature:</b>
 
 ```typescript

@@ -4,6 +4,7 @@
 
 ## Transaction type
 
+
 <b>Signature:</b>
 
 ```typescript

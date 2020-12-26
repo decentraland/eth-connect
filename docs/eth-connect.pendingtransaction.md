@@ -4,6 +4,7 @@
 
 ## PendingTransaction type
 
+
 <b>Signature:</b>
 
 ```typescript

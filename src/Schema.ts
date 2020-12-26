@@ -1,28 +1,56 @@
 import { BigNumber } from "bignumber.js"
 
-/** Hex string */
+/**
+ * Hex string
+ * @public
+ */
 export type Data = string
-/** Hex string of 32 bytes */
+
+/**
+ * Hex string of 32 bytes
+ * @public
+ */
 export type TxHash = string
-/** Hex string of 20 bytes */
+/**
+ * Hex string of 20 bytes
+ * @public
+ */
 export type Address = string
+/**
+ * @public
+ */
 export type Hex = string
+/**
+ * @public
+ */
 export type Quantity = number | Hex
 
+/**
+ * @public
+ */
 export type Syncing = {
   startingBlock: Quantity
   currentBlock: Quantity
   highestBlock: Quantity
 }
 
+/**
+ * @public
+ */
 export enum TransactionStatus {
   pending = 'pending',
   confirmed = 'confirmed',
   failed = 'failed'
 }
 
+/**
+ * @public
+ */
 export type Tag = 'latest' | 'earliest' | 'pending'
 
+/**
+ * @public
+ */
 export type TransactionOptions = {
   /**
    * The address the transaction is sent from.
@@ -62,6 +90,9 @@ export type TransactionOptions = {
   nonce?: Quantity
 }
 
+/**
+ * @public
+ */
 export type TransactionCallOptions = {
   /**
    * The address the transaction is sent from.
@@ -98,6 +129,9 @@ export type TransactionCallOptions = {
   data?: string
 }
 
+/**
+ * @public
+ */
 export type BlockObject = {
   /** the block number. null when its pending block. */
   number: Quantity
@@ -139,6 +173,9 @@ export type BlockObject = {
   uncles: Array<TxHash>
 }
 
+/**
+ * @public
+ */
 export type TransactionObject = {
   /** hash of the transaction. */
   hash: TxHash
@@ -168,6 +205,9 @@ export type TransactionObject = {
   s?: Data
 }
 
+/**
+ * @public
+ */
 export type Transaction =
   | DroppedTransaction
   | ReplacedTransaction
@@ -176,6 +216,9 @@ export type Transaction =
   | ConfirmedTransaction
   | RevertedTransaction
 
+/**
+ * @public
+ */
 export enum TransactionType {
   queued = 'queued',
   dropped = 'dropped',
@@ -185,42 +228,75 @@ export enum TransactionType {
   confirmed = 'confirmed'
 }
 
+/**
+ * @public
+ */
 export type DroppedTransaction = {
   type: TransactionType.dropped
   hash: string
   nonce: number
 }
 
+/**
+ * @public
+ */
 export type ReplacedTransaction = {
   type: TransactionType.replaced
   hash: string
   nonce: number
 }
 
+/**
+ * @public
+ */
 export type QueuedTransaction = {
   type: TransactionType.queued
   hash: string
   nonce: number
 }
 
+/**
+ * @public
+ */
 export type PendingTransaction = TransactionObject & {
   type: TransactionType.pending
 }
 
+/**
+ * @public
+ */
 export type RevertedTransaction = TransactionObject & {
   type: TransactionType.reverted
 }
 
+/**
+ * @public
+ */
 export type ConfirmedTransaction = TransactionObject & {
   type: TransactionType.confirmed
   receipt: TransactionReceipt
 }
 
+/**
+ * @public
+ */
 export type FilterLog = {}
+/**
+ * @public
+ */
 export type TransactionAndReceipt = TransactionObject & { receipt: TransactionReceipt }
+/**
+ * @public
+ */
 export type FinishedTransactionAndReceipt = TransactionAndReceipt & { status: TransactionStatus }
+/**
+ * @public
+ */
 export type BlockIdentifier = Quantity | Tag
 
+/**
+ * @public
+ */
 export type FilterOptions = {
   /** (optional, default: "latest") Integer block number, or "latest" for the last mined block or "pending", "earliest" for not yet mined transactions. */
   fromBlock?: BlockIdentifier
@@ -232,6 +308,9 @@ export type FilterOptions = {
   topics?: Array<Data>
 }
 
+/**
+ * @public
+ */
 export type TransactionReceipt = {
   /** hash of the transaction. */
   transactionHash: TxHash
@@ -257,6 +336,9 @@ export type TransactionReceipt = {
   status?: Quantity
 }
 
+/**
+ * @public
+ */
 export type FilterChange = {
   /** true when the log was removed, due to a chain reorganization. false if its a valid log. */
   removed: boolean
@@ -281,6 +363,9 @@ export type FilterChange = {
   topics: Array<Data>
 }
 
+/**
+ * @public
+ */
 export type SHHPost = {
   /** (optional) The identity of the sender. */
   from: Data
@@ -296,6 +381,9 @@ export type SHHPost = {
   ttl: Quantity
 }
 
+/**
+ * @public
+ */
 export type SHHFilterOptions = {
   /**
    * (optional) Identity of the receiver. When present it will try to decrypt any incoming message if the client holds the private key to this identity.
@@ -309,6 +397,10 @@ export type SHHFilterOptions = {
    */
   topics: Array<Data>
 }
+
+/**
+ * @public
+ */
 export type SHHFilterMessage = {
   /** The hash of the message. */
   hash: TxHash

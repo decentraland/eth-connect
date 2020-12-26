@@ -4,6 +4,8 @@
 
 ```ts
 
+// Warning: (ae-missing-release-tag) "AbstractFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export abstract class AbstractFilter<T> {
     constructor(requestManager: RequestManager);
@@ -38,6 +40,9 @@ export abstract class AbstractFilter<T> {
 // @public
 export type Address = string;
 
+// Warning: (ae-missing-release-tag) "BigNumber" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "BigNumber" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export namespace BigNumber {
 
@@ -280,6 +285,8 @@ export type BlockObject = {
     uncles: Array<TxHash>;
 };
 
+// Warning: (ae-missing-release-tag) "Callback" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export type Callback = (err: Error | null, message?: any) => void;
 
@@ -466,6 +473,8 @@ export namespace eth {
     shh_getMessages: Method<any[]>;
 }
 
+// Warning: (ae-missing-release-tag) "EthBlockFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export class EthBlockFilter extends EthFilter<TxHash> {
     constructor(requestManager: RequestManager);
@@ -473,6 +482,8 @@ export class EthBlockFilter extends EthFilter<TxHash> {
     getNewFilter(): Promise<string>;
 }
 
+// Warning: (ae-missing-release-tag) "EthFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export class EthFilter<T = FilterChange | string> extends AbstractFilter<T> {
     constructor(requestManager: RequestManager, options: FilterOptions, formatter?: (message: FilterChange | string) => T);
@@ -492,6 +503,8 @@ export class EthFilter<T = FilterChange | string> extends AbstractFilter<T> {
     protected uninstall(): Promise<any>;
 }
 
+// Warning: (ae-missing-release-tag) "EthPendingTransactionFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export class EthPendingTransactionFilter extends EthFilter<TxHash> {
     constructor(requestManager: RequestManager);
@@ -510,6 +523,8 @@ export function extractDisplayName(name: string): string;
 // @public
 export function extractTypeName(name: string): string;
 
+// Warning: (ae-missing-release-tag) "FilterCallback" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export type FilterCallback = (messages: FilterChange[] | string[]) => void;
 
@@ -577,6 +592,8 @@ export class HTTPProvider {
     sendAsync(payload: RPCMessage | RPCMessage[], callback: Callback): void;
 }
 
+// Warning: (ae-missing-release-tag) "HTTPProviderOptions" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export type HTTPProviderOptions = {
     headers?: {
@@ -585,6 +602,8 @@ export type HTTPProviderOptions = {
     timeout?: number;
 };
 
+// Warning: (ae-missing-release-tag) "IFuture" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export type IFuture<T> = Promise<T> & {
     resolve: (x: T) => void;
@@ -593,6 +612,8 @@ export type IFuture<T> = Promise<T> & {
     isPending: boolean;
 };
 
+// Warning: (ae-missing-release-tag) "IPropertyOptions" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export interface IPropertyOptions<V> {
     // (undocumented)
@@ -640,9 +661,13 @@ export function isString(value: any): value is string;
 // @public
 export function isTopic(topic: string): boolean;
 
+// Warning: (ae-missing-release-tag) "isValidResponse" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public
 export function isValidResponse(response: any): boolean;
 
+// Warning: (ae-missing-release-tag) "IWebSocket" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export interface IWebSocket {
     // (undocumented)
@@ -651,6 +676,8 @@ export interface IWebSocket {
     send(s: any): any;
 }
 
+// Warning: (ae-missing-release-tag) "messageId" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export let messageId: number;
 
@@ -814,6 +841,8 @@ export type RevertedTransaction = TransactionObject & {
     type: TransactionType.reverted;
 };
 
+// Warning: (ae-missing-release-tag) "RPCMessage" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export type RPCMessage = {
     jsonrpc: '2.0';
@@ -824,6 +853,8 @@ export type RPCMessage = {
     };
 };
 
+// Warning: (ae-missing-release-tag) "RPCSendableMessage" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export type RPCSendableMessage = {
     method: string;
@@ -835,6 +866,8 @@ export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, option
     encoding?: 'hex';
 }): string;
 
+// Warning: (ae-missing-release-tag) "SHHFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
     constructor(requestManager: RequestManager, options: SHHFilterOptions);
@@ -900,6 +933,8 @@ export function toArray(value: any): any[];
 // @public
 export function toAscii(hex: string): string;
 
+// Warning: (ae-missing-release-tag) "toBatchPayload" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public
 export function toBatchPayload(messages: RPCSendableMessage[]): {
     jsonrpc: string;
@@ -929,6 +964,8 @@ export function toHex(val: string | number | BigNumber): string;
 // @public
 export function toNullDecimal(value: number | string | BigNumber): string | number | BigNumber;
 
+// Warning: (ae-missing-release-tag) "toPayload" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public
 export function toPayload(method: string, params: any[]): {
     jsonrpc: string;
@@ -1069,6 +1106,8 @@ export class WebSocketProvider<T extends IWebSocket> {
     url: string;
 }
 
+// Warning: (ae-missing-release-tag) "WebSocketProviderOptions" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public (undocumented)
 export type WebSocketProviderOptions = {
     WebSocketConstructor?: any;

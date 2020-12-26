@@ -4,6 +4,7 @@
 
 ## SHHPost type
 
+
 <b>Signature:</b>
 
 ```typescript
