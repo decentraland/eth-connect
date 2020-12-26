@@ -9,14 +9,14 @@ Converts value to it's boolean representation (x != 0)
 <b>Signature:</b>
 
 ```typescript
-export declare function toBoolean(value: number | string | BigNumberType | boolean): boolean;
+export declare function toBoolean(value: number | string | BigNumber | boolean): boolean;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  value | number \| string \| BigNumberType \| boolean |  |
+|  value | number \| string \| [BigNumber](./eth-connect.bignumber.md) \| boolean |  |
 
 <b>Returns:</b>
 

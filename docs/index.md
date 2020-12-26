@@ -8,13 +8,26 @@
 
 |  Class | Description |
 |  --- | --- |
+|  [AbstractFilter](./eth-connect.abstractfilter.md) |  |
+|  [BigNumber](./eth-connect.bignumber.md) |  |
 |  [Contract](./eth-connect.contract.md) | Should be called to create new contract instance |
 |  [ContractFactory](./eth-connect.contractfactory.md) | Should be called to create new ContractFactory instance |
+|  [EthBlockFilter](./eth-connect.ethblockfilter.md) |  |
+|  [EthFilter](./eth-connect.ethfilter.md) |  |
+|  [EthPendingTransactionFilter](./eth-connect.ethpendingtransactionfilter.md) |  |
 |  [HTTPProvider](./eth-connect.httpprovider.md) | HttpProvider should be used to send rpc calls over http |
 |  [Method](./eth-connect.method.md) |  |
 |  [Property](./eth-connect.property.md) |  |
 |  [RequestManager](./eth-connect.requestmanager.md) | It's responsible for passing messages to providers It's also responsible for polling the ethereum node for incoming messages Default poll timeout is 1 second |
+|  [SHHFilter](./eth-connect.shhfilter.md) |  |
 |  [WebSocketProvider](./eth-connect.websocketprovider.md) |  |
+
+## Enumerations
+
+|  Enumeration | Description |
+|  --- | --- |
+|  [TransactionStatus](./eth-connect.transactionstatus.md) |  |
+|  [TransactionType](./eth-connect.transactiontype.md) |  |
 
 ## Functions
 
@@ -27,9 +40,10 @@
 |  [fromUtf8(\_str, allowZero)](./eth-connect.fromutf8.md) | Should be called to get hex representation (prefixed by 0x) of utf8 string |
 |  [fromWei(num, unit)](./eth-connect.fromwei.md) | Takes a number of wei and converts it to any other ether unit.<!-- -->Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |
 |  [getValueOfUnit(\_unit)](./eth-connect.getvalueofunit.md) | Returns value of unit in Wei |
+|  [hexToBytes(hex)](./eth-connect.hextobytes.md) |  |
 |  [isAddress(address)](./eth-connect.isaddress.md) | Checks if the given string is an address |
 |  [isArray(object)](./eth-connect.isarray.md) | Returns true if object is array, otherwise false |
-|  [isBigNumber(object)](./eth-connect.isbignumber.md) | Returns true if object is BigNumberType, otherwise false |
+|  [isBigNumber(object)](./eth-connect.isbignumber.md) | Returns true if object is BigNumber, otherwise false |
 |  [isBloom(bloom)](./eth-connect.isbloom.md) | Returns true if given string is a valid Ethereum block header bloom. |
 |  [isBoolean(object)](./eth-connect.isboolean.md) | Returns true if object is boolean, otherwise false |
 |  [isChecksumAddress(\_address)](./eth-connect.ischecksumaddress.md) | Checks if the given string is a checksummed address |
@@ -40,12 +54,14 @@
 |  [isStrictAddress(address)](./eth-connect.isstrictaddress.md) | Checks if the given string is strictly an address |
 |  [isString(value)](./eth-connect.isstring.md) | Returns true if object is string, otherwise false |
 |  [isTopic(topic)](./eth-connect.istopic.md) | Returns true if given string is a valid log topic. |
+|  [isValidResponse(response)](./eth-connect.isvalidresponse.md) | Should be called to check if jsonrpc response is valid |
 |  [padLeft(str, chars, sign)](./eth-connect.padleft.md) | Should be called to pad string to expected length |
 |  [padRight(str, chars, sign)](./eth-connect.padright.md) | Should be called to pad string to expected length |
 |  [sha3(value, options)](./eth-connect.sha3.md) |  |
 |  [toAddress(address)](./eth-connect.toaddress.md) | Transforms given string to valid 20 bytes-length addres with 0x prefix |
 |  [toArray(value)](./eth-connect.toarray.md) | Ensures the result will be an array |
 |  [toAscii(hex)](./eth-connect.toascii.md) | Should be called to get ascii from it's hex representation |
+|  [toBatchPayload(messages)](./eth-connect.tobatchpayload.md) | Should be called to create batch payload object |
 |  [toBigNumber(\_num)](./eth-connect.tobignumber.md) | Takes an input and transforms it into an bignumber |
 |  [toBoolean(value)](./eth-connect.toboolean.md) | Converts value to it's boolean representation (x != 0) |
 |  [toChecksumAddress(\_address)](./eth-connect.tochecksumaddress.md) | Makes a checksum address |
@@ -53,21 +69,71 @@
 |  [toDecimal(value)](./eth-connect.todecimal.md) | Converts value to it's decimal representation in string |
 |  [toHex(val)](./eth-connect.tohex.md) | Auto converts any given value into it's hex representation.<!-- -->And even stringifys objects before. |
 |  [toNullDecimal(value)](./eth-connect.tonulldecimal.md) | Converts value to it's decimal representation in string |
+|  [toPayload(method, params)](./eth-connect.topayload.md) | Should be called to valid json create payload object |
 |  [toString\_2(value)](./eth-connect.tostring_2.md) | Converts value to string |
 |  [toTwosComplement(num)](./eth-connect.totwoscomplement.md) | Takes and input transforms it into bignumber and if it is negative value, into two's complement |
 |  [toUtf8(hex)](./eth-connect.toutf8.md) | Should be called to get utf8 from it's hex representation |
 |  [toWei(num, unit)](./eth-connect.towei.md) | Takes a number of a unit and converts it to wei.<!-- -->Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |
 |  [transformToFullName(json)](./eth-connect.transformtofullname.md) | Should be used to create full function/event name from json abi |
 
+## Interfaces
+
+|  Interface | Description |
+|  --- | --- |
+|  [IPropertyOptions](./eth-connect.ipropertyoptions.md) |  |
+|  [IWebSocket](./eth-connect.iwebsocket.md) |  |
+
 ## Namespaces
 
 |  Namespace | Description |
 |  --- | --- |
+|  [BigNumber](./eth-connect.bignumber.md) |  |
 |  [eth](./eth-connect.eth.md) |  |
+
+## Variables
+
+|  Variable | Description |
+|  --- | --- |
+|  [messageId](./eth-connect.messageid.md) |  |
 
 ## Type Aliases
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [Address](./eth-connect.address.md) | Hex string of 20 bytes |
+|  [BlockIdentifier](./eth-connect.blockidentifier.md) |  |
+|  [BlockObject](./eth-connect.blockobject.md) |  |
+|  [Callback](./eth-connect.callback.md) |  |
+|  [ConfirmedTransaction](./eth-connect.confirmedtransaction.md) |  |
+|  [Data](./eth-connect.data.md) | Hex string |
+|  [DroppedTransaction](./eth-connect.droppedtransaction.md) |  |
 |  [EventFilterCreator](./eth-connect.eventfiltercreator.md) |  |
+|  [FilterCallback](./eth-connect.filtercallback.md) |  |
+|  [FilterChange](./eth-connect.filterchange.md) |  |
+|  [FilterLog](./eth-connect.filterlog.md) |  |
+|  [FilterOptions](./eth-connect.filteroptions.md) |  |
+|  [FinishedTransactionAndReceipt](./eth-connect.finishedtransactionandreceipt.md) |  |
+|  [Hex](./eth-connect.hex.md) |  |
+|  [HTTPProviderOptions](./eth-connect.httpprovideroptions.md) |  |
+|  [IFuture](./eth-connect.ifuture.md) |  |
+|  [PendingTransaction](./eth-connect.pendingtransaction.md) |  |
+|  [Quantity](./eth-connect.quantity.md) |  |
+|  [QueuedTransaction](./eth-connect.queuedtransaction.md) |  |
+|  [ReplacedTransaction](./eth-connect.replacedtransaction.md) |  |
+|  [RevertedTransaction](./eth-connect.revertedtransaction.md) |  |
+|  [RPCMessage](./eth-connect.rpcmessage.md) |  |
+|  [RPCSendableMessage](./eth-connect.rpcsendablemessage.md) |  |
+|  [SHHFilterMessage](./eth-connect.shhfiltermessage.md) |  |
+|  [SHHFilterOptions](./eth-connect.shhfilteroptions.md) |  |
+|  [SHHPost](./eth-connect.shhpost.md) |  |
+|  [Syncing](./eth-connect.syncing.md) |  |
+|  [Tag](./eth-connect.tag.md) |  |
+|  [Transaction](./eth-connect.transaction.md) |  |
+|  [TransactionAndReceipt](./eth-connect.transactionandreceipt.md) |  |
+|  [TransactionCallOptions](./eth-connect.transactioncalloptions.md) |  |
+|  [TransactionObject](./eth-connect.transactionobject.md) |  |
+|  [TransactionOptions](./eth-connect.transactionoptions.md) |  |
+|  [TransactionReceipt](./eth-connect.transactionreceipt.md) |  |
+|  [TxHash](./eth-connect.txhash.md) | Hex string of 32 bytes |
+|  [WebSocketProviderOptions](./eth-connect.websocketprovideroptions.md) |  |
 

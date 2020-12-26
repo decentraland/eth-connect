@@ -9,14 +9,14 @@ Converts value to it's decimal representation in string
 <b>Signature:</b>
 
 ```typescript
-export declare function toDecimal(value: number | string | BigNumberType): number;
+export declare function toDecimal(value: number | string | BigNumber): number;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  value | number \| string \| BigNumberType |  |
+|  value | number \| string \| [BigNumber](./eth-connect.bignumber.md) |  |
 
 <b>Returns:</b>
 

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import testMethod = require('./helpers/test.method')
+import * as testMethod from './helpers/test.method'
 
 let txResult = {
   status: 'mined',

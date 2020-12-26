@@ -9,7 +9,7 @@ Should be called to get utf8 from it's hex representation
 <b>Signature:</b>
 
 ```typescript
-export declare function toUtf8(hex: string): any;
+export declare function toUtf8(hex: string): string;
 ```
 
 ## Parameters
@@ -20,5 +20,5 @@ export declare function toUtf8(hex: string): any;
 
 <b>Returns:</b>
 
-any
+string
 

@@ -1,4 +1,5 @@
 import { RPCMessage, Callback, toRPC } from './common'
+export { RPCMessage, Callback } from './common'
 
 export type HTTPProviderOptions = {
   headers?: { [key: string]: string }

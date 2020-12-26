@@ -1,6 +1,6 @@
-import chai = require('chai')
+import * as chai from 'chai'
 const assert = chai.assert
-import formatters = require('../src/solidity/formatters')
+import * as formatters from '../src/solidity/formatters'
 import { SolidityParam } from '../src/solidity/param'
 
 let tests = [

@@ -15,17 +15,17 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import utils = require('../utils/utils')
-import config = require('../utils/config')
-import { BigNumber as BigNumberType, BigNumberValueType } from './BigNumber'
+import * as utils from '../utils/utils'
+import * as config from '../utils/config'
 import { Quantity, Tag } from '../Schema'
+import BigNumber from 'bignumber.js'
 
 /**
  * Should format the output to a big number
  *
  * @param output - The provided output
  */
-export function outputBigNumberFormatter(output: BigNumberValueType): BigNumberType {
+export function outputBigNumberFormatter(output: string | number | BigNumber): BigNumber {
   return utils.toBigNumber(output)
 }
 

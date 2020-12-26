@@ -1,6 +1,6 @@
-import chai = require('chai')
+import * as chai from 'chai'
 const assert = chai.assert
-import errors = require('../src/utils/errors')
+import * as errors from '../src/utils/errors'
 
 describe('lib/web3/method', function() {
   describe('getCall', function() {

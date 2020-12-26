@@ -18,7 +18,7 @@
 import * as utils from './utils/utils'
 import * as formatters from './utils/formatters'
 import { RequestManager } from './RequestManager'
-import config = require('./utils/config')
+import * as config from './utils/config'
 import { FilterOptions, FilterChange, TxHash, SHHFilterOptions, Data, SHHFilterMessage } from './Schema'
 import { future, IFuture } from 'fp-future'
 

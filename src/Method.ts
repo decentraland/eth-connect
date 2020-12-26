@@ -15,7 +15,7 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import errors = require('./utils/errors')
+import * as errors from './utils/errors'
 import { RequestManager } from './RequestManager'
 
 /**

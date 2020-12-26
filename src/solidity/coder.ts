@@ -15,7 +15,7 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import formatter = require('./formatters')
+import * as formatter from './formatters'
 
 import { SolidityTypeAddress } from './address'
 import { SolidityTypeBool } from './bool'

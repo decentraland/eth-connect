@@ -20,5 +20,5 @@ getConfirmedTransaction(txId: string): Promise<FinishedTransactionAndReceipt>;
 
 <b>Returns:</b>
 
-Promise&lt;FinishedTransactionAndReceipt&gt;
+Promise&lt;[FinishedTransactionAndReceipt](./eth-connect.finishedtransactionandreceipt.md)<!-- -->&gt;
 

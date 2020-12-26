@@ -2,7 +2,7 @@
  * Created by danielbruce on 2017-09-25.
  */
 
-import chai = require('chai')
+import * as chai from 'chai'
 import BigNumber from 'bignumber.js'
 import { toTwosComplement } from '../src/utils/utils'
 const assert = chai.assert

@@ -1,4 +1,4 @@
-import f = require('./formatters')
+import * as f from './formatters'
 import { SolidityType } from './type'
 
 /**

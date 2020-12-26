@@ -16,7 +16,7 @@ sendAsync(data: RPCSendableMessage): Promise<any>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  data | RPCSendableMessage | The RPC message to be sent |
+|  data | [RPCSendableMessage](./eth-connect.rpcsendablemessage.md) | The RPC message to be sent |
 
 <b>Returns:</b>
 

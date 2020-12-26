@@ -16,7 +16,7 @@ isPending(tx: TransactionAndReceipt): boolean;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  tx | TransactionAndReceipt | The transaction object |
+|  tx | [TransactionAndReceipt](./eth-connect.transactionandreceipt.md) | The transaction object |
 
 <b>Returns:</b>
 

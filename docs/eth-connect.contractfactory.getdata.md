@@ -20,5 +20,5 @@ getData(...args: any[]): Promise<Data>;
 
 <b>Returns:</b>
 
-Promise&lt;Data&gt;
+Promise&lt;[Data](./eth-connect.data.md)<!-- -->&gt;
 

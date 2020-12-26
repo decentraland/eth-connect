@@ -9,14 +9,14 @@ Returns true if given string is valid json object
 <b>Signature:</b>
 
 ```typescript
-export declare function isJson(str: any): boolean;
+export declare function isJson(str: string): boolean;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  str | any |  |
+|  str | string |  |
 
 <b>Returns:</b>
 

@@ -1,4 +1,4 @@
-import chai = require('chai')
+import * as chai from 'chai'
 const assert = chai.assert
 import { SolidityEvent } from '../src/SolidityEvent'
 import { FilterOptions } from '../src/Schema'

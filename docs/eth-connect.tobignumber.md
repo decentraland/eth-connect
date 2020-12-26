@@ -9,16 +9,16 @@ Takes an input and transforms it into an bignumber
 <b>Signature:</b>
 
 ```typescript
-export declare function toBigNumber(_num: number | string | BigNumberType): BigNumberType;
+export declare function toBigNumber(_num: number | string | BigNumber): BigNumber;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  \_num | number \| string \| BigNumberType |  |
+|  \_num | number \| string \| [BigNumber](./eth-connect.bignumber.md) |  |
 
 <b>Returns:</b>
 
-BigNumberType
+[BigNumber](./eth-connect.bignumber.md)
 

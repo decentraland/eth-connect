@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "crypto-js": "^3.3.0",
+    "js-sha3": "^0.8.0",
     "utf8": "^3.0.0"
   },
   "devDependencies": {
@@ -52,12 +53,17 @@
     "chai": "^4.2.0",
     "coveralls": "^3.1.0",
     "dcl-tslint-config-standard": "^1.1.0",
-    "decentraland-rpc": "^3.1.8",
     "fp-future": "^1.0.1",
     "ganache-cli": "^6.12.1",
     "isomorphic-fetch": "^3.0.0",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
+    "rollup": "^2.35.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.29.0",
     "source-map-support": "^0.5.19",
     "ts-node": "^9.1.1",
     "tslint": "^5.20.1",

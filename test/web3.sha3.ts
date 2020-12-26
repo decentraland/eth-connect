@@ -1,4 +1,4 @@
-import chai = require('chai')
+import * as chai from 'chai'
 const assert = chai.assert
 import { sha3 } from '../src/utils/utils'
 

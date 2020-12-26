@@ -24,7 +24,7 @@ export declare class HTTPProvider
 |  --- | --- | --- | --- |
 |  [debug](./eth-connect.httpprovider.debug.md) |  | boolean |  |
 |  [host](./eth-connect.httpprovider.host.md) |  | string |  |
-|  [options](./eth-connect.httpprovider.options.md) |  | HTTPProviderOptions |  |
+|  [options](./eth-connect.httpprovider.options.md) |  | [HTTPProviderOptions](./eth-connect.httpprovideroptions.md) |  |
 
 ## Methods
 

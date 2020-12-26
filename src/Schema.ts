@@ -1,4 +1,4 @@
-import { BigNumber as BigNumberType } from './utils/BigNumber'
+import { BigNumber } from "bignumber.js"
 
 /** Hex string */
 export type Data = string
@@ -155,9 +155,9 @@ export type TransactionObject = {
   /** address of the receiver. null when its a contract creation transaction. */
   to: Address | null
   /** value transferred in Wei. */
-  value: BigNumberType
+  value: BigNumber
   /** gas price provided by the sender in Wei. */
-  gasPrice: BigNumberType
+  gasPrice: BigNumber
   /** gas provided by the sender. */
   gas: Quantity
   /** the data send along with the transaction. */

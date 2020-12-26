@@ -1,7 +1,7 @@
-import chai = require('chai')
+import * as chai from 'chai'
 const assert = chai.assert
 import { Method } from '../src'
-import errors = require('../src/utils/errors')
+import * as errors from '../src/utils/errors'
 
 describe('lib/web3/method', function() {
   describe('validateArgs', function() {

@@ -17,5 +17,5 @@ constructor(url: string, options?: WebSocketProviderOptions);
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  url | string |  |
-|  options | WebSocketProviderOptions |  |
+|  options | [WebSocketProviderOptions](./eth-connect.websocketprovideroptions.md) |  |
 

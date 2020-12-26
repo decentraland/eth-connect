@@ -17,5 +17,5 @@ constructor(host: string, options?: HTTPProviderOptions);
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  host | string |  |
-|  options | HTTPProviderOptions |  |
+|  options | [HTTPProviderOptions](./eth-connect.httpprovideroptions.md) |  |
 

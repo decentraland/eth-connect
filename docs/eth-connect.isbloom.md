@@ -9,14 +9,14 @@ Returns true if given string is a valid Ethereum block header bloom.
 <b>Signature:</b>
 
 ```typescript
-export declare function isBloom(bloom: any): boolean;
+export declare function isBloom(bloom: string): boolean;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  bloom | any |  |
+|  bloom | string |  |
 
 <b>Returns:</b>
 

@@ -1,4 +1,4 @@
-import f = require('./formatters')
+import * as f from './formatters'
 import { SolidityParam } from './param'
 
 /**

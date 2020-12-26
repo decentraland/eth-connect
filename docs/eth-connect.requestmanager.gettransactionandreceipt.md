@@ -20,5 +20,5 @@ getTransactionAndReceipt(txId: string): Promise<TransactionAndReceipt>;
 
 <b>Returns:</b>
 
-Promise&lt;TransactionAndReceipt&gt;
+Promise&lt;[TransactionAndReceipt](./eth-connect.transactionandreceipt.md)<!-- -->&gt;
 

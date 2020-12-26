@@ -1,5 +1,5 @@
-import chai = require('chai')
-import utils = require('../src/utils/utils')
+import * as chai from 'chai'
+import * as utils from '../src/utils/utils'
 import BigNumber from 'bignumber.js'
 const assert = chai.assert
 

@@ -1,5 +1,5 @@
 import { assert } from 'chai'
-import utils = require('../src/utils/utils')
+import * as utils from '../src/utils/utils'
 
 describe('lib/utils/utils', function() {
   describe('toDecimal', function() {

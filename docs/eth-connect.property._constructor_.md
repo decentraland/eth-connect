@@ -16,5 +16,5 @@ constructor(options: IPropertyOptions<V>);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  options | IPropertyOptions&lt;V&gt; |  |
+|  options | [IPropertyOptions](./eth-connect.ipropertyoptions.md)<!-- -->&lt;V&gt; |  |
 

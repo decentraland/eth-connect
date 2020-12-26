@@ -1,6 +1,5 @@
-import chai = require('chai')
-import utils = require('../src/utils/utils')
-const assert = chai.assert
+import {assert} from 'chai'
+import {isJson} from '../src/utils/utils'
 
 let tests = [
   {
@@ -23,7 +22,7 @@ describe('lib/utils/utils', function() {
   describe('isJson', function() {
     tests.forEach(function(test) {
       it('shoud test if value ' + test.obj + ' is json: ' + test.is, function() {
-        assert.equal(utils.isJson(test.obj), test.is)
+        assert.equal(isJson(test.obj as any), test.is)
       })
     })
   })

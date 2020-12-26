@@ -8,19 +8,19 @@
 <b>Signature:</b>
 
 ```typescript
-export declare function sha3(value: string, options?: {
+export declare function sha3(value: string | number[] | ArrayBuffer | Uint8Array, options?: {
     encoding?: 'hex';
-}): any;
+}): string;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  value | string |  |
+|  value | string \| number\[\] \| ArrayBuffer \| Uint8Array |  |
 |  options | { encoding?: 'hex'; } |  |
 
 <b>Returns:</b>
 
-any
+string
 

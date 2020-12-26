@@ -9,7 +9,7 @@ Returns value of unit in Wei
 <b>Signature:</b>
 
 ```typescript
-export declare function getValueOfUnit(_unit: string): BigNumberType;
+export declare function getValueOfUnit(_unit: string): BigNumber;
 ```
 
 ## Parameters
@@ -20,5 +20,5 @@ export declare function getValueOfUnit(_unit: string): BigNumberType;
 
 <b>Returns:</b>
 
-BigNumberType
+[BigNumber](./eth-connect.bignumber.md)
 

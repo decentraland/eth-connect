@@ -1,4 +1,4 @@
-import chai = require('chai')
+import * as chai from 'chai'
 import 'isomorphic-fetch'
 // tslint:disable
 
@@ -46,8 +46,7 @@ function doTest(requestManager: RequestManager) {
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
 
-    const abi = require('./fixtures/ERC20.json').abi
-    const bytecode = require('./fixtures/ERC20.json').bytecode
+    const {abi, bytecode} = require('./fixtures/ERC20.json')
 
     console.log(`> Account: ${account}`)
     const factory = new ContractFactory(requestManager, abi)

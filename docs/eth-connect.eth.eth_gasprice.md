@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-eth_gasPrice: Property<BigNumberType>
+eth_gasPrice: Property<BigNumber>
 ```

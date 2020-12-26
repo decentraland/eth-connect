@@ -1,5 +1,5 @@
 import { assert } from 'chai'
-import utils = require('../../src/utils/utils')
+import * as utils from '../../src/utils/utils'
 import { future, IFuture } from 'fp-future'
 
 let countId = 1

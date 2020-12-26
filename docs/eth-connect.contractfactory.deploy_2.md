@@ -14,7 +14,7 @@ deploy(options: TransactionOptions): Promise<Contract>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  options | TransactionOptions |  |
+|  options | [TransactionOptions](./eth-connect.transactionoptions.md) |  |
 
 <b>Returns:</b>
 

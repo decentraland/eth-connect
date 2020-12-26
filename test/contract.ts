@@ -1,4 +1,4 @@
-import chai = require('chai')
+import * as chai from 'chai'
 const assert = chai.assert
 import { RequestManager, ContractFactory } from '../src'
 import { future } from 'fp-future'

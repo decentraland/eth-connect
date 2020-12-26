@@ -4,7 +4,7 @@
 
 ## isBigNumber() function
 
-Returns true if object is BigNumberType, otherwise false
+Returns true if object is BigNumber, otherwise false
 
 <b>Signature:</b>
 

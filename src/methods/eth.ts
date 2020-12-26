@@ -16,17 +16,17 @@
 */
 // tslint:disable:variable-name
 
-import formatters = require('../utils/formatters')
-import utils = require('../utils/utils')
+import * as formatters from '../utils/formatters'
+import * as utils from '../utils/utils'
 import { Method } from '../Method'
 import { Property } from '../Property'
-import { BigNumber as BigNumberType } from '../utils/BigNumber'
+import BigNumber from 'bignumber.js'
 
 /**
  * @public
  */
 export namespace eth {
-  export const eth_getBalance = new Method<BigNumberType>({
+  export const eth_getBalance = new Method<BigNumber>({
     callName: 'eth_getBalance',
     params: 2,
     inputFormatter: [formatters.inputAddressFormatter, formatters.inputDefaultBlockNumberFormatter],

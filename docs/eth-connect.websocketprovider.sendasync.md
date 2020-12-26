@@ -14,8 +14,8 @@ sendAsync(payload: RPCMessage | RPCMessage[], callback: Callback): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  payload | RPCMessage \| RPCMessage\[\] |  |
-|  callback | Callback |  |
+|  payload | [RPCMessage](./eth-connect.rpcmessage.md) \| [RPCMessage](./eth-connect.rpcmessage.md)<!-- -->\[\] |  |
+|  callback | [Callback](./eth-connect.callback.md) |  |
 
 <b>Returns:</b>
 

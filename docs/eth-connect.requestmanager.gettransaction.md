@@ -20,5 +20,5 @@ getTransaction(hash: string): Promise<Transaction>;
 
 <b>Returns:</b>
 
-Promise&lt;Transaction&gt;
+Promise&lt;[Transaction](./eth-connect.transaction.md)<!-- -->&gt;
 

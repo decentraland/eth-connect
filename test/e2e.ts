@@ -1,19 +1,15 @@
-import chai = require('chai')
+import { expect } from 'chai'
 import 'isomorphic-fetch'
-// tslint:disable
-const expect = chai.expect
-// @ts-ignore
-import EthConnect from '../dist/eth-connect.esm'
-import type { RequestManager } from '../src'
+import * as EthConnect from '../dist/eth-connect'
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 
-describe('e2e.erc20', function() {
+describe('e2e.erc20', function () {
   const nodeConnectionFactory = new NodeConnectionFactory()
   const provider = nodeConnectionFactory.createProvider()
   doTest(new EthConnect.RequestManager(provider))
 })
 
-function doTest(requestManager: RequestManager) {
+function doTest(requestManager: EthConnect.RequestManager) {
   it('should get the balance', async () => {
     const coinbase = await requestManager.eth_coinbase()
     console.log(`> Coinbase`, coinbase)
@@ -35,13 +31,12 @@ function doTest(requestManager: RequestManager) {
 
   let ERC20Contract = null
 
-  it('deploys a new contract', async function() {
+  it('deploys a new contract', async function () {
     this.timeout(100000)
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
 
-    const abi = require('./fixtures/ERC20.json').abi
-    const bytecode = require('./fixtures/ERC20.json').bytecode
+    const { abi, bytecode } = require('./fixtures/ERC20.json')
 
     const factory = new EthConnect.ContractFactory(requestManager, abi)
     ERC20Contract = await factory.deploy({ data: bytecode, from: account, to: null })
@@ -93,7 +88,7 @@ function doTest(requestManager: RequestManager) {
       'value',
       'gas',
       'gasPrice',
-      'input'
+      'input',
     ]
 
     const receiptFields = [
@@ -106,7 +101,7 @@ function doTest(requestManager: RequestManager) {
       'contractAddress',
       'logs',
       'status',
-      'logsBloom'
+      'logsBloom',
     ]
 
     for (let i = 0; i < transactionFields.length; i++) {
@@ -120,7 +115,7 @@ function doTest(requestManager: RequestManager) {
     }
   })
 
-  it('getTransaction should return null for an unknown transaction', async function() {
+  it('getTransaction should return null for an unknown transaction', async function () {
     const tx = await requestManager.getTransaction('0xfaceb00cfaceb00cfaceb00cfaceb00cfaceb00cfaceb00cfaceb00cfaceb00c')
     expect(tx).to.be.null // tslint:disable-line
   })
@@ -140,7 +135,7 @@ function doTest(requestManager: RequestManager) {
     }
   })
 
-  it('should work with injected methods from ABI', async function() {
+  it('should work with injected methods from ABI', async function () {
     this.timeout(1000000)
     const account = (await requestManager.eth_accounts())[0]
     {

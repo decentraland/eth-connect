@@ -12,3 +12,5 @@ export declare type EventFilterCreator = (indexed: {
     [key: string]: any;
 }, options?: FilterOptions) => Promise<EthFilter>;
 ```
+<b>References:</b> [FilterOptions](./eth-connect.filteroptions.md)<!-- -->, [EthFilter](./eth-connect.ethfilter.md)
+

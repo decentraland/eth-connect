@@ -21,10 +21,10 @@ export declare class WebSocketProvider<T extends IWebSocket>
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [connection](./eth-connect.websocketprovider.connection.md) |  | IFuture&lt;T&gt; |  |
+|  [connection](./eth-connect.websocketprovider.connection.md) |  | [IFuture](./eth-connect.ifuture.md)<!-- -->&lt;T&gt; |  |
 |  [debug](./eth-connect.websocketprovider.debug.md) |  | boolean |  |
 |  [isDisposed](./eth-connect.websocketprovider.isdisposed.md) |  | boolean |  |
-|  [options](./eth-connect.websocketprovider.options.md) |  | WebSocketProviderOptions |  |
+|  [options](./eth-connect.websocketprovider.options.md) |  | [WebSocketProviderOptions](./eth-connect.websocketprovideroptions.md) |  |
 |  [url](./eth-connect.websocketprovider.url.md) |  | string |  |
 
 ## Methods

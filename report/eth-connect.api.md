@@ -4,6 +4,291 @@
 
 ```ts
 
+// @public (undocumented)
+export abstract class AbstractFilter<T> {
+    constructor(requestManager: RequestManager);
+    // (undocumented)
+    protected callbacks: ((message: T) => void)[];
+    // (undocumented)
+    protected filterId: IFuture<Data>;
+    // (undocumented)
+    formatter: (x: any) => T;
+    // (undocumented)
+    protected abstract getChanges(): Promise<any>;
+    // (undocumented)
+    protected abstract getNewFilter(): Promise<Data>;
+    // (undocumented)
+    isDisposed: boolean;
+    // (undocumented)
+    isStarted: boolean;
+    // (undocumented)
+    requestManager: RequestManager;
+    // (undocumented)
+    start(): Promise<void>;
+    // (undocumented)
+    stop(): Promise<void>;
+    // (undocumented)
+    protected stopSemaphore: IFuture<any>;
+    // (undocumented)
+    protected abstract uninstall(): Promise<any>;
+    // (undocumented)
+    watch(callback: (message: T) => void): Promise<void>;
+}
+
+// @public
+export type Address = string;
+
+// @public (undocumented)
+export namespace BigNumber {
+
+  export interface Config {
+
+    ALPHABET?: string;
+
+    CRYPTO?: boolean;
+
+    DECIMAL_PLACES?: number;
+
+    EXPONENTIAL_AT?: number|[number, number];
+
+    FORMAT?: BigNumber.Format;
+
+    MODULO_MODE?: BigNumber.ModuloMode;
+
+    POW_PRECISION?: number;
+
+    RANGE?: number|[number, number];
+
+    ROUNDING_MODE?: BigNumber.RoundingMode;
+  }
+
+  // (undocumented)
+  export type Constructor = typeof BigNumber;
+
+  export interface Format {
+
+    decimalSeparator?: string;
+
+    fractionGroupSeparator?: string;
+
+    fractionGroupSize?: number;
+
+    groupSeparator?: string;
+
+    groupSize?: number;
+
+    secondaryGroupSize?: number;
+  }
+
+  // (undocumented)
+  export type Instance = BigNumber;
+
+  // (undocumented)
+  export type ModuloMode = 0 | 1 | 3 | 6 | 9;
+
+  // (undocumented)
+  export type RoundingMode = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
+  // (undocumented)
+  export type Value = string | number | BigNumber;
+}
+
+// @public (undocumented)
+export class BigNumber {
+
+  constructor(n: BigNumber.Value, base?: number);
+
+  abs(): BigNumber;
+
+  absoluteValue(): BigNumber;
+
+  readonly c: number[];
+
+  static clone(object?: BigNumber.Config): BigNumber.Constructor;
+
+  comparedTo(n: BigNumber.Value, base?: number): number;
+
+  static config(object: BigNumber.Config): BigNumber.Config;
+
+  static DEBUG?: boolean;
+
+  decimalPlaces(): number;
+
+  // (undocumented)
+  decimalPlaces(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
+
+  div(n: BigNumber.Value, base?: number): BigNumber;
+
+  dividedBy(n: BigNumber.Value, base?: number): BigNumber;
+
+  dividedToIntegerBy(n: BigNumber.Value, base?: number): BigNumber;
+
+  dp(): number;
+
+  // (undocumented)
+  dp(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
+
+  readonly e: number;
+
+  eq(n: BigNumber.Value, base?: number): boolean;
+
+  static readonly EUCLID: 9;
+
+  exponentiatedBy(n: number, m?: BigNumber.Value): BigNumber;
+
+  gt(n: BigNumber.Value, base?: number): boolean;
+
+  gte(n: BigNumber.Value, base?: number): boolean;
+
+  idiv(n: BigNumber.Value, base?: number): BigNumber;
+
+  integerValue(rm?: BigNumber.RoundingMode): BigNumber;
+
+  static isBigNumber(value: any): boolean;
+
+  isEqualTo(n: BigNumber.Value, base?: number): boolean;
+
+  isFinite(): boolean;
+
+  isGreaterThan(n: BigNumber.Value, base?: number): boolean;
+
+  isGreaterThanOrEqualTo(n: BigNumber.Value, base?: number): boolean;
+
+  isInteger(): boolean;
+
+  isLessThan(n: BigNumber.Value, base?: number): boolean;
+
+  isLessThanOrEqualTo(n: BigNumber.Value, base?: number): boolean;
+
+  isNaN(): boolean;
+
+  isNegative(): boolean;
+
+  isPositive(): boolean;
+
+  isZero(): boolean;
+
+  lt(n: BigNumber.Value, base?: number): boolean;
+
+  lte(n: BigNumber.Value, base?: number): boolean;
+
+  static max(...n: BigNumber.Value[]): BigNumber;
+
+  static maximum(...n: BigNumber.Value[]): BigNumber;
+
+  static min(...n: BigNumber.Value[]): BigNumber;
+
+  static minimum(...n: BigNumber.Value[]): BigNumber;
+
+  minus(n: BigNumber.Value, base?: number): BigNumber;
+
+  mod(n: BigNumber.Value, base?: number): BigNumber;
+
+  modulo(n: BigNumber.Value, base?: number): BigNumber;
+
+  multipliedBy(n: BigNumber.Value, base?: number) : BigNumber;
+
+  negated(): BigNumber;
+
+  plus(n: BigNumber.Value, base?: number): BigNumber;
+
+  pow(n: number, m?: BigNumber.Value): BigNumber;
+
+  precision(includeZeros?: boolean): number;
+
+  precision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
+
+  static random(decimalPlaces?: number): BigNumber;
+
+  static readonly ROUND_CEIL: 2;
+
+  static readonly ROUND_DOWN: 1;
+
+  static readonly ROUND_FLOOR: 3;
+
+  static readonly ROUND_HALF_CEIL: 7;
+
+  static readonly ROUND_HALF_DOWN: 5;
+
+  static readonly ROUND_HALF_EVEN: 6;
+
+  static readonly ROUND_HALF_FLOOR: 8;
+
+  static readonly ROUND_HALF_UP: 4;
+
+  static readonly ROUND_UP: 0;
+
+  readonly s: number;
+
+  sd(includeZeros?: boolean): number;
+
+  // (undocumented)
+  sd(significantDigits: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
+
+  static set(object: BigNumber.Config): BigNumber.Config;
+
+  shiftedBy(n: number): BigNumber;
+
+  sqrt(): BigNumber;
+
+  squareRoot(): BigNumber;
+
+  times(n: BigNumber.Value, base?: number): BigNumber;
+
+  toExponential(decimalPlaces?: number, roundingMode?: BigNumber.RoundingMode): string;
+
+  toFixed(decimalPlaces?: number, roundingMode?: BigNumber.RoundingMode): string;
+
+  toFormat(decimalPlaces?: number, roundingMode?: BigNumber.RoundingMode): string;
+
+  toFraction(max_denominator?: BigNumber.Value): BigNumber[];
+
+  toJSON(): string;
+
+  toNumber(): number;
+
+  toPrecision(significantDigits?: number, roundingMode?: BigNumber.RoundingMode): string;
+
+  toString(base?: number): string;
+
+  valueOf(): string;
+}
+
+// @public (undocumented)
+export type BlockIdentifier = Quantity | Tag;
+
+// @public (undocumented)
+export type BlockObject = {
+    number: Quantity;
+    hash: TxHash;
+    parentHash: TxHash;
+    nonce: Data;
+    sha3Uncles: TxHash;
+    logsBloom: Data;
+    transactionsRoot: TxHash;
+    stateRoot: TxHash;
+    receiptsRoot: TxHash;
+    miner: Address;
+    difficulty: Quantity;
+    totalDifficulty: Quantity;
+    extraData: Data;
+    size: Quantity;
+    gasLimit: Quantity;
+    gasUsed: Quantity;
+    timestamp: Quantity;
+    transactions: Array<TxHash> | Array<TransactionObject>;
+    uncles: Array<TxHash>;
+};
+
+// @public (undocumented)
+export type Callback = (err: Error | null, message?: any) => void;
+
+// @public (undocumented)
+export type ConfirmedTransaction = TransactionObject & {
+    type: TransactionType.confirmed;
+    receipt: TransactionReceipt;
+};
+
 // @public
 export class Contract {
     constructor(requestManager: RequestManager, abi: any[], address: string);
@@ -11,9 +296,6 @@ export class Contract {
     abi: any[];
     // (undocumented)
     address: string;
-    // Warning: (ae-forgotten-export) The symbol "FilterOptions" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "EthFilter" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     allEvents: (options: FilterOptions) => Promise<EthFilter>;
     // (undocumented)
@@ -32,23 +314,29 @@ export class ContractFactory {
     // (undocumented)
     abi: any[];
     at(address: string): Promise<Contract>;
-    // Warning: (ae-forgotten-export) The symbol "TransactionOptions" needs to be exported by the entry point index.d.ts
     deploy(param1: any, param2: any, options: TransactionOptions): Promise<Contract>;
     // (undocumented)
     deploy(param1: any, options: TransactionOptions): Promise<Contract>;
     // (undocumented)
     deploy(options: TransactionOptions): Promise<Contract>;
-    // Warning: (ae-forgotten-export) The symbol "Data" needs to be exported by the entry point index.d.ts
     getData(...args: any[]): Promise<Data>;
     // (undocumented)
     requestManager: RequestManager;
 }
 
+// @public
+export type Data = string;
+
+// @public (undocumented)
+export type DroppedTransaction = {
+    type: TransactionType.dropped;
+    hash: string;
+    nonce: number;
+};
+
 // @public (undocumented)
 export namespace eth {
-    const // Warning: (ae-forgotten-export) The symbol "BigNumber" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
+    const // (undocumented)
     eth_getBalance: Method<BigNumber>;
     const // (undocumented)
     eth_getStorageAt: Method<string>;
@@ -179,6 +467,39 @@ export namespace eth {
 }
 
 // @public (undocumented)
+export class EthBlockFilter extends EthFilter<TxHash> {
+    constructor(requestManager: RequestManager);
+    // (undocumented)
+    getNewFilter(): Promise<string>;
+}
+
+// @public (undocumented)
+export class EthFilter<T = FilterChange | string> extends AbstractFilter<T> {
+    constructor(requestManager: RequestManager, options: FilterOptions, formatter?: (message: FilterChange | string) => T);
+    // (undocumented)
+    formatter: (message: FilterChange | string) => T;
+    // (undocumented)
+    protected getChanges(): Promise<any>;
+    // (undocumented)
+    getLogs(): Promise<FilterChange[] | string[]>;
+    // (undocumented)
+    protected getNewFilter(): Promise<any>;
+    // (undocumented)
+    options: FilterOptions;
+    // (undocumented)
+    requestManager: RequestManager;
+    // (undocumented)
+    protected uninstall(): Promise<any>;
+}
+
+// @public (undocumented)
+export class EthPendingTransactionFilter extends EthFilter<TxHash> {
+    constructor(requestManager: RequestManager);
+    // (undocumented)
+    getNewFilter(): Promise<string>;
+}
+
+// @public (undocumented)
 export type EventFilterCreator = (indexed: {
     [key: string]: any;
 }, options?: FilterOptions) => Promise<EthFilter>;
@@ -188,6 +509,38 @@ export function extractDisplayName(name: string): string;
 
 // @public
 export function extractTypeName(name: string): string;
+
+// @public (undocumented)
+export type FilterCallback = (messages: FilterChange[] | string[]) => void;
+
+// @public (undocumented)
+export type FilterChange = {
+    removed: boolean;
+    logIndex: Quantity;
+    transactionIndex: Quantity;
+    transactionHash: TxHash;
+    blockHash: TxHash;
+    blockNumber: Quantity;
+    address: Address;
+    data: Data;
+    topics: Array<Data>;
+};
+
+// @public (undocumented)
+export type FilterLog = {};
+
+// @public (undocumented)
+export type FilterOptions = {
+    fromBlock?: BlockIdentifier;
+    toBlock?: BlockIdentifier;
+    address?: Data | Address;
+    topics?: Array<Data>;
+};
+
+// @public (undocumented)
+export type FinishedTransactionAndReceipt = TransactionAndReceipt & {
+    status: TransactionStatus;
+};
 
 // @public
 export function fromAscii(str: string, num?: number): string;
@@ -204,6 +557,12 @@ export function fromWei(num: number | string, unit: string): string | BigNumber;
 // @public
 export function getValueOfUnit(_unit: string): BigNumber;
 
+// @public (undocumented)
+export type Hex = string;
+
+// @public (undocumented)
+export function hexToBytes(hex: string): Uint8Array;
+
 // @public
 export class HTTPProvider {
     constructor(host: string, options?: HTTPProviderOptions);
@@ -211,15 +570,35 @@ export class HTTPProvider {
     debug: boolean;
     // (undocumented)
     host: string;
-    // Warning: (ae-forgotten-export) The symbol "HTTPProviderOptions" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     options: HTTPProviderOptions;
     // (undocumented)
     send(): void;
-    // Warning: (ae-forgotten-export) The symbol "RPCMessage" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "Callback" needs to be exported by the entry point index.d.ts
     sendAsync(payload: RPCMessage | RPCMessage[], callback: Callback): void;
+}
+
+// @public (undocumented)
+export type HTTPProviderOptions = {
+    headers?: {
+        [key: string]: string;
+    };
+    timeout?: number;
+};
+
+// @public (undocumented)
+export type IFuture<T> = Promise<T> & {
+    resolve: (x: T) => void;
+    reject: (x: Error) => void;
+    finally: (fn: () => void) => void;
+    isPending: boolean;
+};
+
+// @public (undocumented)
+export interface IPropertyOptions<V> {
+    // (undocumented)
+    getter: string;
+    // (undocumented)
+    outputFormatter: (_: any) => V;
 }
 
 // @public
@@ -232,7 +611,7 @@ export function isArray(object: any): boolean;
 export function isBigNumber(object: any): boolean;
 
 // @public
-export function isBloom(bloom: any): boolean;
+export function isBloom(bloom: string): boolean;
 
 // @public
 export function isBoolean(object: any): boolean;
@@ -247,7 +626,7 @@ export function isFunction(object: any): boolean;
 export function isHex(value: string): boolean;
 
 // @public
-export function isJson(str: any): boolean;
+export function isJson(str: string): boolean;
 
 // @public
 export function isObject(object: any): boolean;
@@ -260,6 +639,20 @@ export function isString(value: any): value is string;
 
 // @public
 export function isTopic(topic: string): boolean;
+
+// @public
+export function isValidResponse(response: any): boolean;
+
+// @public (undocumented)
+export interface IWebSocket {
+    // (undocumented)
+    close(): any;
+    // (undocumented)
+    send(s: any): any;
+}
+
+// @public (undocumented)
+export let messageId: number;
 
 // @public (undocumented)
 export class Method<V> {
@@ -297,8 +690,12 @@ export function padLeft(str: string, chars: number, sign?: string): string;
 export function padRight(str: string, chars: number, sign?: string): string;
 
 // @public (undocumented)
+export type PendingTransaction = TransactionObject & {
+    type: TransactionType.pending;
+};
+
+// @public (undocumented)
 export class Property<V> {
-    // Warning: (ae-forgotten-export) The symbol "IPropertyOptions" needs to be exported by the entry point index.d.ts
     constructor(options: IPropertyOptions<V>);
     // (undocumented)
     execute(requestManager: RequestManager): Promise<any>;
@@ -309,37 +706,46 @@ export class Property<V> {
     outputFormatter: Function | null;
 }
 
+// @public (undocumented)
+export type Quantity = number | Hex;
+
+// @public (undocumented)
+export type QueuedTransaction = {
+    type: TransactionType.queued;
+    hash: string;
+    nonce: number;
+};
+
+// @public (undocumented)
+export type ReplacedTransaction = {
+    type: TransactionType.replaced;
+    hash: string;
+    nonce: number;
+};
+
 // @public
-export class RequestManager {
+class RequestManager {
     constructor(provider: any);
     eth_accounts: () => Promise<Address[]>;
     eth_blockNumber: () => Promise<Quantity>;
-    // Warning: (ae-forgotten-export) The symbol "TransactionCallOptions" needs to be exported by the entry point index.d.ts
     eth_call: (options: TransactionCallOptions, block: BlockIdentifier) => Promise<Data>;
-    // Warning: (ae-forgotten-export) The symbol "Address" needs to be exported by the entry point index.d.ts
     eth_coinbase: () => Promise<Address>;
     eth_estimateGas: (data: Partial<TransactionCallOptions> & Partial<TransactionOptions>) => Promise<Quantity>;
     eth_gasPrice: () => Promise<BigNumber>;
-    // Warning: (ae-forgotten-export) The symbol "BlockIdentifier" needs to be exported by the entry point index.d.ts
     eth_getBalance: (address: Address, block: BlockIdentifier) => Promise<BigNumber>;
-    // Warning: (ae-forgotten-export) The symbol "BlockObject" needs to be exported by the entry point index.d.ts
     eth_getBlockByHash: (blockHash: TxHash, fullTransactionObjects: boolean) => Promise<BlockObject>;
     eth_getBlockByNumber: (block: BlockIdentifier, fullTransactionObjects: boolean) => Promise<BlockObject>;
-    // Warning: (ae-forgotten-export) The symbol "TxHash" needs to be exported by the entry point index.d.ts
     eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<number>;
     eth_getBlockTransactionCountByNumber: (block: BlockIdentifier) => Promise<number>;
     eth_getCode: (address: Address, block: BlockIdentifier) => Promise<Data>;
-    // Warning: (ae-forgotten-export) The symbol "FilterChange" needs to be exported by the entry point index.d.ts
     eth_getFilterChanges: (filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>;
     eth_getFilterLogs: (filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>;
     eth_getLogs: (options: FilterOptions) => Promise<Array<TxHash> | Array<FilterChange>>;
     eth_getStorageAt: (address: Address, position: Quantity, block: BlockIdentifier) => Promise<Data>;
     eth_getTransactionByBlockHashAndIndex: (blockHash: TxHash, txIndex: Quantity) => Promise<TransactionObject>;
     eth_getTransactionByBlockNumberAndIndex: (block: BlockIdentifier, txIndex: Quantity) => Promise<TransactionObject>;
-    // Warning: (ae-forgotten-export) The symbol "TransactionObject" needs to be exported by the entry point index.d.ts
     eth_getTransactionByHash: (hash: TxHash) => Promise<TransactionObject>;
     eth_getTransactionCount: (address: Address, block: BlockIdentifier) => Promise<number>;
-    // Warning: (ae-forgotten-export) The symbol "TransactionReceipt" needs to be exported by the entry point index.d.ts
     eth_getTransactionReceipt: (hash: TxHash) => Promise<TransactionReceipt>;
     eth_getUncleByBlockHashAndIndex: (blockHash: TxHash, index: Quantity) => Promise<BlockObject>;
     eth_getUncleByBlockNumberAndIndex: (block: BlockIdentifier, index: Quantity) => Promise<BlockObject>;
@@ -359,20 +765,15 @@ export class RequestManager {
     eth_sign: (address: Address, message: Data) => Promise<Data>;
     eth_submitHashrate: (hashRate: Data, id: Data) => Promise<boolean>;
     eth_submitWork: (data: Data, powHash: TxHash, digest: TxHash) => Promise<boolean>;
-    // Warning: (ae-forgotten-export) The symbol "Syncing" needs to be exported by the entry point index.d.ts
     eth_syncing: () => Promise<false | Syncing>;
     eth_uninstallFilter: (filterId: Data) => Promise<boolean>;
-    // Warning: (ae-forgotten-export) The symbol "FinishedTransactionAndReceipt" needs to be exported by the entry point index.d.ts
     getConfirmedTransaction(txId: string): Promise<FinishedTransactionAndReceipt>;
-    // Warning: (ae-forgotten-export) The symbol "Transaction" needs to be exported by the entry point index.d.ts
     getTransaction(hash: string): Promise<Transaction>;
-    // Warning: (ae-forgotten-export) The symbol "TransactionAndReceipt" needs to be exported by the entry point index.d.ts
     getTransactionAndReceipt(txId: string): Promise<TransactionAndReceipt>;
     isFailure(tx: TransactionAndReceipt): boolean;
     isPending(tx: TransactionAndReceipt): boolean;
     isTxDropped(txId: string, _retryAttemps?: number): Promise<boolean>;
     net_listening: () => Promise<boolean>;
-    // Warning: (ae-forgotten-export) The symbol "Quantity" needs to be exported by the entry point index.d.ts
     net_peerCount: () => Promise<Quantity>;
     net_version: () => Promise<string>;
     personal_ecRecover: (message: Data, signature: Data) => Promise<Address>;
@@ -385,21 +786,17 @@ export class RequestManager {
     personal_unlockAccount: (account: Address, passPhrase?: Data, seconds?: Quantity) => Promise<boolean>;
     // (undocumented)
     provider: any;
-    // Warning: (ae-forgotten-export) The symbol "RPCSendableMessage" needs to be exported by the entry point index.d.ts
     sendAsync(data: RPCSendableMessage): Promise<any>;
     setProvider(p: any): void;
     // (undocumented)
     shh_addToGroup: (group: Data) => Promise<boolean>;
-    // Warning: (ae-forgotten-export) The symbol "SHHFilterMessage" needs to be exported by the entry point index.d.ts
     shh_getFilterChanges: (filterId: Data) => Promise<Array<SHHFilterMessage>>;
     shh_getMessages: (filterId: Data) => Promise<Array<SHHFilterMessage>>;
     shh_hasIdentity: (identity: Data) => Promise<boolean>;
-    // Warning: (ae-forgotten-export) The symbol "SHHFilterOptions" needs to be exported by the entry point index.d.ts
     shh_newFilter: (options: SHHFilterOptions) => Promise<Data>;
     // (undocumented)
     shh_newGroup: () => Promise<Data>;
     shh_newIdentity: () => Promise<Data>;
-    // Warning: (ae-forgotten-export) The symbol "SHHPost" needs to be exported by the entry point index.d.ts
     shh_post: (data: SHHPost) => Promise<boolean>;
     shh_uninstallFilter: (filterId: Data) => Promise<boolean>;
     shh_version: () => Promise<string>;
@@ -408,10 +805,91 @@ export class RequestManager {
     web3_sha3: (data: Data) => Promise<Data>;
 }
 
+export { RequestManager }
+
+export default RequestManager;
+
 // @public (undocumented)
-export function sha3(value: string, options?: {
+export type RevertedTransaction = TransactionObject & {
+    type: TransactionType.reverted;
+};
+
+// @public (undocumented)
+export type RPCMessage = {
+    jsonrpc: '2.0';
+    id: number;
+    method: string;
+    params: any[] | {
+        [key: string]: any;
+    };
+};
+
+// @public (undocumented)
+export type RPCSendableMessage = {
+    method: string;
+    params: any[];
+};
+
+// @public (undocumented)
+export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, options?: {
     encoding?: 'hex';
-}): any;
+}): string;
+
+// @public (undocumented)
+export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
+    constructor(requestManager: RequestManager, options: SHHFilterOptions);
+    // (undocumented)
+    protected getChanges(): Promise<any>;
+    // (undocumented)
+    getMessages(): Promise<any>;
+    // (undocumented)
+    protected getNewFilter(): Promise<string>;
+    // (undocumented)
+    options: SHHFilterOptions;
+    // (undocumented)
+    requestManager: RequestManager;
+    // (undocumented)
+    protected uninstall(): Promise<any>;
+}
+
+// @public (undocumented)
+export type SHHFilterMessage = {
+    hash: TxHash;
+    from: Data;
+    to: Data;
+    expiry: Quantity;
+    ttl: Quantity;
+    sent: Quantity;
+    topics: Array<Data>;
+    payload: Data;
+    workProved: Quantity;
+};
+
+// @public (undocumented)
+export type SHHFilterOptions = {
+    to?: Data;
+    topics: Array<Data>;
+};
+
+// @public (undocumented)
+export type SHHPost = {
+    from: Data;
+    to: Data;
+    topics: Array<Data>;
+    payload: Data;
+    priority: Quantity;
+    ttl: Quantity;
+};
+
+// @public (undocumented)
+export type Syncing = {
+    startingBlock: Quantity;
+    currentBlock: Quantity;
+    highestBlock: Quantity;
+};
+
+// @public (undocumented)
+export type Tag = 'latest' | 'earliest' | 'pending';
 
 // @public
 export function toAddress(address: any): any;
@@ -421,6 +899,14 @@ export function toArray(value: any): any[];
 
 // @public
 export function toAscii(hex: string): string;
+
+// @public
+export function toBatchPayload(messages: RPCSendableMessage[]): {
+    jsonrpc: string;
+    id: number;
+    method: string;
+    params: any[];
+}[];
 
 // @public
 export function toBigNumber(_num: number | string | BigNumber): BigNumber;
@@ -444,6 +930,14 @@ export function toHex(val: string | number | BigNumber): string;
 export function toNullDecimal(value: number | string | BigNumber): string | number | BigNumber;
 
 // @public
+export function toPayload(method: string, params: any[]): {
+    jsonrpc: string;
+    id: number;
+    method: string;
+    params: any[];
+};
+
+// @public
 function toString_2(value: number | string | BigNumber): string;
 
 export { toString_2 as toString }
@@ -452,10 +946,98 @@ export { toString_2 as toString }
 export function toTwosComplement(num: number | string | BigNumber): BigNumber;
 
 // @public
-export function toUtf8(hex: string): any;
+export function toUtf8(hex: string): string;
 
 // @public
 export function toWei(num: number | string, unit: string): string | BigNumber;
+
+// @public (undocumented)
+export type Transaction = DroppedTransaction | ReplacedTransaction | QueuedTransaction | PendingTransaction | ConfirmedTransaction | RevertedTransaction;
+
+// @public (undocumented)
+export type TransactionAndReceipt = TransactionObject & {
+    receipt: TransactionReceipt;
+};
+
+// @public (undocumented)
+export type TransactionCallOptions = {
+    from?: Address;
+    to: Address;
+    gas?: Quantity;
+    gasPrice?: Quantity;
+    value?: Quantity;
+    data?: string;
+};
+
+// @public (undocumented)
+export type TransactionObject = {
+    hash: TxHash;
+    nonce: number;
+    blockHash: TxHash;
+    blockNumber: number;
+    transactionIndex: number;
+    from: Address;
+    to: Address | null;
+    value: BigNumber;
+    gasPrice: BigNumber;
+    gas: Quantity;
+    input: Data;
+    v?: Data;
+    r?: Data;
+    s?: Data;
+};
+
+// @public (undocumented)
+export type TransactionOptions = {
+    from: Address;
+    to: Address;
+    gas?: Quantity;
+    gasPrice?: Quantity;
+    value?: Quantity;
+    data: string;
+    nonce?: Quantity;
+};
+
+// @public (undocumented)
+export type TransactionReceipt = {
+    transactionHash: TxHash;
+    transactionIndex: Quantity;
+    blockHash: TxHash;
+    blockNumber: Quantity;
+    cumulativeGasUsed: Quantity;
+    gasUsed: Quantity;
+    contractAddress: Address;
+    logs: Array<FilterLog>;
+    logsBloom: Data;
+    root?: TxHash;
+    status?: Quantity;
+};
+
+// @public (undocumented)
+export enum TransactionStatus {
+    // (undocumented)
+    confirmed = "confirmed",
+    // (undocumented)
+    failed = "failed",
+    // (undocumented)
+    pending = "pending"
+}
+
+// @public (undocumented)
+export enum TransactionType {
+    // (undocumented)
+    confirmed = "confirmed",
+    // (undocumented)
+    dropped = "dropped",
+    // (undocumented)
+    pending = "pending",
+    // (undocumented)
+    queued = "queued",
+    // (undocumented)
+    replaced = "replaced",
+    // (undocumented)
+    reverted = "reverted"
+}
 
 // @public
 export function transformToFullName(json: {
@@ -463,13 +1045,12 @@ export function transformToFullName(json: {
     inputs: any[];
 }): string;
 
-// Warning: (ae-forgotten-export) The symbol "IWebSocket" needs to be exported by the entry point index.d.ts
-//
+// @public
+export type TxHash = string;
+
 // @public (undocumented)
 export class WebSocketProvider<T extends IWebSocket> {
     constructor(url: string, options?: WebSocketProviderOptions);
-    // Warning: (ae-forgotten-export) The symbol "IFuture" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     connection: IFuture<T>;
     // (undocumented)
@@ -478,8 +1059,6 @@ export class WebSocketProvider<T extends IWebSocket> {
     dispose(): void;
     // (undocumented)
     isDisposed: boolean;
-    // Warning: (ae-forgotten-export) The symbol "WebSocketProviderOptions" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     options: WebSocketProviderOptions;
     // (undocumented)
@@ -489,6 +1068,13 @@ export class WebSocketProvider<T extends IWebSocket> {
     // (undocumented)
     url: string;
 }
+
+// @public (undocumented)
+export type WebSocketProviderOptions = {
+    WebSocketConstructor?: any;
+    timeout?: number;
+    protocol?: string;
+};
 
 
 // (No @packageDocumentation comment for this package)

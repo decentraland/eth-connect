@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "noEmit": false,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "allowJs": true,
+    "esModuleInterop": true
   },
   "extends": "./tsconfig.json",
   "include": ["./src"],

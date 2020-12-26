@@ -15,18 +15,22 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import { HTTPProvider } from './providers/HTTPProvider'
-import { WebSocketProvider } from './providers/WebSocketProvider'
+export * from './providers/HTTPProvider'
+export * from './providers/WebSocketProvider'
 export * from './utils/utils'
+export * from './Schema'
+export * from './utils/jsonrpc'
+
+export { IFuture } from 'fp-future'
 
 export { RequestManager } from './RequestManager'
-export { Contract, EventFilterCreator } from './Contract'
+export * from './Contract'
+export * from './Filter'
+export * from 'bignumber.js'
 export { ContractFactory } from './ContractFactory'
 export { Method } from './Method'
-export { Property } from './Property'
+export * from './Property'
 export { eth } from './methods/eth'
 
-export {
-  HTTPProvider,
-  WebSocketProvider
-}
+import { RequestManager } from './RequestManager'
+export default RequestManager

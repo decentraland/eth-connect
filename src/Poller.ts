@@ -1,7 +1,7 @@
 import { RequestManager } from './RequestManager'
 import * as utils from './utils/utils'
-import config = require('./utils/config')
-import errors = require('./utils/errors')
+import * as config from './utils/config'
+import * as errors from './utils/errors'
 import { toBatchPayload, isValidResponse } from './utils/jsonrpc'
 import { future } from 'fp-future'
 

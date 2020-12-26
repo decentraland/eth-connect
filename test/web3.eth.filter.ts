@@ -1,4 +1,4 @@
-import chai = require('chai')
+import * as chai from 'chai'
 import { RequestManager } from '../src'
 const assert = chai.assert
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'

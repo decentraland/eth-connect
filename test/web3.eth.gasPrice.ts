@@ -1,4 +1,4 @@
-import chai = require('chai')
+import * as chai from 'chai'
 const assert = chai.assert
 import { RequestManager } from '../src'
 import BigNumber from 'bignumber.js'

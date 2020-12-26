@@ -9,14 +9,14 @@ Converts value to string
 <b>Signature:</b>
 
 ```typescript
-export declare function toString(value: number | string | BigNumberType): string;
+export declare function toString(value: number | string | BigNumber): string;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  value | number \| string \| BigNumberType |  |
+|  value | number \| string \| [BigNumber](./eth-connect.bignumber.md) |  |
 
 <b>Returns:</b>
 

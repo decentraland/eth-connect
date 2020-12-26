@@ -15,10 +15,9 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import { BigNumber } from 'bignumber.js'
-import { BigNumber as BigNumberType } from '../utils/BigNumber'
-import utils = require('../utils/utils')
-import config = require('../utils/config')
+import BigNumber from 'bignumber.js'
+import * as utils from '../utils/utils'
+import * as config from '../utils/config'
 import { SolidityParam } from './param'
 
 /**
@@ -26,7 +25,7 @@ import { SolidityParam } from './param'
  * If value is negative, return it's two's complement
  * If the value is floating point, round it down
  */
-export function formatInputInt(value: string | number | BigNumberType) {
+export function formatInputInt(value: string | number | BigNumber) {
   BigNumber.config(config.ETH_BIGNUMBER_ROUNDING_MODE)
   let result = utils.padLeft(utils.toTwosComplement(value).toString(16), 64)
   return new SolidityParam(result)
@@ -92,7 +91,7 @@ export function signedIsNegative(value: string) {
 /**
  * Formats right-aligned output bytes to int
  */
-export function formatOutputInt(param): BigNumberType {
+export function formatOutputInt(param): BigNumber {
   let value = param.staticPart() || '0'
 
   // check if it's negative number

@@ -15,7 +15,7 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import utils = require('../utils/utils')
+import * as utils from '../utils/utils'
 
 /**
  * SolidityParam object prototype.

@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-eth_getBalance: Method<BigNumberType>
+eth_getBalance: Method<BigNumber>
 ```

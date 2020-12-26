@@ -21,5 +21,5 @@ waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransa
 
 <b>Returns:</b>
 
-Promise&lt;FinishedTransactionAndReceipt&gt;
+Promise&lt;[FinishedTransactionAndReceipt](./eth-connect.finishedtransactionandreceipt.md)<!-- -->&gt;
 
