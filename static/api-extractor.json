@@ -327,8 +327,8 @@
      */
     "tsdocMessageReporting": {
       "default": {
-        "logLevel": "warning"
-        // "addToApiReportFile": false
+        "logLevel": "none",
+        "addToApiReportFile": true
       }
       // "tsdoc-link-tag-unescaped-text": {
       //   "logLevel": "warning",
