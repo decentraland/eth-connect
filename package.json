@@ -41,7 +41,7 @@
     "all": true
   },
   "dependencies": {
-    "crypto-js": "^3.3.0",
+    "crypto-js": "^4.0.0",
     "js-sha3": "^0.8.0",
     "utf8": "^3.0.0"
   },
