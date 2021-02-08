@@ -51,7 +51,7 @@
     "@types/chai": "^4.2.14",
     "@types/mocha": "^8.2.0",
     "bignumber.js": "^7.2.1",
-    "chai": "^4.2.0",
+    "chai": "^4.3.0",
     "coveralls": "^3.1.0",
     "dcl-tslint-config-standard": "^3.0.0",
     "fp-future": "^1.0.1",
