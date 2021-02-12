@@ -55,7 +55,7 @@
     "coveralls": "^3.1.0",
     "dcl-tslint-config-standard": "^3.0.0",
     "fp-future": "^1.0.1",
-    "ganache-cli": "^6.12.1",
+    "ganache-cli": "^6.12.2",
     "isomorphic-fetch": "^3.0.0",
     "mocha": "^8.3.0",
     "nyc": "^15.1.0",
