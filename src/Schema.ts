@@ -1,4 +1,4 @@
-import { BigNumber } from "bignumber.js"
+import { BigNumber } from './utils/BigNumber'
 
 /**
  * Hex string
@@ -361,8 +361,6 @@ export type FilterChange = {
    * of the event (e.g. Deposit(address,bytes32,uint256)), except you declared the event with the anonymous specifier.)
    */
   topics: Array<Data>
-
-  args?: any
 }
 
 /**
@@ -422,4 +420,50 @@ export type SHHFilterMessage = {
   payload: Data
   /** Integer of the work this message required before it was send (?). */
   workProved: Quantity
+}
+
+/**
+ * @internal
+ */
+export type AbiType = 'function' | 'constructor' | 'event' | 'fallback'
+
+/**
+ * @internal
+ */
+export type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable'
+
+/**
+ * @internal
+ */
+export interface AbiItem {
+  anonymous?: boolean
+  constant?: boolean
+  inputs?: AbiInput[]
+  name?: string
+  outputs?: AbiOutput[]
+  payable?: boolean
+  stateMutability?: StateMutabilityType
+  type: AbiType
+  gas?: number
+}
+
+/**
+ * @internal
+ */
+export interface AbiInput {
+  name: string
+  type: string
+  indexed?: boolean
+  components?: AbiInput[]
+  internalType?: string
+}
+
+/**
+ * @internal
+ */
+export interface AbiOutput {
+  name: string
+  type: string
+  components?: AbiOutput[]
+  internalType?: string
 }

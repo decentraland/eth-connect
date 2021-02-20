@@ -89,7 +89,7 @@ let unitMap = {
   grand: '1000000000000000000000',
   mether: '1000000000000000000000000',
   gether: '1000000000000000000000000000',
-  tether: '1000000000000000000000000000000',
+  tether: '1000000000000000000000000000000'
 }
 
 /**
@@ -540,7 +540,7 @@ export function isFunction(object) {
  * @public
  * Returns true if object is Objet, otherwise false
  */
-export function isObject(object) {
+export function isObject<T extends object>(object): object is T {
   return object !== null && !Array.isArray(object) && typeof object === 'object'
 }
 

@@ -28,17 +28,19 @@
       "args": ["--timeout", "999999", "--colors", "${workspaceFolder}/test"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "preLaunchTask": "build"
+      "preLaunchTask": "build",
+      "skipFiles": ["node_modules/ganache-cli/**"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Mocha Current File",
+      "cwd": "${workspaceFolder}",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": ["--timeout", "999999", "--colors", "${file}"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "preLaunchTask": "build"
+      "skipFiles": ["node_modules/ganache-cli/**"]
     }
   ]
 }

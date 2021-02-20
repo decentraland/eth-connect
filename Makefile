@@ -16,8 +16,6 @@ clean:
 		@(rm -rf .nyc_output || true)
 		@(rm *.lcov || true)
 		@(rm -rf dist || true)
-		@find test -name '*.js' -delete
-		@find test -name '*.js.map' -delete
 
 build: clean
 		@echo '> Building'
@@ -53,7 +51,7 @@ lint:
 test:
 		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha
 test-fast:
-		node --experimental-modules node_modules/.bin/_mocha
+		node --inspect --experimental-modules node_modules/.bin/_mocha
 
 test-coveralls:
 		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose

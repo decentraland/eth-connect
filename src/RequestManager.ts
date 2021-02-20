@@ -428,16 +428,17 @@ export class RequestManager {
    * @param txId - Transaction id to watch
    * @param retriesOnEmpty - Number of retries when a transaction status returns empty
    */
-  async waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt> {
-    const isDropped = await this.isTxDropped(txId, retriesOnEmpty)
+  async waitForCompletion(txId: BigNumber.Value, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt> {
+    const txIdString = typeof txId =='string' ? txId : new BigNumber(txId).toString(16)
+    const isDropped = await this.isTxDropped(txIdString, retriesOnEmpty)
 
     if (isDropped) {
-      const tx = await this.getTransactionAndReceipt(txId)
+      const tx = await this.getTransactionAndReceipt(txIdString)
       return { ...tx, status: TransactionStatus.failed }
     }
 
     while (true) {
-      const tx = await this.getTransactionAndReceipt(txId)
+      const tx = await this.getTransactionAndReceipt(txIdString)
 
       if (!this.isPending(tx) && tx.receipt) {
         return {

@@ -9,14 +9,14 @@ Wait until a transaction finishes by either being mined or failing
 <b>Signature:</b>
 
 ```typescript
-waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt>;
+waitForCompletion(txId: BigNumber.Value, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  txId | string | Transaction id to watch |
+|  txId | [BigNumber.Value](./eth-connect.bignumber.value.md) | Transaction id to watch |
 |  retriesOnEmpty | number | Number of retries when a transaction status returns empty |
 
 <b>Returns:</b>

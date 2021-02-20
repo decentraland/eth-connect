@@ -51,7 +51,7 @@ export class SolidityCoder {
    * @throws {Error} throws if no matching type is found
    */
   _requireType(type: string): SolidityType {
-    let solidityType = this._types.filter(function(t) {
+    let solidityType = this._types.filter(function (t) {
       return t.isType(type)
     })[0]
 
@@ -70,7 +70,7 @@ export class SolidityCoder {
    * @param {object} plain param
    * @return {string} encoded plain param
    */
-  encodeParam(type: string, param) {
+  encodeParam(type: string, param): string {
     return this.encodeParams([type], [param])
   }
 
@@ -82,14 +82,14 @@ export class SolidityCoder {
    * @param {Array} params
    * @return {string} encoded list of params
    */
-  encodeParams(types: string[], params: any[]) {
+  encodeParams(types: string[], params: any[]): string {
     let solidityTypes = this.getSolidityTypes(types)
 
-    let encodeds = solidityTypes.map(function(solidityType, index) {
+    let encodeds = solidityTypes.map(function (solidityType, index) {
       return solidityType.encode(params[index], types[index])
     })
 
-    let dynamicOffset = solidityTypes.reduce(function(acc, solidityType, index) {
+    let dynamicOffset = solidityTypes.reduce(function (acc, solidityType, index) {
       let staticPartLength = solidityType.staticPartLength(types[index])
       let roundedStaticPartLength = Math.floor((staticPartLength + 31) / 32) * 32
 
@@ -138,8 +138,8 @@ export class SolidityCoder {
     let mode = solidityType.isDynamicArray(type)
       ? encodingMode.dynamic
       : solidityType.isStaticArray(type)
-        ? encodingMode.static
-        : encodingMode.other
+      ? encodingMode.static
+      : encodingMode.other
 
     if (mode !== encodingMode.other) {
       let nestedName = solidityType.nestedName(type)
@@ -196,18 +196,18 @@ export class SolidityCoder {
    * @param {string} bytes
    * @return {Array} array of plain params
    */
-  decodeParams(types: string[], bytes: string) {
+  decodeParams(types: string[], bytes: string): any[] {
     let solidityTypes = this.getSolidityTypes(types)
     let offsets = this.getOffsets(types, solidityTypes)
 
-    return solidityTypes.map(function(solidityType, index) {
+    return solidityTypes.map(function (solidityType, index) {
       return solidityType.decode(bytes, offsets[index], types[index])
     })
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  getOffsets(types: string[], solidityTypes: SolidityType[]) {
-    let lengths = solidityTypes.map(function(solidityType, index) {
+  getOffsets(types: string[], solidityTypes: SolidityType[]): number[] {
+    let lengths = solidityTypes.map(function (solidityType, index) {
       return solidityType.staticPartLength(types[index])
     })
 
@@ -216,7 +216,7 @@ export class SolidityCoder {
       lengths[i] += lengths[i - 1]
     }
 
-    return lengths.map(function(length, index) {
+    return lengths.map(function (length, index) {
       // remove the current length, so the length is sum of previous elements
       let staticPartLength = solidityTypes[index].staticPartLength(types[index])
       return length - staticPartLength
@@ -224,7 +224,7 @@ export class SolidityCoder {
   }
 
   getSolidityTypes(types: string[]): SolidityType[] {
-    return types.map(type => this._requireType(type))
+    return types.map((type) => this._requireType(type))
   }
 }
 

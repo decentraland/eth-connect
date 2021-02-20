@@ -794,7 +794,7 @@ export function isHex(value: string): boolean;
 export function isJson(str: string): boolean;
 
 // @public
-export function isObject(object: any): boolean;
+export function isObject<T extends object>(object: any): object is T;
 
 // @public
 export function isStrictAddress(address: any): boolean;
@@ -971,7 +971,7 @@ class RequestManager {
     shh_post: (data: SHHPost) => Promise<boolean>;
     shh_uninstallFilter: (filterId: Data) => Promise<boolean>;
     shh_version: () => Promise<string>;
-    waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt>;
+    waitForCompletion(txId: BigNumber.Value, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt>;
     web3_clientVersion: () => Promise<string>;
     web3_sha3: (data: Data) => Promise<Data>;
 }

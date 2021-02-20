@@ -92,7 +92,7 @@ function doTest(requestManager: RequestManager) {
       'value',
       'gas',
       'gasPrice',
-      'input',
+      'input'
     ]
 
     const receiptFields = [
@@ -105,17 +105,15 @@ function doTest(requestManager: RequestManager) {
       'contractAddress',
       'logs',
       'status',
-      'logsBloom',
+      'logsBloom'
     ]
 
-    for (let i = 0; i < transactionFields.length; i++) {
-      const key = transactionFields[i]
-      expect(tx[key]).not.toEqual('undefined')
+    for (let key of transactionFields) {
+      expect(tx).toHaveProperty(key)
     }
 
-    for (let i = 0; i < receiptFields.length; i++) {
-      const key = receiptFields[i]
-      expect(receipt[key]).not.toEqual('undefined')
+    for (let key of receiptFields) {
+      expect(receipt).toHaveProperty(key)
     }
   })
 
@@ -179,5 +177,16 @@ function doTest(requestManager: RequestManager) {
 
     testReturnType(requestManager, 'eth_getBlockTransactionCountByHash', 'number', tx.blockHash)
     testReturnType(requestManager, 'eth_getBlockTransactionCountByNumber', 'number', tx.blockNumber)
+  })
+
+  it('test allowance', async function () {
+    this.timeout(30000)
+    const accounts = await requestManager.eth_accounts()
+    {
+      const allowanceAddress = '0x0f5d2fb29fb7d3cfee444a200298f468908cc942'
+      console.log(`> allowance(${accounts[0]},${allowanceAddress})`)
+      const allowedNumber: BigNumber = await ERC20Contract.allowance(accounts[0], allowanceAddress)
+      expect(allowedNumber).toBeInstanceOf(BigNumber)
+    }
   })
 }

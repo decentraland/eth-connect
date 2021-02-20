@@ -9,7 +9,7 @@ Returns true if object is Objet, otherwise false
 <b>Signature:</b>
 
 ```typescript
-export declare function isObject(object: any): boolean;
+export declare function isObject<T extends object>(object: any): object is T;
 ```
 
 ## Parameters
@@ -20,5 +20,5 @@ export declare function isObject(object: any): boolean;
 
 <b>Returns:</b>
 
-boolean
+object is T
 
