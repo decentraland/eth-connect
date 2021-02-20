@@ -383,26 +383,6 @@ export class BigNumber {
   valueOf(): string;
 }
 
-// Warning: (ae-missing-release-tag) "BigNumberRoundingMode" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public (undocumented)
-export enum BigNumberRoundingMode {
-    ROUND_CE = 2,
-    ROUND_DOWN = 1,
-    ROUND_FLOOR = 3,
-    ROUND_HALF_CEIL = 7,
-    ROUND_HALF_DOWN = 5,
-    ROUND_HALF_EVEN = 6,
-    ROUND_HALF_FLOOR = 8,
-    ROUND_HALF_UP = 4,
-    ROUND_UP = 0
-}
-
-// Warning: (ae-missing-release-tag) "BigNumberRoundingModeType" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public (undocumented)
-export type BigNumberRoundingModeType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-
 // @public (undocumented)
 export type BlockIdentifier = Quantity | Tag;
 
