@@ -1,6 +1,6 @@
 import { assert } from 'chai'
+import { BigNumber } from '../src'
 import * as formatters from '../src/utils/formatters'
-import BigNumber from 'bignumber.js'
 
 describe('formatters', function() {
   describe('outputTransactionFormatter', function() {

@@ -20,7 +20,8 @@ import * as formatters from '../utils/formatters'
 import * as utils from '../utils/utils'
 import { Method } from '../Method'
 import { Property } from '../Property'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from '../utils/BigNumber'
+
 
 /**
  * @public

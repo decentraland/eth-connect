@@ -46,3 +46,5 @@ export enum BigNumberRoundingMode {
    */
   ROUND_HALF_FLOOR = 8,
 }
+
+export { BigNumber } from 'bignumber.js'

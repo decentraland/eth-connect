@@ -1,6 +1,5 @@
-import * as chai from 'chai'
-const assert = chai.assert
-import BigNumber from 'bignumber.js'
+import * as expect from 'expect'
+import { BigNumber } from '../src/utils/BigNumber'
 import { AllSolidityEvents } from '../src/AllSolidityEvents'
 import { RequestManager } from '../src'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
@@ -164,7 +163,7 @@ describe('lib/web3/allevents', function() {
         let requestManager = new RequestManager(provider)
         let allEvents = new AllSolidityEvents(requestManager, test.abi, address)
         let result = allEvents.decode(test.data)
-        assert.deepEqual(result, test.expected)
+        expect(result).toEqual(test.expected)
       })
     })
   })

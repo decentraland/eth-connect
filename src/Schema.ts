@@ -361,6 +361,8 @@ export type FilterChange = {
    * of the event (e.g. Deposit(address,bytes32,uint256)), except you declared the event with the anonymous specifier.)
    */
   topics: Array<Data>
+
+  args?: any
 }
 
 /**

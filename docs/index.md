@@ -26,6 +26,7 @@
 
 |  Enumeration | Description |
 |  --- | --- |
+|  [BigNumberRoundingMode](./eth-connect.bignumberroundingmode.md) |  |
 |  [TransactionStatus](./eth-connect.transactionstatus.md) |  |
 |  [TransactionType](./eth-connect.transactiontype.md) |  |
 
@@ -101,6 +102,7 @@
 |  Type Alias | Description |
 |  --- | --- |
 |  [Address](./eth-connect.address.md) | Hex string of 20 bytes |
+|  [BigNumberRoundingModeType](./eth-connect.bignumberroundingmodetype.md) |  |
 |  [BlockIdentifier](./eth-connect.blockidentifier.md) |  |
 |  [BlockObject](./eth-connect.blockobject.md) |  |
 |  [Callback](./eth-connect.callback.md) |  |

@@ -26,10 +26,11 @@ export { IFuture } from 'fp-future'
 export { RequestManager } from './RequestManager'
 export * from './Contract'
 export * from './Filter'
-export * from 'bignumber.js'
+
 export { ContractFactory } from './ContractFactory'
 export { Method } from './Method'
 export * from './Property'
+export * from './utils/BigNumber'
 export { eth } from './methods/eth'
 
 import { RequestManager } from './RequestManager'

@@ -1,8 +1,4 @@
-import * as chai from 'chai'
-// tslint:disable
-
-const expect = chai.expect
-
+import * as expect from 'expect'
 import { ContractFactory, RequestManager } from '../src'
 import { testAllProviders } from './helpers/testAllProviders'
 
@@ -35,42 +31,42 @@ const contract = {
       inputs: [
         {
           name: '_a',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       name: 'test',
       outputs: [
         {
           name: 'd',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       payable: false,
       stateMutability: 'pure',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         {
           name: '_aa',
-          type: 'uint256'
+          type: 'uint256',
         },
         {
           name: '_bb',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       name: 'test',
       outputs: [
         {
           name: 'd',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       payable: false,
       stateMutability: 'pure',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -79,17 +75,17 @@ const contract = {
       outputs: [
         {
           name: 'd',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       payable: false,
       stateMutability: 'pure',
-      type: 'function'
-    }
-  ]
+      type: 'function',
+    },
+  ],
 }
 
-describe('integration.overload', function() {
+describe('integration.overload', function () {
   testAllProviders(doTest)
 })
 
@@ -99,9 +95,8 @@ function doTest(requestManager: RequestManager) {
     const account = accounts[0]
 
     console.log(`> Using account ${account}`)
-    // tslint:disable-next-line:no-unused-expression
-    expect(account).to.be.string
-    expect(account.length).to.gt(0)
+    expect(typeof account).toEqual('string')
+    expect(account.length).toBeGreaterThan(0)
   })
 
   it('should get the balance', async () => {
@@ -109,7 +104,7 @@ function doTest(requestManager: RequestManager) {
     console.log(`> Coinbase`, coinbase)
     const balance = await requestManager.eth_getBalance(coinbase, 'latest')
     console.log(`> Balance ${balance}`)
-    expect(balance.toNumber()).to.gt(0)
+    expect(balance.toNumber()).toBeGreaterThan(0)
   })
 
   it('should unlock the account', async () => {
@@ -117,13 +112,12 @@ function doTest(requestManager: RequestManager) {
     const account = accounts[0]
     const accountUnlocked = await requestManager.personal_unlockAccount(account, '', 300)
     console.log(`> Unlocking account status=${accountUnlocked}`)
-    // tslint:disable-next-line:no-unused-expression
-    expect(accountUnlocked).to.be.true
+    expect(accountUnlocked).toEqual(true)
   })
 
   let TestContract = null
 
-  it('deploys a new contract', async function() {
+  it('deploys a new contract', async function () {
     this.timeout(100000)
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
@@ -137,28 +131,28 @@ function doTest(requestManager: RequestManager) {
   it('gets the receipt', async () => {
     const txRecipt = await requestManager.eth_getTransactionReceipt(TestContract.transactionHash)
 
-    expect(typeof txRecipt.contractAddress).to.eq('string')
-    expect(txRecipt.contractAddress.length).to.be.greaterThan(0)
+    expect(typeof txRecipt.contractAddress).toEqual('string')
+    expect(txRecipt.contractAddress.length).toBeGreaterThan(0)
   })
 
   it('gets the trasaction', async () => {
     const x = await requestManager.eth_getTransactionByHash(TestContract.transactionHash)
-    expect(typeof x).eq('object')
-    expect(x.hash).eq(TestContract.transactionHash)
+    expect(typeof x).toEqual('object')
+    expect(x.hash).toEqual(TestContract.transactionHash)
   })
 
   it('test() == 1', async () => {
     const balance = await TestContract.test.void()
-    expect(balance.toString()).eq('1')
+    expect(balance.toString()).toEqual('1')
   })
 
   it('test(uint256) == 222', async () => {
     const balance = await TestContract.test.uint256(222)
-    expect(balance.toString()).eq('222')
+    expect(balance.toString()).toEqual('222')
   })
 
   it('test(uint256,uint256) == 333', async () => {
     const balance = await TestContract.test['uint256,uint256'](222, 111)
-    expect(balance.toString()).eq('333')
+    expect(balance.toString()).toEqual('333')
   })
 }

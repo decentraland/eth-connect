@@ -18,7 +18,7 @@
 import * as utils from '../utils/utils'
 import * as config from '../utils/config'
 import { Quantity, Tag } from '../Schema'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from './BigNumber'
 
 /**
  * Should format the output to a big number

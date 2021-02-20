@@ -19,6 +19,7 @@
 
 import { RPCSendableMessage, toPayload, isValidResponse } from './utils/jsonrpc'
 import { InvalidProvider, InvalidResponse } from './utils/errors'
+import { BigNumber } from './utils/BigNumber'
 import { IFuture, future } from 'fp-future'
 import { eth } from './methods/eth'
 
@@ -51,7 +52,7 @@ import {
   TransactionAndReceipt
 } from './Schema'
 import { sleep } from './utils/sleep'
-import BigNumber from 'bignumber.js'
+
 
 export let TRANSACTION_FETCH_DELAY: number = 2 * 1000
 

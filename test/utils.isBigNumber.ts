@@ -1,6 +1,6 @@
 import * as chai from 'chai'
 import * as utils from '../src/utils/utils'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from '../src/utils/BigNumber'
 const assert = chai.assert
 
 let tests = [

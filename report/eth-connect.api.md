@@ -383,6 +383,26 @@ export class BigNumber {
   valueOf(): string;
 }
 
+// Warning: (ae-missing-release-tag) "BigNumberRoundingMode" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export enum BigNumberRoundingMode {
+    ROUND_CE = 2,
+    ROUND_DOWN = 1,
+    ROUND_FLOOR = 3,
+    ROUND_HALF_CEIL = 7,
+    ROUND_HALF_DOWN = 5,
+    ROUND_HALF_EVEN = 6,
+    ROUND_HALF_FLOOR = 8,
+    ROUND_HALF_UP = 4,
+    ROUND_UP = 0
+}
+
+// Warning: (ae-missing-release-tag) "BigNumberRoundingModeType" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export type BigNumberRoundingModeType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
 // @public (undocumented)
 export type BlockIdentifier = Quantity | Tag;
 
@@ -1068,10 +1088,10 @@ export function toBatchPayload(messages: RPCSendableMessage[]): {
 }[];
 
 // @public
-export function toBigNumber(_num: number | string | BigNumber): BigNumber;
+export function toBigNumber(_num: BigNumber.Value): BigNumber;
 
 // @public
-export function toBoolean(value: number | string | BigNumber | boolean): boolean;
+export function toBoolean(value: BigNumber.Value | boolean): boolean;
 
 // @public
 export function toChecksumAddress(_address: string): string;
@@ -1080,13 +1100,13 @@ export function toChecksumAddress(_address: string): string;
 export function toData(val: string | number | BigNumber): string;
 
 // @public
-export function toDecimal(value: number | string | BigNumber): number;
+export function toDecimal(value: BigNumber.Value): number;
 
 // @public
 export function toHex(val: string | number | BigNumber): string;
 
 // @public
-export function toNullDecimal(value: number | string | BigNumber): string | number | BigNumber;
+export function toNullDecimal(value: BigNumber.Value): BigNumber.Value;
 
 // Warning: (ae-missing-release-tag) "toPayload" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
@@ -1099,12 +1119,12 @@ export function toPayload(method: string, params: any[]): {
 };
 
 // @public
-function toString_2(value: number | string | BigNumber): string;
+function toString_2(value: BigNumber.Value): string;
 
 export { toString_2 as toString }
 
 // @public
-export function toTwosComplement(num: number | string | BigNumber): BigNumber;
+export function toTwosComplement(num: BigNumber.Value): BigNumber;
 
 // @public
 export function toUtf8(hex: string): string;

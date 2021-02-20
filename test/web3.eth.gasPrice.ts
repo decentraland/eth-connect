@@ -1,7 +1,7 @@
 import * as chai from 'chai'
 const assert = chai.assert
 import { RequestManager } from '../src'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from '../src/utils/BigNumber'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 
 let method = 'gasPrice'

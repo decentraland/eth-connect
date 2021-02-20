@@ -15,10 +15,9 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import BigNumber from 'bignumber.js'
-
 import * as utf8 from 'utf8'
 import { keccak256 } from 'js-sha3'
+import { BigNumber } from './BigNumber'
 
 /**
  * @public
@@ -243,7 +242,7 @@ export function isHex(value: string) {
  * @public
  * Converts value to it's decimal representation in string
  */
-export function toNullDecimal(value: number | string | BigNumber) {
+export function toNullDecimal(value: BigNumber.Value) {
   if (value === undefined || value === null) return value
   return toBigNumber(value).toNumber()
 }
@@ -252,7 +251,7 @@ export function toNullDecimal(value: number | string | BigNumber) {
  * @public
  * Converts value to it's decimal representation in string
  */
-export function toDecimal(value: number | string | BigNumber) {
+export function toDecimal(value: BigNumber.Value) {
   return toBigNumber(value).toNumber()
 }
 
@@ -260,7 +259,7 @@ export function toDecimal(value: number | string | BigNumber) {
  * @public
  * Converts value to string
  */
-export function toString(value: number | string | BigNumber) {
+export function toString(value: BigNumber.Value) {
   if (isBigNumber(value)) return (value as BigNumber).toString(10)
   return '' + value
 }
@@ -282,7 +281,7 @@ export function toData(val: string | number | BigNumber) {
  * @public
  * Converts value to it's boolean representation (x != 0)
  */
-export function toBoolean(value: number | string | BigNumber | boolean) {
+export function toBoolean(value: BigNumber.Value | boolean) {
   if (typeof value === 'boolean') return value
   return toBigNumber(value).toNumber() !== 0
 }
@@ -390,7 +389,7 @@ export function toWei(num: number | string, unit: string) {
  * @public
  * Takes an input and transforms it into an bignumber
  */
-export function toBigNumber(_num: number | string | BigNumber): BigNumber {
+export function toBigNumber(_num: BigNumber.Value): BigNumber {
   let num: any = _num || 0
 
   if (isBigNumber(num)) {
@@ -408,7 +407,7 @@ export function toBigNumber(_num: number | string | BigNumber): BigNumber {
  * @public
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
  */
-export function toTwosComplement(num: number | string | BigNumber): BigNumber {
+export function toTwosComplement(num: BigNumber.Value): BigNumber {
   let bigNumber = toBigNumber(num).integerValue() as BigNumber
 
   if (bigNumber.isLessThan(0)) {

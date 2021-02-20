@@ -15,10 +15,11 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import BigNumber from 'bignumber.js'
+
 import * as utils from '../utils/utils'
 import * as config from '../utils/config'
 import { SolidityParam } from './param'
+import { BigNumber } from '../utils/BigNumber'
 
 /**
  * Formats input value to byte representation of int

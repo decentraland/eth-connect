@@ -3,8 +3,7 @@
  */
 
 import * as chai from 'chai'
-import BigNumber from 'bignumber.js'
-import { toTwosComplement } from '../src/utils/utils'
+import { BigNumber, toTwosComplement } from '../dist/eth-connect'
 const assert = chai.assert
 
 let tests = [

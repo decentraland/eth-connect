@@ -1,7 +1,7 @@
 import { RequestManager, isHex, isAddress } from '../src'
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
-import BigNumber from 'bignumber.js'
-import { expect } from 'chai'
+import { BigNumber } from '../src/utils/BigNumber'
+import * as expect from 'expect'
 import { toRPC } from '../src/providers/common'
 
 export function testReturnType(
@@ -16,15 +16,15 @@ export function testReturnType(
     const result = await requestManager[method].apply(requestManager, args)
     try {
       if (type === 'address') {
-        expect(isAddress(result)).to.eq(true, 'is address')
+        expect(isAddress(result)).toEqual(true) // 'is address'
       } else if (type === 'data') {
-        expect(isHex(result)).to.eq(true, 'is data with shape 0x..')
+        expect(isHex(result)).toEqual(true) //  'is data with shape 0x..'
       } else if (type === 'array') {
-        expect(result instanceof Array).to.eq(true, 'is instance of array')
+        expect(result instanceof Array).toEqual(true) //  'is instance of array'
       } else if (type === BigNumber) {
-        expect(result instanceof BigNumber).to.eq(true, 'is instance of BigNumber')
+        expect(result instanceof BigNumber).toEqual(true) //  'is instance of BigNumber'
       } else {
-        expect(typeof result).to.eq(type)
+        expect(typeof result).toEqual(type)
       }
     } catch (e) {
       console.dir(result)
@@ -44,22 +44,21 @@ describe('test types', () => {
     const account = accounts[0]
 
     await requestManager.personal_unlockAccount(account)
-    // tslint:disable-next-line:no-unused-expression
-    expect(account).to.eq(address, "pre-setted account matches test's address")
-    expect(account.length).to.gt(0)
+    expect(account).toEqual(address) // "pre-setted account matches test's address"
+    expect(account.length).toBeGreaterThan(0)
   })
 
   it('test toRPC', async () => {
     // TODO: Move this to its own file
-    expect(() => toRPC({ id: null } as any)).to.throw()
-    expect(() => toRPC({ id: 1.1 } as any)).to.throw()
-    expect(() => toRPC({ id: 'asd' } as any)).to.throw()
-    expect(() => toRPC({ id: 1, method: '' } as any)).to.throw()
-    expect(() => toRPC({ id: 1, method: null } as any)).to.throw()
-    expect(() => toRPC({ id: 1, method: 123 } as any)).to.throw()
-    expect(() => toRPC({ id: 1, method: 'without params' } as any)).to.throw()
-    expect(() => toRPC({ id: 1, method: 'validMethod', params: 1 } as any)).to.throw()
-    expect(() => toRPC({ id: 1, method: 'validMethod', params: null } as any)).to.throw()
+    expect(() => toRPC({ id: null } as any)).toThrow()
+    expect(() => toRPC({ id: 1.1 } as any)).toThrow()
+    expect(() => toRPC({ id: 'asd' } as any)).toThrow()
+    expect(() => toRPC({ id: 1, method: '' } as any)).toThrow()
+    expect(() => toRPC({ id: 1, method: null } as any)).toThrow()
+    expect(() => toRPC({ id: 1, method: 123 } as any)).toThrow()
+    expect(() => toRPC({ id: 1, method: 'without params' } as any)).toThrow()
+    expect(() => toRPC({ id: 1, method: 'validMethod', params: 1 } as any)).toThrow()
+    expect(() => toRPC({ id: 1, method: 'validMethod', params: null } as any)).toThrow()
   })
 
   testReturnType(requestManager, 'web3_clientVersion', 'string')

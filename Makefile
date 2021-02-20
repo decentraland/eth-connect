@@ -38,21 +38,22 @@ provision-bundled:
 		@rm ./dist/tsconfig.json
 		@rm -rf ./dist/node_modules
 		@rm -rf ./dist/api-extractor.json
-		@rm -rf ./dist/dist
+		@rm -rf ./dist/decl || true
+		@rm -rf ./dist/dist || true
 		@rm -rf ./dist/etc || true
 		@rm -rf ./dist/src || true
 		@rm -rf ./dist/test || true
 
 watch:
-		${TSC} --project tsconfig-build.json --watch
+		${TSC} --project tsconfig.json --watch
 
 lint:
 		${TSLINT}
 
 test:
-		export TS_NODE_PROJECT='./tsconfig-test.json'; node --require ts-node/register --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha --timeout 10000 --reporter list
+		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha
 test-fast:
-		export TS_NODE_PROJECT='./tsconfig-test.json'; node --require ts-node/register --experimental-modules node_modules/.bin/_mocha --timeout 10000 --reporter list
+		node --experimental-modules node_modules/.bin/_mocha
 
 test-coveralls:
 		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose

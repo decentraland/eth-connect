@@ -1,7 +1,7 @@
 import * as chai from 'chai'
 const assert = chai.assert
 import * as formatters from '../src/utils/formatters'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from '../src'
 
 describe('formatters', function() {
   describe('outputBlockFormatter', function() {

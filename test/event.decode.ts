@@ -1,6 +1,6 @@
 import * as chai from 'chai'
 const assert = chai.assert
-import BigNumber from 'bignumber.js'
+import { BigNumber } from '../src'
 import { SolidityEvent } from '../src/SolidityEvent'
 
 let name = 'event1'

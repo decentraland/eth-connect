@@ -1,4 +1,5 @@
 import * as chai from 'chai'
+import * as expect from 'expect'
 import 'isomorphic-fetch'
 // tslint:disable
 
@@ -32,7 +33,7 @@ function doTest(requestManager: RequestManager) {
       const message = '0xad1231'
       const signature = await requestManager.personal_sign(message, account, 'test')
       const signerAddress = await requestManager.personal_ecRecover(message, signature)
-      chai.expect(signerAddress).to.eq(account)
+      expect(signerAddress).toEqual(account)
     }
   })
 

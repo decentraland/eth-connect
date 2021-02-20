@@ -1,9 +1,8 @@
 require:
-  - 'ts-node/register'
-  - './test/setup.ts'
+  - './test/setup.js'
+recursive: true
 reporter:
   - 'spec'
-  - list
 watch-files:
   - 'dist/**/*.js'
   - 'test/**/*.ts'
