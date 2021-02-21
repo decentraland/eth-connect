@@ -77,6 +77,12 @@ new BigNumber(823456789123456.3)
 new BigNumber(9, 2)
 
 ```
+A BigNumber can also be created from an object literal. Use `isBigNumber` to check that it is well-formed.
+
+```ts
+new BigNumber({ s: 1, e: 2, c: [ 777, 12300000000000 ], _isBigNumber: true })    // '777.123'
+
+```
 
 <b>Signature:</b>
 

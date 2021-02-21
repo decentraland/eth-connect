@@ -31,42 +31,42 @@ const contract = {
       inputs: [
         {
           name: '_a',
-          type: 'uint256',
-        },
+          type: 'uint256'
+        }
       ],
       name: 'test',
       outputs: [
         {
           name: 'd',
-          type: 'uint256',
-        },
+          type: 'uint256'
+        }
       ],
       payable: false,
       stateMutability: 'pure',
-      type: 'function',
+      type: 'function'
     },
     {
       constant: true,
       inputs: [
         {
           name: '_aa',
-          type: 'uint256',
+          type: 'uint256'
         },
         {
           name: '_bb',
-          type: 'uint256',
-        },
+          type: 'uint256'
+        }
       ],
       name: 'test',
       outputs: [
         {
           name: 'd',
-          type: 'uint256',
-        },
+          type: 'uint256'
+        }
       ],
       payable: false,
       stateMutability: 'pure',
-      type: 'function',
+      type: 'function'
     },
     {
       constant: true,
@@ -75,14 +75,14 @@ const contract = {
       outputs: [
         {
           name: 'd',
-          type: 'uint256',
-        },
+          type: 'uint256'
+        }
       ],
       payable: false,
       stateMutability: 'pure',
-      type: 'function',
-    },
-  ],
+      type: 'function'
+    }
+  ]
 }
 
 describe('integration.overload', function () {

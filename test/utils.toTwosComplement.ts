@@ -2,9 +2,8 @@
  * Created by danielbruce on 2017-09-25.
  */
 
-import * as chai from 'chai'
+import * as expect from 'expect'
 import { BigNumber, toTwosComplement } from '../dist/eth-connect'
-const assert = chai.assert
 
 let tests = [
   { value: 1, expected: new BigNumber(1).integerValue() },
@@ -55,7 +54,7 @@ describe('lib/utils/utils', function() {
   describe('toTwosComplement', function() {
     tests.forEach(function(test) {
       it('printing ' + test.value, function() {
-        assert(test.expected.eq(toTwosComplement(test.value) as any))
+        expect(test.expected.eq(toTwosComplement(test.value) as any)).toEqual(true)
       })
     })
   })

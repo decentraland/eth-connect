@@ -1,5 +1,4 @@
-import * as chai from 'chai'
-const assert = chai.assert
+import * as expect from 'expect'
 import * as formatters from '../src/solidity/formatters'
 import { SolidityParam } from '../src/solidity/param'
 
@@ -10,11 +9,11 @@ let tests = [
   { input: -1, result: new SolidityParam('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff') }
 ]
 
-describe('formatters', function() {
-  describe('inputAddressFormatter', function() {
-    tests.forEach(function(test) {
-      it('should return the correct value', function() {
-        assert.deepEqual(formatters.formatInputInt(test.input), test.result)
+describe('formatters', function () {
+  describe('inputAddressFormatter', function () {
+    tests.forEach(function (test) {
+      it('should return the correct value', function () {
+        expect(formatters.formatInputInt(test.input)).toEqual(test.result)
       })
     })
   })

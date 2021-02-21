@@ -34,5 +34,5 @@ The largest possible magnitude of a finite BigNumber is 9.999...e+1000000000. Th
 <b>Signature:</b>
 
 ```typescript
-RANGE?: number|[number, number];
+RANGE?: number | [number, number];
 ```

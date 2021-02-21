@@ -1,5 +1,4 @@
-import * as chai from 'chai'
-const assert = chai.assert
+import * as expect from 'expect'
 import * as formatters from '../src/utils/formatters'
 
 let tests = [
@@ -10,11 +9,11 @@ let tests = [
   { value: '0x1', expected: '0x1' }
 ]
 
-describe('lib/web3/formatters', function() {
-  describe('inputDefaultBlockNumberFormatter', function() {
-    tests.forEach(function(test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function() {
-        assert.strictEqual(formatters.inputDefaultBlockNumberFormatter(test.value as any), test.expected)
+describe('lib/web3/formatters', function () {
+  describe('inputDefaultBlockNumberFormatter', function () {
+    tests.forEach(function (test) {
+      it('should turn ' + test.value + ' to ' + test.expected, function () {
+        expect(formatters.inputDefaultBlockNumberFormatter(test.value as any)).toStrictEqual(test.expected)
       })
     })
   })

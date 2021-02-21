@@ -1,28 +1,25 @@
-import * as chai from 'chai'
-
-const assert = chai.assert
-
+import * as expect from 'expect'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 import { RequestManager } from '../src'
 import { SHHFilter } from '../src/Filter'
 
-describe('shh.filter', function() {
-  it('test shh', async function() {
+describe('shh.filter', function () {
+  it('test shh', async function () {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
 
-    const didCall = provider.injectHandler('shh_newFilter', async payload => {
-      assert.deepEqual(payload.params[0], { topics: ['0x32dd4f54', '0x564b4566'] })
+    const didCall = provider.injectHandler('shh_newFilter', async (payload) => {
+      expect(payload.params[0]).toEqual({ topics: ['0x32dd4f54', '0x564b4566'] })
       provider.injectResult('0xfaaa1231')
     })
 
-    const didCallUninstall = provider.injectHandler('shh_uninstallFilter', async _ => {
+    const didCallUninstall = provider.injectHandler('shh_uninstallFilter', async (_) => {
       provider.injectResult(true)
     })
 
-    const didGetChanges = provider.injectHandler('shh_getFilterChanges', async payload => {
-      assert(payload.params[0] === '0xfaaa1231', 'verify forwarding filter id')
+    const didGetChanges = provider.injectHandler('shh_getFilterChanges', async (payload) => {
+      expect(payload.params[0] === '0xfaaa1231').toEqual(true) // 'verify forwarding filter id'
       provider.injectResult([
         {
           hash: '0x33eb2da77bf3527e28f8bf493650b1879b08c4f2a362beae4ba2f71bafcd91f9',

@@ -39,6 +39,7 @@
 |  [fromDecimal(value)](./eth-connect.fromdecimal.md) | Converts value to it's hex representation |
 |  [fromUtf8(\_str, allowZero)](./eth-connect.fromutf8.md) | Should be called to get hex representation (prefixed by 0x) of utf8 string |
 |  [fromWei(num, unit)](./eth-connect.fromwei.md) | Takes a number of wei and converts it to any other ether unit.<!-- -->Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |
+|  [fromWei(num, unit)](./eth-connect.fromwei_1.md) |  |
 |  [getValueOfUnit(\_unit)](./eth-connect.getvalueofunit.md) | Returns value of unit in Wei |
 |  [hexToBytes(hex)](./eth-connect.hextobytes.md) |  |
 |  [isAddress(address)](./eth-connect.isaddress.md) | Checks if the given string is an address |

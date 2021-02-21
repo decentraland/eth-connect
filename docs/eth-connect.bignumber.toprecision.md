@@ -31,7 +31,7 @@ y.toPrecision(5)                // '45.600'
 <b>Signature:</b>
 
 ```typescript
-toPrecision(significantDigits?: number, roundingMode?: BigNumber.RoundingMode): string;
+toPrecision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): string;
 ```
 
 ## Parameters

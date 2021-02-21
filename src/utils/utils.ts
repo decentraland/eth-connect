@@ -303,9 +303,7 @@ export function fromDecimal(value: string | number | BigNumber) {
  *
  * And even stringifys objects before.
  */
-export function toHex(val: string | number | BigNumber) {
-  /*jshint maxcomplexity: 8 */
-
+export function toHex(val: string | number | BigNumber | boolean) {
   if (isBoolean(val)) return fromDecimal(+val)
 
   if (isBigNumber(val)) return fromDecimal(val)
@@ -356,7 +354,9 @@ export function getValueOfUnit(_unit: string): BigNumber {
  * - tether
  *
  */
-export function fromWei(num: number | string, unit: string) {
+export function fromWei(num: BigNumber, unit: string): BigNumber
+export function fromWei(num: string | number, unit: string): string
+export function fromWei(num: BigNumber.Value, unit: string) {
   let returnValue = toBigNumber(num).dividedBy(getValueOfUnit(unit))
 
   return isBigNumber(num) ? returnValue : returnValue.toString(10)
@@ -516,7 +516,7 @@ export function toAddress(address) {
  * @public
  * Returns true if object is BigNumber, otherwise false
  */
-export function isBigNumber(object: any) {
+export function isBigNumber(object: any): object is BigNumber {
   return object instanceof BigNumber
 }
 
@@ -548,7 +548,7 @@ export function isObject<T extends object>(object): object is T {
  * @public
  * Returns true if object is boolean, otherwise false
  */
-export function isBoolean(object) {
+export function isBoolean(object): object is boolean {
   return typeof object === 'boolean'
 }
 

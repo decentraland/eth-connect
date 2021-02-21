@@ -1,5 +1,4 @@
-import * as chai from 'chai'
-const assert = chai.assert
+import * as expect from 'expect'
 import { BigNumber } from '../src'
 import { SolidityEvent } from '../src/SolidityEvent'
 
@@ -184,14 +183,14 @@ let tests = [
   }
 ]
 
-describe('lib/web3/event', function() {
-  describe('decode', function() {
-    tests.forEach(function(test, index) {
-      it('test no: ' + index, function() {
+describe('lib/web3/event', function () {
+  describe('decode', function () {
+    tests.forEach(function (test, index) {
+      it('test no: ' + index, function () {
         let event = new SolidityEvent(null, test.abi as any, address)
 
         let result = event.decode(test.data as any)
-        assert.deepEqual(result, test.expected as any)
+        expect(result).toEqual(test.expected)
       })
     })
   })

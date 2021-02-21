@@ -1,5 +1,4 @@
-import * as chai from 'chai'
-const assert = chai.assert
+import * as expect from 'expect'
 import { SolidityEvent } from '../src/SolidityEvent'
 import { FilterOptions } from '../src/Schema'
 
@@ -231,18 +230,18 @@ let tests = [
   }
 ]
 
-describe('lib/web3/event', function() {
-  describe('encode', function() {
-    tests.forEach(function(test, index) {
-      it('test no: ' + index, function() {
+describe('lib/web3/event', function () {
+  describe('encode', function () {
+    tests.forEach(function (test, index) {
+      it('test no: ' + index, function () {
         let event = new SolidityEvent(null, test.abi as any, address)
-        event.signature = function() {
+        event.signature = function () {
           // inject signature
           return signature.slice(2)
         }
 
         let result = event.encode(test.indexed, test.options as FilterOptions)
-        assert.deepEqual(result, test.expected as any)
+        expect(result).toEqual(test.expected as any)
       })
     })
   })

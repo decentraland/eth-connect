@@ -4,10 +4,10 @@
 
 ## BigNumber.e property
 
-The exponent of the value of this BigNumber, an integer number, -1000000000 to 1000000000.
+The exponent of the value of this BigNumber, an integer number, -1000000000 to 1000000000, or null.
 
 <b>Signature:</b>
 
 ```typescript
-readonly e: number;
+readonly e: number | null;
 ```

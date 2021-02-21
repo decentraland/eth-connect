@@ -1,9 +1,9 @@
-import {assert} from 'chai'
-import {isJson} from '../src/utils/utils'
+import * as expect from 'expect'
+import { isJson } from '../src/utils/utils'
 
 let tests = [
   {
-    obj: function() {
+    obj: function () {
       /* stub */
     },
     is: false
@@ -18,11 +18,11 @@ let tests = [
   { obj: '{"c" : 2}', is: true }
 ]
 
-describe('lib/utils/utils', function() {
-  describe('isJson', function() {
-    tests.forEach(function(test) {
-      it('shoud test if value ' + test.obj + ' is json: ' + test.is, function() {
-        assert.equal(isJson(test.obj as any), test.is)
+describe('lib/utils/utils', function () {
+  describe('isJson', function () {
+    tests.forEach(function (test) {
+      it('shoud test if value ' + test.obj + ' is json: ' + test.is, function () {
+        expect(isJson(test.obj as any)).toEqual(test.is)
       })
     })
   })

@@ -54,7 +54,7 @@ export namespace BigNumber {
 
     DECIMAL_PLACES?: number;
 
-    EXPONENTIAL_AT?: number|[number, number];
+    EXPONENTIAL_AT?: number | [number, number];
 
     FORMAT?: BigNumber.Format;
 
@@ -62,7 +62,7 @@ export namespace BigNumber {
 
     POW_PRECISION?: number;
 
-    RANGE?: number|[number, number];
+    RANGE?: number | [number, number];
 
     ROUNDING_MODE?: BigNumber.RoundingMode;
   }
@@ -82,11 +82,25 @@ export namespace BigNumber {
 
     groupSize?: number;
 
+    prefix?: string;
+
     secondaryGroupSize?: number;
+
+    suffix?: string;
   }
 
   // (undocumented)
-  export type Instance = BigNumber;
+  export interface Instance {
+
+    // (undocumented)
+    [key: string]: any;
+
+    readonly c: number[] | null;
+
+    readonly e: number | null;
+
+    readonly s: number | null;
+  }
 
   // (undocumented)
   export type ModuloMode = 0 | 1 | 3 | 6 | 9;
@@ -95,11 +109,11 @@ export namespace BigNumber {
   export type RoundingMode = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
   // (undocumented)
-  export type Value = string | number | BigNumber;
+  export type Value = string | number | Instance;
 }
 
 // @public (undocumented)
-export class BigNumber {
+export class BigNumber implements BigNumber.Instance {
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
@@ -109,7 +123,7 @@ export class BigNumber {
 
   absoluteValue(): BigNumber;
 
-  readonly c: number[];
+  readonly c: number[] | null;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
@@ -158,7 +172,7 @@ export class BigNumber {
   // (undocumented)
   dp(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
 
-  readonly e: number;
+  readonly e: number | null;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
@@ -170,6 +184,9 @@ export class BigNumber {
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+  exponentiatedBy(n: BigNumber.Value, m?: BigNumber.Value): BigNumber;
+
+  // (undocumented)
   exponentiatedBy(n: number, m?: BigNumber.Value): BigNumber;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
@@ -193,7 +210,7 @@ export class BigNumber {
   integerValue(rm?: BigNumber.RoundingMode): BigNumber;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  static isBigNumber(value: any): boolean;
+  static isBigNumber(value: any): value is BigNumber;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
@@ -272,7 +289,7 @@ export class BigNumber {
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  multipliedBy(n: BigNumber.Value, base?: number) : BigNumber;
+  multipliedBy(n: BigNumber.Value, base?: number): BigNumber;
 
   negated(): BigNumber;
 
@@ -284,6 +301,9 @@ export class BigNumber {
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+  pow(n: BigNumber.Value, m?: BigNumber.Value): BigNumber;
+
+  // (undocumented)
   pow(n: number, m?: BigNumber.Value): BigNumber;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
@@ -317,13 +337,15 @@ export class BigNumber {
 
   static readonly ROUND_UP: 0;
 
-  readonly s: number;
+  readonly s: number | null;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
   sd(includeZeros?: boolean): number;
 
-  // (undocumented)
+  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
   sd(significantDigits: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
@@ -337,6 +359,9 @@ export class BigNumber {
   squareRoot(): BigNumber;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+  static sum(...n: BigNumber.Value[]): BigNumber;
+
+  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
   times(n: BigNumber.Value, base?: number): BigNumber;
@@ -345,24 +370,44 @@ export class BigNumber {
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toExponential(decimalPlaces?: number, roundingMode?: BigNumber.RoundingMode): string;
+  toExponential(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
+
+  // (undocumented)
+  toExponential(): string;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toFixed(decimalPlaces?: number, roundingMode?: BigNumber.RoundingMode): string;
+  toFixed(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
+
+  // (undocumented)
+  toFixed(): string;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toFormat(decimalPlaces?: number, roundingMode?: BigNumber.RoundingMode): string;
+  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+  toFormat(decimalPlaces: number, roundingMode: BigNumber.RoundingMode, format?: BigNumber.Format): string;
+
+  // (undocumented)
+  toFormat(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
+
+  // (undocumented)
+  toFormat(decimalPlaces?: number): string;
+
+  // (undocumented)
+  toFormat(decimalPlaces: number, format: BigNumber.Format): string;
+
+  // (undocumented)
+  toFormat(format: BigNumber.Format): string;
 
   // Warning: (tsdoc-escape-greater-than) The ">" character should be escaped using a backslash to avoid confusion with an HTML tag
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toFraction(max_denominator?: BigNumber.Value): BigNumber[];
+  toFraction(max_denominator?: BigNumber.Value): [BigNumber, BigNumber];
 
   toJSON(): string;
 
@@ -372,7 +417,10 @@ export class BigNumber {
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toPrecision(significantDigits?: number, roundingMode?: BigNumber.RoundingMode): string;
+  toPrecision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): string;
+
+  // (undocumented)
+  toPrecision(): string;
 
   // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
   // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
@@ -690,8 +738,13 @@ export function fromDecimal(value: string | number | BigNumber): string;
 // @public
 export function fromUtf8(_str: string, allowZero?: boolean): string;
 
+// Warning: (ae-missing-release-tag) "fromWei" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
 // @public
-export function fromWei(num: number | string, unit: string): string | BigNumber;
+export function fromWei(num: BigNumber, unit: string): BigNumber;
+
+// @public (undocumented)
+export function fromWei(num: string | number, unit: string): string;
 
 // @public
 export function getValueOfUnit(_unit: string): BigNumber;
@@ -753,13 +806,13 @@ export function isAddress(address: any): boolean;
 export function isArray(object: any): boolean;
 
 // @public
-export function isBigNumber(object: any): boolean;
+export function isBigNumber(object: any): object is BigNumber;
 
 // @public
 export function isBloom(bloom: string): boolean;
 
 // @public
-export function isBoolean(object: any): boolean;
+export function isBoolean(object: any): object is boolean;
 
 // @public
 export function isChecksumAddress(_address: string): boolean;
@@ -1083,7 +1136,7 @@ export function toData(val: string | number | BigNumber): string;
 export function toDecimal(value: BigNumber.Value): number;
 
 // @public
-export function toHex(val: string | number | BigNumber): string;
+export function toHex(val: string | number | BigNumber | boolean): string;
 
 // @public
 export function toNullDecimal(value: BigNumber.Value): BigNumber.Value;

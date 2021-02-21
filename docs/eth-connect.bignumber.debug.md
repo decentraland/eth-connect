@@ -4,7 +4,7 @@
 
 ## BigNumber.DEBUG property
 
-To aid in debugging, if a `BigNumber.DEBUG` property is `true` then an error will be thrown on an invalid `BigNumber.Value`<!-- -->.
+To aid in debugging, if a `BigNumber.DEBUG` property is `true` then an error will be thrown if the BigNumber constructor receives an invalid `BigNumber.Value`<!-- -->, or if `BigNumber.isBigNumber` receives a BigNumber instance that is malformed.
 
 ```ts
 // No error, and BigNumber NaN is returned.
@@ -24,6 +24,21 @@ new BigNumber(823456789123456.3)     // '823456789123456.2'
 BigNumber.DEBUG = true
 new BigNumber(823456789123456.3)
 // '[BigNumber Error] Number primitive has more than 15 significant digits'
+
+```
+Check that a BigNumber instance is well-formed:
+
+```ts
+x = new BigNumber(10)
+
+BigNumber.DEBUG = false
+// Change x.c to an illegitimate value.
+x.c = NaN
+// No error, as BigNumber.DEBUG is false.
+BigNumber.isBigNumber(x)    // true
+
+BigNumber.DEBUG = true
+BigNumber.isBigNumber(x)    // '[BigNumber Error] Invalid BigNumber'
 
 ```
 

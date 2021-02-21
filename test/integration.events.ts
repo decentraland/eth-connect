@@ -42,36 +42,36 @@ const contract = {
       inputs: [
         {
           name: '_fName',
-          type: 'string',
+          type: 'string'
         },
         {
           name: '_age',
-          type: 'uint256',
-        },
+          type: 'uint256'
+        }
       ],
       name: 'setInstructorEvent',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function',
+      type: 'function'
     },
     {
       constant: false,
       inputs: [
         {
           name: '_fName',
-          type: 'string',
+          type: 'string'
         },
         {
           name: '_age',
-          type: 'uint256',
-        },
+          type: 'uint256'
+        }
       ],
       name: 'setInstructor',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function',
+      type: 'function'
     },
     {
       constant: true,
@@ -80,16 +80,16 @@ const contract = {
       outputs: [
         {
           name: '',
-          type: 'string',
+          type: 'string'
         },
         {
           name: '',
-          type: 'uint256',
-        },
+          type: 'uint256'
+        }
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function',
+      type: 'function'
     },
     {
       anonymous: false,
@@ -97,18 +97,18 @@ const contract = {
         {
           indexed: false,
           name: 'name',
-          type: 'string',
+          type: 'string'
         },
         {
           indexed: false,
           name: 'age',
-          type: 'uint256',
-        },
+          type: 'uint256'
+        }
       ],
       name: 'Instructor',
-      type: 'event',
-    },
-  ],
+      type: 'event'
+    }
+  ]
 }
 
 describe('integration.events', function () {
@@ -170,7 +170,7 @@ function doTest(rm: RequestManager) {
     const theDeployedContract: Contract = (TestContract = await factory.deploy({
       data: contract.bytecode,
       from: account,
-      to: null,
+      to: null
     }))
 
     contractEvents = await theDeployedContract.allEvents({})

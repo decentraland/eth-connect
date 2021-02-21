@@ -1,9 +1,9 @@
-import { assert } from 'chai'
+import * as expect from 'expect'
 import * as Jsonrpc from '../src/utils/jsonrpc'
 
-describe('jsonrpc', function() {
-  describe('isValidResponse', function() {
-    it('should validate basic jsonrpc response', function() {
+describe('jsonrpc', function () {
+  describe('isValidResponse', function () {
+    it('should validate basic jsonrpc response', function () {
       // given
       let response = {
         jsonrpc: '2.0',
@@ -15,10 +15,10 @@ describe('jsonrpc', function() {
       let valid = Jsonrpc.isValidResponse(response)
 
       // then
-      assert.equal(valid, true)
+      expect(valid).toEqual(true)
     })
 
-    it('should validate basic undefined response', function() {
+    it('should validate basic undefined response', function () {
       // given
       let response = undefined
 
@@ -26,10 +26,10 @@ describe('jsonrpc', function() {
       let valid = Jsonrpc.isValidResponse(response)
 
       // then
-      assert.equal(valid, false)
+      expect(valid).toEqual(false)
     })
 
-    it('should validate jsonrpc response without jsonrpc field', function() {
+    it('should validate jsonrpc response without jsonrpc field', function () {
       // given
       let response = {
         id: 1,
@@ -40,10 +40,10 @@ describe('jsonrpc', function() {
       let valid = Jsonrpc.isValidResponse(response)
 
       // then
-      assert.equal(valid, false)
+      expect(valid).toEqual(false)
     })
 
-    it('should validate jsonrpc response with wrong jsonrpc version', function() {
+    it('should validate jsonrpc response with wrong jsonrpc version', function () {
       // given
       let response = {
         jsonrpc: '1.0',
@@ -55,10 +55,10 @@ describe('jsonrpc', function() {
       let valid = Jsonrpc.isValidResponse(response)
 
       // then
-      assert.equal(valid, false)
+      expect(valid).toEqual(false)
     })
 
-    it('should validate jsonrpc response without id number', function() {
+    it('should validate jsonrpc response without id number', function () {
       // given
       let response = {
         jsonrpc: '2.0',
@@ -69,10 +69,10 @@ describe('jsonrpc', function() {
       let valid = Jsonrpc.isValidResponse(response)
 
       // then
-      assert.equal(valid, false)
+      expect(valid).toEqual(false)
     })
 
-    it('should validate jsonrpc response with wrong id field', function() {
+    it('should validate jsonrpc response with wrong id field', function () {
       // given
       let response = {
         jsonrpc: '2.0',
@@ -84,10 +84,10 @@ describe('jsonrpc', function() {
       let valid = Jsonrpc.isValidResponse(response)
 
       // then
-      assert.equal(valid, false)
+      expect(valid).toEqual(false)
     })
 
-    it('should validate jsonrpc response without result field', function() {
+    it('should validate jsonrpc response without result field', function () {
       // given
       let response = {
         jsonrpc: '2.0',
@@ -98,10 +98,10 @@ describe('jsonrpc', function() {
       let valid = Jsonrpc.isValidResponse(response)
 
       // then
-      assert.equal(valid, false)
+      expect(valid).toEqual(false)
     })
 
-    it('should validate jsonrpc response with result field === false', function() {
+    it('should validate jsonrpc response with result field === false', function () {
       // given
       let response = {
         jsonrpc: '2.0',
@@ -113,10 +113,10 @@ describe('jsonrpc', function() {
       let valid = Jsonrpc.isValidResponse(response)
 
       // then
-      assert.equal(valid, true)
+      expect(valid).toEqual(true)
     })
 
-    it('should validate jsonrpc response with result field === 0', function() {
+    it('should validate jsonrpc response with result field === 0', function () {
       // given
       let response = {
         jsonrpc: '2.0',
@@ -128,7 +128,7 @@ describe('jsonrpc', function() {
       let valid = Jsonrpc.isValidResponse(response)
 
       // then
-      assert.equal(valid, true)
+      expect(valid).toEqual(true)
     })
   })
 })

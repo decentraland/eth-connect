@@ -1,6 +1,5 @@
-import * as chai from 'chai'
+import * as expect from 'expect'
 import { BigNumber, toBigNumber } from '../dist/eth-connect'
-const assert = chai.assert
 
 let tests = [
   { value: 1, expected: '1' },
@@ -45,11 +44,11 @@ let tests = [
   { value: new BigNumber(0), expected: '0' }
 ]
 
-describe('lib/utils/utils', function() {
-  describe('toBigNumber', function() {
-    tests.forEach(function(test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function() {
-        assert.equal(toBigNumber(test.value).toString(10), test.expected)
+describe('lib/utils/utils', function () {
+  describe('toBigNumber', function () {
+    tests.forEach(function (test) {
+      it('should turn ' + test.value + ' to ' + test.expected, function () {
+        expect(toBigNumber(test.value).toString(10)).toEqual(test.expected)
       })
     })
   })

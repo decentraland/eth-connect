@@ -4,19 +4,19 @@
 
 ## BigNumber.Config interface
 
-See `BigNumber.config` and `BigNumber.clone`<!-- -->.
+See `BigNumber.config` (alias `BigNumber.set`<!-- -->) and `BigNumber.clone`<!-- -->.
 
 <b>Signature:</b>
 
 ```typescript
-export interface Config 
+interface Config 
 ```
 
 ## Properties
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [ALPHABET?](./eth-connect.bignumber.config.alphabet.md) | string | <i>(Optional)</i> A string representing the alphabet used for base conversion. Default value: <code>'0123456789abcdefghijklmnopqrstuvwxyz'</code>.<!-- -->The length of the alphabet corresponds to the maximum value of the base argument that can be passed to the BigNumber constructor or <code>toString</code>. There is no maximum length, but it must be at least 2 characters long, and it must not contain a repeated character, or <code>'.'</code> - the decimal separator for all values whatever their base.
+|  [ALPHABET?](./eth-connect.bignumber.config.alphabet.md) | string | <i>(Optional)</i> The alphabet used for base conversion. The length of the alphabet corresponds to the maximum value of the base argument that can be passed to the BigNumber constructor or <code>toString</code>.<!-- -->Default value: <code>'0123456789abcdefghijklmnopqrstuvwxyz'</code>.<!-- -->There is no maximum length for the alphabet, but it must be at least 2 characters long, and it must not contain whitespace or a repeated character, or the sign indicators '+' and '-', or the decimal separator '.'.
 ```ts
 // duodecimal (base 12)
 BigNumber.config({ ALPHABET: '0123456789TE' })
@@ -28,6 +28,9 @@ x.toString(12)              // 'T'
  |
 |  [CRYPTO?](./eth-connect.bignumber.config.crypto.md) | boolean | <i>(Optional)</i> A boolean: <code>true</code> or <code>false</code>. Default value: <code>false</code>.<!-- -->The value that determines whether cryptographically-secure pseudo-random number generation is used. If <code>CRYPTO</code> is set to true then the random method will generate random digits using <code>crypto.getRandomValues</code> in browsers that support it, or <code>crypto.randomBytes</code> if using a version of Node.js that supports it.<!-- -->If neither function is supported by the host environment then attempting to set <code>CRYPTO</code> to <code>true</code> will fail and an exception will be thrown.<!-- -->If <code>CRYPTO</code> is <code>false</code> then the source of randomness used will be <code>Math.random</code> (which is assumed to generate at least 30 bits of randomness).<!-- -->See <code>BigNumber.random</code>.
 ```ts
+// Node.js
+global.crypto = require('crypto')
+
 BigNumber.config({ CRYPTO: true })
 BigNumber.config().CRYPTO       // true
 BigNumber.random()              // 0.54340758610486147524
@@ -41,7 +44,7 @@ BigNumber.set({ DECIMAL_PLACES: 5 })
 
 ```
  |
-|  [EXPONENTIAL\_AT?](./eth-connect.bignumber.config.exponential_at.md) | number\|\[number, number\] | <i>(Optional)</i> An integer, 0 to 1e+9, or an array, \[-1e+9 to 0, 0 to 1e+9\]. Default value: <code>[-7, 20]</code>.<!-- -->The exponent value(s) at which <code>toString</code> returns exponential notation.<!-- -->If a single number is assigned, the value is the exponent magnitude.<!-- -->If an array of two numbers is assigned then the first number is the negative exponent value at and beneath which exponential notation is used, and the second number is the positive exponent value at and above which exponential notation is used.<!-- -->For example, to emulate JavaScript numbers in terms of the exponent values at which they begin to use exponential notation, use <code>[-7, 20]</code>.
+|  [EXPONENTIAL\_AT?](./eth-connect.bignumber.config.exponential_at.md) | number \| \[number, number\] | <i>(Optional)</i> An integer, 0 to 1e+9, or an array, \[-1e+9 to 0, 0 to 1e+9\]. Default value: <code>[-7, 20]</code>.<!-- -->The exponent value(s) at which <code>toString</code> returns exponential notation.<!-- -->If a single number is assigned, the value is the exponent magnitude.<!-- -->If an array of two numbers is assigned then the first number is the negative exponent value at and beneath which exponential notation is used, and the second number is the positive exponent value at and above which exponential notation is used.<!-- -->For example, to emulate JavaScript numbers in terms of the exponent values at which they begin to use exponential notation, use <code>[-7, 20]</code>.
 ```ts
 BigNumber.config({ EXPONENTIAL_AT: 2 })
 new BigNumber(12.3)         // '12.3'        e is only 1
@@ -65,6 +68,8 @@ Regardless of the value of <code>EXPONENTIAL_AT</code>, the <code>toFixed</code>
 ```ts
 BigNumber.config({
   FORMAT: {
+    // string to prepend
+    prefix: '',
     // the decimal separator
     decimalSeparator: '.',
     // the grouping separator of the integer part
@@ -76,7 +81,9 @@ BigNumber.config({
     // the grouping separator of the fraction part
     fractionGroupSeparator: ' ',
     // the grouping size of the fraction part
-    fractionGroupSize: 0
+    fractionGroupSize: 0,
+    // string to append
+    suffix: ''
   }
 })
 
@@ -95,7 +102,7 @@ BigNumber.config({ POW_PRECISION: 100 })
 
 ```
  |
-|  [RANGE?](./eth-connect.bignumber.config.range.md) | number\|\[number, number\] | <i>(Optional)</i> An integer, magnitude 1 to 1e+9, or an array, \[-1e+9 to -1, 1 to 1e+9\]. Default value: <code>[-1e+9, 1e+9]</code>.<!-- -->The exponent value(s) beyond which overflow to Infinity and underflow to zero occurs.<!-- -->If a single number is assigned, it is the maximum exponent magnitude: values wth a positive exponent of greater magnitude become Infinity and those with a negative exponent of greater magnitude become zero.<!-- -->If an array of two numbers is assigned then the first number is the negative exponent limit and the second number is the positive exponent limit.<!-- -->For example, to emulate JavaScript numbers in terms of the exponent values at which they become zero and Infinity, use \[-324, 308\].
+|  [RANGE?](./eth-connect.bignumber.config.range.md) | number \| \[number, number\] | <i>(Optional)</i> An integer, magnitude 1 to 1e+9, or an array, \[-1e+9 to -1, 1 to 1e+9\]. Default value: <code>[-1e+9, 1e+9]</code>.<!-- -->The exponent value(s) beyond which overflow to Infinity and underflow to zero occurs.<!-- -->If a single number is assigned, it is the maximum exponent magnitude: values wth a positive exponent of greater magnitude become Infinity and those with a negative exponent of greater magnitude become zero.<!-- -->If an array of two numbers is assigned then the first number is the negative exponent limit and the second number is the positive exponent limit.<!-- -->For example, to emulate JavaScript numbers in terms of the exponent values at which they become zero and Infinity, use \[-324, 308\].
 ```ts
 BigNumber.config({ RANGE: 500 })
 BigNumber.config().RANGE     // [ -500, 500 ]

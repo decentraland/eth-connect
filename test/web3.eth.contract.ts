@@ -1,11 +1,11 @@
-import { assert } from 'chai'
+import * as expect from 'expect'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 import { RequestManager, ContractFactory } from '../src'
 
 const provider = new FakeHttpProvider()
 
-describe('web3.eth.contract', function() {
-  it('should create simple contract with one method from abi with explicit type name', async function() {
+describe('web3.eth.contract', function () {
+  it('should create simple contract with one method from abi with explicit type name', async function () {
     // given
     let description = [
       {
@@ -36,11 +36,11 @@ describe('web3.eth.contract', function() {
     let myCon: any = await factory.at(address)
 
     // then
-    assert.equal('function', typeof myCon.test)
-    assert.equal('function', typeof myCon.test['uint256'])
+    expect(typeof myCon.test).toEqual('function')
+    expect(typeof myCon.test['uint256']).toEqual('function')
   })
 
-  it('should create simple contract with one method from abi with implicit type name', async function() {
+  it('should create simple contract with one method from abi with implicit type name', async function () {
     // given
     let description = [
       {
@@ -67,11 +67,11 @@ describe('web3.eth.contract', function() {
     let myCon: any = await new ContractFactory(rm, description).at(address)
 
     // then
-    assert.equal('function', typeof myCon.test)
-    assert.equal('function', typeof myCon.test['uint256'])
+    expect(typeof myCon.test).toEqual('function')
+    expect(typeof myCon.test['uint256']).toEqual('function')
   })
 
-  it('should create contract with multiple methods', async function() {
+  it('should create contract with multiple methods', async function () {
     // given
     let description = [
       {
@@ -114,11 +114,11 @@ describe('web3.eth.contract', function() {
     let myCon: any = await new ContractFactory(rm, description).at(address)
 
     // then
-    assert.equal('function', typeof myCon.test)
-    assert.equal('function', typeof myCon.test2)
+    expect(typeof myCon.test).toEqual('function')
+    expect(typeof myCon.test2).toEqual('function')
   })
 
-  it('should create contract with overloaded methods', async function() {
+  it('should create contract with overloaded methods', async function () {
     // given
     let description = [
       {
@@ -161,12 +161,12 @@ describe('web3.eth.contract', function() {
     let myCon: any = await new ContractFactory(rm, description).at(address)
 
     // then
-    assert.equal('function', typeof myCon.test)
-    assert.equal('function', typeof myCon.test['uint256'])
-    assert.equal('function', typeof myCon.test['string'])
+    expect(typeof myCon.test).toEqual('function')
+    expect(typeof myCon.test['uint256']).toEqual('function')
+    expect(typeof myCon.test['string']).toEqual('function')
   })
 
-  it('should create contract with no methods', async function() {
+  it('should create contract with no methods', async function () {
     // given
     let description = [
       {
@@ -192,10 +192,10 @@ describe('web3.eth.contract', function() {
     let myCon: any = await new ContractFactory(rm, description).at(address)
 
     // then
-    assert.equal('undefined', typeof myCon.test)
+    expect(myCon.test).toBeUndefined()
   })
 
-  it('should create contract with one event', async function() {
+  it('should create contract with one event', async function () {
     // given
     let description = [
       {
@@ -222,11 +222,11 @@ describe('web3.eth.contract', function() {
     let myCon: any = await new ContractFactory(rm, description).at(address)
 
     // then
-    assert.equal('function', typeof myCon.events.test)
-    assert.equal('function', typeof myCon.events.test['uint256'])
+    expect(typeof myCon.events.test).toEqual('function')
+    expect(typeof myCon.events.test['uint256']).toEqual('function')
   })
 
-  it('should create contract with nondefault constructor', async function() {
+  it('should create contract with nondefault constructor', async function () {
     const provider = new FakeHttpProvider()
 
     const txHash = '0xe670ec64341771606e55d6b4ca35a1a6b75ee3d5145a99d05921026d1527331'
@@ -255,11 +255,11 @@ describe('web3.eth.contract', function() {
       contractAddress
     })
 
-    const estimateGas = provider.injectHandler('eth_estimateGas', async _ => {
+    const estimateGas = provider.injectHandler('eth_estimateGas', async (_) => {
       provider.injectResult('0x60016')
     })
 
-    const getCodeCalled = provider.injectValidation(async payload => {
+    const getCodeCalled = provider.injectValidation(async (payload) => {
       if (payload.method === 'eth_getCode') {
         provider.injectResult(
           '0x600160008035811a818181146012578301005b601b6001356025565b8060005260206000f25b600060078202905091905056'
@@ -274,8 +274,8 @@ describe('web3.eth.contract', function() {
 
     const contract = await factory.deploy(2, { data: code, from: address, gas: 0, to: null })
 
-    assert.equal(contract.transactionHash, txHash)
-    assert.equal(contract.address, contractAddress)
+    expect(contract.transactionHash).toEqual(txHash)
+    expect(contract.address).toEqual(contractAddress)
 
     await estimateGas
 

@@ -1,11 +1,10 @@
-import * as chai from 'chai'
+import * as expect from 'expect'
 import * as utils from '../src/utils/utils'
 import { BigNumber } from '../src/utils/BigNumber'
-const assert = chai.assert
 
 let tests = [
   {
-    value: function() {
+    value: function () {
       /* stub */
     },
     is: false
@@ -19,11 +18,11 @@ let tests = [
   { value: '0x12', is: false }
 ]
 
-describe('lib/utils/utils', function() {
-  describe('isBigNumber', function() {
-    tests.forEach(function(test) {
-      it('shoud test if value ' + test.value + ' is BigNumber: ' + test.is, function() {
-        assert.equal(utils.isBigNumber(test.value), test.is)
+describe('lib/utils/utils', function () {
+  describe('isBigNumber', function () {
+    tests.forEach(function (test) {
+      it('shoud test if value ' + test.value + ' is BigNumber: ' + test.is, function () {
+        expect(utils.isBigNumber(test.value)).toEqual(test.is)
       })
     })
   })

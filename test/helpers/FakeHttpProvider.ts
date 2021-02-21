@@ -1,10 +1,10 @@
-import { assert } from 'chai'
+import * as expect from 'expect'
 import * as utils from '../../src/utils/utils'
 import { future, IFuture } from 'fp-future'
 
 let countId = 1
 
-let getResponseStub = function() {
+let getResponseStub = function () {
   return {
     jsonrpc: '2.0',
     id: countId++,
@@ -12,7 +12,7 @@ let getResponseStub = function() {
   }
 }
 
-let getErrorStub = function() {
+let getErrorStub = function () {
   return {
     jsonrpc: '2.0',
     countId: countId++,
@@ -25,10 +25,10 @@ let getErrorStub = function() {
 
 function validateRPC(payload) {
   try {
-    assert.equal(payload.jsonrpc, '2.0', 'request has jsonrpc: "2.0"')
-    assert.equal(typeof payload.method, 'string', 'request has method: string')
-    assert.equal('params' in payload, true, 'request has params')
-    assert.equal(typeof payload.id, 'number', 'request has id: number')
+    expect(payload.jsonrpc).toEqual('2.0') // 'request has jsonrpc: "2.0"'
+    expect(typeof payload.method).toEqual('string') // 'request has method: string'
+    expect('params' in payload).toEqual(true) // 'request has params'
+    expect(typeof payload.id).toEqual('number') // 'request has id: number'
   } catch (e) {
     throw new Error('JSON-RPC2 Error:\n' + e.message + ' \nrequest: ' + JSON.stringify(payload) + ' \nstack:' + e.stack)
   }
@@ -49,8 +49,8 @@ export class FakeHttpProvider {
   }
 
   sendAsync(payload, callback) {
-    assert.equal(utils.isArray(payload) || utils.isObject(payload), true, 'payload is an array or object')
-    assert.equal(utils.isFunction(callback), true, 'callback is a function')
+    expect(utils.isArray(payload) || utils.isObject(payload)).toEqual(true) // 'payload is an array or object'
+    expect(utils.isFunction(callback)).toEqual(true) // 'callback is a function'
 
     if (payload instanceof Array) {
       payload.forEach(validateRPC)
@@ -63,13 +63,13 @@ export class FakeHttpProvider {
     if (this.validations) {
       // imitate plain json object
       mutex = Promise.all(
-        this.validations.map($ => {
+        this.validations.map(($) => {
           try {
             return $.callback(JSON.parse(JSON.stringify(payload)))
-              .then(x => {
+              .then((x) => {
                 if (x !== false) $.defer.resolve(payload)
               })
-              .catch(x => {
+              .catch((x) => {
                 $.defer.reject(x)
               })
           } catch (e) {
@@ -94,7 +94,7 @@ export class FakeHttpProvider {
           callback(e, null)
         }
       })
-      .catch(e => {
+      .catch((e) => {
         // tslint:disable-next-line
         console.error(e)
         callback(e)
@@ -111,7 +111,7 @@ export class FakeHttpProvider {
   }
 
   injectBatchResults(results, error?) {
-    this.response = results.map(function(r) {
+    this.response = results.map(function (r) {
       if (error) {
         let response = getErrorStub()
         response.error.message = r
@@ -136,12 +136,12 @@ export class FakeHttpProvider {
       }
 
       if (responseIsArray) {
-        this.response = this.response.map(function(response, index) {
+        this.response = this.response.map(function (response, index) {
           response.id = payload[index] ? payload[index].id : countId++
           return response
         })
 
-        if (this.response.some($ => !$.id)) {
+        if (this.response.some(($) => !$.id)) {
           throw new Error(
             `Could not obtain response.id for payload ${JSON.stringify(payload)} response: ${JSON.stringify(
               this.response
@@ -182,7 +182,7 @@ export class FakeHttpProvider {
   injectHandler(method: string, callback: (result) => Promise<any>) {
     const defer = future()
     this.validations.push({
-      callback: async payload => {
+      callback: async (payload) => {
         if (!utils.isArray(payload) && payload.method === method) {
           await callback(payload)
         } else {
@@ -195,7 +195,7 @@ export class FakeHttpProvider {
   }
 
   mockGetFilterLogs(result: any) {
-    return this.injectValidation(async payload => {
+    return this.injectValidation(async (payload) => {
       if (payload.method !== 'eth_getFilterLogs') return false
 
       const base = {
@@ -211,7 +211,7 @@ export class FakeHttpProvider {
       }
 
       if (utils.isArray(result)) {
-        this.injectResult(result.map($ => ({ ...base, ...$ })))
+        this.injectResult(result.map(($) => ({ ...base, ...$ })))
       } else {
         this.injectResult([
           {
@@ -220,13 +220,13 @@ export class FakeHttpProvider {
           }
         ])
       }
-      assert.equal(payload.jsonrpc, '2.0')
-      assert.equal(payload.method, 'eth_getFilterLogs')
+      expect(payload.jsonrpc).toEqual('2.0')
+      expect(payload.method).toEqual('eth_getFilterLogs')
     })
   }
 
   mockGetFilterChanges(result: any, cb?) {
-    return this.injectValidation(async payload => {
+    return this.injectValidation(async (payload) => {
       if (payload.method === 'eth_getFilterChanges') {
         if (!cb || !cb(payload)) {
           this.injectResult([
@@ -241,7 +241,7 @@ export class FakeHttpProvider {
             }
           ])
         }
-      } else if (utils.isArray(payload) && payload.some($ => $.method === 'eth_getFilterChanges')) {
+      } else if (utils.isArray(payload) && payload.some(($) => $.method === 'eth_getFilterChanges')) {
         if (!cb || !cb(payload)) {
           this.injectBatchResults([
             [
@@ -257,10 +257,10 @@ export class FakeHttpProvider {
             ]
           ])
 
-          let r = payload.filter(function(p) {
+          let r = payload.filter(function (p) {
             return p.jsonrpc === '2.0' && p.method === 'eth_getFilterChanges' && p.params[0] === '0x3'
           })
-          assert.equal(r.length > 0, true)
+          expect(r.length).toBeGreaterThan(0)
         }
       } else {
         return false
@@ -269,17 +269,17 @@ export class FakeHttpProvider {
   }
 
   mockSendTransaction(txId: string, expectedData: string) {
-    return this.injectValidation(async payload => {
+    return this.injectValidation(async (payload) => {
       if (payload.method !== 'eth_sendTransaction') return false
       this.injectResult(txId)
-      assert.equal(payload.params[0].data, expectedData)
+      expect(payload.params[0].data).toEqual(expectedData)
     })
   }
 
   mockSyncing(overrides = {}) {
-    return this.injectValidation(async payload => {
+    return this.injectValidation(async (payload) => {
       if (!utils.isArray(payload) && payload.method !== 'eth_syncing') return false
-      if (utils.isArray(payload) && !payload.some($ => $.method === 'eth_syncing')) return false
+      if (utils.isArray(payload) && !payload.some(($) => $.method === 'eth_syncing')) return false
 
       const base = {
         startingBlock: '0x384',
@@ -297,28 +297,28 @@ export class FakeHttpProvider {
   }
 
   mockNewBlockFilter(result = '0x1') {
-    return this.injectValidation(async payload => {
+    return this.injectValidation(async (payload) => {
       if (payload.method !== 'eth_newBlockFilter') return false
 
       this.injectResult(result)
-      assert.equal(payload.jsonrpc, '2.0')
-      assert.equal(payload.method, 'eth_newBlockFilter')
+      expect(payload.jsonrpc).toEqual('2.0')
+      expect(payload.method).toEqual('eth_newBlockFilter')
     })
   }
 
   mockNewFilter(compareParams) {
-    return this.injectValidation(async payload => {
+    return this.injectValidation(async (payload) => {
       if (payload.method !== 'eth_newFilter') return false
 
       this.injectResult('0x3')
-      assert.equal(payload.jsonrpc, '2.0')
-      assert.equal(payload.method, 'eth_newFilter')
-      assert.deepEqual(payload.params[0], compareParams)
+      expect(payload.jsonrpc).toEqual('2.0')
+      expect(payload.method).toEqual('eth_newFilter')
+      expect(payload.params[0]).toEqual(compareParams)
     })
   }
 
   mockUninstallFilter() {
-    return this.injectValidation(async payload => {
+    return this.injectValidation(async (payload) => {
       if (payload.method === 'eth_uninstallFilter') {
         this.injectResult('0x1')
       } else {
@@ -328,7 +328,7 @@ export class FakeHttpProvider {
   }
 
   mockShhDeleteFilter() {
-    return this.injectValidation(async payload => {
+    return this.injectValidation(async (payload) => {
       if (payload.method === 'shh_deleteMessageFilter') {
         this.injectResult(true)
       } else {
@@ -338,7 +338,7 @@ export class FakeHttpProvider {
   }
 
   mockGetTransactionReceipt(txId: string, opt?) {
-    return this.injectValidation(async payload => {
+    return this.injectValidation(async (payload) => {
       if (payload.method === 'eth_getTransactionReceipt') {
         this.injectResult({
           transactionHash: txId,

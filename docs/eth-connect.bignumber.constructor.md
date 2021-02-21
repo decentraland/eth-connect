@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-export type Constructor = typeof BigNumber;
+type Constructor = typeof BigNumber;
 ```
 <b>References:</b> [BigNumber](./eth-connect.bignumber.md)
 

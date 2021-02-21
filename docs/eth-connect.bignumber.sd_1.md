@@ -4,6 +4,22 @@
 
 ## BigNumber.sd() method
 
+Returns a BigNumber whose value is the value of this BigNumber rounded to a precision of `significantDigits` significant digits using rounding mode `roundingMode`<!-- -->.
+
+If `roundingMode` is omitted or is `null` or `undefined`<!-- -->, `ROUNDING_MODE` will be used.
+
+Throws if `significantDigits` or `roundingMode` is invalid.
+
+```ts
+x = new BigNumber(9876.54321)
+x.sd(6)                           // '9876.54'
+x.sd(6, BigNumber.ROUND_UP)       // '9876.55'
+x.sd(2)                           // '9900'
+x.sd(2, 1)                        // '9800'
+x                                 // '9876.54321'
+
+```
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,8 +30,8 @@ sd(significantDigits: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  significantDigits | number |  |
-|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) |  |
+|  significantDigits | number | Significant digits, integer, 1 to 1e+9. |
+|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | Rounding mode, integer, 0 to 8. |
 
 <b>Returns:</b>
 

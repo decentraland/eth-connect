@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-export type Value = string | number | BigNumber;
+type Value = string | number | Instance;
 ```
-<b>References:</b> [BigNumber](./eth-connect.bignumber.md)
+<b>References:</b> [Instance](./eth-connect.bignumber.instance.md)
 

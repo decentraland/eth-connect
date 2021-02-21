@@ -1,10 +1,9 @@
-import * as chai from 'chai'
+import * as expect from 'expect'
 import * as utils from '../src/utils/utils'
-const assert = chai.assert
 
 let tests = [
   {
-    func: function() {
+    func: function () {
       /* */
     },
     is: true
@@ -15,11 +14,11 @@ let tests = [
   { func: {}, is: false }
 ]
 
-describe('lib/utils/utils', function() {
-  describe('isFunction', function() {
-    tests.forEach(function(test) {
-      it('shoud test if value ' + test.func + ' is function: ' + test.is, function() {
-        assert.equal(utils.isFunction(test.func), test.is)
+describe('lib/utils/utils', function () {
+  describe('isFunction', function () {
+    tests.forEach(function (test) {
+      it('shoud test if value ' + test.func + ' is function: ' + test.is, function () {
+        expect(utils.isFunction(test.func)).toEqual(test.is)
       })
     })
   })

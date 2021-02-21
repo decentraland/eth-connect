@@ -1,11 +1,10 @@
-import * as chai from 'chai'
-const assert = chai.assert
+import * as expect from 'expect'
 import { sha3 } from '../src/utils/utils'
 
-describe('lib/utils/sha3', function() {
-  let test = function(v, e, o?) {
-    it('should encode ' + v + ' to ' + e, function() {
-      assert.equal(sha3(v, o), e)
+describe('lib/utils/sha3', function () {
+  let test = function (value, expected, options?) {
+    it('should encode ' + value + ' to ' + expected, function () {
+      expect(sha3(value, options)).toEqual(expected)
     })
   }
 
