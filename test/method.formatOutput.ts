@@ -11,9 +11,10 @@ describe('lib/web3/method', function () {
         })
       }
 
-      let method = new Method({
+      let method = new Method<string[]>({
         callName: 'dummy',
         params: 3,
+        inputFormatter: [null, null, null],
         outputFormatter: formatter
       })
       let args = ['1', '2', '3']

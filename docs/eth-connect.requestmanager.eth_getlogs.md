@@ -9,5 +9,5 @@ Returns an array of all logs matching a given filter object.
 <b>Signature:</b>
 
 ```typescript
-eth_getLogs: (options: FilterOptions) => Promise<Array<TxHash> | Array<FilterChange>>;
+eth_getLogs: (options: FilterOptions) => Promise<Array<TxHash> | Array<LogObject>>;
 ```

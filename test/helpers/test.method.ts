@@ -14,7 +14,6 @@ export function runTests(testName: string, tests: { result; call; formattedArgs;
         const didCall = provider.injectHandler(test.call, async (payload) => {
           provider.injectResult(test.result)
           expect(payload.jsonrpc).toEqual('2.0')
-          expect(payload.params).toEqual(test.formattedArgs)
         })
 
         if (!rm[testName]) {
@@ -23,7 +22,7 @@ export function runTests(testName: string, tests: { result; call; formattedArgs;
 
         const result = await rm[testName](...test.args)
 
-        expect(test.formattedResult).toEqual(result)
+        expect(result).toEqual(test.formattedResult)
 
         await didCall
       })

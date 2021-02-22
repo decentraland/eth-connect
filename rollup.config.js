@@ -50,7 +50,7 @@ const plugins = [
       ],
       utf8: ['encode', 'decode'],
       'bignumber.js': ['BigNumber'],
-      'crypto-js': ['enc'],
+      // 'crypto-js': ['enc'],
       react: ['Children', 'Component', 'PropTypes', 'createElement', 'useEffect', 'useState', 'useRef'],
       'node_modules/secp256k1/elliptic.js': [
         'privateKeyVerify',

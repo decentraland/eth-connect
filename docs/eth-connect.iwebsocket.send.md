@@ -4,19 +4,21 @@
 
 ## IWebSocket.send() method
 
+Transmits data using the WebSocket connection. data can be a string, a Blob, an ArrayBuffer, or an ArrayBufferView.
+
 <b>Signature:</b>
 
 ```typescript
-send(s: any): any;
+send(data: string): void;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  s | any |  |
+|  data | string |  |
 
 <b>Returns:</b>
 
-any
+void
 

@@ -132,7 +132,7 @@ function doTest(requestManager: RequestManager) {
       expect(balance instanceof BigNumber).toEqual(true)
     }
     {
-      const balance = await ERC20Contract.balanceOf('0x0')
+      const balance = await ERC20Contract.balanceOf('0x0f5d2fb29fb7d3cfee444a200298f468908c0000')
       expect(balance.toString()).toEqual('0')
     }
   })
@@ -141,49 +141,75 @@ function doTest(requestManager: RequestManager) {
 
   it('should work with injected methods from ABI', async function () {
     this.timeout(1000000)
-    const account = (await requestManager.eth_accounts())[0]
-    {
-      const mintingFinished = ERC20Contract.mintingFinished()
-      expect(mintingFinished).toHaveProperty('then')
+    const mintingFinished = ERC20Contract.mintingFinished()
+    expect(mintingFinished).toHaveProperty('then')
 
-      const result = await mintingFinished
-      expect(typeof result).toEqual('boolean')
-    }
-    {
-      const totalSupply = await ERC20Contract.totalSupply()
-      expect(totalSupply.toNumber()).toEqual(0)
-    }
-    {
-      const mintResult = (txHash = await ERC20Contract.mint(account, 10, { from: account }))
-      expect(typeof mintResult).toEqual('string')
-      const tx = await requestManager.getConfirmedTransaction(mintResult)
-      expect(tx.status).toEqual('confirmed')
-      expect(typeof tx.receipt).toEqual('object')
-      expect(tx.receipt.status).toEqual(1)
-    }
-    {
-      const mintResult = await ERC20Contract.mint(account, 10, { from: account })
-      expect(typeof mintResult).toEqual('string')
-      await requestManager.waitForCompletion(mintResult)
-    }
-    {
-      const totalSupply = await ERC20Contract.totalSupply()
-      expect(totalSupply.toNumber()).toEqual(20)
-    }
+    const result = await mintingFinished
+    expect(typeof result).toEqual('boolean')
   })
 
-  it('waits the block', async () => {
+  it('total supply must be 0', async () => {
+    const totalSupply = await ERC20Contract.totalSupply()
+    expect(totalSupply.toNumber()).toEqual(0)
+  })
+
+  it('mint 1', async function () {
+    this.timeout(1000000)
+    const account = (await requestManager.eth_accounts())[0]
+    const mintResult = (txHash = await ERC20Contract.mint(account, 10, { from: account }))
+    expect(typeof mintResult).toEqual('string')
+    const tx = await requestManager.getConfirmedTransaction(mintResult)
+    expect(tx.status).toEqual('confirmed')
+    expect(typeof tx.receipt).toEqual('object')
+    expect(tx.receipt.status).toEqual(1)
+  })
+
+  it('total supply 10', async function () {
+    this.timeout(1000000)
+
+    const totalSupply = await ERC20Contract.totalSupply()
+    expect(totalSupply.toNumber()).toEqual(10)
+  })
+
+  it('mint 2', async function () {
+    this.timeout(1000000)
+    const account = (await requestManager.eth_accounts())[0]
+    const mintResult = await ERC20Contract.mint(account, 11, { from: account })
+    expect(typeof mintResult).toEqual('string')
+    await requestManager.waitForCompletion(mintResult)
+  })
+
+  it('total supply 21', async function () {
+    this.timeout(1000000)
+
+    const totalSupply = await ERC20Contract.totalSupply()
+    expect(totalSupply.toNumber()).toEqual(21)
+  })
+
+  it('waits the block', async function () {
     const tx = await requestManager.waitForCompletion(txHash)
 
     testReturnType(requestManager, 'eth_getBlockTransactionCountByHash', 'number', tx.blockHash)
     testReturnType(requestManager, 'eth_getBlockTransactionCountByNumber', 'number', tx.blockNumber)
   })
 
+  it('test allowance, one argument', async function () {
+    this.timeout(30000)
+    const accounts = await requestManager.eth_accounts()
+    await expect(ERC20Contract.allowance(accounts[0])).rejects.toThrow('Invalid number of arguments')
+  })
+
+  it('test allowance, invalid address', async function () {
+    this.timeout(30000)
+    const accounts = await requestManager.eth_accounts()
+    await expect(ERC20Contract.allowance(accounts[0], '0x1')).rejects.toThrow('Invalid address')
+  })
+
   it('test allowance', async function () {
     this.timeout(30000)
     const accounts = await requestManager.eth_accounts()
+    const allowanceAddress = '0x0f5d2fb29fb7d3cfee444a200298f468908cc942'
     {
-      const allowanceAddress = '0x0f5d2fb29fb7d3cfee444a200298f468908cc942'
       console.log(`> allowance(${accounts[0]},${allowanceAddress})`)
       const allowedNumber: BigNumber = await ERC20Contract.allowance(accounts[0], allowanceAddress)
       expect(allowedNumber).toBeInstanceOf(BigNumber)

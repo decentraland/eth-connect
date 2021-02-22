@@ -9,7 +9,7 @@ Returns true if object is array, otherwise false
 <b>Signature:</b>
 
 ```typescript
-export declare function isArray(object: any): boolean;
+export declare function isArray<T extends Array<any>>(object: any): object is T;
 ```
 
 ## Parameters
@@ -20,5 +20,5 @@ export declare function isArray(object: any): boolean;
 
 <b>Returns:</b>
 
-boolean
+object is T
 

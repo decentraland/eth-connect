@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-eth_getUncleByBlockHashAndIndex: Method<any>
+eth_getUncleByBlockHashAndIndex: Method<BlockObject | null>
 ```

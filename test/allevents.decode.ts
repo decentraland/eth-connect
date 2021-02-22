@@ -14,7 +14,7 @@ let tests = [
     abi: [
       {
         name: name,
-        type: 'event',
+        type: 'event' as const,
         inputs: [
           {
             name: 'a',
@@ -30,6 +30,7 @@ let tests = [
       transactionHash: '0x1234567890',
       address: address,
       blockHash: '0x1234567890',
+      removed: false,
       blockNumber: '0x1',
       data:
         '0x' +
@@ -42,6 +43,7 @@ let tests = [
       transactionIndex: 16,
       transactionHash: '0x1234567890',
       address: address,
+      removed: false,
       blockHash: '0x1234567890',
       blockNumber: 1,
       data:
@@ -55,7 +57,7 @@ let tests = [
     abi: [
       {
         name: name,
-        type: 'event',
+        type: 'event' as const,
         anonymous: true,
         inputs: [
           {
@@ -71,6 +73,7 @@ let tests = [
       transactionIndex: '0x10',
       transactionHash: '0x1234567890',
       address: address,
+      removed: false,
       blockHash: '0x1234567890',
       blockNumber: '0x1',
       data:
@@ -84,6 +87,7 @@ let tests = [
       transactionIndex: 16,
       transactionHash: '0x1234567890',
       address: address,
+      removed: false,
       blockHash: '0x1234567890',
       blockNumber: 1,
       data:
@@ -97,7 +101,7 @@ let tests = [
     abi: [
       {
         name: name,
-        type: 'event',
+        type: 'event' as const,
         inputs: [
           {
             name: 'a',
@@ -128,6 +132,7 @@ let tests = [
       transactionHash: '0x1234567890',
       address: address,
       blockHash: '0x1234567890',
+      removed: false,
       blockNumber: '0x1',
       data:
         '0x' +
@@ -147,7 +152,14 @@ let tests = [
         d: new BigNumber(0)
       },
       logIndex: 1,
+      removed: false,
       transactionIndex: 16,
+      data:
+        '0x00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000004',
+      topics: [
+        '0x0e99121e9409665e680573fa7da0cb6651dbdcf10c95f585b92b2c9b9702cff9',
+        '0x0000000000000000000000000000000000000000000000000000000000000010'
+      ],
       transactionHash: '0x1234567890',
       address: address,
       blockHash: '0x1234567890',
@@ -156,10 +168,10 @@ let tests = [
   }
 ]
 
-describe('lib/web3/allevents', function() {
-  describe('decode', function() {
-    tests.forEach(function(test, index) {
-      it('test no: ' + index, function() {
+describe('lib/web3/allevents', function () {
+  describe('decode', function () {
+    tests.forEach(function (test, index) {
+      it('test no: ' + index, function () {
         let requestManager = new RequestManager(provider)
         let allEvents = new AllSolidityEvents(requestManager, test.abi, address)
         let result = allEvents.decode(test.data)

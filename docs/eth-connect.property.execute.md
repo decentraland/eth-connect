@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-execute(requestManager: RequestManager): Promise<any>;
+execute(requestManager: RequestManager, ..._unusedArgs: any[]): Promise<V>;
 ```
 
 ## Parameters
@@ -15,8 +15,9 @@ execute(requestManager: RequestManager): Promise<any>;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  requestManager | [RequestManager](./eth-connect.requestmanager.md) |  |
+|  \_unusedArgs | any\[\] |  |
 
 <b>Returns:</b>
 
-Promise&lt;any&gt;
+Promise&lt;V&gt;
 

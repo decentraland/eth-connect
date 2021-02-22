@@ -17,7 +17,7 @@ describe('formatters', function () {
           transactionIndex: '0x1',
           blockNumber: '0x3e8',
           blockHash: '0xc9b9cdc2092a9d6589d96662b1fd6949611163fb3910cf8a173cd060f17702f9'
-        })
+        } as any)
       ).toEqual({
         input: '0x3454645634534',
         from: '0x00000',
@@ -45,7 +45,7 @@ describe('formatters', function () {
           transactionIndex: null,
           blockNumber: null,
           blockHash: null
-        })
+        } as any)
       ).toEqual({
         input: '0x3454645634534',
         from: '0x00000',

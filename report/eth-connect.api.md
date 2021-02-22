@@ -4,19 +4,161 @@
 
 ```ts
 
+// @public (undocumented)
+export interface AbiConstructor {
+    // (undocumented)
+    anonymous?: boolean;
+    // (undocumented)
+    constant?: boolean;
+    // (undocumented)
+    gas?: number;
+    // (undocumented)
+    inputs?: AbiInput[];
+    // (undocumented)
+    name?: string;
+    // (undocumented)
+    outputs?: AbiOutput[];
+    // (undocumented)
+    payable?: boolean;
+    // (undocumented)
+    stateMutability?: StateMutabilityType;
+    // (undocumented)
+    type: 'constructor';
+}
+
+// @public (undocumented)
+export interface AbiEvent {
+    // (undocumented)
+    anonymous?: boolean;
+    // (undocumented)
+    constant?: boolean;
+    // (undocumented)
+    gas?: number;
+    // (undocumented)
+    inputs?: AbiInput[];
+    // (undocumented)
+    name?: string;
+    // (undocumented)
+    outputs?: AbiOutput[];
+    // (undocumented)
+    payable?: boolean;
+    // (undocumented)
+    stateMutability?: StateMutabilityType;
+    // (undocumented)
+    type: 'event';
+}
+
+// @public (undocumented)
+export interface AbiFallback {
+    // (undocumented)
+    anonymous?: boolean;
+    // (undocumented)
+    constant?: boolean;
+    // (undocumented)
+    gas?: number;
+    // (undocumented)
+    inputs?: AbiInput[];
+    // (undocumented)
+    name?: string;
+    // (undocumented)
+    outputs?: AbiOutput[];
+    // (undocumented)
+    payable?: boolean;
+    // (undocumented)
+    stateMutability?: StateMutabilityType;
+    // (undocumented)
+    type: 'fallback';
+}
+
+// @public (undocumented)
+export interface AbiFunction {
+    // (undocumented)
+    anonymous?: boolean;
+    // (undocumented)
+    constant?: boolean;
+    // (undocumented)
+    gas?: number;
+    // (undocumented)
+    inputs?: AbiInput[];
+    // (undocumented)
+    name?: string;
+    // (undocumented)
+    outputs?: AbiOutput[];
+    // (undocumented)
+    payable?: boolean;
+    // (undocumented)
+    stateMutability?: StateMutabilityType;
+    // (undocumented)
+    type: 'function';
+}
+
+// @public (undocumented)
+export interface AbiInput {
+    // (undocumented)
+    components?: AbiInput[];
+    // (undocumented)
+    indexed?: boolean;
+    // (undocumented)
+    internalType?: string;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    type: string;
+}
+
+// @public (undocumented)
+export type AbiItem = AbiFunction | AbiEvent | AbiConstructor | AbiFallback | AbiItemGeneric;
+
+// @public (undocumented)
+export interface AbiItemGeneric {
+    // (undocumented)
+    anonymous?: boolean;
+    // (undocumented)
+    constant?: boolean;
+    // (undocumented)
+    gas?: number;
+    // (undocumented)
+    inputs?: AbiInput[];
+    // (undocumented)
+    name?: string;
+    // (undocumented)
+    outputs?: AbiOutput[];
+    // (undocumented)
+    payable?: boolean;
+    // (undocumented)
+    stateMutability?: StateMutabilityType;
+    // (undocumented)
+    type: string;
+}
+
+// @public (undocumented)
+export interface AbiOutput {
+    // (undocumented)
+    components?: AbiOutput[];
+    // (undocumented)
+    internalType?: string;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    type: string;
+}
+
+// @public (undocumented)
+export type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
+
 // Warning: (ae-missing-release-tag) "AbstractFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
-export abstract class AbstractFilter<T> {
+export abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> {
     constructor(requestManager: RequestManager);
     // (undocumented)
-    protected callbacks: ((message: T) => void)[];
+    protected callbacks: ((message: TransformedLog) => void)[];
     // (undocumented)
     protected filterId: IFuture<Data>;
     // (undocumented)
-    formatter: (x: any) => T;
+    formatter: (x: ReceivedLog) => TransformedLog;
     // (undocumented)
-    protected abstract getChanges(): Promise<any>;
+    protected abstract getChanges(): Promise<ReceivedLog[]>;
     // (undocumented)
     protected abstract getNewFilter(): Promise<Data>;
     // (undocumented)
@@ -32,9 +174,9 @@ export abstract class AbstractFilter<T> {
     // (undocumented)
     protected stopSemaphore: IFuture<any>;
     // (undocumented)
-    protected abstract uninstall(): Promise<any>;
+    protected abstract uninstall(): Promise<boolean>;
     // (undocumented)
-    watch(callback: (message: T) => void): Promise<void>;
+    watch(callback: (message: TransformedLog) => void): Promise<void>;
 }
 
 // @public
@@ -446,8 +588,8 @@ export type BlockObject = {
     stateRoot: TxHash;
     receiptsRoot: TxHash;
     miner: Address;
-    difficulty: Quantity;
-    totalDifficulty: Quantity;
+    difficulty: BigNumber;
+    totalDifficulty: BigNumber;
     extraData: Data;
     size: Quantity;
     gasLimit: Quantity;
@@ -470,9 +612,9 @@ export type ConfirmedTransaction = TransactionObject & {
 
 // @public
 export class Contract {
-    constructor(requestManager: RequestManager, abi: any[], address: string);
+    constructor(requestManager: RequestManager, abi: AbiItem[], address: string);
     // (undocumented)
-    abi: any[];
+    abi: AbiItem[];
     // (undocumented)
     address: string;
     // (undocumented)
@@ -484,7 +626,7 @@ export class Contract {
     // (undocumented)
     requestManager: RequestManager;
     // (undocumented)
-    transactionHash: string;
+    transactionHash: string | null;
 }
 
 // @public
@@ -498,7 +640,6 @@ export class ContractFactory {
     deploy(param1: any, options: TransactionOptions): Promise<Contract>;
     // (undocumented)
     deploy(options: TransactionOptions): Promise<Contract>;
-    getData(...args: any[]): Promise<Data>;
     // (undocumented)
     requestManager: RequestManager;
 }
@@ -522,13 +663,13 @@ export namespace eth {
     const // (undocumented)
     eth_getCode: Method<string>;
     const // (undocumented)
-    eth_getBlockByHash: Method<any>;
+    eth_getBlockByHash: Method<BlockObject | null>;
     const // (undocumented)
-    eth_getBlockByNumber: Method<any>;
+    eth_getBlockByNumber: Method<BlockObject | null>;
     const // (undocumented)
-    eth_getUncleByBlockHashAndIndex: Method<any>;
+    eth_getUncleByBlockHashAndIndex: Method<BlockObject | null>;
     const // (undocumented)
-    eth_getUncleByBlockNumberAndIndex: Method<any>;
+    eth_getUncleByBlockNumberAndIndex: Method<BlockObject | null>;
     const // (undocumented)
     eth_getBlockTransactionCountByHash: Method<number>;
     const // (undocumented)
@@ -538,13 +679,13 @@ export namespace eth {
     const // (undocumented)
     eth_getUncleCountByBlockNumber: Method<number>;
     const // (undocumented)
-    eth_getTransactionByHash: Method<any>;
+    eth_getTransactionByHash: Method<TransactionObject | null>;
     const // (undocumented)
-    eth_getTransactionByBlockHashAndIndex: Method<any>;
+    eth_getTransactionByBlockHashAndIndex: Method<TransactionObject | null>;
     const // (undocumented)
-    eth_getTransactionByBlockNumberAndIndex: Method<any>;
+    eth_getTransactionByBlockNumberAndIndex: Method<TransactionObject | null>;
     const // (undocumented)
-    eth_getTransactionReceipt: Method<any>;
+    eth_getTransactionReceipt: Method<TransactionReceipt | null>;
     const // (undocumented)
     eth_getTransactionCount: Method<number>;
     const // (undocumented)
@@ -564,13 +705,13 @@ export namespace eth {
     const // (undocumented)
     eth_getWork: Method<any[]>;
     const // (undocumented)
-    eth_coinbase: Property<any>;
+    eth_coinbase: Property<string>;
     const // (undocumented)
     eth_mining: Property<boolean>;
     const // (undocumented)
     eth_hashrate: Property<number>;
     const // (undocumented)
-    eth_syncing: Property<any>;
+    eth_syncing: Property<Syncing>;
     const // (undocumented)
     eth_gasPrice: Property<BigNumber>;
     const // (undocumented)
@@ -588,13 +729,13 @@ export namespace eth {
     const // (undocumented)
     shh_post: Method<boolean>;
     const // (undocumented)
-    personal_newAccount: Method<any>;
+    personal_newAccount: Method<string>;
     const // (undocumented)
-    personal_importRawKey: Method<any>;
+    personal_importRawKey: Method<string>;
     const // (undocumented)
     personal_sign: Method<string>;
     const // (undocumented)
-    personal_ecRecover: Method<any>;
+    personal_ecRecover: Method<string>;
     const // (undocumented)
     personal_unlockAccount: Method<boolean>;
     const // (undocumented)
@@ -648,7 +789,7 @@ export namespace eth {
 // Warning: (ae-missing-release-tag) "EthBlockFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
-export class EthBlockFilter extends EthFilter<TxHash> {
+export class EthBlockFilter extends EthFilter<TxHash, TxHash> {
     constructor(requestManager: RequestManager);
     // (undocumented)
     getNewFilter(): Promise<string>;
@@ -657,32 +798,39 @@ export class EthBlockFilter extends EthFilter<TxHash> {
 // Warning: (ae-missing-release-tag) "EthFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
-export class EthFilter<T = FilterChange | string> extends AbstractFilter<T> {
-    constructor(requestManager: RequestManager, options: FilterOptions, formatter?: (message: FilterChange | string) => T);
+export class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObject> extends AbstractFilter<ReceivedLog, TransformedLog> {
+    constructor(requestManager: RequestManager, options: FilterOptions, formatter?: (message: ReceivedLog) => TransformedLog);
     // (undocumented)
-    formatter: (message: FilterChange | string) => T;
+    formatter: (message: ReceivedLog) => TransformedLog;
     // (undocumented)
-    protected getChanges(): Promise<any>;
+    protected getChanges(): Promise<ReceivedLog[]>;
     // (undocumented)
-    getLogs(): Promise<FilterChange[] | string[]>;
+    getLogs(): Promise<ReceivedLog[]>;
     // (undocumented)
-    protected getNewFilter(): Promise<any>;
+    protected getNewFilter(): Promise<Data>;
     // (undocumented)
     options: FilterOptions;
     // (undocumented)
     requestManager: RequestManager;
     // (undocumented)
-    protected uninstall(): Promise<any>;
+    protected uninstall(): Promise<boolean>;
 }
 
 // Warning: (ae-missing-release-tag) "EthPendingTransactionFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
-export class EthPendingTransactionFilter extends EthFilter<TxHash> {
+export class EthPendingTransactionFilter extends EthFilter<TxHash, TxHash> {
     constructor(requestManager: RequestManager);
     // (undocumented)
     getNewFilter(): Promise<string>;
 }
+
+// @public (undocumented)
+export type EventData = {
+    data: string;
+    topics: string[];
+    address: string;
+};
 
 // @public (undocumented)
 export type EventFilterCreator = (indexed: {
@@ -698,30 +846,14 @@ export function extractTypeName(name: string): string;
 // Warning: (ae-missing-release-tag) "FilterCallback" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
-export type FilterCallback = (messages: FilterChange[] | string[]) => void;
-
-// @public (undocumented)
-export type FilterChange = {
-    removed: boolean;
-    logIndex: Quantity;
-    transactionIndex: Quantity;
-    transactionHash: TxHash;
-    blockHash: TxHash;
-    blockNumber: Quantity;
-    address: Address;
-    data: Data;
-    topics: Array<Data>;
-};
-
-// @public (undocumented)
-export type FilterLog = {};
+export type FilterCallback = (messages: LogObject[] | string[]) => void;
 
 // @public (undocumented)
 export type FilterOptions = {
     fromBlock?: BlockIdentifier;
     toBlock?: BlockIdentifier;
     address?: Data | Address;
-    topics?: Array<Data>;
+    topics?: TopicFilter;
 };
 
 // @public (undocumented)
@@ -733,7 +865,7 @@ export type FinishedTransactionAndReceipt = TransactionAndReceipt & {
 export function fromAscii(str: string, num?: number): string;
 
 // @public
-export function fromDecimal(value: string | number | BigNumber): string;
+export function fromDecimal(value: BigNumber.Value): string;
 
 // @public
 export function fromUtf8(_str: string, allowZero?: boolean): string;
@@ -741,13 +873,13 @@ export function fromUtf8(_str: string, allowZero?: boolean): string;
 // Warning: (ae-missing-release-tag) "fromWei" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
-export function fromWei(num: BigNumber, unit: string): BigNumber;
+export function fromWei(num: BigNumber, unit: Unit): BigNumber;
 
 // @public (undocumented)
-export function fromWei(num: string | number, unit: string): string;
+export function fromWei(num: string | number, unit: Unit): string;
 
 // @public
-export function getValueOfUnit(_unit: string): BigNumber;
+export function getValueOfUnit(_unit: Unit): BigNumber;
 
 // @public (undocumented)
 export type Hex = string;
@@ -803,7 +935,7 @@ export interface IPropertyOptions<V> {
 export function isAddress(address: any): boolean;
 
 // @public
-export function isArray(object: any): boolean;
+export function isArray<T extends Array<any>>(object: any): object is T;
 
 // @public
 export function isBigNumber(object: any): object is BigNumber;
@@ -818,7 +950,7 @@ export function isBoolean(object: any): object is boolean;
 export function isChecksumAddress(_address: string): boolean;
 
 // @public
-export function isFunction(object: any): boolean;
+export function isFunction(object: any): object is CallableFunction;
 
 // @public
 export function isHex(value: string): boolean;
@@ -838,20 +970,40 @@ export function isString(value: any): value is string;
 // @public
 export function isTopic(topic: string): boolean;
 
+// Warning: (ae-forgotten-export) The symbol "RPCResponse" needs to be exported by the entry point index.d.ts
 // Warning: (ae-missing-release-tag) "isValidResponse" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
-export function isValidResponse(response: any): boolean;
+export function isValidResponse(response: RPCResponse | RPCResponse[]): boolean;
 
 // Warning: (ae-missing-release-tag) "IWebSocket" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export interface IWebSocket {
+    close(code?: number, reason?: string): void;
     // (undocumented)
-    close(): any;
+    onclose: ((this: this, ev: any) => any) | null;
     // (undocumented)
-    send(s: any): any;
+    onerror: ((this: this, ev: any) => any) | null;
+    // (undocumented)
+    onmessage: ((this: this, ev: any) => any) | null;
+    // (undocumented)
+    onopen: ((this: this, ev: any) => any) | null;
+    send(data: string): void;
 }
+
+// @public (undocumented)
+export type LogObject = {
+    removed: boolean;
+    logIndex: Quantity;
+    transactionIndex: Quantity;
+    transactionHash: TxHash;
+    blockHash: TxHash;
+    blockNumber: Quantity;
+    address: Address;
+    data: Data;
+    topics: Array<Data>;
+};
 
 // Warning: (ae-missing-release-tag) "messageId" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
@@ -859,27 +1011,25 @@ export interface IWebSocket {
 export let messageId: number;
 
 // @public (undocumented)
-export class Method<V> {
+export class Method<Output> {
     constructor(options: {
         callName: string;
         params: number;
-        inputFormatter?: any[];
-        outputFormatter: (val: any) => V;
+        inputFormatter: Array<null | ((a: any) => any)>;
+        outputFormatter: (val: any) => Output;
     });
     // (undocumented)
     callName: string;
     // (undocumented)
-    execute(requestManager: RequestManager, ...args: any[]): Promise<V>;
+    execute(requestManager: RequestManager, ...args: any[]): Promise<Output | null>;
     formatInput(args: any[]): any[];
-    formatOutput(result: any): V | null;
+    formatOutput(result: any): Output | null;
     // (undocumented)
-    inputFormatter: Function[] | null;
+    inputFormatter: Array<null | ((a: any) => any)>;
     // (undocumented)
-    outputFormatter: (something: any) => V;
+    outputFormatter: (something: any) => Output;
     // (undocumented)
     params: number;
-    // (undocumented)
-    requestManager: RequestManager;
     toPayload(args: any[]): {
         method: string;
         params: any[];
@@ -902,12 +1052,12 @@ export type PendingTransaction = TransactionObject & {
 export class Property<V> {
     constructor(options: IPropertyOptions<V>);
     // (undocumented)
-    execute(requestManager: RequestManager): Promise<any>;
-    formatOutput(result: any): any;
+    execute(requestManager: RequestManager, ..._unusedArgs: any[]): Promise<V>;
+    formatOutput(result: any): V;
     // (undocumented)
     getter: string;
     // (undocumented)
-    outputFormatter: Function | null;
+    outputFormatter: Function;
 }
 
 // @public (undocumented)
@@ -942,9 +1092,9 @@ class RequestManager {
     eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<number>;
     eth_getBlockTransactionCountByNumber: (block: BlockIdentifier) => Promise<number>;
     eth_getCode: (address: Address, block: BlockIdentifier) => Promise<Data>;
-    eth_getFilterChanges: (filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>;
-    eth_getFilterLogs: (filterId: Data) => Promise<Array<TxHash> | Array<FilterChange>>;
-    eth_getLogs: (options: FilterOptions) => Promise<Array<TxHash> | Array<FilterChange>>;
+    eth_getFilterChanges: (filterId: Data) => Promise<Array<TxHash> | Array<LogObject>>;
+    eth_getFilterLogs: (filterId: Data) => Promise<Array<TxHash> | Array<LogObject>>;
+    eth_getLogs: (options: FilterOptions) => Promise<Array<TxHash> | Array<LogObject>>;
     eth_getStorageAt: (address: Address, position: Quantity, block: BlockIdentifier) => Promise<Data>;
     eth_getTransactionByBlockHashAndIndex: (blockHash: TxHash, txIndex: Quantity) => Promise<TransactionObject>;
     eth_getTransactionByBlockNumberAndIndex: (block: BlockIdentifier, txIndex: Quantity) => Promise<TransactionObject>;
@@ -972,7 +1122,7 @@ class RequestManager {
     eth_syncing: () => Promise<false | Syncing>;
     eth_uninstallFilter: (filterId: Data) => Promise<boolean>;
     getConfirmedTransaction(txId: string): Promise<FinishedTransactionAndReceipt>;
-    getTransaction(hash: string): Promise<Transaction>;
+    getTransaction(txId: string): Promise<Transaction | null>;
     getTransactionAndReceipt(txId: string): Promise<TransactionAndReceipt>;
     isFailure(tx: TransactionAndReceipt): boolean;
     isPending(tx: TransactionAndReceipt): boolean;
@@ -1004,7 +1154,7 @@ class RequestManager {
     shh_post: (data: SHHPost) => Promise<boolean>;
     shh_uninstallFilter: (filterId: Data) => Promise<boolean>;
     shh_version: () => Promise<string>;
-    waitForCompletion(txId: BigNumber.Value, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt>;
+    waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt>;
     web3_clientVersion: () => Promise<string>;
     web3_sha3: (data: Data) => Promise<Data>;
 }
@@ -1049,9 +1199,9 @@ export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, option
 export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
     constructor(requestManager: RequestManager, options: SHHFilterOptions);
     // (undocumented)
-    protected getChanges(): Promise<any>;
+    protected getChanges(): Promise<SHHFilterMessage[]>;
     // (undocumented)
-    getMessages(): Promise<any>;
+    getMessages(): Promise<SHHFilterMessage[]>;
     // (undocumented)
     protected getNewFilter(): Promise<string>;
     // (undocumented)
@@ -1059,7 +1209,7 @@ export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
     // (undocumented)
     requestManager: RequestManager;
     // (undocumented)
-    protected uninstall(): Promise<any>;
+    protected uninstall(): Promise<boolean>;
 }
 
 // @public (undocumented)
@@ -1078,7 +1228,7 @@ export type SHHFilterMessage = {
 // @public (undocumented)
 export type SHHFilterOptions = {
     to?: Data;
-    topics: Array<Data>;
+    topics: TopicFilter;
 };
 
 // @public (undocumented)
@@ -1092,6 +1242,9 @@ export type SHHPost = {
 };
 
 // @public (undocumented)
+export type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
+
+// @public (undocumented)
 export type Syncing = {
     startingBlock: Quantity;
     currentBlock: Quantity;
@@ -1102,7 +1255,7 @@ export type Syncing = {
 export type Tag = 'latest' | 'earliest' | 'pending';
 
 // @public
-export function toAddress(address: any): any;
+export function toAddress(address: string): string;
 
 // @public
 export function toArray(value: any): any[];
@@ -1130,16 +1283,16 @@ export function toBoolean(value: BigNumber.Value | boolean): boolean;
 export function toChecksumAddress(_address: string): string;
 
 // @public
-export function toData(val: string | number | BigNumber): string;
+export function toData(val: BigNumber.Value): string;
 
 // @public
 export function toDecimal(value: BigNumber.Value): number;
 
 // @public
-export function toHex(val: string | number | BigNumber | boolean): string;
+export function toHex(val: BigNumber.Value | boolean): string;
 
 // @public
-export function toNullDecimal(value: BigNumber.Value): BigNumber.Value;
+export function toNullDecimal(value: BigNumber.Value): number;
 
 // Warning: (ae-missing-release-tag) "toPayload" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
@@ -1150,6 +1303,11 @@ export function toPayload(method: string, params: any[]): {
     method: string;
     params: any[];
 };
+
+// Warning: (ae-missing-release-tag) "TopicFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export type TopicFilter = Array<Data | null | TopicFilter>;
 
 // @public
 function toString_2(value: BigNumber.Value): string;
@@ -1163,7 +1321,7 @@ export function toTwosComplement(num: BigNumber.Value): BigNumber;
 export function toUtf8(hex: string): string;
 
 // @public
-export function toWei(num: number | string, unit: string): string | BigNumber;
+export function toWei(num: number | string, unit: Unit): string | BigNumber;
 
 // @public (undocumented)
 export type Transaction = DroppedTransaction | ReplacedTransaction | QueuedTransaction | PendingTransaction | ConfirmedTransaction | RevertedTransaction;
@@ -1177,9 +1335,9 @@ export type TransactionAndReceipt = TransactionObject & {
 export type TransactionCallOptions = {
     from?: Address;
     to: Address;
-    gas?: Quantity;
-    gasPrice?: Quantity;
-    value?: Quantity;
+    gas?: BigNumber.Value;
+    gasPrice?: BigNumber.Value;
+    value?: BigNumber.Value;
     data?: string;
 };
 
@@ -1205,11 +1363,11 @@ export type TransactionObject = {
 export type TransactionOptions = {
     from: Address;
     to: Address;
-    gas?: Quantity;
-    gasPrice?: Quantity;
-    value?: Quantity;
+    gas?: BigNumber.Value;
+    gasPrice?: BigNumber.Value;
+    value?: BigNumber.Value;
     data: string;
-    nonce?: Quantity;
+    nonce?: BigNumber.Value;
 };
 
 // @public (undocumented)
@@ -1221,7 +1379,7 @@ export type TransactionReceipt = {
     cumulativeGasUsed: Quantity;
     gasUsed: Quantity;
     contractAddress: Address;
-    logs: Array<FilterLog>;
+    logs: Array<LogObject>;
     logsBloom: Data;
     root?: TxHash;
     status?: Quantity;
@@ -1254,13 +1412,16 @@ export enum TransactionType {
 }
 
 // @public
-export function transformToFullName(json: {
-    name: string;
-    inputs: any[];
-}): string;
+export function transformToFullName(json: AbiItem): string;
 
 // @public
 export type TxHash = string;
+
+// Warning: (ae-forgotten-export) The symbol "unitMap" needs to be exported by the entry point index.d.ts
+// Warning: (ae-missing-release-tag) "Unit" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export type Unit = keyof typeof unitMap;
 
 // @public (undocumented)
 export class WebSocketProvider<T extends IWebSocket> {

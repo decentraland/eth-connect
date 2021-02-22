@@ -9,16 +9,16 @@ Returns a transaction in any of the possible states.
 <b>Signature:</b>
 
 ```typescript
-getTransaction(hash: string): Promise<Transaction>;
+getTransaction(txId: string): Promise<Transaction | null>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  hash | string | The transaction hash |
+|  txId | string | The transaction ID |
 
 <b>Returns:</b>
 
-Promise&lt;[Transaction](./eth-connect.transaction.md)<!-- -->&gt;
+Promise&lt;[Transaction](./eth-connect.transaction.md) \| null&gt;
 

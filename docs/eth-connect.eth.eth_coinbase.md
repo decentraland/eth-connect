@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-eth_coinbase: Property<any>
+eth_coinbase: Property<string>
 ```

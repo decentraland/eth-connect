@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import * as f from './formatters'
 import { SolidityType } from './type'
 
@@ -17,7 +18,7 @@ import { SolidityType } from './type'
  * int[3][]
  * int64[][6][], ...
  */
-export class SolidityTypeInt extends SolidityType {
+export class SolidityTypeInt extends SolidityType<BigNumber> {
   constructor() {
     super({
       inputFormatter: f.formatInputInt,
@@ -26,7 +27,7 @@ export class SolidityTypeInt extends SolidityType {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  isType(name) {
+  isType(name: string) {
     return !!name.match(/^int([0-9]*)?(\[([0-9]*)\])*$/)
   }
 }

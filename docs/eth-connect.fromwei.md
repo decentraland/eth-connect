@@ -11,7 +11,7 @@ Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mw
 <b>Signature:</b>
 
 ```typescript
-export declare function fromWei(num: BigNumber, unit: string): BigNumber;
+export declare function fromWei(num: BigNumber, unit: Unit): BigNumber;
 ```
 
 ## Parameters
@@ -19,7 +19,7 @@ export declare function fromWei(num: BigNumber, unit: string): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  num | [BigNumber](./eth-connect.bignumber.md) |  |
-|  unit | string |  |
+|  unit | [Unit](./eth-connect.unit.md) |  |
 
 <b>Returns:</b>
 

@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare abstract class AbstractFilter<T> 
+export declare abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> 
 ```
 
 ## Constructors
@@ -20,9 +20,9 @@ export declare abstract class AbstractFilter<T>
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [callbacks](./eth-connect.abstractfilter.callbacks.md) |  | ((message: T) =&gt; void)\[\] |  |
+|  [callbacks](./eth-connect.abstractfilter.callbacks.md) |  | ((message: TransformedLog) =&gt; void)\[\] |  |
 |  [filterId](./eth-connect.abstractfilter.filterid.md) |  | [IFuture](./eth-connect.ifuture.md)<!-- -->&lt;[Data](./eth-connect.data.md)<!-- -->&gt; |  |
-|  [formatter](./eth-connect.abstractfilter.formatter.md) |  | (x: any) =&gt; T |  |
+|  [formatter](./eth-connect.abstractfilter.formatter.md) |  | (x: ReceivedLog) =&gt; TransformedLog |  |
 |  [isDisposed](./eth-connect.abstractfilter.isdisposed.md) |  | boolean |  |
 |  [isStarted](./eth-connect.abstractfilter.isstarted.md) |  | boolean |  |
 |  [requestManager](./eth-connect.abstractfilter.requestmanager.md) |  | [RequestManager](./eth-connect.requestmanager.md) |  |

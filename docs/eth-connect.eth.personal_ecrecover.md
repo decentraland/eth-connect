@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-personal_ecRecover: Method<any>
+personal_ecRecover: Method<string>
 ```

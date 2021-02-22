@@ -9,16 +9,16 @@ Transforms given string to valid 20 bytes-length addres with 0x prefix
 <b>Signature:</b>
 
 ```typescript
-export declare function toAddress(address: any): any;
+export declare function toAddress(address: string): string;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  address | any |  |
+|  address | string |  |
 
 <b>Returns:</b>
 
-any
+string
 

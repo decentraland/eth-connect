@@ -14,7 +14,7 @@ import { SolidityType } from './type'
  * bytes8[4]
  * bytes[3][]
  */
-export class SolidityTypeBytes extends SolidityType {
+export class SolidityTypeBytes extends SolidityType<string> {
   constructor() {
     super({
       inputFormatter: f.formatInputBytes,
@@ -22,7 +22,7 @@ export class SolidityTypeBytes extends SolidityType {
     })
   }
   // tslint:disable-next-line:prefer-function-over-method
-  isType(name) {
+  isType(name: string) {
     return !!name.match(/^bytes([0-9]{1,})(\[([0-9]*)\])*$/)
   }
 }

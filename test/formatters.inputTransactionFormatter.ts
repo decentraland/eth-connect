@@ -95,7 +95,7 @@ describe('formatters', function() {
   describe('inputTransactionFormatter', function() {
     tests.forEach(function(test, i) {
       it('should return the correct value: ' + i, function() {
-        expect(formatters.inputTransactionFormatter(test.input)).toEqual(test.result)
+        expect(formatters.inputTransactionFormatter(test.input as any)).toEqual(test.result)
       })
     })
   })

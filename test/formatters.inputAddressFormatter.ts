@@ -12,6 +12,7 @@ let errorTests = [
   '0x0c5496aee77c1ba1f0854206a26dda82a81d6d8',
   '0x0c5496aee77c1ba1f0854206a26dda82a81d6d8',
   '00c5496aee77c1ba1f0854206a26dda82a81d6d',
+  '0x0',
   'XE7338O073KYGTWWZN0F2WZ0R8PX5ZPPZE',
   '0x'
 ]

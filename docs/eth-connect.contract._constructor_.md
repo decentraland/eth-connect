@@ -9,7 +9,7 @@ Constructs a new instance of the `Contract` class
 <b>Signature:</b>
 
 ```typescript
-constructor(requestManager: RequestManager, abi: any[], address: string);
+constructor(requestManager: RequestManager, abi: AbiItem[], address: string);
 ```
 
 ## Parameters
@@ -17,6 +17,6 @@ constructor(requestManager: RequestManager, abi: any[], address: string);
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  requestManager | [RequestManager](./eth-connect.requestmanager.md) |  |
-|  abi | any\[\] |  |
+|  abi | [AbiItem](./eth-connect.abiitem.md)<!-- -->\[\] |  |
 |  address | string |  |
 

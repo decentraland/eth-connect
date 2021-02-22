@@ -86,7 +86,7 @@ function doTest(requestManager: EthConnect.RequestManager) {
       'value',
       'gas',
       'gasPrice',
-      'input',
+      'input'
     ]
 
     const receiptFields = [
@@ -99,7 +99,7 @@ function doTest(requestManager: EthConnect.RequestManager) {
       'contractAddress',
       'logs',
       'status',
-      'logsBloom',
+      'logsBloom'
     ]
 
     for (let i = 0; i < transactionFields.length; i++) {
@@ -130,41 +130,59 @@ function doTest(requestManager: EthConnect.RequestManager) {
       expect(EthConnect.isBigNumber(balance)).toEqual(true)
     }
     {
-      const balance = await ERC20Contract.balanceOf('0x0')
+      const balance = await ERC20Contract.balanceOf('0x0000000000000000000000000000000000000001')
+      expect(balance.toString()).toEqual('0')
+    }
+    {
+      const balance = await ERC20Contract.balanceOf('0000000000000000000000000000000000000001')
       expect(balance.toString()).toEqual('0')
     }
   })
 
   it('should work with injected methods from ABI', async function () {
     this.timeout(1000000)
-    const account = (await requestManager.eth_accounts())[0]
-    {
-      const mintingFinished = ERC20Contract.mintingFinished()
-      expect(mintingFinished).toHaveProperty('then')
+    const mintingFinished = ERC20Contract.mintingFinished()
+    expect(mintingFinished).toHaveProperty('then')
 
-      const result = await mintingFinished
-      expect(typeof result).toEqual('boolean')
-    }
-    {
-      const totalSupply = await ERC20Contract.totalSupply()
-      expect(totalSupply.toNumber()).toEqual(0)
-    }
-    {
-      const mintResult = await ERC20Contract.mint(account, 10, { from: account })
-      expect(typeof mintResult).toEqual('string')
-      const tx = await requestManager.getConfirmedTransaction(mintResult)
-      expect(tx.status).toEqual('confirmed')
-      expect(typeof tx.receipt).toEqual('object')
-      expect(tx.receipt.status).toEqual(1)
-    }
-    {
-      const mintResult = await ERC20Contract.mint(account, 10, { from: account })
-      expect(typeof mintResult).toEqual('string')
-      await requestManager.waitForCompletion(mintResult)
-    }
-    {
-      const totalSupply = await ERC20Contract.totalSupply()
-      expect(totalSupply.toNumber()).toEqual(20)
-    }
+    const result = await mintingFinished
+    expect(typeof result).toEqual('boolean')
+  })
+
+  it('total supply 0', async function () {
+    this.timeout(1000000)
+    const totalSupply = await ERC20Contract.totalSupply()
+    expect(totalSupply.toNumber()).toEqual(0)
+  })
+
+  it('mint 10', async function () {
+    this.timeout(1000000)
+    const account = (await requestManager.eth_accounts())[0]
+    const mintResult = await ERC20Contract.mint(account, 10, { from: account })
+    expect(typeof mintResult).toEqual('string')
+    const tx = await requestManager.getConfirmedTransaction(mintResult)
+    expect(tx.status).toEqual('confirmed')
+    expect(typeof tx.receipt).toEqual('object')
+    expect(tx.receipt.status).toEqual(1)
+  })
+
+  it('mint 11', async function () {
+    this.timeout(1000000)
+    const account = (await requestManager.eth_accounts())[0]
+    const mintResult = await ERC20Contract.mint(account, 11, { from: account })
+    expect(typeof mintResult).toEqual('string')
+    await requestManager.waitForCompletion(mintResult)
+  })
+
+  it('balanceof 2', async function () {
+    this.timeout(1000000)
+    const account = (await requestManager.eth_accounts())[0]
+    const mintResult = await ERC20Contract.balanceOf(account)
+    expect(mintResult).toEqual(EthConnect.toBigNumber(21))
+  })
+
+  it('total supply 21', async function () {
+    this.timeout(1000000)
+    const totalSupply = await ERC20Contract.totalSupply()
+    expect(totalSupply.toNumber()).toEqual(21)
   })
 }

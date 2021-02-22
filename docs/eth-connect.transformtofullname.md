@@ -9,17 +9,14 @@ Should be used to create full function/event name from json abi
 <b>Signature:</b>
 
 ```typescript
-export declare function transformToFullName(json: {
-    name: string;
-    inputs: any[];
-}): string;
+export declare function transformToFullName(json: AbiItem): string;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  json | { name: string; inputs: any\[\]; } |  |
+|  json | [AbiItem](./eth-connect.abiitem.md) |  |
 
 <b>Returns:</b>
 

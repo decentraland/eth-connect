@@ -30,7 +30,7 @@ describe('lib/utils/utils', function () {
       expect(utils.toWei(1, 'milli')).toEqual(utils.toWei(1000, 'micro'))
 
       expect(function () {
-        utils.toWei(1, 'wei1')
+        utils.toWei(1, 'wei1' as any)
       }).toThrowError()
     })
   })

@@ -3,7 +3,7 @@ import { SolidityFunction } from './SolidityFunction'
 import { SolidityEvent } from './SolidityEvent'
 import { AllSolidityEvents } from './AllSolidityEvents'
 import { EthFilter } from './Filter'
-import { FilterOptions } from './Schema'
+import { AbiEvent, AbiFunction, AbiItem, FilterOptions } from './Schema'
 
 /**
  * Should be called to add functions to contract object
@@ -12,13 +12,13 @@ import { FilterOptions } from './Schema'
  */
 function addFunctionsToContract(contract: Contract) {
   contract.abi
-    .filter(function(json) {
+    .filter(function (json): json is AbiFunction {
       return json.type === 'function'
     })
-    .map(function(json) {
+    .map(function (json) {
       return new SolidityFunction(contract.requestManager, json, contract.address)
     })
-    .forEach(function(f) {
+    .forEach(function (f) {
       f.attachToContract(contract)
     })
 }
@@ -29,21 +29,21 @@ function addFunctionsToContract(contract: Contract) {
  * @param contract - The contract instance
  */
 function addEventsToContract(contract: Contract) {
-  let events = contract.abi.filter(function(json) {
+  let events = contract.abi.filter(function (json): json is AbiEvent {
     return json.type === 'event'
   })
 
   let allEvents = new AllSolidityEvents(contract.requestManager, events, contract.address)
 
-  allEvents.attachToContract(contract)
-
   events
-    .map(function(json) {
+    .map(function (json) {
       return new SolidityEvent(contract.requestManager, json, contract.address)
     })
-    .forEach(function(e) {
+    .forEach(function (e) {
       e.attachToContract(contract)
     })
+
+  return allEvents.getAllEventsFunction()
 }
 
 /**
@@ -60,16 +60,15 @@ export class Contract {
 
   events: { [key: string]: EventFilterCreator } = {}
 
-  transactionHash: string = null
+  transactionHash: string | null = null
 
-  constructor(public requestManager: RequestManager, public abi: any[], public address: string) {
-    this.transactionHash = null
+  constructor(public requestManager: RequestManager, public abi: AbiItem[], public address: string) {
     this.address = address
     this.abi = abi
 
     // this functions are not part of prototype,
     // because we dont want to spoil the interface
     addFunctionsToContract(this)
-    addEventsToContract(this)
+    this.allEvents = addEventsToContract(this)
   }
 }

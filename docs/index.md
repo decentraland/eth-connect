@@ -81,6 +81,13 @@
 
 |  Interface | Description |
 |  --- | --- |
+|  [AbiConstructor](./eth-connect.abiconstructor.md) |  |
+|  [AbiEvent](./eth-connect.abievent.md) |  |
+|  [AbiFallback](./eth-connect.abifallback.md) |  |
+|  [AbiFunction](./eth-connect.abifunction.md) |  |
+|  [AbiInput](./eth-connect.abiinput.md) |  |
+|  [AbiItemGeneric](./eth-connect.abiitemgeneric.md) |  |
+|  [AbiOutput](./eth-connect.abioutput.md) |  |
 |  [IPropertyOptions](./eth-connect.ipropertyoptions.md) |  |
 |  [IWebSocket](./eth-connect.iwebsocket.md) |  |
 
@@ -101,6 +108,8 @@
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [AbiItem](./eth-connect.abiitem.md) |  |
+|  [AbiType](./eth-connect.abitype.md) |  |
 |  [Address](./eth-connect.address.md) | Hex string of 20 bytes |
 |  [BlockIdentifier](./eth-connect.blockidentifier.md) |  |
 |  [BlockObject](./eth-connect.blockobject.md) |  |
@@ -108,15 +117,15 @@
 |  [ConfirmedTransaction](./eth-connect.confirmedtransaction.md) |  |
 |  [Data](./eth-connect.data.md) | Hex string |
 |  [DroppedTransaction](./eth-connect.droppedtransaction.md) |  |
+|  [EventData](./eth-connect.eventdata.md) |  |
 |  [EventFilterCreator](./eth-connect.eventfiltercreator.md) |  |
 |  [FilterCallback](./eth-connect.filtercallback.md) |  |
-|  [FilterChange](./eth-connect.filterchange.md) |  |
-|  [FilterLog](./eth-connect.filterlog.md) |  |
 |  [FilterOptions](./eth-connect.filteroptions.md) |  |
 |  [FinishedTransactionAndReceipt](./eth-connect.finishedtransactionandreceipt.md) |  |
 |  [Hex](./eth-connect.hex.md) |  |
 |  [HTTPProviderOptions](./eth-connect.httpprovideroptions.md) |  |
 |  [IFuture](./eth-connect.ifuture.md) |  |
+|  [LogObject](./eth-connect.logobject.md) |  |
 |  [PendingTransaction](./eth-connect.pendingtransaction.md) |  |
 |  [Quantity](./eth-connect.quantity.md) |  |
 |  [QueuedTransaction](./eth-connect.queuedtransaction.md) |  |
@@ -127,8 +136,10 @@
 |  [SHHFilterMessage](./eth-connect.shhfiltermessage.md) |  |
 |  [SHHFilterOptions](./eth-connect.shhfilteroptions.md) |  |
 |  [SHHPost](./eth-connect.shhpost.md) |  |
+|  [StateMutabilityType](./eth-connect.statemutabilitytype.md) |  |
 |  [Syncing](./eth-connect.syncing.md) |  |
 |  [Tag](./eth-connect.tag.md) |  |
+|  [TopicFilter](./eth-connect.topicfilter.md) |  |
 |  [Transaction](./eth-connect.transaction.md) |  |
 |  [TransactionAndReceipt](./eth-connect.transactionandreceipt.md) |  |
 |  [TransactionCallOptions](./eth-connect.transactioncalloptions.md) |  |
@@ -136,5 +147,6 @@
 |  [TransactionOptions](./eth-connect.transactionoptions.md) |  |
 |  [TransactionReceipt](./eth-connect.transactionreceipt.md) |  |
 |  [TxHash](./eth-connect.txhash.md) | Hex string of 32 bytes |
+|  [Unit](./eth-connect.unit.md) |  |
 |  [WebSocketProviderOptions](./eth-connect.websocketprovideroptions.md) |  |
 

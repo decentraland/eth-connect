@@ -28,7 +28,7 @@ import { SolidityTypeUReal } from './ureal'
 import { SolidityTypeBytes } from './bytes'
 import { SolidityType } from './type'
 
-function isDynamic(solidityType: SolidityType, type) {
+function isDynamic(solidityType: SolidityType<any>, type: string) {
   return solidityType.isDynamicType(type) || solidityType.isDynamicArray(type)
 }
 
@@ -36,9 +36,9 @@ function isDynamic(solidityType: SolidityType, type) {
  * SolidityCoder prototype should be used to encode/decode solidity params of any type
  */
 export class SolidityCoder {
-  _types: SolidityType[]
+  _types: SolidityType<any>[]
 
-  constructor(types: SolidityType[]) {
+  constructor(types: SolidityType<any>[]) {
     this._types = types
   }
 
@@ -50,7 +50,7 @@ export class SolidityCoder {
    * @returns {SolidityType}
    * @throws {Error} throws if no matching type is found
    */
-  _requireType(type: string): SolidityType {
+  _requireType(type: string): SolidityType<unknown> {
     let solidityType = this._types.filter(function (t) {
       return t.isType(type)
     })[0]
@@ -70,7 +70,7 @@ export class SolidityCoder {
    * @param {object} plain param
    * @return {string} encoded plain param
    */
-  encodeParam(type: string, param): string {
+  encodeParam(type: string, param: any): string {
     return this.encodeParams([type], [param])
   }
 
@@ -101,7 +101,7 @@ export class SolidityCoder {
     return result
   }
 
-  encodeMultiWithOffset(types: string[], solidityTypes: SolidityType[], encodeds, _dynamicOffset: number) {
+  encodeMultiWithOffset(types: string[], solidityTypes: SolidityType<any>[], encodeds: any[][], _dynamicOffset: number) {
     let dynamicOffset = _dynamicOffset
     let result = ''
 
@@ -129,7 +129,7 @@ export class SolidityCoder {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  encodeWithOffset(type: string, solidityType: SolidityType, encoded, offset: number) {
+  encodeWithOffset(type: string, solidityType: SolidityType<any>, encoded: any[], offset: number) {
     /* jshint maxcomplexity: 17 */
     /* jshint maxdepth: 5 */
 
@@ -206,7 +206,7 @@ export class SolidityCoder {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  getOffsets(types: string[], solidityTypes: SolidityType[]): number[] {
+  getOffsets(types: string[], solidityTypes: SolidityType<any>[]): number[] {
     let lengths = solidityTypes.map(function (solidityType, index) {
       return solidityType.staticPartLength(types[index])
     })
@@ -223,7 +223,7 @@ export class SolidityCoder {
     })
   }
 
-  getSolidityTypes(types: string[]): SolidityType[] {
+  getSolidityTypes(types: string[]): SolidityType<any>[] {
     return types.map((type) => this._requireType(type))
   }
 }

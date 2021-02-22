@@ -1,11 +1,12 @@
 import * as expect from 'expect'
+import { RPCResponse } from '../src/providers/common'
 import * as Jsonrpc from '../src/utils/jsonrpc'
 
 describe('jsonrpc', function () {
   describe('isValidResponse', function () {
     it('should validate basic jsonrpc response', function () {
       // given
-      let response = {
+      let response: any = {
         jsonrpc: '2.0',
         id: 1,
         result: []
@@ -31,7 +32,7 @@ describe('jsonrpc', function () {
 
     it('should validate jsonrpc response without jsonrpc field', function () {
       // given
-      let response = {
+      let response: any = {
         id: 1,
         result: []
       }
@@ -45,7 +46,7 @@ describe('jsonrpc', function () {
 
     it('should validate jsonrpc response with wrong jsonrpc version', function () {
       // given
-      let response = {
+      let response: any = {
         jsonrpc: '1.0',
         id: 1,
         result: []
@@ -60,7 +61,7 @@ describe('jsonrpc', function () {
 
     it('should validate jsonrpc response without id number', function () {
       // given
-      let response = {
+      let response: any = {
         jsonrpc: '2.0',
         result: []
       }
@@ -74,7 +75,7 @@ describe('jsonrpc', function () {
 
     it('should validate jsonrpc response with wrong id field', function () {
       // given
-      let response = {
+      let response: any = {
         jsonrpc: '2.0',
         id: 'x',
         result: []
@@ -89,7 +90,7 @@ describe('jsonrpc', function () {
 
     it('should validate jsonrpc response without result field', function () {
       // given
-      let response = {
+      let response: any = {
         jsonrpc: '2.0',
         id: 1
       }
@@ -103,7 +104,7 @@ describe('jsonrpc', function () {
 
     it('should validate jsonrpc response with result field === false', function () {
       // given
-      let response = {
+      let response: RPCResponse = {
         jsonrpc: '2.0',
         id: 1,
         result: false
@@ -118,7 +119,7 @@ describe('jsonrpc', function () {
 
     it('should validate jsonrpc response with result field === 0', function () {
       // given
-      let response = {
+      let response: RPCResponse = {
         jsonrpc: '2.0',
         id: 1,
         result: 0

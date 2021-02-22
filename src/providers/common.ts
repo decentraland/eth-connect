@@ -7,6 +7,20 @@ export type RPCMessage = {
   params: any[] | { [key: string]: any }
 }
 
+export type RPCError = {
+  jsonrpc: '2.0'
+  id: number
+  error: any
+}
+
+export type RPCResponse =
+  | RPCError
+  | {
+      jsonrpc: '2.0'
+      id: number
+      result: any
+    }
+
 export function toRPC(message: RPCMessage): RPCMessage {
   message.jsonrpc = '2.0'
 

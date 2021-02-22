@@ -65,8 +65,8 @@ let formattedTxResult = {
 
 let tests = [
   {
-    args: ['0x2dbab4c0612bf9caf4c195085547dc0612bf9caf4c1950855'],
-    formattedArgs: ['0x2dbab4c0612bf9caf4c195085547dc0612bf9caf4c1950855'],
+    args:          ['0xd6960376d6c6dea93647383ffb245cfced97ccc5c7525397a543a72fdaea5265'],
+    formattedArgs: ['0xd6960376d6c6dea93647383ffb245cfced97ccc5c7525397a543a72fdaea5265'],
     result: txResult,
     formattedResult: formattedTxResult,
     call: 'eth_' + method

@@ -12,7 +12,7 @@ describe('formatters', function () {
           workProved: '0x3e8',
           payload: '0x7b2274657374223a2274657374227d',
           topics: ['0x68656c6c6f', '0x6d79746f70696373']
-        })
+        } as any)
       ).toEqual({
         expiry: 1000,
         sent: 1000,

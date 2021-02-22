@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-eth_getTransactionByBlockHashAndIndex: Method<any>
+eth_getTransactionByBlockHashAndIndex: Method<TransactionObject | null>
 ```

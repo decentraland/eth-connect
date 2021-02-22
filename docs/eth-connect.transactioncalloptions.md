@@ -11,11 +11,11 @@
 export declare type TransactionCallOptions = {
     from?: Address;
     to: Address;
-    gas?: Quantity;
-    gasPrice?: Quantity;
-    value?: Quantity;
+    gas?: BigNumber.Value;
+    gasPrice?: BigNumber.Value;
+    value?: BigNumber.Value;
     data?: string;
 };
 ```
-<b>References:</b> [Address](./eth-connect.address.md)<!-- -->, [Quantity](./eth-connect.quantity.md)
+<b>References:</b> [Address](./eth-connect.address.md)<!-- -->, [BigNumber.Value](./eth-connect.bignumber.value.md)
 

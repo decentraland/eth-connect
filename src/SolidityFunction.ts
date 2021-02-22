@@ -21,7 +21,8 @@ import * as errors from './utils/errors'
 
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
-import { Contract } from '.'
+import { Contract } from './Contract'
+import { AbiFunction } from './Schema'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
@@ -36,21 +37,19 @@ export class SolidityFunction {
 
   needsToBeTransaction: boolean
 
-  constructor(public requestManager: RequestManager, public json, address: string) {
-    this._inputTypes = json.inputs.map(function(i) {
+  constructor(public requestManager: RequestManager, public json: AbiFunction, address: string) {
+    this._inputTypes = (json.inputs || []).map(function (i) {
       return i.type
     })
-    this._outputTypes = json.outputs.map(function(i) {
+    this._outputTypes = (json.outputs || []).map(function (i) {
       return i.type
     })
 
-    this._constant = json.constant
-    this._payable = json.payable
+    this._constant = !!json.constant
+    this._payable = !!json.payable
 
     this.needsToBeTransaction =
-      ('payable' in json && json.payable) ||
-      ('constant' in json && !json.constant) ||
-      ('stateMutability' in json && json.stateMutability === 'nonpayable')
+      json.payable || ('constant' in json && !json.constant) || json.stateMutability === 'nonpayable'
 
     this._name = utils.transformToFullName(json)
     this._address = address
@@ -58,8 +57,9 @@ export class SolidityFunction {
 
   extractDefaultBlock(args: any[]): string {
     if (args.length > this._inputTypes.length && !utils.isObject(args[args.length - 1])) {
-      return formatters.inputDefaultBlockNumberFormatter(args.pop()) // modify the args array!
+      return formatters.inputDefaultBlockNumberFormatter(args.pop()) || 'latest' // modify the args array!
     }
+    return 'latest'
   }
 
   /**
@@ -68,11 +68,11 @@ export class SolidityFunction {
    * @param arguments - An array of arguments
    */
   validateArgs(args: any[]) {
-    if (args.some($ => typeof $ === 'undefined')) {
+    if (args.some(($) => typeof $ === 'undefined')) {
       throw new Error('Invalid call, some arguments are undefined')
     }
 
-    let inputArgs = args.filter(function(a) {
+    let inputArgs = args.filter(function (a) {
       // filter the options object but not arguments that are arrays
       return !(utils.isObject(a) === true && utils.isArray(a) === false && utils.isBigNumber(a) === false)
     })
@@ -88,7 +88,7 @@ export class SolidityFunction {
    * @param optional - payload options
    */
   toPayload(args: any[]) {
-    let options = {
+    let options: any = {
       to: undefined,
       data: undefined,
       value: undefined,
@@ -102,7 +102,10 @@ export class SolidityFunction {
     this.validateArgs(args)
 
     options.to = this._address
-    options.data = '0x' + this.signature() + coder.encodeParams(this._inputTypes, args)
+    const signature = this.signature()
+    let params = coder.encodeParams(this._inputTypes, args)
+    if (params.indexOf('0x') == 0) params = params.substr(2)
+    options.data = '0x' + signature + params
 
     return options
   }
@@ -155,19 +158,10 @@ export class SolidityFunction {
   /**
    * Should be used to estimateGas of solidity function
    */
-  estimateGas(...args) {
+  estimateGas(...args: any[]) {
     let payload = this.toPayload(args)
 
     return this.requestManager.eth_estimateGas(payload)
-  }
-
-  /**
-   * Return the encoded data of the call
-   */
-  getData(...args: any[]): string {
-    let payload = this.toPayload(args)
-
-    return payload.data
   }
 
   /**
@@ -194,7 +188,7 @@ export class SolidityFunction {
     const fun = this
 
     const execute = Object.assign(
-      function(...args) {
+      (...args: any[]) => {
         const requestManager = this.requestManager || fun.requestManager
 
         return fun.execute(requestManager, ...args)
@@ -202,10 +196,10 @@ export class SolidityFunction {
       { estimateGas: this.estimateGas.bind(this) }
     )
 
-    if (!contract[displayName]) {
-      contract[displayName] = execute
+    if (!(contract as any)[displayName]) {
+      ;(contract as any)[displayName] = execute
     }
 
-    contract[displayName][this.typeName()] = execute
+    ;(contract as any)[displayName][this.typeName()] = execute
   }
 }

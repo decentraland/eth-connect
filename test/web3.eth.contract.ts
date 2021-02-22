@@ -229,7 +229,7 @@ describe('web3.eth.contract', function () {
   it('should create contract with nondefault constructor', async function () {
     const provider = new FakeHttpProvider()
 
-    const txHash = '0xe670ec64341771606e55d6b4ca35a1a6b75ee3d5145a99d05921026d1527331'
+    const txHash = '0xabababababababab826a5aad13d32ddd9cb82fbc94287bababababababababab'
     const contractAddress = '0xb60e8dd61c5d32be8058bb8eb970870f07233155'
     const address = '0x1234567890123456789012345678901234567894'
     let code = '0x31241231231123123123123121cf121212i123123123123123512312412512111111'

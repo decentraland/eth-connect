@@ -19,13 +19,13 @@ import * as utils from './utils/utils'
 import * as formatters from './utils/formatters'
 import { RequestManager } from './RequestManager'
 import * as config from './utils/config'
-import { FilterOptions, FilterChange, TxHash, SHHFilterOptions, Data, SHHFilterMessage } from './Schema'
+import { FilterOptions, LogObject, TxHash, SHHFilterOptions, Data, SHHFilterMessage } from './Schema'
 import { future, IFuture } from 'fp-future'
 
 function safeAsync(fn: () => Promise<any>) {
-  return function() {
+  return function () {
     // tslint:disable-next-line:no-console
-    fn().catch($ => console.error($))
+    fn().catch(($) => console.error($))
   }
 }
 
@@ -34,32 +34,35 @@ function safeAsync(fn: () => Promise<any>) {
  *
  * @param value - The given value
  */
-function toTopic(value: any): string {
+function toTopic(value: any): string | null {
   if (value === null || typeof value === 'undefined') return null
 
   const strValue = String(value).toString()
 
-  if (strValue.indexOf('0x') === 0) return strValue
-  else return utils.fromUtf8(strValue)
+  if (strValue.indexOf('0x') === 0) {
+    return strValue
+  } else {
+    return utils.fromUtf8(strValue)
+  }
 }
 
-export type FilterCallback = (messages: FilterChange[] | string[]) => void
+export type FilterCallback = (messages: LogObject[] | string[]) => void
 
-export abstract class AbstractFilter<T> {
+export abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> {
   public isStarted = false
   public isDisposed = false
 
-  public formatter: (x) => T
+  public formatter: (x: ReceivedLog) => TransformedLog = x => x as any
 
   protected filterId: IFuture<Data> = future()
-  protected callbacks: ((message: T) => void)[] = []
+  protected callbacks: ((message: TransformedLog) => void)[] = []
   protected stopSemaphore = future()
 
   constructor(public requestManager: RequestManager) {
     // stub
   }
 
-  async watch(callback: (message: T) => void) {
+  async watch(callback: (message: TransformedLog) => void) {
     if (this.isDisposed) throw new Error('The filter was disposed')
     if (callback) {
       this.callbacks.push(callback)
@@ -112,8 +115,8 @@ export abstract class AbstractFilter<T> {
   }
 
   protected abstract getNewFilter(): Promise<Data>
-  protected abstract getChanges(): Promise<any>
-  protected abstract uninstall(): Promise<any>
+  protected abstract getChanges(): Promise<ReceivedLog[]>
+  protected abstract uninstall(): Promise<boolean>
 
   /**
    * Adds the callback and sets up the methods, to iterate over the results.
@@ -121,15 +124,15 @@ export abstract class AbstractFilter<T> {
   private async poll() {
     if (this.isStarted) {
       if (this.callbacks.length) {
-        const result: any[] = await this.getChanges()
+        const result = await this.getChanges()
 
-        this.callbacks.forEach(cb => {
+        this.callbacks.forEach((cb) => {
           if (this.formatter) {
-            result.forEach($ => {
-              cb(this.formatter($))
+            result.forEach(($) => {
+              cb(this.formatter!($))
             })
           } else {
-            result.forEach($ => cb($))
+            result.forEach(($) => cb($ as any))
           }
         })
       }
@@ -138,7 +141,10 @@ export abstract class AbstractFilter<T> {
 
       if (this.isStarted) {
         this.stopSemaphore = future()
-        setTimeout(safeAsync(() => this.poll()), config.ETH_POLLING_TIMEOUT)
+        setTimeout(
+          safeAsync(() => this.poll()),
+          config.ETH_POLLING_TIMEOUT
+        )
       }
     } else {
       this.stopSemaphore.resolve(1)
@@ -152,7 +158,7 @@ export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
 
     this.options = this.options || { topics: [] }
     this.options.topics = this.options.topics || []
-    this.options.topics = this.options.topics.map(function(topic) {
+    this.options.topics = this.options.topics.map(function (topic) {
       return toTopic(topic)
     })
 
@@ -162,7 +168,7 @@ export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
     }
   }
 
-  async getMessages(): Promise<any> {
+  async getMessages(): Promise<SHHFilterMessage[]> {
     const filterId = await this.filterId
     return this.requestManager.shh_getMessages(filterId)
   }
@@ -171,27 +177,27 @@ export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
     return this.requestManager.shh_newFilter(this.options)
   }
 
-  protected async getChanges(): Promise<any> {
+  protected async getChanges(): Promise<SHHFilterMessage[]> {
     const filterId = await this.filterId
     return this.requestManager.shh_getFilterChanges(filterId)
   }
 
-  protected async uninstall(): Promise<any> {
+  protected async uninstall(): Promise<boolean> {
     const filterId = await this.filterId
     return this.requestManager.shh_uninstallFilter(filterId)
   }
 }
 
-export class EthFilter<T = FilterChange | string> extends AbstractFilter<T> {
+export class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObject> extends AbstractFilter<ReceivedLog, TransformedLog> {
   constructor(
     public requestManager: RequestManager,
     public options: FilterOptions,
-    public formatter: (message: FilterChange | string) => T = x => x as any
+    public formatter: (message: ReceivedLog) => TransformedLog = (x) => x as any
   ) {
     super(requestManager)
     this.options = this.options || {}
     this.options.topics = this.options.topics || []
-    this.options.topics = this.options.topics.map(function(topic) {
+    this.options.topics = this.options.topics.map(function (topic) {
       return toTopic(topic)
     })
 
@@ -200,51 +206,51 @@ export class EthFilter<T = FilterChange | string> extends AbstractFilter<T> {
       address: this.options.address ? this.options.address : undefined,
       fromBlock:
         typeof this.options.fromBlock === 'number' || typeof this.options.fromBlock === 'string'
-          ? formatters.inputBlockNumberFormatter(this.options.fromBlock)
+          ? formatters.inputBlockNumberFormatter(this.options.fromBlock) || undefined
           : 'latest',
       toBlock:
         typeof this.options.toBlock === 'number' || typeof this.options.toBlock === 'string'
-          ? formatters.inputBlockNumberFormatter(this.options.toBlock)
+          ? formatters.inputBlockNumberFormatter(this.options.toBlock) || undefined
           : 'latest'
     }
   }
 
-  async getLogs() {
+  async getLogs(): Promise<ReceivedLog[]> {
     if (!this.isStarted) {
       await this.start()
     }
     const filterId = await this.filterId
 
-    return this.requestManager.eth_getFilterLogs(filterId)
+    return this.requestManager.eth_getFilterLogs(filterId) as any
   }
 
-  protected async getNewFilter(): Promise<any> {
+  protected async getNewFilter(): Promise<Data> {
     return this.requestManager.eth_newFilter(this.options)
   }
 
-  protected async getChanges(): Promise<any> {
+  protected async getChanges(): Promise<ReceivedLog[]> {
     const filterId = await this.filterId
-    return this.requestManager.eth_getFilterChanges(filterId)
+    return this.requestManager.eth_getFilterChanges(filterId) as any
   }
 
-  protected async uninstall(): Promise<any> {
+  protected async uninstall(): Promise<boolean> {
     const filterId = await this.filterId
     return this.requestManager.eth_uninstallFilter(filterId)
   }
 }
 
-export class EthPendingTransactionFilter extends EthFilter<TxHash> {
+export class EthPendingTransactionFilter extends EthFilter<TxHash, TxHash> {
   constructor(requestManager: RequestManager) {
-    super(requestManager, null, arg => arg as TxHash)
+    super(requestManager, {})
   }
   async getNewFilter() {
     return this.requestManager.eth_newPendingTransactionFilter()
   }
 }
 
-export class EthBlockFilter extends EthFilter<TxHash> {
+export class EthBlockFilter extends EthFilter<TxHash, TxHash> {
   constructor(requestManager: RequestManager) {
-    super(requestManager, null, arg => arg as TxHash)
+    super(requestManager, {})
   }
 
   async getNewFilter() {

@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-formatter: (message: FilterChange | string) => T;
+formatter: (message: ReceivedLog) => TransformedLog;
 ```

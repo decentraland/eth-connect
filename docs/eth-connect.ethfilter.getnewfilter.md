@@ -7,9 +7,9 @@
 <b>Signature:</b>
 
 ```typescript
-protected getNewFilter(): Promise<any>;
+protected getNewFilter(): Promise<Data>;
 ```
 <b>Returns:</b>
 
-Promise&lt;any&gt;
+Promise&lt;[Data](./eth-connect.data.md)<!-- -->&gt;
 

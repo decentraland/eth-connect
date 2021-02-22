@@ -22,7 +22,7 @@ describe('formatters', function () {
           extraData: '0xd6960376d6c6dea93647383ffb245cfced97ccc5c7525397a543a72fdaea5265',
           nonce: '0xd6960376d6c6dea93647383ffb245cfced97ccc5c7525397a543a72fdaea5265',
           size: '0x3e8'
-        })
+        } as any)
       ).toEqual({
         hash: '0xd6960376d6c6dea93647383ffb245cfced97ccc5c7525397a543a72fdaea5265',
         parentHash: '0x83ffb245cfced97ccc5c75253d6960376d6c6dea93647397a543a72fdaea5265',
@@ -59,7 +59,7 @@ describe('formatters', function () {
           extraData: '0xd6960376d6c6dea93647383ffb245cfced97ccc5c7525397a543a72fdaea5265',
           nonce: null,
           size: '0x3e8'
-        })
+        } as any)
       ).toEqual({
         hash: null,
         parentHash: '0x83ffb245cfced97ccc5c75253d6960376d6c6dea93647397a543a72fdaea5265',

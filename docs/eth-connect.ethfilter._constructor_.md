@@ -9,7 +9,7 @@ Constructs a new instance of the `EthFilter` class
 <b>Signature:</b>
 
 ```typescript
-constructor(requestManager: RequestManager, options: FilterOptions, formatter?: (message: FilterChange | string) => T);
+constructor(requestManager: RequestManager, options: FilterOptions, formatter?: (message: ReceivedLog) => TransformedLog);
 ```
 
 ## Parameters
@@ -18,5 +18,5 @@ constructor(requestManager: RequestManager, options: FilterOptions, formatter?: 
 |  --- | --- | --- |
 |  requestManager | [RequestManager](./eth-connect.requestmanager.md) |  |
 |  options | [FilterOptions](./eth-connect.filteroptions.md) |  |
-|  formatter | (message: [FilterChange](./eth-connect.filterchange.md) \| string) =&gt; T |  |
+|  formatter | (message: ReceivedLog) =&gt; TransformedLog |  |
 

@@ -18,6 +18,7 @@
 import * as utf8 from 'utf8'
 import { keccak256 } from 'js-sha3'
 import { BigNumber } from './BigNumber'
+import { AbiItem } from '../Schema'
 
 /**
  * @public
@@ -91,6 +92,8 @@ let unitMap = {
   gether: '1000000000000000000000000000',
   tether: '1000000000000000000000000000000'
 }
+
+export type Unit = keyof typeof unitMap
 
 /**
  * @public
@@ -193,16 +196,20 @@ export function fromAscii(str: string, num: number = 0) {
  * @public
  * Should be used to create full function/event name from json abi
  */
-export function transformToFullName(json: { name: string; inputs: any[] }) {
-  if (json.name.indexOf('(') !== -1) {
+export function transformToFullName(json: AbiItem) {
+  if (json.name && json.name.indexOf('(') !== -1) {
     return json.name
   }
 
-  let typeName = json.inputs
-    .map(function (i) {
-      return i.type
-    })
-    .join()
+  let typeName: string = ''
+  if (json.inputs) {
+    typeName = json.inputs
+      .map(function (i) {
+        return i.type
+      })
+      .join()
+  }
+
   return json.name + '(' + typeName + ')'
 }
 
@@ -268,7 +275,7 @@ export function toString(value: BigNumber.Value) {
  * @public
  * Converts value to it's hex  representation in string
  */
-export function toData(val: string | number | BigNumber) {
+export function toData(val: BigNumber.Value) {
   if (typeof val === 'string') {
     if (!val.startsWith('0x') && /^[A-Za-z0-9]+$/.test(val)) {
       return '0x' + val
@@ -290,7 +297,7 @@ export function toBoolean(value: BigNumber.Value | boolean) {
  * @public
  * Converts value to it's hex representation
  */
-export function fromDecimal(value: string | number | BigNumber) {
+export function fromDecimal(value: BigNumber.Value) {
   let num = toBigNumber(value)
   let result = num.toString(16)
 
@@ -303,7 +310,7 @@ export function fromDecimal(value: string | number | BigNumber) {
  *
  * And even stringifys objects before.
  */
-export function toHex(val: string | number | BigNumber | boolean) {
+export function toHex(val: BigNumber.Value | boolean) {
   if (isBoolean(val)) return fromDecimal(+val)
 
   if (isBigNumber(val)) return fromDecimal(val)
@@ -325,8 +332,8 @@ export function toHex(val: string | number | BigNumber | boolean) {
  * @public
  * Returns value of unit in Wei
  */
-export function getValueOfUnit(_unit: string): BigNumber {
-  let unit = _unit ? _unit.toLowerCase() : 'ether'
+export function getValueOfUnit(_unit: Unit): BigNumber {
+  let unit: Unit = _unit ? (_unit.toLowerCase() as Unit) : 'ether'
   let unitValue = unitMap[unit]
   if (unitValue === undefined) {
     throw new Error(
@@ -354,9 +361,9 @@ export function getValueOfUnit(_unit: string): BigNumber {
  * - tether
  *
  */
-export function fromWei(num: BigNumber, unit: string): BigNumber
-export function fromWei(num: string | number, unit: string): string
-export function fromWei(num: BigNumber.Value, unit: string) {
+export function fromWei(num: BigNumber, unit: Unit): BigNumber
+export function fromWei(num: string | number, unit: Unit): string
+export function fromWei(num: BigNumber.Value, unit: Unit) {
   let returnValue = toBigNumber(num).dividedBy(getValueOfUnit(unit))
 
   return isBigNumber(num) ? returnValue : returnValue.toString(10)
@@ -379,7 +386,7 @@ export function fromWei(num: BigNumber.Value, unit: string) {
  * - gether
  * - tether
  */
-export function toWei(num: number | string, unit: string) {
+export function toWei(num: number | string, unit: Unit) {
   let returnValue = toBigNumber(num).times(getValueOfUnit(unit))
 
   return isBigNumber(num) ? returnValue : returnValue.toString(10)
@@ -500,7 +507,7 @@ export function toArray(value: any): any[] {
  * @public
  * Transforms given string to valid 20 bytes-length addres with 0x prefix
  */
-export function toAddress(address) {
+export function toAddress(address: string) {
   if (isStrictAddress(address)) {
     return address
   }
@@ -532,7 +539,7 @@ export function isString(value: any): value is string {
  * @public
  * Returns true if object is function, otherwise false
  */
-export function isFunction(object) {
+export function isFunction(object: any): object is CallableFunction {
   return typeof object === 'function'
 }
 
@@ -540,7 +547,7 @@ export function isFunction(object) {
  * @public
  * Returns true if object is Objet, otherwise false
  */
-export function isObject<T extends object>(object): object is T {
+export function isObject<T extends object>(object: any): object is T {
   return object !== null && !Array.isArray(object) && typeof object === 'object'
 }
 
@@ -548,7 +555,7 @@ export function isObject<T extends object>(object): object is T {
  * @public
  * Returns true if object is boolean, otherwise false
  */
-export function isBoolean(object): object is boolean {
+export function isBoolean(object: any): object is boolean {
   return typeof object === 'boolean'
 }
 
@@ -556,7 +563,7 @@ export function isBoolean(object): object is boolean {
  * @public
  * Returns true if object is array, otherwise false
  */
-export function isArray(object) {
+export function isArray<T extends Array<any>>(object: any): object is T {
   return Array.isArray(object)
 }
 

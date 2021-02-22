@@ -9,7 +9,7 @@ Converts value to it's decimal representation in string
 <b>Signature:</b>
 
 ```typescript
-export declare function toNullDecimal(value: BigNumber.Value): BigNumber.Value;
+export declare function toNullDecimal(value: BigNumber.Value): number;
 ```
 
 ## Parameters
@@ -20,5 +20,5 @@ export declare function toNullDecimal(value: BigNumber.Value): BigNumber.Value;
 
 <b>Returns:</b>
 
-[BigNumber.Value](./eth-connect.bignumber.value.md)
+number
 

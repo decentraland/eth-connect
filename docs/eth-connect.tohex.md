@@ -11,14 +11,14 @@ And even stringifys objects before.
 <b>Signature:</b>
 
 ```typescript
-export declare function toHex(val: string | number | BigNumber | boolean): string;
+export declare function toHex(val: BigNumber.Value | boolean): string;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  val | string \| number \| [BigNumber](./eth-connect.bignumber.md) \| boolean |  |
+|  val | [BigNumber.Value](./eth-connect.bignumber.value.md) \| boolean |  |
 
 <b>Returns:</b>
 

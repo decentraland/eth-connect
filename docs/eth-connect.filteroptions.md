@@ -12,8 +12,8 @@ export declare type FilterOptions = {
     fromBlock?: BlockIdentifier;
     toBlock?: BlockIdentifier;
     address?: Data | Address;
-    topics?: Array<Data>;
+    topics?: TopicFilter;
 };
 ```
-<b>References:</b> [BlockIdentifier](./eth-connect.blockidentifier.md)<!-- -->, [Data](./eth-connect.data.md)<!-- -->, [Address](./eth-connect.address.md)
+<b>References:</b> [BlockIdentifier](./eth-connect.blockidentifier.md)<!-- -->, [Data](./eth-connect.data.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [TopicFilter](./eth-connect.topicfilter.md)
 

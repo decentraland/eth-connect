@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-outputFormatter: Function | null;
+outputFormatter: Function;
 ```

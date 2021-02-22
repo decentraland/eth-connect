@@ -20,40 +20,32 @@ import * as formatters from './utils/formatters'
 
 import { SolidityEvent } from './SolidityEvent'
 import { RequestManager } from './RequestManager'
-import { Contract } from './Contract'
 import { EthFilter } from './Filter'
-import { FilterOptions } from './Schema'
-
-export type EventData = {
-  data: string
-  topics: string[]
-  address: string
-}
+import { AbiEvent, FilterOptions, LogObject } from './Schema'
 
 export class AllSolidityEvents {
-  constructor(public _requestManager: RequestManager, public _json, public _address: string) {}
+  constructor(public _requestManager: RequestManager, public _json: AbiEvent[], public _address: string) {}
 
-  encode(options: { fromBlock?; toBlock? } = {}) {
-    let result = {
+  encode(options: FilterOptions = {}) {
+    let result: FilterOptions = {
       address: this._address
     }
-    ;['fromBlock', 'toBlock']
-      .filter(function(f) {
-        return options[f] !== undefined
-      })
-      .forEach(function(f) {
-        result[f] = formatters.inputBlockNumberFormatter(options[f])
-      })
+
+    if (options.fromBlock !== undefined)
+      result.fromBlock = formatters.inputBlockNumberFormatter(options.fromBlock) || undefined
+
+    if (options.toBlock !== undefined)
+      result.toBlock = formatters.inputBlockNumberFormatter(options.toBlock) || undefined
 
     return result
   }
 
-  decode(data: EventData) {
+  decode(data: LogObject) {
     data.data = data.data || ''
 
     let eventTopic = utils.isArray(data.topics) && utils.isString(data.topics[0]) ? data.topics[0].slice(2) : ''
 
-    let match = this._json.filter(function(j) {
+    let match = this._json.filter(function (j) {
       return eventTopic === utils.sha3(utils.transformToFullName(j))
     })[0]
 
@@ -72,8 +64,7 @@ export class AllSolidityEvents {
     return new EthFilter<any>(this._requestManager, filterOptions, formatter)
   }
 
-  attachToContract(contract: Contract) {
-    let execute = this.execute.bind(this)
-    contract.allEvents = execute
+  getAllEventsFunction() {
+    return this.execute.bind(this)
   }
 }

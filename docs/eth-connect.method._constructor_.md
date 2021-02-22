@@ -12,8 +12,8 @@ Constructs a new instance of the `Method` class
 constructor(options: {
         callName: string;
         params: number;
-        inputFormatter?: any[];
-        outputFormatter: (val: any) => V;
+        inputFormatter: Array<null | ((a: any) => any)>;
+        outputFormatter: (val: any) => Output;
     });
 ```
 
@@ -21,5 +21,5 @@ constructor(options: {
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  options | { callName: string; params: number; inputFormatter?: any\[\]; outputFormatter: (val: any) =&gt; V; } |  |
+|  options | { callName: string; params: number; inputFormatter: Array&lt;null \| ((a: any) =&gt; any)&gt;; outputFormatter: (val: any) =&gt; Output; } |  |
 

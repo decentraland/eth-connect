@@ -9,7 +9,7 @@ Returns true if object is function, otherwise false
 <b>Signature:</b>
 
 ```typescript
-export declare function isFunction(object: any): boolean;
+export declare function isFunction(object: any): object is CallableFunction;
 ```
 
 ## Parameters
@@ -20,5 +20,5 @@ export declare function isFunction(object: any): boolean;
 
 <b>Returns:</b>
 
-boolean
+object is CallableFunction
 

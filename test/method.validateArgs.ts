@@ -9,6 +9,7 @@ describe('lib/web3/method', function () {
       let method = new Method({
         callName: 'dummy',
         params: 1,
+        inputFormatter: [null],
         outputFormatter: (x) => x
       })
 
@@ -30,9 +31,10 @@ describe('lib/web3/method', function () {
 
     it('should return call based on args', function () {
       // given
-      let method = new Method({
+      let method = new Method<any>({
         callName: 'dummy',
         params: 2,
+        inputFormatter: [null, null],
         outputFormatter: (x) => x
       })
 

@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-personal_newAccount: Method<any>
+personal_newAccount: Method<string>
 ```

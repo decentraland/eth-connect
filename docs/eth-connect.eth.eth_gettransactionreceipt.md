@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-eth_getTransactionReceipt: Method<any>
+eth_getTransactionReceipt: Method<TransactionReceipt | null>
 ```
