@@ -11,7 +11,8 @@ describe('integration.personal', function () {
 function doTest(requestManager: RequestManager) {
   let account = null
 
-  it('should create an account', async () => {
+  it('should create an account', async function () {
+    this.timeout(30000)
     // this should not fail, that's all
     account = await requestManager.personal_newAccount('test')
     expect(isStrictAddress(account)).toEqual(true) // 'is strict address'
