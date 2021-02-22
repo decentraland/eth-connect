@@ -22,8 +22,8 @@ function doTest(requestManager: RequestManager) {
     // this should not fail, that's all
     let accounts = await requestManager.personal_listAccounts()
     expect(isArray(accounts)).toEqual(true) // 'returns an array of accounts'
-    expect(accounts.length > 0).toEqual(true) // 'has accounts'
-    expect(accounts.includes(account)).toEqual(true) // 'has our created account'
+    expect(accounts.length).toBeGreaterThan(0) // 'has accounts'
+    expect(accounts).toContain(account) // 'has our created account'
   })
 
   it('should sign a message (geth only) and recover the signer address', async () => {
