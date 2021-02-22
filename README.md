@@ -100,17 +100,16 @@ make test-local
 
 ## Comparison
 
-|                 |  `web3`  | `eth-connect` |
-| --------------- | :------: | :-----------: |
-| Browser support |    ✔     |       ✔       |
-| Promise API     |    ✖     |       ✔       |
-| TS/JS Docs      |    ✖     |       ✔       |
-| Wiki Docs       |    ✔     |       ?       |
-| Downloads       | ![][wd]  |    ![][ed]    |
-| Coverage        | ![][wc]  |    ![][ec]    |
-| Build           | ![][wb]  |    ![][eb]    |
-| Dependents      | ![][wdp] |   ![][edp]    |
-| Install size    | ![][wis] |   ![][eis]    |
+|                    |  `web3`  | `eth-connect` |
+| ------------------ | :------: | :-----------: |
+| Browser support    |    ✔     |       ✔       |
+| Promise API        |    ✖     |       ✔       |
+| Strict type checks |    ✖     |       ✔       |
+| TS/JS Docs         |    ✖     |       ✔       |
+| Wiki Docs          |    ✔     |       ?       |
+| Coverage           | ![][wc]  |    ![][ec]    |
+| Dependents         | ![][wdp] |   ![][edp]    |
+| Install size       | ![][wis] |   ![][eis]    |
 
 <!-- DOWNLOADS -->
 
