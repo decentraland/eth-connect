@@ -1,4 +1,4 @@
-import testMethod = require('./helpers/test.method')
+import * as testMethod from './helpers/test.method'
 import { toHex } from '../src'
 
 let method = 'post'

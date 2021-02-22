@@ -15,7 +15,7 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import formatter = require('./formatters')
+import * as formatter from './formatters'
 
 import { SolidityTypeAddress } from './address'
 import { SolidityTypeBool } from './bool'
@@ -28,7 +28,7 @@ import { SolidityTypeUReal } from './ureal'
 import { SolidityTypeBytes } from './bytes'
 import { SolidityType } from './type'
 
-function isDynamic(solidityType: SolidityType, type) {
+function isDynamic(solidityType: SolidityType<any>, type: string) {
   return solidityType.isDynamicType(type) || solidityType.isDynamicArray(type)
 }
 
@@ -36,9 +36,9 @@ function isDynamic(solidityType: SolidityType, type) {
  * SolidityCoder prototype should be used to encode/decode solidity params of any type
  */
 export class SolidityCoder {
-  _types: SolidityType[]
+  _types: SolidityType<any>[]
 
-  constructor(types: SolidityType[]) {
+  constructor(types: SolidityType<any>[]) {
     this._types = types
   }
 
@@ -50,8 +50,8 @@ export class SolidityCoder {
    * @returns {SolidityType}
    * @throws {Error} throws if no matching type is found
    */
-  _requireType(type: string): SolidityType {
-    let solidityType = this._types.filter(function(t) {
+  _requireType(type: string): SolidityType<unknown> {
+    let solidityType = this._types.filter(function (t) {
       return t.isType(type)
     })[0]
 
@@ -70,7 +70,7 @@ export class SolidityCoder {
    * @param {object} plain param
    * @return {string} encoded plain param
    */
-  encodeParam(type: string, param) {
+  encodeParam(type: string, param: any): string {
     return this.encodeParams([type], [param])
   }
 
@@ -82,14 +82,14 @@ export class SolidityCoder {
    * @param {Array} params
    * @return {string} encoded list of params
    */
-  encodeParams(types: string[], params: any[]) {
+  encodeParams(types: string[], params: any[]): string {
     let solidityTypes = this.getSolidityTypes(types)
 
-    let encodeds = solidityTypes.map(function(solidityType, index) {
+    let encodeds = solidityTypes.map(function (solidityType, index) {
       return solidityType.encode(params[index], types[index])
     })
 
-    let dynamicOffset = solidityTypes.reduce(function(acc, solidityType, index) {
+    let dynamicOffset = solidityTypes.reduce(function (acc, solidityType, index) {
       let staticPartLength = solidityType.staticPartLength(types[index])
       let roundedStaticPartLength = Math.floor((staticPartLength + 31) / 32) * 32
 
@@ -101,7 +101,7 @@ export class SolidityCoder {
     return result
   }
 
-  encodeMultiWithOffset(types: string[], solidityTypes: SolidityType[], encodeds, _dynamicOffset: number) {
+  encodeMultiWithOffset(types: string[], solidityTypes: SolidityType<any>[], encodeds: any[][], _dynamicOffset: number) {
     let dynamicOffset = _dynamicOffset
     let result = ''
 
@@ -129,7 +129,7 @@ export class SolidityCoder {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  encodeWithOffset(type: string, solidityType: SolidityType, encoded, offset: number) {
+  encodeWithOffset(type: string, solidityType: SolidityType<any>, encoded: any[], offset: number) {
     /* jshint maxcomplexity: 17 */
     /* jshint maxdepth: 5 */
 
@@ -138,8 +138,8 @@ export class SolidityCoder {
     let mode = solidityType.isDynamicArray(type)
       ? encodingMode.dynamic
       : solidityType.isStaticArray(type)
-        ? encodingMode.static
-        : encodingMode.other
+      ? encodingMode.static
+      : encodingMode.other
 
     if (mode !== encodingMode.other) {
       let nestedName = solidityType.nestedName(type)
@@ -196,18 +196,18 @@ export class SolidityCoder {
    * @param {string} bytes
    * @return {Array} array of plain params
    */
-  decodeParams(types: string[], bytes: string) {
+  decodeParams(types: string[], bytes: string): any[] {
     let solidityTypes = this.getSolidityTypes(types)
     let offsets = this.getOffsets(types, solidityTypes)
 
-    return solidityTypes.map(function(solidityType, index) {
+    return solidityTypes.map(function (solidityType, index) {
       return solidityType.decode(bytes, offsets[index], types[index])
     })
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  getOffsets(types: string[], solidityTypes: SolidityType[]) {
-    let lengths = solidityTypes.map(function(solidityType, index) {
+  getOffsets(types: string[], solidityTypes: SolidityType<any>[]): number[] {
+    let lengths = solidityTypes.map(function (solidityType, index) {
       return solidityType.staticPartLength(types[index])
     })
 
@@ -216,15 +216,15 @@ export class SolidityCoder {
       lengths[i] += lengths[i - 1]
     }
 
-    return lengths.map(function(length, index) {
+    return lengths.map(function (length, index) {
       // remove the current length, so the length is sum of previous elements
       let staticPartLength = solidityTypes[index].staticPartLength(types[index])
       return length - staticPartLength
     })
   }
 
-  getSolidityTypes(types: string[]): SolidityType[] {
-    return types.map(type => this._requireType(type))
+  getSolidityTypes(types: string[]): SolidityType<any>[] {
+    return types.map((type) => this._requireType(type))
   }
 }
 

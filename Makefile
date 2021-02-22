@@ -1,10 +1,14 @@
 NODE = @node
-COMPILER = $(NODE) --max-old-space-size=4096 node_modules/.bin/decentraland-compiler
 TSC = $(NODE) --max-old-space-size=4096 node_modules/.bin/tsc
 MOCHA = $(NODE) --max-old-space-size=4096 node_modules/.bin/mocha
 NYC = $(NODE) --max-old-space-size=4096 node_modules/.bin/nyc
+ROLLUP = $(NODE) --max-old-space-size=4096 node_modules/.bin/rollup
 TSLINT = $(NODE) --max-old-space-size=4096 node_modules/.bin/tslint
 COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
+
+ifneq ($(CI), true)
+LOCAL_ARG = --local --verbose --diagnostics
+endif
 
 clean:
 		@echo '> Cleaning'
@@ -12,12 +16,10 @@ clean:
 		@(rm -rf .nyc_output || true)
 		@(rm *.lcov || true)
 		@(rm -rf dist || true)
-		@find test -name '*.js' -delete
-		@find test -name '*.js.map' -delete
 
 build: clean
 		@echo '> Building'
-		${COMPILER} build.json
+		${ROLLUP} -c --environment BUILD:production
 		$(MAKE) provision-bundled
 
 provision-bundled:
@@ -25,30 +27,31 @@ provision-bundled:
 		@cp ./static/package.json ./dist/package.json
 		@cp ./static/api-extractor.json ./dist/api-extractor.json
 		@cp ./static/tsconfig.json ./dist/tsconfig.json
-		@cp ./static/esm.ts ./dist/esm.ts
-		@cd ./dist && npm install --no-save @microsoft/api-extractor
-		@cd ./dist && ./node_modules/.bin/api-extractor run --typescript-compiler-folder ./node_modules/typescript --local
-		npx @microsoft/api-documenter markdown --input-folder dist/dist --output-folder docs
+		@mkdir -p ./dist/etc
+		cd ./dist && ../node_modules/.bin/api-extractor run $(LOCAL_ARG) --typescript-compiler-folder ../node_modules/typescript
+		@cd ./dist && ../node_modules/.bin/api-documenter markdown --input-folder temp --output-folder ../docs
 		@mv docs/eth-connect.md docs/index.md
-		@mv ./dist/lib/eth-connect.js ./dist
-		@mv ./dist/lib/eth-connect.esm.js ./dist
-		@rm -rf ./dist/lib
+		@cp static/docs_config.yml docs/_config.yml
+		@mv ./dist/dist/eth-connect.d.ts ./dist
 		@rm ./dist/tsconfig.json
 		@rm -rf ./dist/node_modules
 		@rm -rf ./dist/api-extractor.json
-		@rm -rf ./dist/dist
+		@rm -rf ./dist/decl || true
+		@rm -rf ./dist/dist || true
+		@rm -rf ./dist/etc || true
+		@rm -rf ./dist/src || true
+		@rm -rf ./dist/test || true
 
 watch:
-		${TSC} --project tsconfig-build.json --watch
+		${TSC} --project tsconfig.json --watch
 
 lint:
 		${TSLINT}
 
 test:
-		export TS_NODE_PROJECT='./tsconfig-test.json'; node --experimental-modules node_modules/mocha/bin/_mocha --reporter list
-
-coverage:
-		export TS_NODE_PROJECT='./tsconfig-test.json'; node --experimental-modules node_modules/.bin/nyc node_modules/mocha/bin/_mocha --reporter list
+		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha
+test-fast:
+		node --inspect --experimental-modules node_modules/.bin/_mocha
 
 test-coveralls:
 		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose
@@ -71,8 +74,9 @@ local-node:
 				-p 8545:8545 -p 8546:8546 \
 						ethereum/client-go \
 				--identity="TEST_NODE" --networkid="53611" \
-				--rpc --rpcaddr 0.0.0.0 --rpcapi admin,debug,eth,miner,net,personal,shh,txpool,web3 \
-				--ws  --wsaddr 0.0.0.0  --wsapi admin,debug,eth,miner,net,personal,shh,txpool,web3 --wsorigins \* \
+        --allow-insecure-unlock \
+				--rpc --rpcaddr 0.0.0.0 --rpcapi="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" \
+				--ws  --wsaddr 0.0.0.0  --wsapi="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" --wsorigins \* \
 				--mine --minerthreads=1 \
 				--dev
 
@@ -80,8 +84,8 @@ kill-docker:
 		# stop the node
 		@(docker container kill geth-dev && docker container rm geth-dev) || true
 
-ci: | build local-node coverage test-codecov kill-docker
+ci: | build local-node test test-codecov kill-docker
 
 test-local: | build local-node test kill-docker
 
-.PHONY: ci test coverage test-coveralls watch lint build clean kill-docker local-node
+.PHONY: ci test test-coveralls watch lint build clean kill-docker local-node

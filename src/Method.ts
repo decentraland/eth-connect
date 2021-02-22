@@ -15,25 +15,23 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import errors = require('./utils/errors')
+import * as errors from './utils/errors'
 import { RequestManager } from './RequestManager'
 
 /**
  * @public
  */
-export class Method {
+export class Method<Output> {
   callName: string
   params: number
-  inputFormatter: Function[] | null
-  outputFormatter?: Function | null
-  requestManager: RequestManager
+  inputFormatter: Array<null | ((a: any) => any)>
+  outputFormatter: (something: any) => Output
 
-  constructor(options: { callName: string; params: number; inputFormatter?: any[]; outputFormatter?: any }) {
+  constructor(options: { callName: string; params: number; inputFormatter: Array<null | ((a: any) => any)>; outputFormatter: (val: any) => Output }) {
     this.callName = options.callName
     this.params = options.params || 0
     this.inputFormatter = options.inputFormatter || null
-    this.outputFormatter = options.outputFormatter || null
-    this.requestManager = null
+    this.outputFormatter = options.outputFormatter
   }
 
   /**
@@ -67,8 +65,8 @@ export class Method {
    *
    * @param result - The result to be formatted
    */
-  formatOutput(result: any) {
-    return this.outputFormatter && result ? this.outputFormatter(result) : result
+  formatOutput(result: any): Output | null {
+    return result !== null ? this.outputFormatter(result) : null
   }
 
   /**

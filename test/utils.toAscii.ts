@@ -1,6 +1,5 @@
-import chai = require('chai')
-import utils = require('../src/utils/utils')
-const assert = chai.assert
+import * as expect from 'expect'
+import * as utils from '../src/utils/utils'
 
 let tests = [
   { value: '0x6d79537472696e67', expected: 'myString' },
@@ -13,11 +12,11 @@ let tests = [
   }
 ]
 
-describe('lib/utils/utils', function() {
-  describe('toAscii', function() {
-    tests.forEach(function(test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function() {
-        assert.strictEqual(utils.toAscii(test.value), test.expected)
+describe('lib/utils/utils', function () {
+  describe('toAscii', function () {
+    tests.forEach(function (test) {
+      it('should turn ' + test.value + ' to ' + test.expected, function () {
+        expect(utils.toAscii(test.value)).toStrictEqual(test.expected)
       })
     })
   })

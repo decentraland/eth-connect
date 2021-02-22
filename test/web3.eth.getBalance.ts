@@ -1,5 +1,5 @@
-import BigNumber from 'bignumber.js'
-import testMethod = require('./helpers/test.method')
+import { BigNumber } from '../src/utils/BigNumber'
+import * as testMethod from './helpers/test.method'
 
 testMethod.runTests(`eth_getBalance`, [
   {

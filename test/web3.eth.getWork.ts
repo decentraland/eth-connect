@@ -1,13 +1,13 @@
-import testMethod = require('./helpers/test.method')
+import * as testMethod from './helpers/test.method'
 
 let method = 'getWork'
 
 let tests = [
   {
-    args: [],
-    formattedArgs: [],
-    result: true,
-    formattedResult: true,
+    args: ['0x0'],
+    formattedArgs: ['0x0'],
+    result: ['0x13'],
+    formattedResult: ['0x13'],
     call: 'eth_' + method
   }
 ]

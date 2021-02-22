@@ -17,21 +17,21 @@
 
 import { RequestManager } from './RequestManager'
 
-export interface IPropertyOptions {
+export interface IPropertyOptions<V> {
   getter: string
-  outputFormatter?: Function
+  outputFormatter: (_: any) => V
 }
 
 /**
  * @public
  */
-export class Property {
+export class Property<V> {
   getter: string
-  outputFormatter: Function | null
+  outputFormatter!: Function
 
-  constructor(options: IPropertyOptions) {
+  constructor(options: IPropertyOptions<V>) {
     this.getter = options.getter
-    this.outputFormatter = options.outputFormatter || null
+    this.outputFormatter = options.outputFormatter
   }
 
   /**
@@ -39,11 +39,12 @@ export class Property {
    *
    * @param result - The result to be formatted
    */
-  formatOutput(result: any) {
-    return this.outputFormatter && result !== null && result !== undefined ? this.outputFormatter(result) : result
+  formatOutput(result: any): V {
+    return this.outputFormatter(result)
   }
 
-  async execute(requestManager: RequestManager) {
+  // _unusedArgs exist only to share the same interface with Method
+  async execute(requestManager: RequestManager, ..._unusedArgs: any[]): Promise<V> {
     const result = await requestManager.sendAsync({
       method: this.getter,
       params: []

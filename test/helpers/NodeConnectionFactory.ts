@@ -1,4 +1,4 @@
-import ganache = require('ganache-cli')
+import * as ganache from 'ganache-cli'
 
 export type ConnectionOptions = {
   accounts?: Array<object>

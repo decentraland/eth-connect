@@ -1,28 +1,61 @@
-import { BigNumber as BigNumberType } from './utils/BigNumber'
+import { BigNumber } from './utils/BigNumber'
 
-/** Hex string */
+/**
+ * Hex string
+ * @public
+ */
 export type Data = string
-/** Hex string of 32 bytes */
+
+/**
+ * Hex string of 32 bytes
+ * @public
+ */
 export type TxHash = string
-/** Hex string of 20 bytes */
+/**
+ * Hex string of 20 bytes
+ * @public
+ */
 export type Address = string
+/**
+ * @public
+ */
 export type Hex = string
+/**
+ * @public
+ */
 export type Quantity = number | Hex
 
+/**
+ * @public
+ */
 export type Syncing = {
   startingBlock: Quantity
   currentBlock: Quantity
   highestBlock: Quantity
+
+  // @internal
+  knownStates?: Quantity
+  // @internal
+  pulledStates?: Quantity
 }
 
+/**
+ * @public
+ */
 export enum TransactionStatus {
   pending = 'pending',
   confirmed = 'confirmed',
   failed = 'failed'
 }
 
+/**
+ * @public
+ */
 export type Tag = 'latest' | 'earliest' | 'pending'
 
+/**
+ * @public
+ */
 export type TransactionOptions = {
   /**
    * The address the transaction is sent from.
@@ -40,17 +73,17 @@ export type TransactionOptions = {
    *
    * Default: 90000
    */
-  gas?: Quantity
+  gas?: BigNumber.Value
 
   /**
    *  Integer of the gasPrice used for each paid gas
    */
-  gasPrice?: Quantity
+  gasPrice?: BigNumber.Value
 
   /**
    * Integer of the value sent with this transaction
    */
-  value?: Quantity
+  value?: BigNumber.Value
 
   /**
    * The compiled code of a contract OR the hash of the invoked method signature and encoded parameters.
@@ -59,9 +92,12 @@ export type TransactionOptions = {
   data: string
 
   /** Integer of a nonce. This allows to overwrite your own pending transactions that use the same nonce. */
-  nonce?: Quantity
+  nonce?: BigNumber.Value
 }
 
+/**
+ * @public
+ */
 export type TransactionCallOptions = {
   /**
    * The address the transaction is sent from.
@@ -79,17 +115,17 @@ export type TransactionCallOptions = {
    *
    * Default: 90000
    */
-  gas?: Quantity
+  gas?: BigNumber.Value
 
   /**
    *  Integer of the gasPrice used for each paid gas
    */
-  gasPrice?: Quantity
+  gasPrice?: BigNumber.Value
 
   /**
    * Integer of the value sent with this transaction
    */
-  value?: Quantity
+  value?: BigNumber.Value
 
   /**
    * The compiled code of a contract OR the hash of the invoked method signature and encoded parameters.
@@ -98,6 +134,9 @@ export type TransactionCallOptions = {
   data?: string
 }
 
+/**
+ * @public
+ */
 export type BlockObject = {
   /** the block number. null when its pending block. */
   number: Quantity
@@ -120,9 +159,9 @@ export type BlockObject = {
   /** the address of the beneficiary to whom the mining rewards were given. */
   miner: Address
   /** integer of the difficulty for this block. */
-  difficulty: Quantity
+  difficulty: BigNumber
   /** integer of the total difficulty of the chain until this block. */
-  totalDifficulty: Quantity
+  totalDifficulty: BigNumber
   /** the "extra data" field of this block. */
   extraData: Data
   /** integer the size of this block in bytes. */
@@ -139,6 +178,9 @@ export type BlockObject = {
   uncles: Array<TxHash>
 }
 
+/**
+ * @public
+ */
 export type TransactionObject = {
   /** hash of the transaction. */
   hash: TxHash
@@ -155,9 +197,9 @@ export type TransactionObject = {
   /** address of the receiver. null when its a contract creation transaction. */
   to: Address | null
   /** value transferred in Wei. */
-  value: BigNumberType
+  value: BigNumber
   /** gas price provided by the sender in Wei. */
-  gasPrice: BigNumberType
+  gasPrice: BigNumber
   /** gas provided by the sender. */
   gas: Quantity
   /** the data send along with the transaction. */
@@ -168,6 +210,9 @@ export type TransactionObject = {
   s?: Data
 }
 
+/**
+ * @public
+ */
 export type Transaction =
   | DroppedTransaction
   | ReplacedTransaction
@@ -176,6 +221,9 @@ export type Transaction =
   | ConfirmedTransaction
   | RevertedTransaction
 
+/**
+ * @public
+ */
 export enum TransactionType {
   queued = 'queued',
   dropped = 'dropped',
@@ -185,42 +233,73 @@ export enum TransactionType {
   confirmed = 'confirmed'
 }
 
+/**
+ * @public
+ */
 export type DroppedTransaction = {
   type: TransactionType.dropped
   hash: string
   nonce: number
 }
 
+/**
+ * @public
+ */
 export type ReplacedTransaction = {
   type: TransactionType.replaced
   hash: string
   nonce: number
 }
 
+/**
+ * @public
+ */
 export type QueuedTransaction = {
   type: TransactionType.queued
   hash: string
   nonce: number
 }
 
+/**
+ * @public
+ */
 export type PendingTransaction = TransactionObject & {
   type: TransactionType.pending
 }
 
+/**
+ * @public
+ */
 export type RevertedTransaction = TransactionObject & {
   type: TransactionType.reverted
 }
 
+/**
+ * @public
+ */
 export type ConfirmedTransaction = TransactionObject & {
   type: TransactionType.confirmed
   receipt: TransactionReceipt
 }
 
-export type FilterLog = {}
+/**
+ * @public
+ */
 export type TransactionAndReceipt = TransactionObject & { receipt: TransactionReceipt }
+/**
+ * @public
+ */
 export type FinishedTransactionAndReceipt = TransactionAndReceipt & { status: TransactionStatus }
+/**
+ * @public
+ */
 export type BlockIdentifier = Quantity | Tag
 
+export type TopicFilter = Array<Data | null | TopicFilter>
+
+/**
+ * @public
+ */
 export type FilterOptions = {
   /** (optional, default: "latest") Integer block number, or "latest" for the last mined block or "pending", "earliest" for not yet mined transactions. */
   fromBlock?: BlockIdentifier
@@ -229,9 +308,12 @@ export type FilterOptions = {
   /** (optional) Contract address or a list of addresses from which logs should originate. */
   address?: Data | Address
   /** (optional) Array of 32 Bytes DATA topics. Topics are order-dependent. Each topic can also be an array of DATA with "or" options. */
-  topics?: Array<Data>
+  topics?: TopicFilter
 }
 
+/**
+ * @public
+ */
 export type TransactionReceipt = {
   /** hash of the transaction. */
   transactionHash: TxHash
@@ -248,7 +330,7 @@ export type TransactionReceipt = {
   /**  The contract address created, if the transaction was a contract creation, otherwise null. */
   contractAddress: Address
   /** Array of log objects, which this transaction generated. */
-  logs: Array<FilterLog>
+  logs: Array<LogObject>
   /**  256 Bytes - Bloom filter for light clients to quickly retrieve related logs. */
   logsBloom: Data
   /**  post-transaction stateroot (pre Byzantium) */
@@ -257,7 +339,10 @@ export type TransactionReceipt = {
   status?: Quantity
 }
 
-export type FilterChange = {
+/**
+ * @public
+ */
+export type LogObject = {
   /** true when the log was removed, due to a chain reorganization. false if its a valid log. */
   removed: boolean
   /** integer of the log index position in the block. null when its pending log. */
@@ -281,6 +366,9 @@ export type FilterChange = {
   topics: Array<Data>
 }
 
+/**
+ * @public
+ */
 export type SHHPost = {
   /** (optional) The identity of the sender. */
   from: Data
@@ -296,6 +384,9 @@ export type SHHPost = {
   ttl: Quantity
 }
 
+/**
+ * @public
+ */
 export type SHHFilterOptions = {
   /**
    * (optional) Identity of the receiver. When present it will try to decrypt any incoming message if the client holds the private key to this identity.
@@ -307,8 +398,12 @@ export type SHHFilterOptions = {
    * [A, [B, C]] = A && (B || C)
    * [null, A, B] = ANYTHING && A && B null works as a wildcard
    */
-  topics: Array<Data>
+  topics: TopicFilter
 }
+
+/**
+ * @public
+ */
 export type SHHFilterMessage = {
   /** The hash of the message. */
   hash: TxHash
@@ -328,4 +423,124 @@ export type SHHFilterMessage = {
   payload: Data
   /** Integer of the work this message required before it was send (?). */
   workProved: Quantity
+}
+
+/**
+ * @public
+ */
+export type EventData = {
+  data: string
+  topics: string[]
+  address: string
+}
+
+/**
+ * @public
+ */
+export type AbiType = 'function' | 'constructor' | 'event' | 'fallback'
+
+/**
+ * @public
+ */
+export type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable'
+
+/**
+ * @public
+ */
+export type AbiItem = AbiFunction | AbiEvent | AbiConstructor | AbiFallback | AbiItemGeneric
+
+/**
+ * @public
+ */
+export interface AbiFunction {
+  type: 'function'
+  anonymous?: boolean
+  constant?: boolean
+  inputs?: AbiInput[]
+  name?: string
+  outputs?: AbiOutput[]
+  payable?: boolean
+  stateMutability?: StateMutabilityType
+  gas?: number
+}
+
+/**
+ * @public
+ */
+export interface AbiEvent {
+  type: 'event'
+  anonymous?: boolean
+  constant?: boolean
+  inputs?: AbiInput[]
+  name?: string
+  outputs?: AbiOutput[]
+  payable?: boolean
+  stateMutability?: StateMutabilityType
+  gas?: number
+}
+
+/**
+ * @public
+ */
+export interface AbiFallback {
+  type: 'fallback'
+  anonymous?: boolean
+  constant?: boolean
+  inputs?: AbiInput[]
+  name?: string
+  outputs?: AbiOutput[]
+  payable?: boolean
+  stateMutability?: StateMutabilityType
+  gas?: number
+}
+
+/**
+ * @public
+ */
+export interface AbiItemGeneric {
+  type: string
+  anonymous?: boolean
+  constant?: boolean
+  inputs?: AbiInput[]
+  name?: string
+  outputs?: AbiOutput[]
+  payable?: boolean
+  stateMutability?: StateMutabilityType
+  gas?: number
+}
+
+/**
+ * @public
+ */
+export interface AbiConstructor {
+  type: 'constructor'
+  anonymous?: boolean
+  constant?: boolean
+  inputs?: AbiInput[]
+  name?: string
+  outputs?: AbiOutput[]
+  payable?: boolean
+  stateMutability?: StateMutabilityType
+  gas?: number
+}
+
+/**
+ * @public
+ */
+export interface AbiInput {
+  name: string
+  type: string
+  indexed?: boolean
+  components?: AbiInput[]
+  internalType?: string
+}
+
+/**
+ * @public
+ */
+export interface AbiOutput {
+  name: string
+  type: string
+  components?: AbiOutput[]
+  internalType?: string
 }

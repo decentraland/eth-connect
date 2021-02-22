@@ -1,16 +1,16 @@
-import f = require('./formatters')
+import * as f from './formatters'
 import { SolidityType } from './type'
 
-export class SolidityTypeAddress extends SolidityType {
+export class SolidityTypeAddress extends SolidityType<string> {
   constructor() {
     super({
-      inputFormatter: f.formatInputInt,
+      inputFormatter: f.formatInputAddress,
       outputFormatter: f.formatOutputAddress
     })
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  isType(name) {
+  isType(name: string) {
     return !!name.match(/address(\[([0-9]*)\])?/)
   }
 }

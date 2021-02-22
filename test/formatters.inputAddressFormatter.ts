@@ -1,5 +1,4 @@
-import chai = require('chai')
-const assert = chai.assert
+import * as expect from 'expect'
 import * as formatters from '../src/utils/formatters'
 
 let tests = [
@@ -13,27 +12,28 @@ let errorTests = [
   '0x0c5496aee77c1ba1f0854206a26dda82a81d6d8',
   '0x0c5496aee77c1ba1f0854206a26dda82a81d6d8',
   '00c5496aee77c1ba1f0854206a26dda82a81d6d',
+  '0x0',
   'XE7338O073KYGTWWZN0F2WZ0R8PX5ZPPZE',
   '0x'
 ]
 
-describe('formatters', function() {
-  describe('inputAddressFormatter', function() {
-    tests.forEach(function(test) {
-      it('should return the correct value', function() {
-        assert.deepEqual(formatters.inputAddressFormatter(test.input), test.result)
+describe('formatters', function () {
+  describe('inputAddressFormatter', function () {
+    tests.forEach(function (test, i) {
+      it('should return the correct value: ' + i, function () {
+        expect(formatters.inputAddressFormatter(test.input)).toEqual(test.result)
       })
     })
   })
 })
 
-describe('formatters', function() {
-  describe('inputAddressFormatter', function() {
-    errorTests.forEach(function(test) {
-      it('should throw an exception', function() {
-        assert.throws(function() {
+describe('formatters', function () {
+  describe('inputAddressFormatter', function () {
+    errorTests.forEach(function (test, i) {
+      it('should throw an exception: ' + i, function () {
+        expect(function () {
           formatters.inputAddressFormatter(test)
-        })
+        }).toThrow()
       })
     })
   })

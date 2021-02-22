@@ -1,6 +1,5 @@
-import chai = require('chai')
-import utils = require('../src/utils/utils')
-const assert = chai.assert
+import * as expect from 'expect'
+import * as utils from '../src/utils/utils'
 
 let tests = [
   { value: 1, expected: '0x1' },
@@ -43,11 +42,11 @@ let tests = [
   { value: '-0x0', expected: '0x0' }
 ]
 
-describe('lib/utils/utils', function() {
-  describe('fromDecimal', function() {
-    tests.forEach(function(test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function() {
-        assert.equal(utils.fromDecimal(test.value), test.expected)
+describe('lib/utils/utils', function () {
+  describe('fromDecimal', function () {
+    tests.forEach(function (test) {
+      it('should turn ' + test.value + ' to ' + test.expected, function () {
+        expect(utils.fromDecimal(test.value)).toEqual(test.expected)
       })
     })
   })

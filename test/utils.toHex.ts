@@ -1,7 +1,6 @@
-import chai = require('chai')
-import utils = require('../src/utils/utils')
-import BigNumber from 'bignumber.js'
-const assert = chai.assert
+import * as expect from 'expect'
+import * as utils from '../src/utils/utils'
+import { BigNumber } from '../src/utils/BigNumber'
 
 let tests = [
   { value: 1, expected: '0x1' },
@@ -53,7 +52,7 @@ describe('lib/utils/utils', function() {
   describe('toHex', function() {
     tests.forEach(function(test) {
       it('should turn ' + test.value + ' to ' + test.expected, function() {
-        assert.strictEqual(utils.toHex(test.value as any), test.expected)
+        expect(utils.toHex(test.value as any)).toEqual(test.expected)
       })
     })
   })

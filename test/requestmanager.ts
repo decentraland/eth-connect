@@ -1,14 +1,13 @@
-import chai = require('chai')
-const assert = chai.assert
+import * as expect from 'expect'
 import { RequestManager } from '../src'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 
 // TODO: handling errors!
 // TODO: validation of params!
 
-describe('lib/web3/requestmanager', function() {
-  describe('send', function() {
-    it('should return expected result asynchronously', async function() {
+describe('lib/web3/requestmanager', function () {
+  describe('send', function () {
+    it('should return expected result asynchronously', async function () {
       const provider = new FakeHttpProvider()
       let manager = new RequestManager(provider)
       let expected = 'hello_world'
@@ -19,7 +18,7 @@ describe('lib/web3/requestmanager', function() {
         params: [1, 2, 3]
       })
 
-      assert.equal(expected, result)
+      expect(result).toEqual(expected)
     })
   })
 })

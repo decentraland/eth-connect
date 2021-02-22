@@ -1,4 +1,4 @@
-import f = require('./formatters')
+import * as f from './formatters'
 import { SolidityType } from './type'
 
 /**
@@ -11,14 +11,14 @@ import { SolidityType } from './type'
  * bool[3][]
  * bool[][6][], ...
  */
-export class SolidityTypeBool extends SolidityType {
+export class SolidityTypeBool extends SolidityType<boolean> {
   constructor() {
     super({
       inputFormatter: f.formatInputBool,
       outputFormatter: f.formatOutputBool
     })
   }
-  isType(name) {
+  isType(name: string) {
     return !!name.match(/^bool(\[([0-9]*)\])*$/)
   }
 }

@@ -25,7 +25,7 @@ export function InvalidNumberOfRPCParams(methodName: string, given: number, expe
   )
 }
 
-export function InvalidConnection(host) {
+export function InvalidConnection(host: string) {
   return new Error("CONNECTION ERROR: Couldn't connect to node " + host + '.')
 }
 
@@ -33,7 +33,7 @@ export function InvalidProvider() {
   return new Error('Provider not set or invalid')
 }
 
-export function InvalidResponse(result) {
+export function InvalidResponse(result: any) {
   let message =
     !!result && !!result.error && !!result.error.message
       ? result.error.message
@@ -41,6 +41,6 @@ export function InvalidResponse(result) {
   return new Error(message)
 }
 
-export function ConnectionTimeout(ms) {
+export function ConnectionTimeout(ms: number) {
   return new Error('CONNECTION TIMEOUT: timeout of ' + ms + ' ms achived')
 }

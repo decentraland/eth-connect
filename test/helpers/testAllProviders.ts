@@ -9,7 +9,7 @@ import { WebSocketProvider } from '../../src/providers/WebSocketProvider'
 import { w3cwebsocket } from 'websocket'
 
 export function testAllProviders(doTest: (x: RequestManager) => void) {
-  describe('ganache(injected):', function() {
+  describe('ganache(injected):', function () {
     const nodeConnectionFactory = new NodeConnectionFactory()
     const provider = nodeConnectionFactory.createProvider()
     const rm = new RequestManager(provider)
@@ -23,33 +23,49 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
       }
     })
 
+    it('should get the network', async () => {
+      console.log('Network version:', await rm.net_version())
+    })
+
+    it('should get the protocol version', async () => {
+      console.log('Protocol version:', await rm.eth_protocolVersion())
+    })
+
     doTest(rm)
 
-    it('closes the provider', done => {
+    it('closes the provider', (done) => {
       provider.close(done)
     })
   })
 
-  describe('ganache(http):', function() {
+  describe('ganache(http):', function () {
     const nodeConnectionFactory = new NodeConnectionFactory()
     const provider = nodeConnectionFactory.createServer()
 
-    it('should start the server', done => {
-      provider.listen(7654, function(err) {
+    it('should start the server', (done) => {
+      provider.listen(7654, function (err) {
         done(err)
       })
     })
 
     const rm = new RequestManager(new HTTPProvider('http://127.0.0.1:7654'))
 
+    it('should get the network', async () => {
+      console.log('Network version:', await rm.net_version())
+    })
+
+    it('should get the protocol version', async () => {
+      console.log('Protocol version:', await rm.eth_protocolVersion())
+    })
+
     doTest(rm)
 
-    it('closes the provider', done => {
+    it('closes the provider', (done) => {
       provider.close(done)
     })
   })
 
-  describe('geth(ws):', function() {
+  describe('geth(ws):', function () {
     const provider = new WebSocketProvider('ws://127.0.0.1:8546', { WebSocketConstructor: w3cwebsocket })
     const rm = new RequestManager(provider)
 

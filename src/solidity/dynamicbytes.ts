@@ -1,7 +1,7 @@
-import f = require('./formatters')
+import * as f from './formatters'
 import { SolidityType } from './type'
 
-export class SolidityTypeDynamicBytes extends SolidityType {
+export class SolidityTypeDynamicBytes extends SolidityType<string> {
   constructor() {
     super({
       inputFormatter: f.formatInputDynamicBytes,
@@ -10,7 +10,7 @@ export class SolidityTypeDynamicBytes extends SolidityType {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  isType(name) {
+  isType(name: string) {
     return !!name.match(/^bytes(\[([0-9]*)\])*$/)
   }
 

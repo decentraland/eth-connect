@@ -1,9 +1,9 @@
-import { assert } from 'chai'
+import * as expect from 'expect'
 import * as Jsonrpc from '../src/utils/jsonrpc'
 
-describe('jsonrpc', function() {
-  describe('toBatchPayload', function() {
-    it('should create basic batch payload', function() {
+describe('jsonrpc', function () {
+  describe('toBatchPayload', function () {
+    it('should create basic batch payload', function () {
       // given
       let messages = [
         {
@@ -20,21 +20,21 @@ describe('jsonrpc', function() {
       let payload = Jsonrpc.toBatchPayload(messages)
 
       // then
-      assert.equal(Array.isArray(payload), true)
-      assert.equal(payload.length, 2)
-      assert.equal(payload[0].jsonrpc, '2.0')
-      assert.equal(payload[1].jsonrpc, '2.0')
-      assert.equal(payload[0].method, 'helloworld')
-      assert.equal(payload[1].method, 'test2')
-      assert.equal(Array.isArray(payload[0].params), true)
-      assert.equal(payload[1].params.length, 1)
-      assert.equal(payload[1].params[0], 1)
-      assert.equal(typeof payload[0].id, 'number')
-      assert.equal(typeof payload[1].id, 'number')
-      assert.equal(payload[0].id + 1, payload[1].id)
+      expect(Array.isArray(payload)).toEqual(true)
+      expect(payload.length).toEqual(2)
+      expect(payload[0].jsonrpc).toEqual('2.0')
+      expect(payload[1].jsonrpc).toEqual('2.0')
+      expect(payload[0].method).toEqual('helloworld')
+      expect(payload[1].method).toEqual('test2')
+      expect(Array.isArray(payload[0].params)).toEqual(true)
+      expect(payload[1].params.length).toEqual(1)
+      expect(payload[1].params[0]).toEqual(1)
+      expect(typeof payload[0].id).toEqual('number')
+      expect(typeof payload[1].id).toEqual('number')
+      expect(payload[0].id + 1).toEqual(payload[1].id)
     })
 
-    it('should create batch payload for empty input array', function() {
+    it('should create batch payload for empty input array', function () {
       // given
       let messages = []
 
@@ -42,8 +42,8 @@ describe('jsonrpc', function() {
       let payload = Jsonrpc.toBatchPayload(messages)
 
       // then
-      assert.equal(Array.isArray(payload), true)
-      assert.equal(payload.length, 0)
+      expect(Array.isArray(payload)).toEqual(true)
+      expect(payload.length).toEqual(0)
     })
   })
 })

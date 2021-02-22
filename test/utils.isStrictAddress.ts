@@ -1,10 +1,9 @@
-import chai = require('chai')
-import utils = require('../src/utils/utils')
-const assert = chai.assert
+import * as expect from 'expect'
+import * as utils from '../src/utils/utils'
 
 let tests = [
   {
-    value: function() {
+    value: function () {
       /* stub */
     },
     is: false
@@ -16,11 +15,11 @@ let tests = [
   { value: 'c6d9d2cd449a754c494264e1809c50e34d64562b', is: false }
 ]
 
-describe('lib/utils/utils', function() {
-  describe('isStrictAddress', function() {
-    tests.forEach(function(test) {
-      it('shoud test if value ' + test.value + ' is address: ' + test.is, function() {
-        assert.equal(utils.isStrictAddress(test.value), test.is)
+describe('lib/utils/utils', function () {
+  describe('isStrictAddress', function () {
+    tests.forEach(function (test) {
+      it('shoud test if value ' + test.value + ' is address: ' + test.is, function () {
+        expect(utils.isStrictAddress(test.value)).toEqual(test.is)
       })
     })
   })

@@ -24,8 +24,9 @@ import * as utils from './utils/utils'
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
-import { future } from './utils/future'
-import { TransactionOptions, TxHash, Data } from './Schema'
+import { future } from 'fp-future'
+import { TransactionOptions, TxHash, AbiItem } from './Schema'
+import { toDecimal } from './utils/utils'
 
 /**
  * Should be called to check if the contract gets properly deployed on the blockchain.
@@ -43,7 +44,7 @@ async function checkForContractAddress(requestManager: RequestManager, txId: TxH
       receiptFuture.reject(new Error("Contract transaction couldn't be found after 50 blocks"))
     } else {
       requestManager.eth_getTransactionReceipt(txId).then(
-        receipt => {
+        (receipt) => {
           if (receipt && receipt.blockHash) {
             receiptFuture.resolve(receipt)
           } else {
@@ -51,7 +52,7 @@ async function checkForContractAddress(requestManager: RequestManager, txId: TxH
           }
         },
         /* istanbul ignore next */
-        error => receiptFuture.reject(error)
+        (error) => receiptFuture.reject(error)
       )
     }
   }
@@ -61,7 +62,10 @@ async function checkForContractAddress(requestManager: RequestManager, txId: TxH
   const receipt = await receiptFuture
   const code = await requestManager.eth_getCode(receipt.contractAddress, 'latest')
 
-  if (code.length > 3) {
+  // code can be null because of undefined behavior of eth nodes,
+  // the strict types requires us to check that code is not null before
+  // comparing it with a number `> 3` "0x0"
+  if (code && code.length > 3) {
     return receipt.contractAddress
   }
 
@@ -76,18 +80,18 @@ async function checkForContractAddress(requestManager: RequestManager, txId: TxH
  * Should be called to encode constructor params
  * @param abi - The given contract ABI
  */
-function encodeConstructorParams(abi: any[], params: any[]) {
+function encodeConstructorParams(abi: AbiItem[], params: any[]) {
   return (
     abi
-      .filter(function(json) {
-        return json.type === 'constructor' && json.inputs.length === params.length
+      .filter(function (json) {
+        return json.type === 'constructor' && json.inputs && json.inputs.length === params.length
       })
-      .map(function(json) {
-        return json.inputs.map(function(input) {
+      .map(function (json) {
+        return json.inputs!.map(function (input) {
           return input.type
         })
       })
-      .map(function(types) {
+      .map(function (types) {
         return coder.encodeParams(types, params)
       })[0] || ''
   )
@@ -99,15 +103,16 @@ function encodeConstructorParams(abi: any[], params: any[]) {
  */
 export class ContractFactory {
   constructor(public requestManager: RequestManager, public abi: any[]) {}
+
   /**
    * Should be called to create new contract on a blockchain
    */
-  async deploy(param1, param2, options: TransactionOptions): Promise<Contract>
-  async deploy(param1, options: TransactionOptions): Promise<Contract>
+  async deploy(param1: any, param2: any, options: TransactionOptions): Promise<Contract>
+  async deploy(param1: any, options: TransactionOptions): Promise<Contract>
   async deploy(options: TransactionOptions): Promise<Contract>
-  async deploy(...args) {
+  async deploy(...args: any[]) {
     // parse arguments
-    let options: TransactionOptions
+    let options: TransactionOptions | undefined = undefined
 
     let last = args[args.length - 1]
 
@@ -125,9 +130,9 @@ export class ContractFactory {
       throw new Error('Invalid options.data')
     }
 
-    if (options.value > 0) {
+    if (toDecimal(options.value!) > 0) {
       let constructorAbi =
-        this.abi.filter(function(json) {
+        this.abi.filter(function (json) {
           return json.type === 'constructor' && json.inputs.length === args.length
         })[0] || {}
 
@@ -147,6 +152,10 @@ export class ContractFactory {
     // wait for the contract address and check if the code was deployed
     const hash = await this.requestManager.eth_sendTransaction(options)
 
+    if (!hash) {
+      throw new Error('Error while sending contract creation transaction. A TxHash was not retrieved')
+    }
+
     const address = await checkForContractAddress(this.requestManager, hash)
     const contract = await this.at(address)
     contract.transactionHash = hash
@@ -163,34 +172,6 @@ export class ContractFactory {
     if (!utils.isAddress(address)) {
       throw new TypeError(`Invalid address ${JSON.stringify(address)}`)
     }
-    let contract = new Contract(this.requestManager, this.abi, address)
-    return contract
-  }
-
-  /**
-   * Gets the data, which is data to deploy plus constructor params
-   */
-  async getData(...args: any[]): Promise<Data> {
-    let options = { data: undefined }
-
-    const last = args[args.length - 1]
-
-    if (utils.isObject(last) && !utils.isArray(last)) {
-      options = args.pop()
-    }
-
-    if (!options) {
-      throw new Error('Missing options object')
-    }
-
-    if (!options.data || typeof options.data !== 'string') {
-      throw new Error('Invalid options.data')
-    }
-
-    const bytes = encodeConstructorParams(this.abi, args)
-
-    options.data += bytes
-
-    return options.data
+    return new Contract(this.requestManager, this.abi, address)
   }
 }

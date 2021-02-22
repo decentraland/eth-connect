@@ -1,7 +1,6 @@
-import chai = require('chai')
-const assert = chai.assert
+import * as expect from 'expect'
 import * as formatters from '../src/utils/formatters'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from '../src'
 
 let tests = [
   {
@@ -94,9 +93,9 @@ let tests = [
 
 describe('formatters', function() {
   describe('inputTransactionFormatter', function() {
-    tests.forEach(function(test) {
-      it('should return the correct value', function() {
-        assert.deepEqual(formatters.inputTransactionFormatter(test.input), test.result)
+    tests.forEach(function(test, i) {
+      it('should return the correct value: ' + i, function() {
+        expect(formatters.inputTransactionFormatter(test.input as any)).toEqual(test.result)
       })
     })
   })

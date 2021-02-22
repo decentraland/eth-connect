@@ -15,29 +15,52 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import { BigNumber } from 'bignumber.js'
-import { BigNumber as BigNumberType } from './BigNumber'
-import utf8 = require('utf8')
-
-import CryptoJS = require('crypto-js')
-import _sha3 = require('crypto-js/sha3')
+import * as utf8 from 'utf8'
+import { keccak256 } from 'js-sha3'
+import { BigNumber } from './BigNumber'
+import { AbiItem } from '../Schema'
 
 /**
  * @public
  */
-export function sha3(value: string, options?: { encoding?: 'hex' }) {
-  let mutValue = value
+export function hexToBytes(hex: string): Uint8Array {
+  if (typeof hex != 'string') throw new Error('hexToBytes only accept strings, got: ' + typeof hex)
 
-  if (options && options.encoding === 'hex') {
-    if (mutValue.length > 2 && mutValue.substr(0, 2) === '0x') {
-      mutValue = mutValue.substr(2)
-    }
-    mutValue = CryptoJS.enc.Hex.parse(mutValue)
+  if (hex.substr(0, 2) === '0x') {
+    return hexToBytes(hex.substr(2))
   }
 
-  return _sha3(mutValue, {
-    outputLength: 256
-  }).toString()
+  const result = new Uint8Array(Math.ceil(hex.length / 2))
+
+  let i = 0
+  for (let char = 0; char < hex.length; char += 2) {
+    const n = parseInt(hex.substr(char, 2), 16)
+    if (isNaN(n)) throw new Error('Cannot read hex string:' + JSON.stringify(hex))
+    result[i] = parseInt(hex.substr(char, 2), 16)
+    i++
+  }
+
+  return result
+}
+
+/**
+ * @public
+ */
+export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, options?: { encoding?: 'hex' }): string {
+  if (typeof value == 'string') {
+    if (options && options.encoding === 'hex' && typeof value == 'string') {
+      let mutValue = value
+      if (mutValue.length > 2 && mutValue.substr(0, 2) === '0x') {
+        mutValue = mutValue.substr(2)
+      }
+      const t = hexToBytes(mutValue)
+      return keccak256(t)
+    } else {
+      return keccak256(utf8.encode(value))
+    }
+  }
+
+  return keccak256(value)
 }
 
 let unitMap = {
@@ -70,6 +93,8 @@ let unitMap = {
   tether: '1000000000000000000000000000000'
 }
 
+export type Unit = keyof typeof unitMap
+
 /**
  * @public
  * Should be called to pad string to expected length
@@ -90,7 +115,7 @@ export function padRight(str: string, chars: number, sign?: string) {
  * @public
  * Should be called to get utf8 from it's hex representation
  */
-export function toUtf8(hex: string) {
+export function toUtf8(hex: string): string {
   // Find termination
   let str = ''
   let i = 0
@@ -171,16 +196,20 @@ export function fromAscii(str: string, num: number = 0) {
  * @public
  * Should be used to create full function/event name from json abi
  */
-export function transformToFullName(json: { name: string; inputs: any[] }) {
-  if (json.name.indexOf('(') !== -1) {
+export function transformToFullName(json: AbiItem) {
+  if (json.name && json.name.indexOf('(') !== -1) {
     return json.name
   }
 
-  let typeName = json.inputs
-    .map(function(i) {
-      return i.type
-    })
-    .join()
+  let typeName: string = ''
+  if (json.inputs) {
+    typeName = json.inputs
+      .map(function (i) {
+        return i.type
+      })
+      .join()
+  }
+
   return json.name + '(' + typeName + ')'
 }
 
@@ -220,7 +249,7 @@ export function isHex(value: string) {
  * @public
  * Converts value to it's decimal representation in string
  */
-export function toNullDecimal(value: number | string | BigNumberType) {
+export function toNullDecimal(value: BigNumber.Value) {
   if (value === undefined || value === null) return value
   return toBigNumber(value).toNumber()
 }
@@ -229,15 +258,24 @@ export function toNullDecimal(value: number | string | BigNumberType) {
  * @public
  * Converts value to it's decimal representation in string
  */
-export function toDecimal(value: number | string | BigNumberType) {
+export function toDecimal(value: BigNumber.Value) {
   return toBigNumber(value).toNumber()
+}
+
+/**
+ * @public
+ * Converts value to string
+ */
+export function toString(value: BigNumber.Value) {
+  if (isBigNumber(value)) return (value as BigNumber).toString(10)
+  return '' + value
 }
 
 /**
  * @public
  * Converts value to it's hex  representation in string
  */
-export function toData(val: string | number | BigNumberType) {
+export function toData(val: BigNumber.Value) {
   if (typeof val === 'string') {
     if (!val.startsWith('0x') && /^[A-Za-z0-9]+$/.test(val)) {
       return '0x' + val
@@ -250,7 +288,7 @@ export function toData(val: string | number | BigNumberType) {
  * @public
  * Converts value to it's boolean representation (x != 0)
  */
-export function toBoolean(value: number | string | BigNumberType | boolean) {
+export function toBoolean(value: BigNumber.Value | boolean) {
   if (typeof value === 'boolean') return value
   return toBigNumber(value).toNumber() !== 0
 }
@@ -259,7 +297,7 @@ export function toBoolean(value: number | string | BigNumberType | boolean) {
  * @public
  * Converts value to it's hex representation
  */
-export function fromDecimal(value: string | number | BigNumberType) {
+export function fromDecimal(value: BigNumber.Value) {
   let num = toBigNumber(value)
   let result = num.toString(16)
 
@@ -272,9 +310,7 @@ export function fromDecimal(value: string | number | BigNumberType) {
  *
  * And even stringifys objects before.
  */
-export function toHex(val: string | number | BigNumberType) {
-  /*jshint maxcomplexity: 8 */
-
+export function toHex(val: BigNumber.Value | boolean) {
   if (isBoolean(val)) return fromDecimal(+val)
 
   if (isBigNumber(val)) return fromDecimal(val)
@@ -296,8 +332,8 @@ export function toHex(val: string | number | BigNumberType) {
  * @public
  * Returns value of unit in Wei
  */
-export function getValueOfUnit(_unit: string): BigNumberType {
-  let unit = _unit ? _unit.toLowerCase() : 'ether'
+export function getValueOfUnit(_unit: Unit): BigNumber {
+  let unit: Unit = _unit ? (_unit.toLowerCase() as Unit) : 'ether'
   let unitValue = unitMap[unit]
   if (unitValue === undefined) {
     throw new Error(
@@ -325,7 +361,9 @@ export function getValueOfUnit(_unit: string): BigNumberType {
  * - tether
  *
  */
-export function fromWei(num: number | string, unit: string) {
+export function fromWei(num: BigNumber, unit: Unit): BigNumber
+export function fromWei(num: string | number, unit: Unit): string
+export function fromWei(num: BigNumber.Value, unit: Unit) {
   let returnValue = toBigNumber(num).dividedBy(getValueOfUnit(unit))
 
   return isBigNumber(num) ? returnValue : returnValue.toString(10)
@@ -348,7 +386,7 @@ export function fromWei(num: number | string, unit: string) {
  * - gether
  * - tether
  */
-export function toWei(num: number | string, unit: string) {
+export function toWei(num: number | string, unit: Unit) {
   let returnValue = toBigNumber(num).times(getValueOfUnit(unit))
 
   return isBigNumber(num) ? returnValue : returnValue.toString(10)
@@ -358,7 +396,7 @@ export function toWei(num: number | string, unit: string) {
  * @public
  * Takes an input and transforms it into an bignumber
  */
-export function toBigNumber(_num: number | string | BigNumberType): BigNumberType {
+export function toBigNumber(_num: BigNumber.Value): BigNumber {
   let num: any = _num || 0
 
   if (isBigNumber(num)) {
@@ -376,7 +414,7 @@ export function toBigNumber(_num: number | string | BigNumberType): BigNumberTyp
  * @public
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
  */
-export function toTwosComplement(num: number | string | BigNumberType): BigNumberType {
+export function toTwosComplement(num: BigNumber.Value): BigNumber {
   let bigNumber = toBigNumber(num).integerValue() as BigNumber
 
   if (bigNumber.isLessThan(0)) {
@@ -456,9 +494,20 @@ export function toChecksumAddress(_address: string) {
 
 /**
  * @public
+ * Ensures the result will be an array
+ */
+export function toArray(value: any): any[] {
+  if (!Array.isArray(value)) {
+    throw new Error(`Value was not an array: ${JSON.stringify(value)}`)
+  }
+  return value
+}
+
+/**
+ * @public
  * Transforms given string to valid 20 bytes-length addres with 0x prefix
  */
-export function toAddress(address) {
+export function toAddress(address: string) {
   if (isStrictAddress(address)) {
     return address
   }
@@ -472,9 +521,9 @@ export function toAddress(address) {
 
 /**
  * @public
- * Returns true if object is BigNumberType, otherwise false
+ * Returns true if object is BigNumber, otherwise false
  */
-export function isBigNumber(object: any) {
+export function isBigNumber(object: any): object is BigNumber {
   return object instanceof BigNumber
 }
 
@@ -490,7 +539,7 @@ export function isString(value: any): value is string {
  * @public
  * Returns true if object is function, otherwise false
  */
-export function isFunction(object) {
+export function isFunction(object: any): object is CallableFunction {
   return typeof object === 'function'
 }
 
@@ -498,7 +547,7 @@ export function isFunction(object) {
  * @public
  * Returns true if object is Objet, otherwise false
  */
-export function isObject(object) {
+export function isObject<T extends object>(object: any): object is T {
   return object !== null && !Array.isArray(object) && typeof object === 'object'
 }
 
@@ -506,7 +555,7 @@ export function isObject(object) {
  * @public
  * Returns true if object is boolean, otherwise false
  */
-export function isBoolean(object) {
+export function isBoolean(object: any): object is boolean {
   return typeof object === 'boolean'
 }
 
@@ -514,7 +563,7 @@ export function isBoolean(object) {
  * @public
  * Returns true if object is array, otherwise false
  */
-export function isArray(object) {
+export function isArray<T extends Array<any>>(object: any): object is T {
   return Array.isArray(object)
 }
 
@@ -522,7 +571,7 @@ export function isArray(object) {
  * @public
  * Returns true if given string is valid json object
  */
-export function isJson(str) {
+export function isJson(str: string) {
   try {
     return !!JSON.parse(str)
   } catch (e) {
@@ -534,10 +583,10 @@ export function isJson(str) {
  * @public
  * Returns true if given string is a valid Ethereum block header bloom.
  */
-export function isBloom(bloom) {
+export function isBloom(bloom: string) {
   if (!/^(0x)?[0-9a-f]{512}$/i.test(bloom)) {
     return false
-  } else if (/^(0x)?[0-9a-f]{512}$/.test(bloom) || /^(0x)?[0-9A-F]{512}$/.test(bloom)) {
+  } else if (/^(0x)?[0-9a-f]{512}$/i.test(bloom)) {
     return true
   }
   return false
@@ -550,7 +599,7 @@ export function isBloom(bloom) {
 export function isTopic(topic: string) {
   if (!/^(0x)?[0-9a-f]{64}$/i.test(topic)) {
     return false
-  } else if (/^(0x)?[0-9a-f]{64}$/.test(topic) || /^(0x)?[0-9A-F]{64}$/.test(topic)) {
+  } else if (/^(0x)?[0-9a-f]{64}$/i.test(topic)) {
     return true
   }
   return false

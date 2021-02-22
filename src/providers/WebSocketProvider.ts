@@ -1,9 +1,19 @@
-import { Callback, RPCMessage, toRPC } from './common'
-import { IFuture, future } from '../utils/future'
+import { Callback, RPCResponse, RPCMessage, toRPC } from './common'
+import { IFuture, future } from 'fp-future'
 
 export interface IWebSocket {
-  close()
-  send(s: any)
+  /**
+   * Closes the WebSocket connection, optionally using code as the the WebSocket connection close code and reason as the the WebSocket connection close reason.
+   */
+  close(code?: number, reason?: string): void
+  /**
+   * Transmits data using the WebSocket connection. data can be a string, a Blob, an ArrayBuffer, or an ArrayBufferView.
+   */
+  send(data: string): void
+  onclose: ((this: this, ev: any) => any) | null
+  onerror: ((this: this, ev: any) => any) | null
+  onmessage: ((this: this, ev: any) => any) | null
+  onopen: ((this: this, ev: any) => any) | null
 }
 
 export type WebSocketProviderOptions = {
@@ -27,7 +37,7 @@ export class WebSocketProvider<T extends IWebSocket> {
   responseCallbacks = new Map<number, IFuture<any>>()
   // @internal
   notificationCallbacks = new Set<Callback>()
-  connection: IFuture<T>
+  connection!: IFuture<T>
 
   debug = false
 
@@ -43,7 +53,7 @@ export class WebSocketProvider<T extends IWebSocket> {
     const connection = this.connection
     this.timeout(new Error('Provider disposed.'))
     // tslint:disable-next-line:no-floating-promises
-    connection.then($ => $.close())
+    connection.then(($) => $.close())
   }
 
   /* istanbul ignore next */
@@ -58,7 +68,7 @@ export class WebSocketProvider<T extends IWebSocket> {
     let didFinish: Promise<any>
     if (payload instanceof Array) {
       didFinish = Promise.all(
-        payload.map($ => {
+        payload.map(($) => {
           const defer = future<any>()
 
           try {
@@ -84,11 +94,14 @@ export class WebSocketProvider<T extends IWebSocket> {
       didFinish = defer
     }
 
-    didFinish.then($ => callback(null, $), err => callback(err))
+    didFinish.then(
+      ($) => callback(null, $),
+      (err) => callback(err)
+    )
 
     this.connection.then(
-      ws => {
-        toSend.forEach($ => {
+      (ws) => {
+        toSend.forEach(($) => {
           const s = JSON.stringify($)
 
           /* istanbul ignore if */
@@ -97,7 +110,7 @@ export class WebSocketProvider<T extends IWebSocket> {
           ws.send(s)
         })
       },
-      err => {
+      (err) => {
         callback(err)
       }
     )
@@ -105,11 +118,9 @@ export class WebSocketProvider<T extends IWebSocket> {
 
   /**
    * Will parse the response and make an array out of it.
-   * @method _parseResponse
-   * @param {String} data
    */
   private parseResponse(data: string) {
-    let returnValues = []
+    let returnValues: any[] = []
 
     // DE-CHUNKER
     let dechunkedData = data
@@ -119,14 +130,14 @@ export class WebSocketProvider<T extends IWebSocket> {
       .replace(/\}\][\n\r]?\{/g, '}]|--|{') // }]{
       .split('|--|')
 
-    dechunkedData.forEach(chunk => {
+    dechunkedData.forEach((chunk) => {
       let data = chunk
       // prepend the last chunk
       if (this.lastChunk) {
         data = this.lastChunk + data
       }
 
-      let result = null
+      let result: any = null
 
       try {
         result = JSON.parse(data)
@@ -145,7 +156,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
       // cancel timeout and set chunk to null
       clearTimeout(this.lastChunkTimeout)
-      this.lastChunk = null
+      this.lastChunk = ''
 
       if (result) returnValues.push(result)
     })
@@ -153,7 +164,7 @@ export class WebSocketProvider<T extends IWebSocket> {
     return returnValues
   }
 
-  private processMessage(message) {
+  private processMessage(message: RPCResponse) {
     if ('id' in message) {
       const id = message.id
 
@@ -173,13 +184,12 @@ export class WebSocketProvider<T extends IWebSocket> {
         defer.resolve(message)
       }
     } else {
-      this.notificationCallbacks.forEach($ => $(null, message))
+      this.notificationCallbacks.forEach(($) => $(null, message))
     }
   }
 
   /**
    * Timeout all requests when the end/error event is fired
-   * @method _timeout
    */
   private timeout(error?: Error) {
     if (!this.connection || !this.connection.isPending) {
@@ -187,7 +197,7 @@ export class WebSocketProvider<T extends IWebSocket> {
     }
 
     const timeoutError = error || new Error('Connection timeout')
-    this.responseCallbacks.forEach($ => $.reject(timeoutError))
+    this.responseCallbacks.forEach(($) => $.reject(timeoutError))
     this.responseCallbacks.clear()
 
     // reset all requests and callbacks
@@ -199,7 +209,7 @@ export class WebSocketProvider<T extends IWebSocket> {
   private connect() {
     if (this.connection && !this.connection.isPending) {
       // tslint:disable-next-line
-      this.connection.then($ => $.close())
+      this.connection.then(($) => $.close())
     }
 
     if (!this.connection || !this.connection.isPending) {
@@ -214,32 +224,34 @@ export class WebSocketProvider<T extends IWebSocket> {
       throw new Error('Please provide a WebSocketConstructor')
     }
 
-    const connection = new ctor(this.url, this.options.protocol)
+    const connection: T = new ctor(this.url, this.options.protocol)
 
     connection.onopen = () => {
       this.connection.resolve(connection)
     }
 
-    connection.onerror = error => {
-      this.timeout(error)
+    connection.onerror = (error) => {
+      const theError = new Error('Error in web socket')
+      ;(theError as any).data = error
+      this.timeout(theError)
     }
 
-    connection.onclose = event => {
+    connection.onclose = (event) => {
       this.timeout(new Error(`Connection closed (${(event && event.reason) || 'Unknown reason'})`))
     }
 
     // LISTEN FOR CONNECTION RESPONSES
-    connection.onmessage = e => {
+    connection.onmessage = (e) => {
       let data = typeof e.data === 'string' ? e.data : ''
 
       /* istanbul ignore if */
       // tslint:disable-next-line:no-console
       if (this.debug) console.log('RECV << ' + e.data)
 
-      this.parseResponse(data).forEach(result => {
+      this.parseResponse(data).forEach((result) => {
         // get the id which matches the returned id
         if (result instanceof Array) {
-          result.forEach($ => this.processMessage($))
+          result.forEach(($) => this.processMessage($))
         } else {
           this.processMessage(result)
         }

@@ -1,0 +1,1 @@
+The file in this folder gets commited every time the API changes. It is used to keep track of all the breaking changes in the API that may led to unforseen breaking changes and it requires code validation from CODEOWNERS

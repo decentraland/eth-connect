@@ -1,23 +1,36 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
     "target": "es2017",
-    "outDir": "./dist",
+    "noEmit": true,
     "diagnostics": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "inlineSourceMap": false,
     "inlineSources": false,
     "sourceMap": true,
+    "declarationDir": "./dist/decl",
     "declaration": true,
+    "declarationMap": true,
     "moduleResolution": "node",
     "stripInternal": true,
+    "strict": true,
     "pretty": true,
     "forceConsistentCasingInFileNames": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "plugins": [{ "name": "tslint-language-service" }],
-    "noEmit": true
+    "types": [],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src",
+    "allowJs": true,
+    "plugins": [
+      {
+        "name": "tslint-language-service"
+      }
+    ]
   },
-  "exclude": ["node_modules/**/*", "static/**/*"]
+  "include": [
+    "src"
+  ]
 }

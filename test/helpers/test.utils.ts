@@ -1,14 +1,13 @@
-import chai = require('chai')
-const assert = chai.assert
+import * as expect from 'expect'
 
 export function methodExists(object, method) {
-  it('should have method ' + method + ' implemented', function() {
-    assert.equal('function', typeof object[method], 'method ' + method + ' is not implemented')
+  it('should have method ' + method + ' implemented', function () {
+    expect(typeof object[method]).toEqual('function')
   })
 }
 
 export function propertyExists(object, property) {
-  it('should have property ' + property + ' implemented', function() {
-    assert.notEqual('undefined', typeof object[property], 'property ' + property + ' is not implemented')
+  it('should have property ' + property + ' implemented', function () {
+    expect(object).toHaveProperty(property)
   })
 }

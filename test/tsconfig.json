@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true, /* Skip type checking of declaration files. */
+    "strict": false,
+    "resolveJsonModule": true,
+    "types": [
+      "mocha",
+      "node"
+    ],
+    "stripInternal": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "plugins": [
+      {
+        "name": "tslint-language-service"
+      }
+    ],
+    "noEmit": true,
+    "allowJs": true
+  },
+  "exclude": [
+    "../node_modules/**/*",
+    "../static/**/*"
+  ]
+}

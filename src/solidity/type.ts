@@ -1,14 +1,17 @@
-import f = require('./formatters')
+import * as f from './formatters'
 import { SolidityParam } from './param'
 
 /**
  * SolidityType prototype is used to encode/decode solidity params of certain type
  */
-export class SolidityType {
-  _inputFormatter
-  _outputFormatter
+export abstract class SolidityType<ValueType> {
+  _inputFormatter: (value: ValueType, name: string) => SolidityParam
+  _outputFormatter: (param: SolidityParam, name: string) => ValueType
 
-  constructor(config: { inputFormatter; outputFormatter }) {
+  constructor(config: {
+    inputFormatter: (value: ValueType, name: string) => SolidityParam
+    outputFormatter: (param: SolidityParam, name: string) => ValueType
+  }) {
     this._inputFormatter = config.inputFormatter
     this._outputFormatter = config.outputFormatter
   }
@@ -20,10 +23,7 @@ export class SolidityType {
    * @param {string} name
    * @return {Bool} true if type match this SolidityType, otherwise false
    */
-  // tslint:disable-next-line:prefer-function-over-method
-  isType(name: string) {
-    throw new Error('this method should be overrwritten for type ' + name)
-  }
+  abstract isType(name: string): boolean
 
   /**
    * Should be used to determine what is the length of static part in given type
@@ -32,14 +32,14 @@ export class SolidityType {
    * @param {string} name
    * @return {number} length of static part in bytes
    */
-  staticPartLength(name: string) {
+  staticPartLength(name: string): number {
     // If name isn't an array then treat it like a single element array.
     return (this.nestedTypes(name) || ['[1]'])
-      .map(function(type) {
+      .map(function (type) {
         // the length of the nested array
         return parseInt(type.slice(1, -1), 10) || 1
       })
-      .reduce(function(previous, current) {
+      .reduce(function (previous, current) {
         return previous * current
         // all basic types are 32 bytes long
       }, 32)
@@ -93,7 +93,7 @@ export class SolidityType {
     let nestedTypes = this.nestedTypes(name)
     if (nestedTypes) {
       const match = nestedTypes[nestedTypes.length - 1].match(/[0-9]{1,}/g)
-
+      if (!match) throw new Error('untested path')
       return parseInt(match[match.length - 1] || '1', 10)
     }
     return 1
@@ -131,7 +131,7 @@ export class SolidityType {
    * @return {Bool} true if is dynamic, otherwise false
    */
   // tslint:disable-next-line:prefer-function-over-method
-  isDynamicType(_?: string) {
+  isDynamicType(_?: string): boolean {
     return false
   }
 
@@ -147,7 +147,7 @@ export class SolidityType {
    * @return {Array} array of nested types
    */
   // tslint:disable-next-line:prefer-function-over-method
-  nestedTypes(name: string): string[] {
+  nestedTypes(name: string): string[] | null {
     // return list of strings eg. "[]", "[3]", "[]", "[2]"
     return name.match(/(\[[0-9]*\])/g)
   }
@@ -160,7 +160,7 @@ export class SolidityType {
    * @param {string} name
    * @return {string} encoded value
    */
-  encode(value, name: string) {
+  encode(value: any, name: string): any {
     if (this.isDynamicArray(name)) {
       let length = value.length // in int
       let nestedName = this.nestedName(name)
@@ -168,7 +168,7 @@ export class SolidityType {
       let result = []
       result.push(f.formatInputInt(length).encode())
 
-      value.forEach(v => {
+      value.forEach((v: any) => {
         result.push(this.encode(v, nestedName))
       })
 
@@ -197,7 +197,7 @@ export class SolidityType {
    * @param {string} name type name
    * @returns {object} decoded value
    */
-  decode(bytes: string, offset: number, name: string) {
+  decode(bytes: string, offset: number, name: string): any {
     if (this.isDynamicArray(name)) {
       let arrayOffset = parseInt('0x' + bytes.substr(offset * 2, 64), 16) // in bytes
       let length = parseInt('0x' + bytes.substr(arrayOffset * 2, 64), 16) // in int

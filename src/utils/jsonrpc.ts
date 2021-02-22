@@ -15,6 +15,8 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import { RPCResponse } from '../providers/common'
+
 export let messageId = 0
 
 export type RPCSendableMessage = {
@@ -47,17 +49,18 @@ export function toPayload(method: string, params: any[]) {
 /**
  * Should be called to check if jsonrpc response is valid
  */
-export function isValidResponse(response) {
+export function isValidResponse(response: RPCResponse | RPCResponse[]) {
   return Array.isArray(response) ? response.every(validateSingleMessage) : validateSingleMessage(response)
 
-  function validateSingleMessage(message) {
+  function validateSingleMessage(message: RPCResponse) {
     return (
       !!message &&
-      !message.error &&
+      !('error' in message) &&
       message.jsonrpc === '2.0' &&
       typeof message.id === 'number' &&
-      message.result !== undefined
+      (message.result != null || message.result !== undefined)
     ) // only undefined is not valid json object
+    // the null is not a valid response for rpc nodes
   }
 }
 
@@ -67,7 +70,7 @@ export function isValidResponse(response) {
  * @param messages - An array of objects with method (required) and params (optional) fields
  */
 export function toBatchPayload(messages: RPCSendableMessage[]) {
-  return messages.map(function(message) {
+  return messages.map(function (message) {
     return toPayload(message.method, message.params)
   })
 }

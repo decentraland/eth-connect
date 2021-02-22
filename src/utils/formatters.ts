@@ -15,17 +15,28 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import utils = require('../utils/utils')
-import config = require('../utils/config')
-import { BigNumber as BigNumberType, BigNumberValueType } from './BigNumber'
-import { Quantity, Tag } from '../Schema'
+import * as utils from '../utils/utils'
+import * as config from '../utils/config'
+import {
+  BlockObject,
+  FilterOptions,
+  LogObject,
+  Quantity,
+  SHHFilterMessage,
+  Syncing,
+  Tag,
+  TransactionObject,
+  TransactionOptions,
+  TransactionReceipt
+} from '../Schema'
+import { BigNumber } from './BigNumber'
 
 /**
  * Should format the output to a big number
  *
  * @param output - The provided output
  */
-export function outputBigNumberFormatter(output: BigNumberValueType): BigNumberType {
+export function outputBigNumberFormatter(output: BigNumber.Value): BigNumber {
   return utils.toBigNumber(output)
 }
 
@@ -38,16 +49,16 @@ export function isPredefinedBlockNumber(blockNumber: Quantity | Tag): blockNumbe
   return blockNumber === 'latest' || blockNumber === 'pending' || blockNumber === 'earliest'
 }
 
-export function inputDefaultBlockNumberFormatter(blockNumber?: Quantity | Tag): string | Tag {
+export function inputDefaultBlockNumberFormatter(blockNumber?: Quantity | Tag): string | Tag | null {
   if (blockNumber === undefined) {
     return config.defaultBlock
   }
   return inputBlockNumberFormatter(blockNumber)
 }
 
-export function inputBlockNumberFormatter(blockNumber: Quantity | Tag): string | null {
+export function inputBlockNumberFormatter(blockNumber: Quantity | Tag | null): string | null {
   if (blockNumber === undefined || blockNumber == null) {
-    return undefined
+    return null
   } else if (isPredefinedBlockNumber(blockNumber)) {
     return blockNumber
   }
@@ -57,7 +68,7 @@ export function inputBlockNumberFormatter(blockNumber: Quantity | Tag): string |
 /**
  * Formats the input of a transaction and converts all values to HEX
  */
-export function inputCallFormatter(options: { from: string; to: string; data: string }) {
+export function inputCallFormatter(options: TransactionOptions) {
   options.from = options.from
 
   if (options.from) {
@@ -69,14 +80,10 @@ export function inputCallFormatter(options: { from: string; to: string; data: st
     options.to = inputAddressFormatter(options.to)
   }
 
-  // tslint:disable-next-line:semicolon
-  ;['gasPrice', 'gas', 'value', 'nonce']
-    .filter(function(key) {
-      return options[key] !== undefined
-    })
-    .forEach(function(key) {
-      options[key] = utils.fromDecimal(options[key])
-    })
+  if (options.gasPrice !== undefined) options.gasPrice = utils.fromDecimal(options.gasPrice)
+  if (options.gas !== undefined) options.gas = utils.fromDecimal(options.gas)
+  if (options.value !== undefined) options.value = utils.fromDecimal(options.value)
+  if (options.nonce !== undefined) options.nonce = utils.fromDecimal(options.nonce)
 
   if (options.data && !options.data.startsWith('0x') && /^[A-Za-z0-9]+$/.test(options.data)) {
     options.data = '0x' + options.data
@@ -86,11 +93,30 @@ export function inputCallFormatter(options: { from: string; to: string; data: st
 }
 
 /**
+ * Ensures a correct transactionId is provided
+ */
+export function inputTransactionId(txId: string) {
+  if (typeof txId != 'string') {
+    throw new Error('The provided input for transactionId is not a string, got: ' + JSON.stringify(txId))
+  }
+
+  if (txId.indexOf('0x') !== 0){
+    throw new Error('TransactionID must start with 0x, got: ' + JSON.stringify(txId))
+  }
+
+  if (txId.length !== 66){
+    throw new Error('TransactionID must be a 32 byte hex, got: ' + JSON.stringify(txId))
+  }
+
+  return txId
+}
+
+/**
  * Formats the input of a transaction and converts all values to HEX
  *
  * @param transaction - options
  */
-export function inputTransactionFormatter(options) {
+export function inputTransactionFormatter(options: TransactionOptions) {
   if (typeof options !== 'object') {
     throw new Error('Did not provide transaction options')
   }
@@ -106,14 +132,10 @@ export function inputTransactionFormatter(options) {
     options.to = inputAddressFormatter(options.to)
   }
 
-  // tslint:disable-next-line:semicolon
-  ;['gasPrice', 'gas', 'value', 'nonce']
-    .filter(function(key) {
-      return options[key] !== undefined
-    })
-    .forEach(function(key) {
-      options[key] = utils.fromDecimal(options[key])
-    })
+  if (options.gasPrice !== undefined) options.gasPrice = utils.fromDecimal(options.gasPrice)
+  if (options.gas !== undefined) options.gas = utils.fromDecimal(options.gas)
+  if (options.value !== undefined) options.value = utils.fromDecimal(options.value)
+  if (options.nonce !== undefined) options.nonce = utils.fromDecimal(options.nonce)
 
   if (options.data && !options.data.startsWith('0x') && /^[A-Za-z0-9]+$/.test(options.data)) {
     options.data = '0x' + options.data
@@ -127,7 +149,9 @@ export function inputTransactionFormatter(options) {
  *
  * @param tx - The transaction
  */
-export function outputTransactionFormatter(tx) {
+export function outputTransactionFormatter(tx: TransactionObject) {
+  if (!tx) return null
+
   if (tx.blockNumber !== null) {
     tx.blockNumber = utils.toDecimal(tx.blockNumber)
   }
@@ -146,19 +170,22 @@ export function outputTransactionFormatter(tx) {
  *
  * @param receipt - The transaction receipt
  */
-export function outputTransactionReceiptFormatter(receipt) {
+export function outputTransactionReceiptFormatter(receipt: TransactionReceipt) {
+  if (!receipt) return null
+
   if (receipt.blockNumber !== null) receipt.blockNumber = utils.toDecimal(receipt.blockNumber)
   if (receipt.transactionIndex !== null) receipt.transactionIndex = utils.toDecimal(receipt.transactionIndex)
+
   receipt.cumulativeGasUsed = utils.toDecimal(receipt.cumulativeGasUsed)
   receipt.gasUsed = utils.toDecimal(receipt.gasUsed)
 
-  if (utils.isArray(receipt.logs)) {
-    receipt.logs = receipt.logs.map(function(log) {
+  if (receipt.logs && utils.isArray(receipt.logs)) {
+    receipt.logs = receipt.logs.map(function (log) {
       return outputLogFormatter(log)
     })
   }
 
-  receipt.status = utils.toDecimal(receipt.status)
+  receipt.status = utils.toDecimal(receipt.status || '')
 
   return receipt
 }
@@ -166,7 +193,8 @@ export function outputTransactionReceiptFormatter(receipt) {
 /**
  * Formats the output of a block to its proper value
  */
-export function outputBlockFormatter(block) {
+export function outputBlockFormatter(block: BlockObject | null) {
+  if (!block) return null
   // transform to number
   block.gasLimit = utils.toDecimal(block.gasLimit)
   block.gasUsed = utils.toDecimal(block.gasUsed)
@@ -178,8 +206,10 @@ export function outputBlockFormatter(block) {
   block.totalDifficulty = utils.toBigNumber(block.totalDifficulty)
 
   if (utils.isArray(block.transactions)) {
-    block.transactions.forEach(function(item) {
-      if (!utils.isString(item)) return outputTransactionFormatter(item)
+    block.transactions.forEach(function (item: string | TransactionObject, ix: number) {
+      if (!utils.isString(item)) {
+        block.transactions[ix] = outputTransactionFormatter(item) || block.transactions[ix]
+      }
     })
   }
 
@@ -189,7 +219,9 @@ export function outputBlockFormatter(block) {
 /**
  * Formats the output of a log
  */
-export function outputLogFormatter(log) {
+export function outputLogFormatter(log: LogObject) {
+  if (!log) return log
+
   if (log.blockNumber) {
     log.blockNumber = utils.toDecimal(log.blockNumber)
   }
@@ -209,6 +241,8 @@ export function outputLogFormatter(log) {
  * Formats the input of a whisper post and converts all values to HEX
  */
 export function inputPostFormatter(post: any) {
+  if (!post) return null
+
   post.ttl = utils.fromDecimal(post.ttl)
   post.workToProve = utils.fromDecimal(post.workToProve)
   post.priority = utils.fromDecimal(post.priority)
@@ -219,7 +253,7 @@ export function inputPostFormatter(post: any) {
   }
 
   // format the following options
-  post.topics = post.topics.map(function(topic) {
+  post.topics = post.topics.map(function (topic: string) {
     // convert only if not hex
     return topic.indexOf('0x') === 0 ? topic : utils.fromUtf8(topic)
   })
@@ -230,7 +264,9 @@ export function inputPostFormatter(post: any) {
 /**
  * Formats the output of a received post message
  */
-export function outputPostFormatter(post: any) {
+export function outputPostFormatter(post: SHHFilterMessage) {
+  if (!post) return null
+
   post.expiry = utils.toDecimal(post.expiry)
   post.sent = utils.toDecimal(post.sent)
   post.ttl = utils.toDecimal(post.ttl)
@@ -240,14 +276,14 @@ export function outputPostFormatter(post: any) {
   if (!post.topics) {
     post.topics = []
   }
-  post.topics = post.topics.map(function(topic) {
+  post.topics = post.topics.map(function (topic) {
     return utils.toAscii(topic)
   })
 
   return post
 }
 
-export function inputAddressFormatter(address) {
+export function inputAddressFormatter(address: string) {
   if (utils.isStrictAddress(address)) {
     return address
   } else if (utils.isAddress(address)) {
@@ -256,7 +292,12 @@ export function inputAddressFormatter(address) {
   throw new Error(`Invalid address: ${JSON.stringify(address)}`)
 }
 
-export function outputSyncingFormatter(result) {
+export function inputFilterOptions(options: FilterOptions) {
+  // TODO: validations
+  return options
+}
+
+export function outputSyncingFormatter(result: Syncing) {
   if (!result) {
     return result
   }
@@ -264,9 +305,10 @@ export function outputSyncingFormatter(result) {
   result.startingBlock = utils.toDecimal(result.startingBlock)
   result.currentBlock = utils.toDecimal(result.currentBlock)
   result.highestBlock = utils.toDecimal(result.highestBlock)
+
   if (result.knownStates) {
     result.knownStates = utils.toDecimal(result.knownStates)
-    result.pulledStates = utils.toDecimal(result.pulledStates)
+    result.pulledStates = utils.toDecimal(result.pulledStates!)
   }
 
   return result

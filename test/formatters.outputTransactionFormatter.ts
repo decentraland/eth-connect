@@ -1,11 +1,11 @@
-import { assert } from 'chai'
+import * as expect from 'expect'
+import { BigNumber } from '../src'
 import * as formatters from '../src/utils/formatters'
-import BigNumber from 'bignumber.js'
 
-describe('formatters', function() {
-  describe('outputTransactionFormatter', function() {
-    it('should return the correct value', function() {
-      assert.deepEqual(
+describe('formatters', function () {
+  describe('outputTransactionFormatter', function () {
+    it('should return the correct value', function () {
+      expect(
         formatters.outputTransactionFormatter({
           input: '0x3454645634534',
           from: '0x00000',
@@ -17,24 +17,23 @@ describe('formatters', function() {
           transactionIndex: '0x1',
           blockNumber: '0x3e8',
           blockHash: '0xc9b9cdc2092a9d6589d96662b1fd6949611163fb3910cf8a173cd060f17702f9'
-        }),
-        {
-          input: '0x3454645634534',
-          from: '0x00000',
-          to: '0x00000',
-          value: new BigNumber(1000),
-          gas: 1000,
-          gasPrice: new BigNumber(1000),
-          nonce: 11,
-          blockNumber: 1000,
-          blockHash: '0xc9b9cdc2092a9d6589d96662b1fd6949611163fb3910cf8a173cd060f17702f9',
-          transactionIndex: 1
-        }
-      )
+        } as any)
+      ).toEqual({
+        input: '0x3454645634534',
+        from: '0x00000',
+        to: '0x00000',
+        value: new BigNumber(1000),
+        gas: 1000,
+        gasPrice: new BigNumber(1000),
+        nonce: 11,
+        blockNumber: 1000,
+        blockHash: '0xc9b9cdc2092a9d6589d96662b1fd6949611163fb3910cf8a173cd060f17702f9',
+        transactionIndex: 1
+      })
     })
 
-    it('should return the correct value, when null values are present', function() {
-      assert.deepEqual(
+    it('should return the correct value, when null values are present', function () {
+      expect(
         formatters.outputTransactionFormatter({
           input: '0x3454645634534',
           from: '0x00000',
@@ -46,20 +45,19 @@ describe('formatters', function() {
           transactionIndex: null,
           blockNumber: null,
           blockHash: null
-        }),
-        {
-          input: '0x3454645634534',
-          from: '0x00000',
-          to: null,
-          value: new BigNumber(1000),
-          gas: 1000,
-          gasPrice: new BigNumber(1000),
-          nonce: 11,
-          blockNumber: null,
-          blockHash: null,
-          transactionIndex: null
-        }
-      )
+        } as any)
+      ).toEqual({
+        input: '0x3454645634534',
+        from: '0x00000',
+        to: null,
+        value: new BigNumber(1000),
+        gas: 1000,
+        gasPrice: new BigNumber(1000),
+        nonce: 11,
+        blockNumber: null,
+        blockHash: null,
+        transactionIndex: null
+      })
     })
   })
 })
