@@ -1,7 +1,6 @@
 # eth-connect
 
 [![NPM version](https://badge.fury.io/js/eth-connect.svg)](https://npmjs.org/package/eth-connect)
-[![Build Status](https://travis-ci.org/decentraland/eth-connect.svg?branch=master)](https://travis-ci.org/decentraland/eth-connect)
 [![codecov](https://codecov.io/gh/decentraland/eth-connect/branch/master/graph/badge.svg)](https://codecov.io/gh/decentraland/eth-connect)
 [![Install Size](https://packagephobia.now.sh/badge?p=eth-connect)](https://packagephobia.now.sh/result?p=eth-connect)
 
