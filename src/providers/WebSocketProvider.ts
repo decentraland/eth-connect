@@ -39,7 +39,7 @@ export class WebSocketProvider<T extends IWebSocket> {
   notificationCallbacks = new Set<Callback>()
   connection!: IFuture<T>
 
-  debug = true
+  debug = false
 
   private lastChunk: string = ''
   private lastChunkTimeout: any
