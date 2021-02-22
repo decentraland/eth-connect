@@ -1,12 +1,11 @@
-import * as chai from 'chai'
-const assert = chai.assert
+import * as expect from 'expect'
 import * as coder from '../src/solidity/coder'
 
-describe('lib/solidity/coder', function() {
-  describe('encodeParam', function() {
-    let test = function(t) {
-      it('should turn ' + t.value + ' to ' + t.expected, function() {
-        assert.equal(coder.coder.encodeParam(t.type, t.value), t.expected)
+describe('lib/solidity/coder', function () {
+  describe('encodeParam', function () {
+    let test = function (t) {
+      it('should turn ' + t.value + ' to ' + t.expected, function () {
+        expect(coder.coder.encodeParam(t.type, t.value)).toEqual(t.expected)
       })
     }
 
@@ -296,11 +295,11 @@ describe('lib/solidity/coder', function() {
   })
 })
 
-describe('lib/solidity/coder', function() {
-  describe('encodeParams', function() {
-    let test = function(t) {
-      it('should turn ' + t.values + ' to ' + t.expected, function() {
-        assert.equal(coder.coder.encodeParams(t.types, t.values), t.expected)
+describe('lib/solidity/coder', function () {
+  describe('encodeParams', function () {
+    let test = function (t) {
+      it('should turn ' + t.values + ' to ' + t.expected, function () {
+        expect(coder.coder.encodeParams(t.types, t.values)).toEqual(t.expected)
       })
     }
 
@@ -313,7 +312,10 @@ describe('lib/solidity/coder', function() {
     })
     test({
       types: ['bool[2]', 'bool[3]'],
-      values: [[true, false], [false, false, true]],
+      values: [
+        [true, false],
+        [false, false, true]
+      ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000000' +
@@ -367,7 +369,10 @@ describe('lib/solidity/coder', function() {
     })
     test({
       types: ['int[]', 'int[]'],
-      values: [[1, 2], [3, 4]],
+      values: [
+        [1, 2],
+        [3, 4]
+      ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000040' +
         '00000000000000000000000000000000000000000000000000000000000000a0' +
@@ -380,7 +385,11 @@ describe('lib/solidity/coder', function() {
     })
     test({
       types: ['int[]', 'int[]', 'int[]'],
-      values: [[1, 2], [3, 4], [5, 6, 7]],
+      values: [
+        [1, 2],
+        [3, 4],
+        [5, 6, 7]
+      ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000060' +
         '00000000000000000000000000000000000000000000000000000000000000c0' +
@@ -537,6 +546,36 @@ describe('lib/solidity/coder', function() {
         '0000000000000000000000000000000000000000000000000000000000000040' +
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '4d00000000000000000000000000000000000000000000000000000000000012'
+    })
+  })
+
+
+
+  var tests = [
+    {
+      types: ['uint256', 'string'],
+      params: ['2345675643', 'Hello!%'],
+      result:
+        '000000000000000000000000000000000000000000000000000000008bd02b7b0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000748656c6c6f212500000000000000000000000000000000000000000000000000'
+    },
+    {
+      types: ['uint16', 'bytes32'],
+      params: [2323, '0x234567432145678543213456'],
+      result:
+        '00000000000000000000000000000000000000000000000000000000000009132345674321456785432134560000000000000000000000000000000000000000'
+    },
+    {
+      types: ['uint256', 'bytes'],
+      params: ['2345675643', '0x23456743214567854321ffffdddddd'],
+      result:
+        '000000000000000000000000000000000000000000000000000000008bd02b7b0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000f23456743214567854321ffffdddddd0000000000000000000000000000000000'
+    }
+  ]
+
+
+  it('encodeParams', function () {
+    tests.forEach(function (test) {
+      expect(coder.coder.encodeParams(test.types, test.params)).toEqual(test.result)
     })
   })
 })

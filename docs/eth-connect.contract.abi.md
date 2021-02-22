@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-abi: any[];
+abi: AbiItem[];
 ```

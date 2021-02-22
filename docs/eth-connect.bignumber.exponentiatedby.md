@@ -27,14 +27,14 @@ BigNumber(3).exponentiatedBy(-2)    // '0.11111111111111111111'
 <b>Signature:</b>
 
 ```typescript
-exponentiatedBy(n: number, m?: BigNumber.Value): BigNumber;
+exponentiatedBy(n: BigNumber.Value, m?: BigNumber.Value): BigNumber;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  n | number | The exponent, an integer. |
+|  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | The exponent, an integer. |
 |  m | [BigNumber.Value](./eth-connect.bignumber.value.md) | The modulus. |
 
 <b>Returns:</b>

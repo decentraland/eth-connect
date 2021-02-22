@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-inputFormatter: Function[] | null;
+inputFormatter: Array<null | ((a: any) => any)>;
 ```

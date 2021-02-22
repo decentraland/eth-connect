@@ -10,8 +10,8 @@
 ```typescript
 export declare type SHHFilterOptions = {
     to?: Data;
-    topics: Array<Data>;
+    topics: TopicFilter;
 };
 ```
-<b>References:</b> [Data](./eth-connect.data.md)
+<b>References:</b> [Data](./eth-connect.data.md)<!-- -->, [TopicFilter](./eth-connect.topicfilter.md)
 

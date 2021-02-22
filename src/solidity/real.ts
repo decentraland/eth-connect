@@ -1,5 +1,6 @@
 import * as f from './formatters'
 import { SolidityType } from './type'
+import { BigNumber } from '../utils/BigNumber'
 
 /**
  * SolidityTypeReal is a prootype that represents real type
@@ -17,7 +18,7 @@ import { SolidityType } from './type'
  * real[3][]
  * real64[][6][], ...
  */
-export class SolidityTypeReal extends SolidityType {
+export class SolidityTypeReal extends SolidityType<BigNumber> {
   constructor() {
     super({
       inputFormatter: f.formatInputReal,
@@ -26,7 +27,7 @@ export class SolidityTypeReal extends SolidityType {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  isType(name) {
+  isType(name: string) {
     return !!name.match(/real([0-9]*)?(\[([0-9]*)\])?/)
   }
 }

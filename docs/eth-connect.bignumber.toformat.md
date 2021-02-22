@@ -4,52 +4,61 @@
 
 ## BigNumber.toFormat() method
 
-Returns a string representing the value of this BigNumber in normal (fixed-point) notation rounded to `decimalPlaces` decimal places using rounding mode `roundingMode`<!-- -->, and formatted according to the properties of the `FORMAT` object.
+Returns a string representing the value of this BigNumber in normal (fixed-point) notation rounded to `decimalPlaces` decimal places using rounding mode `roundingMode`<!-- -->, and formatted according to the properties of the `format` or `FORMAT` object.
 
-The properties of the `FORMAT` object are shown in the examples below.
+The formatting object may contain some or all of the properties shown in the examples below.
 
 If `decimalPlaces` is omitted or is `null` or `undefined`<!-- -->, then the return value is not rounded to a fixed number of decimal places.
 
 If `roundingMode` is omitted or is `null` or `undefined`<!-- -->, `ROUNDING_MODE` is used.
 
-Throws if `decimalPlaces` or `roundingMode` is invalid.
+If `format` is omitted or is `null` or `undefined`<!-- -->, `FORMAT` is used.
+
+Throws if `decimalPlaces`<!-- -->, `roundingMode`<!-- -->, or `format` is invalid.
 
 ```ts
-format = {
-    decimalSeparator: '.',
-    groupSeparator: ',',
-    groupSize: 3,
-    secondaryGroupSize: 0,
-    fractionGroupSeparator: ' ',
-    fractionGroupSize: 0
+fmt = {
+  decimalSeparator: '.',
+  groupSeparator: ',',
+  groupSize: 3,
+  secondaryGroupSize: 0,
+  fractionGroupSeparator: ' ',
+  fractionGroupSize: 0
 }
-BigNumber.config({ FORMAT: format })
 
 x = new BigNumber('123456789.123456789')
-x.toFormat()                    // '123,456,789.123456789'
-x.toFormat(1)                   // '123,456,789.1'
 
-format.groupSeparator = ' '
-format.fractionGroupSize = 5
-x.toFormat()                    // '123 456 789.12345 6789'
+// Set the global formatting options
+BigNumber.config({ FORMAT: fmt })
 
-BigNumber.config({
-    FORMAT: {
-        decimalSeparator: ',',
-        groupSeparator: '.',
-        groupSize: 3,
-        secondaryGroupSize: 2
-    }
-})
+x.toFormat()                              // '123,456,789.123456789'
+x.toFormat(3)                             // '123,456,789.123'
 
-x.toFormat(6)                   // '12.34.56.789,123'
+// If a reference to the object assigned to FORMAT has been retained,
+// the format properties can be changed directly
+fmt.groupSeparator = ' '
+fmt.fractionGroupSize = 5
+x.toFormat()                              // '123 456 789.12345 6789'
+
+// Alternatively, pass the formatting options as an argument
+fmt = {
+  decimalSeparator: ',',
+  groupSeparator: '.',
+  groupSize: 3,
+  secondaryGroupSize: 2
+}
+
+x.toFormat()                              // '123 456 789.12345 6789'
+x.toFormat(fmt)                           // '12.34.56.789,123456789'
+x.toFormat(2, fmt)                        // '12.34.56.789,12'
+x.toFormat(3, BigNumber.ROUND_UP, fmt)    // '12.34.56.789,124'
 
 ```
 
 <b>Signature:</b>
 
 ```typescript
-toFormat(decimalPlaces?: number, roundingMode?: BigNumber.RoundingMode): string;
+toFormat(decimalPlaces: number, roundingMode: BigNumber.RoundingMode, format?: BigNumber.Format): string;
 ```
 
 ## Parameters
@@ -58,6 +67,7 @@ toFormat(decimalPlaces?: number, roundingMode?: BigNumber.RoundingMode): string;
 |  --- | --- | --- |
 |  decimalPlaces | number | Decimal places, integer, 0 to 1e+9. |
 |  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | Rounding mode, integer, 0 to 8. |
+|  format | [BigNumber.Format](./eth-connect.bignumber.format.md) | Formatting options object. See <code>BigNumber.Format</code>. |
 
 <b>Returns:</b>
 

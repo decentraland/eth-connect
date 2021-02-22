@@ -20,7 +20,7 @@ x.multipliedBy('-a', 16)               // '-6'
 <b>Signature:</b>
 
 ```typescript
-multipliedBy(n: BigNumber.Value, base?: number) : BigNumber;
+multipliedBy(n: BigNumber.Value, base?: number): BigNumber;
 ```
 
 ## Parameters

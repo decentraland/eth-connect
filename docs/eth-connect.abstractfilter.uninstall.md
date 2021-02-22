@@ -7,9 +7,9 @@
 <b>Signature:</b>
 
 ```typescript
-protected abstract uninstall(): Promise<any>;
+protected abstract uninstall(): Promise<boolean>;
 ```
 <b>Returns:</b>
 
-Promise&lt;any&gt;
+Promise&lt;boolean&gt;
 

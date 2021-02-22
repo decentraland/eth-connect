@@ -257,7 +257,6 @@
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
           "name": "_owner",

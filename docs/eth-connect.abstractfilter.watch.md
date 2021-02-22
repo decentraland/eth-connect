@@ -7,14 +7,14 @@
 <b>Signature:</b>
 
 ```typescript
-watch(callback: (message: T) => void): Promise<void>;
+watch(callback: (message: TransformedLog) => void): Promise<void>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  callback | (message: T) =&gt; void |  |
+|  callback | (message: TransformedLog) =&gt; void |  |
 
 <b>Returns:</b>
 

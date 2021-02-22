@@ -4,10 +4,10 @@
 
 ## BigNumber.s property
 
-The sign of the value of this BigNumber, -1 or 1.
+The sign of the value of this BigNumber, -1, 1, or null.
 
 <b>Signature:</b>
 
 ```typescript
-readonly s: number;
+readonly s: number | null;
 ```

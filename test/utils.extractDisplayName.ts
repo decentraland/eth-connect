@@ -1,9 +1,9 @@
-import { assert } from 'chai'
+import * as expect from 'expect'
 import * as utils from '../src/utils/utils'
 
-describe('lib/utils/utils', function() {
-  describe('extractDisplayName', function() {
-    it('should extract display name from method with no params', function() {
+describe('lib/utils/utils', function () {
+  describe('extractDisplayName', function () {
+    it('should extract display name from method with no params', function () {
       // given
       let test = 'helloworld()'
 
@@ -11,10 +11,10 @@ describe('lib/utils/utils', function() {
       let displayName = utils.extractDisplayName(test)
 
       // then
-      assert.equal(displayName, 'helloworld')
+      expect(displayName).toEqual('helloworld')
     })
 
-    it('should extract display name from method with one param', function() {
+    it('should extract display name from method with one param', function () {
       // given
       let test = 'helloworld1(int)'
 
@@ -22,10 +22,10 @@ describe('lib/utils/utils', function() {
       let displayName = utils.extractDisplayName(test)
 
       // then
-      assert.equal(displayName, 'helloworld1')
+      expect(displayName).toEqual('helloworld1')
     })
 
-    it('should extract display name from method with two params', function() {
+    it('should extract display name from method with two params', function () {
       // given
       let test = 'helloworld2(int,string)'
 
@@ -33,7 +33,7 @@ describe('lib/utils/utils', function() {
       let displayName = utils.extractDisplayName(test)
 
       // then
-      assert.equal(displayName, 'helloworld2')
+      expect(displayName).toEqual('helloworld2')
     })
   })
 })

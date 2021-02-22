@@ -7,9 +7,9 @@
 <b>Signature:</b>
 
 ```typescript
-export declare class EthBlockFilter extends EthFilter<TxHash> 
+export declare class EthBlockFilter extends EthFilter<TxHash, TxHash> 
 ```
-<b>Extends:</b> [EthFilter](./eth-connect.ethfilter.md)<!-- -->&lt;[TxHash](./eth-connect.txhash.md)<!-- -->&gt;
+<b>Extends:</b> [EthFilter](./eth-connect.ethfilter.md)<!-- -->&lt;[TxHash](./eth-connect.txhash.md)<!-- -->, [TxHash](./eth-connect.txhash.md)<!-- -->&gt;
 
 ## Constructors
 

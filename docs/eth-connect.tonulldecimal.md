@@ -9,16 +9,16 @@ Converts value to it's decimal representation in string
 <b>Signature:</b>
 
 ```typescript
-export declare function toNullDecimal(value: number | string | BigNumber): string | number | BigNumber;
+export declare function toNullDecimal(value: BigNumber.Value): number;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  value | number \| string \| [BigNumber](./eth-connect.bignumber.md) |  |
+|  value | [BigNumber.Value](./eth-connect.bignumber.value.md) |  |
 
 <b>Returns:</b>
 
-string \| number \| [BigNumber](./eth-connect.bignumber.md)
+number
 

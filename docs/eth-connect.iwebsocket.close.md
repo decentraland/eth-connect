@@ -4,12 +4,22 @@
 
 ## IWebSocket.close() method
 
+Closes the WebSocket connection, optionally using code as the the WebSocket connection close code and reason as the the WebSocket connection close reason.
+
 <b>Signature:</b>
 
 ```typescript
-close(): any;
+close(code?: number, reason?: string): void;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  code | number |  |
+|  reason | string |  |
+
 <b>Returns:</b>
 
-any
+void
 

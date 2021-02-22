@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-eth_getBlockByHash: Method<any>
+eth_getBlockByHash: Method<BlockObject | null>
 ```

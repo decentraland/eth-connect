@@ -19,8 +19,8 @@ export declare type BlockObject = {
     stateRoot: TxHash;
     receiptsRoot: TxHash;
     miner: Address;
-    difficulty: Quantity;
-    totalDifficulty: Quantity;
+    difficulty: BigNumber;
+    totalDifficulty: BigNumber;
     extraData: Data;
     size: Quantity;
     gasLimit: Quantity;
@@ -30,5 +30,5 @@ export declare type BlockObject = {
     uncles: Array<TxHash>;
 };
 ```
-<b>References:</b> [Quantity](./eth-connect.quantity.md)<!-- -->, [TxHash](./eth-connect.txhash.md)<!-- -->, [Data](./eth-connect.data.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [TransactionObject](./eth-connect.transactionobject.md)
+<b>References:</b> [Quantity](./eth-connect.quantity.md)<!-- -->, [TxHash](./eth-connect.txhash.md)<!-- -->, [Data](./eth-connect.data.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [BigNumber](./eth-connect.bignumber.md)<!-- -->, [TransactionObject](./eth-connect.transactionobject.md)
 

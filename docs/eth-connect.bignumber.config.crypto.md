@@ -15,6 +15,9 @@ If `CRYPTO` is `false` then the source of randomness used will be `Math.random` 
 See `BigNumber.random`<!-- -->.
 
 ```ts
+// Node.js
+global.crypto = require('crypto')
+
 BigNumber.config({ CRYPTO: true })
 BigNumber.config().CRYPTO       // true
 BigNumber.random()              // 0.54340758610486147524

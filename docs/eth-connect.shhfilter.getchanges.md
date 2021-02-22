@@ -7,9 +7,9 @@
 <b>Signature:</b>
 
 ```typescript
-protected getChanges(): Promise<any>;
+protected getChanges(): Promise<SHHFilterMessage[]>;
 ```
 <b>Returns:</b>
 
-Promise&lt;any&gt;
+Promise&lt;[SHHFilterMessage](./eth-connect.shhfiltermessage.md)<!-- -->\[\]&gt;
 

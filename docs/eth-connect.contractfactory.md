@@ -33,5 +33,4 @@ export declare class ContractFactory
 |  [deploy(param1, param2, options)](./eth-connect.contractfactory.deploy.md) |  | Should be called to create new contract on a blockchain |
 |  [deploy(param1, options)](./eth-connect.contractfactory.deploy_1.md) |  |  |
 |  [deploy(options)](./eth-connect.contractfactory.deploy_2.md) |  |  |
-|  [getData(args)](./eth-connect.contractfactory.getdata.md) |  | Gets the data, which is data to deploy plus constructor params |
 

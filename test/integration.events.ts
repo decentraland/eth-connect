@@ -1,7 +1,4 @@
-import * as chai from 'chai'
-// tslint:disable
-
-const expect = chai.expect
+import * as expect from 'expect'
 
 import { ContractFactory, RequestManager, Contract } from '../src'
 import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../src/Filter'
@@ -114,7 +111,7 @@ const contract = {
   ]
 }
 
-describe('integration.events', function() {
+describe('integration.events', function () {
   testAllProviders(doTest)
 })
 
@@ -124,9 +121,8 @@ function doTest(rm: RequestManager) {
     const account = accounts[0]
 
     console.log(`> Using account ${account}`)
-    // tslint:disable-next-line:no-unused-expression
-    expect(account).to.be.string
-    expect(account.length).to.gt(0)
+    expect(typeof account).toEqual('string')
+    expect(account.length).toBeGreaterThan(0)
   })
 
   it('should unlock the account', async () => {
@@ -134,8 +130,7 @@ function doTest(rm: RequestManager) {
     const account = accounts[0]
     const accountUnlocked = await rm.personal_unlockAccount(account, '', 300)
     console.log(`> Unlocking account status=${accountUnlocked}`)
-    // tslint:disable-next-line:no-unused-expression
-    expect(accountUnlocked).to.be.true
+    expect(accountUnlocked).toEqual(true)
   })
 
   let TestContract = null
@@ -151,22 +146,22 @@ function doTest(rm: RequestManager) {
 
   it('creates the filters', async () => {
     ethFilter = new EthFilter(rm, { fromBlock: 'earliest' })
-    await ethFilter.watch($ => {
+    await ethFilter.watch(($) => {
       didReceiveAnyMessage.resolve($)
     })
 
     blockFilter = new EthBlockFilter(rm)
-    await blockFilter.watch($ => {
+    await blockFilter.watch(($) => {
       didReceiveAnyBlock.resolve($)
     })
 
     pendingFilter = new EthPendingTransactionFilter(rm)
-    await pendingFilter.watch($ => {
+    await pendingFilter.watch(($) => {
       didReceiveAnyPending.resolve($)
     })
   })
 
-  it('deploys a new contract', async function() {
+  it('deploys a new contract', async function () {
     this.timeout(100000)
     const accounts = await rm.eth_accounts()
     const account = accounts[0]
@@ -180,7 +175,7 @@ function doTest(rm: RequestManager) {
 
     contractEvents = await theDeployedContract.allEvents({})
 
-    await contractEvents.watch($ => {
+    await contractEvents.watch(($) => {
       didReceiveAllEventsFilter.resolve($)
     })
 
@@ -190,17 +185,17 @@ function doTest(rm: RequestManager) {
   it('gets the receipt', async () => {
     const txRecipt = await rm.eth_getTransactionReceipt(TestContract.transactionHash)
 
-    expect(typeof txRecipt.contractAddress).to.eq('string')
-    expect(txRecipt.contractAddress.length).to.be.greaterThan(0)
+    expect(typeof txRecipt.contractAddress).toEqual('string')
+    expect(txRecipt.contractAddress.length).toBeGreaterThan(0)
   })
 
   it('gets the trasaction', async () => {
     const x = await rm.eth_getTransactionByHash(TestContract.transactionHash)
-    expect(typeof x).eq('object')
-    expect(x.hash).eq(TestContract.transactionHash)
+    expect(typeof x).toEqual('object')
+    expect(x.hash).toEqual(TestContract.transactionHash)
   })
 
-  it('setInstructor("agustin", 99)', async function() {
+  it('setInstructor("agustin", 99)', async function () {
     this.timeout(5000)
     const accounts = await rm.eth_accounts()
     const from = accounts[0]
@@ -208,7 +203,7 @@ function doTest(rm: RequestManager) {
     await rm.waitForCompletion(tx)
   })
 
-  it('setInstructorEvent("agustin", 99)', async function() {
+  it('setInstructorEvent("agustin", 99)', async function () {
     this.timeout(5000)
     const accounts = await rm.eth_accounts()
     const from = accounts[0]
@@ -218,8 +213,8 @@ function doTest(rm: RequestManager) {
 
   it('getInstructor()', async () => {
     const [name, age] = await TestContract.getInstructor()
-    expect(name).to.eq('agustin')
-    expect(age.toNumber()).to.eq(99)
+    expect(name).toEqual('agustin')
+    expect(age.toNumber()).toEqual(99)
   })
 
   it('did receive a filter message', async () => {
@@ -248,7 +243,7 @@ function doTest(rm: RequestManager) {
   it('should get the logs from EthFilter', async () => {
     {
       const logs = await ethFilter.getLogs()
-      expect(logs.length).to.be.gt(0)
+      expect(logs.length).toBeGreaterThan(0)
     }
   })
 

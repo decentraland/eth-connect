@@ -9,14 +9,14 @@ Should be called to check if jsonrpc response is valid
 <b>Signature:</b>
 
 ```typescript
-export declare function isValidResponse(response: any): boolean;
+export declare function isValidResponse(response: RPCResponse | RPCResponse[]): boolean;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  response | any |  |
+|  response | RPCResponse \| RPCResponse\[\] |  |
 
 <b>Returns:</b>
 

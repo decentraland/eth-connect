@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare class Method<V> 
+export declare class Method<Output> 
 ```
 
 ## Constructors
@@ -22,10 +22,9 @@ export declare class Method<V>
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [callName](./eth-connect.method.callname.md) |  | string |  |
-|  [inputFormatter](./eth-connect.method.inputformatter.md) |  | Function\[\] \| null |  |
-|  [outputFormatter](./eth-connect.method.outputformatter.md) |  | (something: any) =&gt; V |  |
+|  [inputFormatter](./eth-connect.method.inputformatter.md) |  | Array&lt;null \| ((a: any) =&gt; any)&gt; |  |
+|  [outputFormatter](./eth-connect.method.outputformatter.md) |  | (something: any) =&gt; Output |  |
 |  [params](./eth-connect.method.params.md) |  | number |  |
-|  [requestManager](./eth-connect.method.requestmanager.md) |  | [RequestManager](./eth-connect.requestmanager.md) |  |
 
 ## Methods
 

@@ -6,6 +6,8 @@
 
 Returns `true` if `value` is a BigNumber instance, otherwise returns `false`<!-- -->.
 
+If `BigNumber.DEBUG` is `true`<!-- -->, throws if a BigNumber instance is not well-formed.
+
 ```ts
 x = 42
 y = new BigNumber(x)
@@ -24,7 +26,7 @@ BigNumber.isBigNumber(z)             // true
 <b>Signature:</b>
 
 ```typescript
-static isBigNumber(value: any): boolean;
+static isBigNumber(value: any): value is BigNumber;
 ```
 
 ## Parameters
@@ -35,5 +37,5 @@ static isBigNumber(value: any): boolean;
 
 <b>Returns:</b>
 
-boolean
+value is [BigNumber](./eth-connect.bignumber.md)
 

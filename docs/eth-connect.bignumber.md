@@ -14,15 +14,15 @@ export namespace BigNumber
 
 |  Interface | Description |
 |  --- | --- |
-|  [Config](./eth-connect.bignumber.config.md) | See <code>BigNumber.config</code> and <code>BigNumber.clone</code>. |
+|  [Config](./eth-connect.bignumber.config.md) | See <code>BigNumber.config</code> (alias <code>BigNumber.set</code>) and <code>BigNumber.clone</code>. |
 |  [Format](./eth-connect.bignumber.format.md) | See <code>FORMAT</code> and <code>toFormat</code>. |
+|  [Instance](./eth-connect.bignumber.instance.md) |  |
 
 ## Type Aliases
 
 |  Type Alias | Description |
 |  --- | --- |
 |  [Constructor](./eth-connect.bignumber.constructor.md) |  |
-|  [Instance](./eth-connect.bignumber.instance.md) |  |
 |  [ModuloMode](./eth-connect.bignumber.modulomode.md) |  |
 |  [RoundingMode](./eth-connect.bignumber.roundingmode.md) |  |
 |  [Value](./eth-connect.bignumber.value.md) |  |

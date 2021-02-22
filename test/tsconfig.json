@@ -4,18 +4,29 @@
     "target": "es2017",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "inlineSourceMap": false,
-    "inlineSources": false,
     "sourceMap": true,
     "moduleResolution": "node",
+    "skipLibCheck": true, /* Skip type checking of declaration files. */
     "strict": false,
+    "resolveJsonModule": true,
+    "types": [
+      "mocha",
+      "node"
+    ],
     "stripInternal": true,
     "forceConsistentCasingInFileNames": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "plugins": [{ "name": "tslint-language-service" }],
+    "plugins": [
+      {
+        "name": "tslint-language-service"
+      }
+    ],
     "noEmit": true,
     "allowJs": true
   },
-  "exclude": ["node_modules/**/*", "static/**/*"]
+  "exclude": [
+    "../node_modules/**/*",
+    "../static/**/*"
+  ]
 }

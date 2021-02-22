@@ -27,7 +27,7 @@ import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
 import { EthFilter } from './Filter'
-import { FilterOptions } from './Schema'
+import { AbiEvent, AbiInput, FilterOptions, LogObject, TopicFilter } from './Schema'
 
 /**
  * This prototype should be used to create event filters
@@ -35,16 +35,12 @@ import { FilterOptions } from './Schema'
 export class SolidityEvent {
   _anonymous: boolean = false
   _name: string
-  _params: any[]
+  _params: AbiInput[]
 
-  constructor(
-    public requestManager: RequestManager,
-    json: { inputs: any[]; anonymous; name: string },
-    public address: string
-  ) {
-    this._params = json.inputs
+  constructor(public requestManager: RequestManager, json: AbiEvent, public address: string) {
+    this._params = json.inputs || []
     this._name = utils.transformToFullName(json)
-    this._anonymous = json.anonymous
+    this._anonymous = json.anonymous || false
   }
 
   /**
@@ -52,12 +48,12 @@ export class SolidityEvent {
    *
    * @param decide - True if returned typed should be indexed
    */
-  types(indexed): string[] {
+  types(indexed: boolean): string[] {
     return this._params
-      .filter(function(i) {
+      .filter(function (i) {
         return i.indexed === indexed
       })
-      .map(function(i) {
+      .map(function (i) {
         return i.type
       })
   }
@@ -89,35 +85,35 @@ export class SolidityEvent {
    * @param {object} indexed
    * @param {object} options
    */
-  encode(indexed: Record<string, any> = {}, options: FilterOptions = {}): { topics: string[]; address: string } {
-    let result = {
+  encode(indexed: Record<string, any> = {}, options: FilterOptions = {}): FilterOptions {
+    let result: FilterOptions = {
       topics: [],
       address: this.address
     }
-    ;['fromBlock', 'toBlock']
-      .filter(function(f) {
-        return options[f] !== undefined
-      })
-      .forEach(function(f) {
-        result[f] = formatters.inputBlockNumberFormatter(options[f])
-      })
+
+    if (options.fromBlock !== undefined)
+      result.fromBlock = formatters.inputBlockNumberFormatter(options.fromBlock) || undefined
+    if (options.toBlock !== undefined)
+      result.toBlock = formatters.inputBlockNumberFormatter(options.toBlock) || undefined
+
+    result.topics = result.topics || []
 
     if (!this._anonymous) {
       result.topics.push('0x' + this.signature())
     }
 
-    let indexedTopics = this._params
-      .filter(function(i) {
+    let indexedTopics: TopicFilter = this._params
+      .filter(function (i) {
         return i.indexed === true
       })
-      .map(function(i) {
+      .map(function (i) {
         let value = indexed[i.name]
         if (value === undefined || value === null) {
           return null
         }
 
         if (utils.isArray(value)) {
-          return value.map(function(v) {
+          return value.map(function (v) {
             return '0x' + coder.encodeParam(i.type, v)
           })
         }
@@ -134,17 +130,13 @@ export class SolidityEvent {
    *
    * @param {object} data
    */
-  decode(data: {
-    data: string
-    topics?: string[]
-    address: string
-  }): { event: string; address: string; args: string[] } {
+  decode(data: LogObject) {
     data.data = data.data || ''
     data.topics = data.topics || []
 
     let argTopics = this._anonymous ? data.topics : data.topics.slice(1)
     let indexedData = argTopics
-      .map(function(topics) {
+      .map(function (topics) {
         return topics.slice(2)
       })
       .join('')
@@ -153,19 +145,17 @@ export class SolidityEvent {
     let notIndexedData = data.data.slice(2)
     let notIndexedParams = coder.decodeParams(this.types(false), notIndexedData)
 
-    let result = formatters.outputLogFormatter(data)
-    result.event = this.displayName()
-    result.address = data.address
-
-    result.args = this._params.reduce(function(acc, current) {
+    const args = this._params.reduce(function (acc, current) {
       acc[current.name] = current.indexed ? indexedParams.shift() : notIndexedParams.shift()
       return acc
-    }, {})
+    }, {} as Record<string, any>)
 
-    delete result.data
-    delete result.topics
-
-    return result
+    return {
+      ...formatters.outputLogFormatter(data),
+      event: this.displayName(),
+      address: data.address,
+      args
+    }
   }
 
   /**
@@ -174,10 +164,10 @@ export class SolidityEvent {
    * @param {object} indexed
    * @param {object} options
    */
-  async execute(indexed: Record<string, any>, options: FilterOptions): Promise<EthFilter> {
+  async execute(indexed: Record<string, any>, options?: FilterOptions): Promise<EthFilter<LogObject>> {
     let o = this.encode(indexed, options)
     let formatter = this.decode.bind(this)
-    return new EthFilter(this.requestManager, o, formatter)
+    return new EthFilter<LogObject>(this.requestManager, o, formatter)
   }
 
   /**
@@ -192,6 +182,6 @@ export class SolidityEvent {
     if (!contract.events[displayName]) {
       contract.events[displayName] = execute
     }
-    contract.events[displayName][this.typeName()] = this.execute.bind(this, contract)
+    ;(contract.events[displayName] as any)[this.typeName()] = this.execute.bind(this, contract)
   }
 }

@@ -1,13 +1,12 @@
-import * as chai from 'chai'
+import * as expect from 'expect'
 import { RequestManager } from '../src'
-const assert = chai.assert
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 
 import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../src/Filter'
 import { future } from 'fp-future'
 
-describe('eth.filter', function() {
-  it('Test EthFilter', async function() {
+describe('eth.filter', function () {
+  it('Test EthFilter', async function () {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
@@ -57,14 +56,14 @@ describe('eth.filter', function() {
 
     await didCallNewFilter
     await didCallLogs
-    assert.deepEqual(logs, res as any)
+    expect(logs).toEqual(res as any)
 
     await didCallChanges
     await filter.stop()
     await didCallUninstall
   })
 
-  it('Test EthFilter polling', async function() {
+  it('Test EthFilter polling', async function () {
     this.timeout(100000)
     // given
     const provider = new FakeHttpProvider()
@@ -124,7 +123,7 @@ describe('eth.filter', function() {
     await didCallNewFilter
     await didCallLogs
 
-    assert.deepEqual(logs, res as any)
+    expect(logs).toEqual(res as any)
 
     await didCallChanges
     await didCallThreeTimes
@@ -133,16 +132,16 @@ describe('eth.filter', function() {
     await didCallUninstall
   })
 
-  it('EthBlockFilter', async function() {
+  it('EthBlockFilter', async function () {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
 
-    const didCallInit = provider.injectHandler('eth_newBlockFilter', async _ => {
+    const didCallInit = provider.injectHandler('eth_newBlockFilter', async (_) => {
       provider.injectResult('0xf')
     })
 
-    const didCallGetChanges = provider.injectHandler('eth_getFilterChanges', async _ => {
+    const didCallGetChanges = provider.injectHandler('eth_getFilterChanges', async (_) => {
       provider.injectResult(['0xf'])
     })
 
@@ -157,7 +156,7 @@ describe('eth.filter', function() {
     await didCallUninstall
   })
 
-  it('EthPendingTransactionFilter', async function() {
+  it('EthPendingTransactionFilter', async function () {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
@@ -165,11 +164,11 @@ describe('eth.filter', function() {
     // call
     let filter = new EthPendingTransactionFilter(rm)
 
-    const didCallInit = provider.injectHandler('eth_newPendingTransactionFilter', async _ => {
+    const didCallInit = provider.injectHandler('eth_newPendingTransactionFilter', async (_) => {
       provider.injectResult('0xf')
     })
 
-    const didCallGetChanges = provider.injectHandler('eth_getFilterChanges', async _ => {
+    const didCallGetChanges = provider.injectHandler('eth_getFilterChanges', async (_) => {
       provider.injectResult(['0xf'])
     })
 

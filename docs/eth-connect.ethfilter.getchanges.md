@@ -7,9 +7,9 @@
 <b>Signature:</b>
 
 ```typescript
-protected getChanges(): Promise<any>;
+protected getChanges(): Promise<ReceivedLog[]>;
 ```
 <b>Returns:</b>
 
-Promise&lt;any&gt;
+Promise&lt;ReceivedLog\[\]&gt;
 

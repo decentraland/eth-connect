@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-formatter: (x: any) => T;
+formatter: (x: ReceivedLog) => TransformedLog;
 ```

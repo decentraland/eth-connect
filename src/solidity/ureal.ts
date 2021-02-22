@@ -1,5 +1,6 @@
 import * as f from './formatters'
 import { SolidityType } from './type'
+import { BigNumber } from '../utils/BigNumber'
 
 /**
  * SolidityTypeUReal is a prootype that represents ureal type
@@ -17,7 +18,7 @@ import { SolidityType } from './type'
  * ureal[3][]
  * ureal64[][6][], ...
  */
-export class SolidityTypeUReal extends SolidityType {
+export class SolidityTypeUReal extends SolidityType<BigNumber> {
   constructor() {
     super({
       inputFormatter: f.formatInputReal,
@@ -26,7 +27,7 @@ export class SolidityTypeUReal extends SolidityType {
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  isType(name) {
+  isType(name: string) {
     return !!name.match(/^ureal([0-9]*)?(\[([0-9]*)\])*$/)
   }
 }

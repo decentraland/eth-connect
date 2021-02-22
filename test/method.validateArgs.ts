@@ -1,56 +1,57 @@
-import * as chai from 'chai'
-const assert = chai.assert
+import * as expect from 'expect'
 import { Method } from '../src'
 import * as errors from '../src/utils/errors'
 
-describe('lib/web3/method', function() {
-  describe('validateArgs', function() {
-    it('should pass', function() {
+describe('lib/web3/method', function () {
+  describe('validateArgs', function () {
+    it('should pass', function () {
       // given
       let method = new Method({
         callName: 'dummy',
         params: 1,
-        outputFormatter: x => x
+        inputFormatter: [null],
+        outputFormatter: (x) => x
       })
 
       let args = [1]
       let args2 = ['heloas']
 
       // when
-      let test = function() {
+      let test = function () {
         method.validateArgs(args)
       }
-      let test2 = function() {
+      let test2 = function () {
         method.validateArgs(args2)
       }
 
       // then
-      assert.doesNotThrow(test)
-      assert.doesNotThrow(test2)
+      expect(test).not.toThrow()
+      expect(test2).not.toThrow()
     })
 
-    it('should return call based on args', function() {
+    it('should return call based on args', function () {
       // given
-      let method = new Method({
+      let method = new Method<any>({
         callName: 'dummy',
         params: 2,
-        outputFormatter: x => x
+        inputFormatter: [null, null],
+        outputFormatter: (x) => x
       })
 
       let args = [1]
       let args2 = ['heloas', '12', 3]
 
       // when
-      let test = function() {
+      let test = function () {
         method.validateArgs(args)
       }
-      let test2 = function() {
+      let test2 = function () {
         method.validateArgs(args2)
       }
 
       // then
-      assert.throws(test, errors.InvalidNumberOfRPCParams('dummy', 1, 2).message)
-      assert.throws(test2, errors.InvalidNumberOfRPCParams('dummy', 3, 2).message)
+      expect(test).toThrow(errors.InvalidNumberOfRPCParams('dummy', 1, 2).message)
+      expect(test2).toThrow(errors.InvalidNumberOfRPCParams('dummy', 3, 2).message)
     })
   })
 })

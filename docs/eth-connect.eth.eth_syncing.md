@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-eth_syncing: Property<any>
+eth_syncing: Property<Syncing>
 ```

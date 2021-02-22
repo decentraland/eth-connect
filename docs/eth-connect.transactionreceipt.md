@@ -16,11 +16,11 @@ export declare type TransactionReceipt = {
     cumulativeGasUsed: Quantity;
     gasUsed: Quantity;
     contractAddress: Address;
-    logs: Array<FilterLog>;
+    logs: Array<LogObject>;
     logsBloom: Data;
     root?: TxHash;
     status?: Quantity;
 };
 ```
-<b>References:</b> [TxHash](./eth-connect.txhash.md)<!-- -->, [Quantity](./eth-connect.quantity.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [FilterLog](./eth-connect.filterlog.md)<!-- -->, [Data](./eth-connect.data.md)
+<b>References:</b> [TxHash](./eth-connect.txhash.md)<!-- -->, [Quantity](./eth-connect.quantity.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [LogObject](./eth-connect.logobject.md)<!-- -->, [Data](./eth-connect.data.md)
 

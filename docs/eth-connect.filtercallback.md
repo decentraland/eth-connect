@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type FilterCallback = (messages: FilterChange[] | string[]) => void;
+export declare type FilterCallback = (messages: LogObject[] | string[]) => void;
 ```
-<b>References:</b> [FilterChange](./eth-connect.filterchange.md)
+<b>References:</b> [LogObject](./eth-connect.logobject.md)
 

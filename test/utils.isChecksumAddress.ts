@@ -1,6 +1,5 @@
-import * as chai from 'chai'
+import * as expect from 'expect'
 import * as utils from '../src/utils/utils'
-const assert = chai.assert
 
 let tests = [
   { value: '0x52908400098527886E0F7030069857D2E4169EE7', is: true },
@@ -15,11 +14,11 @@ let tests = [
   { value: '0xd1220a0cf47c7b9be7a2e6ba89f429762e7b9adb', is: false }
 ]
 
-describe('lib/utils/utils', function() {
-  describe('isChecksumAddress', function() {
-    tests.forEach(function(test) {
-      it('shoud test if address ' + test.value + ' passes checksum: ' + test.is, function() {
-        assert.equal(utils.isChecksumAddress(test.value), test.is)
+describe('lib/utils/utils', function () {
+  describe('isChecksumAddress', function () {
+    tests.forEach(function (test) {
+      it('shoud test if address ' + test.value + ' passes checksum: ' + test.is, function () {
+        expect(utils.isChecksumAddress(test.value)).toEqual(test.is)
       })
     })
   })

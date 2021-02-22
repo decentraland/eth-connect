@@ -1,14 +1,12 @@
-import * as chai from 'chai'
-const assert = chai.assert
+import * as expect from 'expect'
 import * as coder from '../src/solidity/coder'
-import BigNumber from 'bignumber.js'
-let bn = BigNumber
+import { BigNumber as bn } from '../dist/eth-connect'
 
 describe('lib/solidity/coder', function() {
   describe('decodeParam', function() {
     let test = function(t) {
       it('should turn ' + t.value + ' to ' + t.expected, function() {
-        assert.deepEqual(coder.coder.decodeParam(t.type, t.value), t.expected)
+        expect(coder.coder.decodeParam(t.type, t.value)).toEqual(t.expected)
       })
     }
 
@@ -525,7 +523,7 @@ describe('lib/solidity/coder', function() {
   describe('decodeParams', function() {
     let test = function(t) {
       it('should turn ' + t.values + ' to ' + t.expected, function() {
-        assert.deepEqual(coder.coder.decodeParams(t.types, t.values), t.expected)
+        expect(coder.coder.decodeParams(t.types, t.values)).toEqual(t.expected)
       })
     }
 

@@ -9,7 +9,7 @@ Should be called to format output(result) of method
 <b>Signature:</b>
 
 ```typescript
-formatOutput(result: any): V | null;
+formatOutput(result: any): Output | null;
 ```
 
 ## Parameters
@@ -20,5 +20,5 @@ formatOutput(result: any): V | null;
 
 <b>Returns:</b>
 
-V \| null
+Output \| null
 

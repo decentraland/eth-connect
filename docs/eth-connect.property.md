@@ -22,12 +22,12 @@ export declare class Property<V>
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [getter](./eth-connect.property.getter.md) |  | string |  |
-|  [outputFormatter](./eth-connect.property.outputformatter.md) |  | Function \| null |  |
+|  [outputFormatter](./eth-connect.property.outputformatter.md) |  | Function |  |
 
 ## Methods
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [execute(requestManager)](./eth-connect.property.execute.md) |  |  |
+|  [execute(requestManager, \_unusedArgs)](./eth-connect.property.execute.md) |  |  |
 |  [formatOutput(result)](./eth-connect.property.formatoutput.md) |  | Should be called to format output(result) of method |
 

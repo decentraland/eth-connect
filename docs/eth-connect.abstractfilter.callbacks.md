@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-protected callbacks: ((message: T) => void)[];
+protected callbacks: ((message: TransformedLog) => void)[];
 ```

@@ -7,9 +7,9 @@
 <b>Signature:</b>
 
 ```typescript
-export declare class EthFilter<T = FilterChange | string> extends AbstractFilter<T> 
+export declare class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObject> extends AbstractFilter<ReceivedLog, TransformedLog> 
 ```
-<b>Extends:</b> [AbstractFilter](./eth-connect.abstractfilter.md)<!-- -->&lt;T&gt;
+<b>Extends:</b> [AbstractFilter](./eth-connect.abstractfilter.md)<!-- -->&lt;ReceivedLog, TransformedLog&gt;
 
 ## Constructors
 
@@ -21,7 +21,7 @@ export declare class EthFilter<T = FilterChange | string> extends AbstractFilter
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [formatter](./eth-connect.ethfilter.formatter.md) |  | (message: [FilterChange](./eth-connect.filterchange.md) \| string) =&gt; T |  |
+|  [formatter](./eth-connect.ethfilter.formatter.md) |  | (message: ReceivedLog) =&gt; TransformedLog |  |
 |  [options](./eth-connect.ethfilter.options.md) |  | [FilterOptions](./eth-connect.filteroptions.md) |  |
 |  [requestManager](./eth-connect.ethfilter.requestmanager.md) |  | [RequestManager](./eth-connect.requestmanager.md) |  |
 

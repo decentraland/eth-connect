@@ -15,6 +15,8 @@ See `toFormat`<!-- -->.
 ```ts
 BigNumber.config({
   FORMAT: {
+    // string to prepend
+    prefix: '',
     // the decimal separator
     decimalSeparator: '.',
     // the grouping separator of the integer part
@@ -26,7 +28,9 @@ BigNumber.config({
     // the grouping separator of the fraction part
     fractionGroupSeparator: ' ',
     // the grouping size of the fraction part
-    fractionGroupSize: 0
+    fractionGroupSize: 0,
+    // string to append
+    suffix: ''
   }
 })
 

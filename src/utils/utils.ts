@@ -15,10 +15,10 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import BigNumber from 'bignumber.js'
-
 import * as utf8 from 'utf8'
 import { keccak256 } from 'js-sha3'
+import { BigNumber } from './BigNumber'
+import { AbiItem } from '../Schema'
 
 /**
  * @public
@@ -90,8 +90,10 @@ let unitMap = {
   grand: '1000000000000000000000',
   mether: '1000000000000000000000000',
   gether: '1000000000000000000000000000',
-  tether: '1000000000000000000000000000000',
+  tether: '1000000000000000000000000000000'
 }
+
+export type Unit = keyof typeof unitMap
 
 /**
  * @public
@@ -194,16 +196,20 @@ export function fromAscii(str: string, num: number = 0) {
  * @public
  * Should be used to create full function/event name from json abi
  */
-export function transformToFullName(json: { name: string; inputs: any[] }) {
-  if (json.name.indexOf('(') !== -1) {
+export function transformToFullName(json: AbiItem) {
+  if (json.name && json.name.indexOf('(') !== -1) {
     return json.name
   }
 
-  let typeName = json.inputs
-    .map(function (i) {
-      return i.type
-    })
-    .join()
+  let typeName: string = ''
+  if (json.inputs) {
+    typeName = json.inputs
+      .map(function (i) {
+        return i.type
+      })
+      .join()
+  }
+
   return json.name + '(' + typeName + ')'
 }
 
@@ -243,7 +249,7 @@ export function isHex(value: string) {
  * @public
  * Converts value to it's decimal representation in string
  */
-export function toNullDecimal(value: number | string | BigNumber) {
+export function toNullDecimal(value: BigNumber.Value) {
   if (value === undefined || value === null) return value
   return toBigNumber(value).toNumber()
 }
@@ -252,7 +258,7 @@ export function toNullDecimal(value: number | string | BigNumber) {
  * @public
  * Converts value to it's decimal representation in string
  */
-export function toDecimal(value: number | string | BigNumber) {
+export function toDecimal(value: BigNumber.Value) {
   return toBigNumber(value).toNumber()
 }
 
@@ -260,7 +266,7 @@ export function toDecimal(value: number | string | BigNumber) {
  * @public
  * Converts value to string
  */
-export function toString(value: number | string | BigNumber) {
+export function toString(value: BigNumber.Value) {
   if (isBigNumber(value)) return (value as BigNumber).toString(10)
   return '' + value
 }
@@ -269,7 +275,7 @@ export function toString(value: number | string | BigNumber) {
  * @public
  * Converts value to it's hex  representation in string
  */
-export function toData(val: string | number | BigNumber) {
+export function toData(val: BigNumber.Value) {
   if (typeof val === 'string') {
     if (!val.startsWith('0x') && /^[A-Za-z0-9]+$/.test(val)) {
       return '0x' + val
@@ -282,7 +288,7 @@ export function toData(val: string | number | BigNumber) {
  * @public
  * Converts value to it's boolean representation (x != 0)
  */
-export function toBoolean(value: number | string | BigNumber | boolean) {
+export function toBoolean(value: BigNumber.Value | boolean) {
   if (typeof value === 'boolean') return value
   return toBigNumber(value).toNumber() !== 0
 }
@@ -291,7 +297,7 @@ export function toBoolean(value: number | string | BigNumber | boolean) {
  * @public
  * Converts value to it's hex representation
  */
-export function fromDecimal(value: string | number | BigNumber) {
+export function fromDecimal(value: BigNumber.Value) {
   let num = toBigNumber(value)
   let result = num.toString(16)
 
@@ -304,9 +310,7 @@ export function fromDecimal(value: string | number | BigNumber) {
  *
  * And even stringifys objects before.
  */
-export function toHex(val: string | number | BigNumber) {
-  /*jshint maxcomplexity: 8 */
-
+export function toHex(val: BigNumber.Value | boolean) {
   if (isBoolean(val)) return fromDecimal(+val)
 
   if (isBigNumber(val)) return fromDecimal(val)
@@ -328,8 +332,8 @@ export function toHex(val: string | number | BigNumber) {
  * @public
  * Returns value of unit in Wei
  */
-export function getValueOfUnit(_unit: string): BigNumber {
-  let unit = _unit ? _unit.toLowerCase() : 'ether'
+export function getValueOfUnit(_unit: Unit): BigNumber {
+  let unit: Unit = _unit ? (_unit.toLowerCase() as Unit) : 'ether'
   let unitValue = unitMap[unit]
   if (unitValue === undefined) {
     throw new Error(
@@ -357,7 +361,9 @@ export function getValueOfUnit(_unit: string): BigNumber {
  * - tether
  *
  */
-export function fromWei(num: number | string, unit: string) {
+export function fromWei(num: BigNumber, unit: Unit): BigNumber
+export function fromWei(num: string | number, unit: Unit): string
+export function fromWei(num: BigNumber.Value, unit: Unit) {
   let returnValue = toBigNumber(num).dividedBy(getValueOfUnit(unit))
 
   return isBigNumber(num) ? returnValue : returnValue.toString(10)
@@ -380,7 +386,7 @@ export function fromWei(num: number | string, unit: string) {
  * - gether
  * - tether
  */
-export function toWei(num: number | string, unit: string) {
+export function toWei(num: number | string, unit: Unit) {
   let returnValue = toBigNumber(num).times(getValueOfUnit(unit))
 
   return isBigNumber(num) ? returnValue : returnValue.toString(10)
@@ -390,7 +396,7 @@ export function toWei(num: number | string, unit: string) {
  * @public
  * Takes an input and transforms it into an bignumber
  */
-export function toBigNumber(_num: number | string | BigNumber): BigNumber {
+export function toBigNumber(_num: BigNumber.Value): BigNumber {
   let num: any = _num || 0
 
   if (isBigNumber(num)) {
@@ -408,7 +414,7 @@ export function toBigNumber(_num: number | string | BigNumber): BigNumber {
  * @public
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
  */
-export function toTwosComplement(num: number | string | BigNumber): BigNumber {
+export function toTwosComplement(num: BigNumber.Value): BigNumber {
   let bigNumber = toBigNumber(num).integerValue() as BigNumber
 
   if (bigNumber.isLessThan(0)) {
@@ -501,7 +507,7 @@ export function toArray(value: any): any[] {
  * @public
  * Transforms given string to valid 20 bytes-length addres with 0x prefix
  */
-export function toAddress(address) {
+export function toAddress(address: string) {
   if (isStrictAddress(address)) {
     return address
   }
@@ -517,7 +523,7 @@ export function toAddress(address) {
  * @public
  * Returns true if object is BigNumber, otherwise false
  */
-export function isBigNumber(object: any) {
+export function isBigNumber(object: any): object is BigNumber {
   return object instanceof BigNumber
 }
 
@@ -533,7 +539,7 @@ export function isString(value: any): value is string {
  * @public
  * Returns true if object is function, otherwise false
  */
-export function isFunction(object) {
+export function isFunction(object: any): object is CallableFunction {
   return typeof object === 'function'
 }
 
@@ -541,7 +547,7 @@ export function isFunction(object) {
  * @public
  * Returns true if object is Objet, otherwise false
  */
-export function isObject(object) {
+export function isObject<T extends object>(object: any): object is T {
   return object !== null && !Array.isArray(object) && typeof object === 'object'
 }
 
@@ -549,7 +555,7 @@ export function isObject(object) {
  * @public
  * Returns true if object is boolean, otherwise false
  */
-export function isBoolean(object) {
+export function isBoolean(object: any): object is boolean {
   return typeof object === 'boolean'
 }
 
@@ -557,7 +563,7 @@ export function isBoolean(object) {
  * @public
  * Returns true if object is array, otherwise false
  */
-export function isArray(object) {
+export function isArray<T extends Array<any>>(object: any): object is T {
   return Array.isArray(object)
 }
 

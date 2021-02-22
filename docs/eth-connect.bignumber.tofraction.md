@@ -4,9 +4,7 @@
 
 ## BigNumber.toFraction() method
 
-Returns a string array representing the value of this BigNumber as a simple fraction with an integer numerator and an integer denominator. The denominator will be a positive non-zero value less than or equal to `max_denominator`<!-- -->.
-
-If a maximum denominator, `max_denominator`<!-- -->, is not specified, or is `null` or `undefined`<!-- -->, the denominator will be the lowest value necessary to represent the number exactly.
+Returns an array of two BigNumbers representing the value of this BigNumber as a simple fraction with an integer numerator and an integer denominator. The denominator will be a positive non-zero value less than or equal to `max_denominator`<!-- -->. If a maximum denominator, `max_denominator`<!-- -->, is not specified, or is `null` or `undefined`<!-- -->, the denominator will be the lowest value necessary to represent the number exactly.
 
 Throws if `max_denominator` is invalid.
 
@@ -27,7 +25,7 @@ pi.toFraction(1)                // '3, 1'
 <b>Signature:</b>
 
 ```typescript
-toFraction(max_denominator?: BigNumber.Value): BigNumber[];
+toFraction(max_denominator?: BigNumber.Value): [BigNumber, BigNumber];
 ```
 
 ## Parameters
@@ -38,5 +36,5 @@ toFraction(max_denominator?: BigNumber.Value): BigNumber[];
 
 <b>Returns:</b>
 
-[BigNumber](./eth-connect.bignumber.md)<!-- -->\[\]
+\[[BigNumber](./eth-connect.bignumber.md)<!-- -->, [BigNumber](./eth-connect.bignumber.md)<!-- -->\]
 

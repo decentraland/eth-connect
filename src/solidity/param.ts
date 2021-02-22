@@ -22,13 +22,7 @@ import * as utils from '../utils/utils'
  * Should be used when encoding, decoding solidity bytes
  */
 export class SolidityParam {
-  value
-  offset: number = undefined
-
-  constructor(value, offset: number = undefined) {
-    this.value = value || ''
-    this.offset = offset // offset bytes
-  }
+  constructor(public value: string = '', public offset?: number) {}
 
   /**
    * This method should be called to check if param has dynamic size.
@@ -37,7 +31,7 @@ export class SolidityParam {
    * @method isDynamic
    * @returns {Boolean}
    */
-  isDynamic() {
+  isDynamic(): boolean {
     return this.offset !== undefined
   }
 
@@ -47,8 +41,8 @@ export class SolidityParam {
    * @method offsetAsBytes
    * @returns {string} bytes representation of offset
    */
-  offsetAsBytes() {
-    return !this.isDynamic() ? '' : utils.padLeft(utils.toTwosComplement(this.offset).toString(16), 64)
+  offsetAsBytes(): string {
+    return !this.isDynamic() ? '' : utils.padLeft(utils.toTwosComplement(this.offset || '').toString(16), 64)
   }
 
   /**
@@ -57,7 +51,7 @@ export class SolidityParam {
    * @method staticPart
    * @returns {string} offset if it is a dynamic param, otherwise value
    */
-  staticPart() {
+  staticPart(): string {
     if (!this.isDynamic()) {
       return this.value
     }
@@ -70,7 +64,7 @@ export class SolidityParam {
    * @method dynamicPart
    * @returns {string} returns a value if it is a dynamic param, otherwise empty string
    */
-  dynamicPart() {
+  dynamicPart(): string {
     return this.isDynamic() ? this.value : ''
   }
 
@@ -80,7 +74,7 @@ export class SolidityParam {
    * @method encode
    * @returns {string}
    */
-  encode() {
+  encode(): string {
     return this.staticPart() + this.dynamicPart()
   }
 }

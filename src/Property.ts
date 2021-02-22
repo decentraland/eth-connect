@@ -27,7 +27,7 @@ export interface IPropertyOptions<V> {
  */
 export class Property<V> {
   getter: string
-  outputFormatter: Function | null
+  outputFormatter!: Function
 
   constructor(options: IPropertyOptions<V>) {
     this.getter = options.getter
@@ -39,11 +39,12 @@ export class Property<V> {
    *
    * @param result - The result to be formatted
    */
-  formatOutput(result: any) {
+  formatOutput(result: any): V {
     return this.outputFormatter(result)
   }
 
-  async execute(requestManager: RequestManager) {
+  // _unusedArgs exist only to share the same interface with Method
+  async execute(requestManager: RequestManager, ..._unusedArgs: any[]): Promise<V> {
     const result = await requestManager.sendAsync({
       method: this.getter,
       params: []

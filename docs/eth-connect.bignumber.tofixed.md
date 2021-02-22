@@ -33,7 +33,7 @@ y.toFixed(5)                    // '3.45600'
 <b>Signature:</b>
 
 ```typescript
-toFixed(decimalPlaces?: number, roundingMode?: BigNumber.RoundingMode): string;
+toFixed(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
 ```
 
 ## Parameters

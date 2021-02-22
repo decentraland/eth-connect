@@ -9,7 +9,7 @@ Returns true if object is boolean, otherwise false
 <b>Signature:</b>
 
 ```typescript
-export declare function isBoolean(object: any): boolean;
+export declare function isBoolean(object: any): object is boolean;
 ```
 
 ## Parameters
@@ -20,5 +20,5 @@ export declare function isBoolean(object: any): boolean;
 
 <b>Returns:</b>
 
-boolean
+object is boolean
 

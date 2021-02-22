@@ -9,7 +9,7 @@ See `FORMAT` and `toFormat`<!-- -->.
 <b>Signature:</b>
 
 ```typescript
-export interface Format 
+interface Format 
 ```
 
 ## Properties
@@ -21,5 +21,7 @@ export interface Format
 |  [fractionGroupSize?](./eth-connect.bignumber.format.fractiongroupsize.md) | number | <i>(Optional)</i> The grouping size of the fraction part. |
 |  [groupSeparator?](./eth-connect.bignumber.format.groupseparator.md) | string | <i>(Optional)</i> The grouping separator of the integer part. |
 |  [groupSize?](./eth-connect.bignumber.format.groupsize.md) | number | <i>(Optional)</i> The primary grouping size of the integer part. |
+|  [prefix?](./eth-connect.bignumber.format.prefix.md) | string | <i>(Optional)</i> The string to prepend. |
 |  [secondaryGroupSize?](./eth-connect.bignumber.format.secondarygroupsize.md) | number | <i>(Optional)</i> The secondary grouping size of the integer part. |
+|  [suffix?](./eth-connect.bignumber.format.suffix.md) | string | <i>(Optional)</i> The string to append. |
 

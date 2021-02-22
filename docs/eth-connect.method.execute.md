@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-execute(requestManager: RequestManager, ...args: any[]): Promise<V>;
+execute(requestManager: RequestManager, ...args: any[]): Promise<Output | null>;
 ```
 
 ## Parameters
@@ -19,5 +19,5 @@ execute(requestManager: RequestManager, ...args: any[]): Promise<V>;
 
 <b>Returns:</b>
 
-Promise&lt;V&gt;
+Promise&lt;Output \| null&gt;
 

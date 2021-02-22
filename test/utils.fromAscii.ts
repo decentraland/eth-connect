@@ -1,6 +1,5 @@
-import * as chai from 'chai'
+import * as expect from 'expect'
 import * as utils from '../src/utils/utils'
-const assert = chai.assert
 
 let tests = [
   { value: 'myString', expected: '0x6d79537472696e67' },
@@ -25,17 +24,17 @@ let paddedTests = [
   }
 ]
 
-describe('lib/utils/utils', function() {
-  describe('fromAscii', function() {
-    tests.forEach(function(test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function() {
-        assert.strictEqual(utils.fromAscii(test.value), test.expected)
+describe('lib/utils/utils', function () {
+  describe('fromAscii', function () {
+    tests.forEach(function (test) {
+      it('should turn ' + test.value + ' to ' + test.expected, function () {
+        expect(utils.fromAscii(test.value)).toStrictEqual(test.expected)
       })
     })
 
-    paddedTests.forEach(function(paddedTest) {
-      it('should turn ' + paddedTest.value + ' to ' + paddedTest.expected, function() {
-        assert.strictEqual(utils.fromAscii(paddedTest.value, paddedTest.padding), paddedTest.expected)
+    paddedTests.forEach(function (paddedTest) {
+      it('should turn ' + paddedTest.value + ' to ' + paddedTest.expected, function () {
+        expect(utils.fromAscii(paddedTest.value, paddedTest.padding)).toStrictEqual(paddedTest.expected)
       })
     })
   })

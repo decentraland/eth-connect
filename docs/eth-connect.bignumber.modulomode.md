@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-export type ModuloMode = 0 | 1 | 3 | 6 | 9;
+type ModuloMode = 0 | 1 | 3 | 6 | 9;
 ```

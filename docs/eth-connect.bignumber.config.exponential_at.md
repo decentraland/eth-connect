@@ -37,5 +37,5 @@ Regardless of the value of `EXPONENTIAL_AT`<!-- -->, the `toFixed` method will a
 <b>Signature:</b>
 
 ```typescript
-EXPONENTIAL_AT?: number|[number, number];
+EXPONENTIAL_AT?: number | [number, number];
 ```

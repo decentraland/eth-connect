@@ -9,14 +9,14 @@ Converts value to it's hex representation in string
 <b>Signature:</b>
 
 ```typescript
-export declare function toData(val: string | number | BigNumber): string;
+export declare function toData(val: BigNumber.Value): string;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  val | string \| number \| [BigNumber](./eth-connect.bignumber.md) |  |
+|  val | [BigNumber.Value](./eth-connect.bignumber.value.md) |  |
 
 <b>Returns:</b>
 

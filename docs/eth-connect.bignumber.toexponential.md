@@ -32,7 +32,7 @@ y.toExponential(3)              // '4.560e+1'
 <b>Signature:</b>
 
 ```typescript
-toExponential(decimalPlaces?: number, roundingMode?: BigNumber.RoundingMode): string;
+toExponential(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
 ```
 
 ## Parameters

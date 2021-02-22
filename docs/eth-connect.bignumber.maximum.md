@@ -6,8 +6,6 @@
 
 Returns a BigNumber whose value is the maximum of the arguments.
 
-Accepts either an argument list or an array of values.
-
 The return value is always exact and unrounded.
 
 ```ts
@@ -15,7 +13,7 @@ x = new BigNumber('3257869345.0378653')
 BigNumber.maximum(4e9, x, '123456789.9')      // '4000000000'
 
 arr = [12, '13', new BigNumber(14)]
-BigNumber.maximum(arr)                        // '14'
+BigNumber.maximum.apply(null, arr)            // '14'
 
 ```
 

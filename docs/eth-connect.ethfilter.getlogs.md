@@ -7,9 +7,9 @@
 <b>Signature:</b>
 
 ```typescript
-getLogs(): Promise<FilterChange[] | string[]>;
+getLogs(): Promise<ReceivedLog[]>;
 ```
 <b>Returns:</b>
 
-Promise&lt;[FilterChange](./eth-connect.filterchange.md)<!-- -->\[\] \| string\[\]&gt;
+Promise&lt;ReceivedLog\[\]&gt;
 

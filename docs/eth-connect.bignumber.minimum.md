@@ -6,8 +6,6 @@
 
 Returns a BigNumber whose value is the minimum of the arguments.
 
-Accepts either an argument list or an array of values.
-
 The return value is always exact and unrounded.
 
 ```ts
@@ -15,7 +13,7 @@ x = new BigNumber('3257869345.0378653')
 BigNumber.minimum(4e9, x, '123456789.9')          // '123456789.9'
 
 arr = [2, new BigNumber(-14), '-15.9999', -12]
-BigNumber.minimum(arr)                            // '-15.9999'
+BigNumber.minimum.apply(null, arr)                // '-15.9999'
 
 ```
 

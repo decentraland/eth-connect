@@ -4,10 +4,10 @@
 
 ## BigNumber.c property
 
-The coefficient of the value of this BigNumber, an array of base 1e14 integer numbers.
+The coefficient of the value of this BigNumber, an array of base 1e14 integer numbers, or null.
 
 <b>Signature:</b>
 
 ```typescript
-readonly c: number[];
+readonly c: number[] | null;
 ```

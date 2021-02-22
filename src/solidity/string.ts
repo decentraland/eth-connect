@@ -1,7 +1,7 @@
 import * as f from './formatters'
 import { SolidityType } from './type'
 
-export class SolidityTypeString extends SolidityType {
+export class SolidityTypeString extends SolidityType<string> {
   constructor() {
     super({
       inputFormatter: f.formatInputString,

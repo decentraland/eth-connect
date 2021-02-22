@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-personal_importRawKey: Method<any>
+personal_importRawKey: Method<string>
 ```

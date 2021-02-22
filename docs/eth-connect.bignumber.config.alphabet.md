@@ -4,9 +4,11 @@
 
 ## BigNumber.Config.ALPHABET property
 
-A string representing the alphabet used for base conversion. Default value: `'0123456789abcdefghijklmnopqrstuvwxyz'`<!-- -->.
+The alphabet used for base conversion. The length of the alphabet corresponds to the maximum value of the base argument that can be passed to the BigNumber constructor or `toString`<!-- -->.
 
-The length of the alphabet corresponds to the maximum value of the base argument that can be passed to the BigNumber constructor or `toString`<!-- -->. There is no maximum length, but it must be at least 2 characters long, and it must not contain a repeated character, or `'.'` - the decimal separator for all values whatever their base.
+Default value: `'0123456789abcdefghijklmnopqrstuvwxyz'`<!-- -->.
+
+There is no maximum length for the alphabet, but it must be at least 2 characters long, and it must not contain whitespace or a repeated character, or the sign indicators '+' and '-', or the decimal separator '.'.
 
 ```ts
 // duodecimal (base 12)
