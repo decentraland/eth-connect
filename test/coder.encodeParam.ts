@@ -15,6 +15,18 @@ describe('lib/solidity/coder', function () {
       expected: '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c1'
     })
     test({
+      type: 'address',
+      value: '0xBF79cE2fbd819e5aBC2327563D02a200255B7Cb3',
+      expected: '000000000000000000000000BF79cE2fbd819e5aBC2327563D02a200255B7Cb3'.toLowerCase()
+    })
+    test({
+      type: 'address[2]',
+      value: ['0xBF79cE2fbd819e5aBC2327563D02a200255B7Cb3', '0x407d73d8a49eeb85d32cf465507dd71d507100c3'],
+      expected:
+        '000000000000000000000000bf79ce2fbd819e5abc2327563d02a200255b7cb3' +
+        '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c3'
+    })
+    test({
       type: 'address[2]',
       value: ['0x407d73d8a49eeb85d32cf465507dd71d507100c1', '0x407d73d8a49eeb85d32cf465507dd71d507100c3'],
       expected:

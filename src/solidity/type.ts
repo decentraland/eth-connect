@@ -160,7 +160,7 @@ export abstract class SolidityType<ValueType> {
    * @param {string} name
    * @return {string} encoded value
    */
-  encode(value: any, name: string): any {
+  encode(value: any, name: string): string | string[] {
     if (this.isDynamicArray(name)) {
       let length = value.length // in int
       let nestedName = this.nestedName(name)
@@ -177,9 +177,9 @@ export abstract class SolidityType<ValueType> {
       let length = this.staticArrayLength(name) // in int
       let nestedName = this.nestedName(name)
 
-      let result = []
+      let result: string[] = []
       for (let i = 0; i < length; i++) {
-        result.push(this.encode(value[i], nestedName))
+        result.push(this.encode(value[i], nestedName) as string)
       }
 
       return result
