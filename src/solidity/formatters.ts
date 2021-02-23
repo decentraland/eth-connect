@@ -33,7 +33,8 @@ export function formatInputInt(value: BigNumber.Value) {
 }
 
 export function formatInputAddress(value: string) {
-  return formatInputInt(inputAddressFormatter(value))
+  if (typeof value != 'string') throw new Error('The input must be a valid address, got: ' + JSON.stringify(value))
+  return formatInputInt(inputAddressFormatter(value.trim()))
 }
 
 /**
