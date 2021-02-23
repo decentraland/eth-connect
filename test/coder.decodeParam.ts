@@ -16,6 +16,11 @@ describe('lib/solidity/coder', function() {
       value: '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c1'
     })
     test({
+      type: 'address',
+      expected: '0xbf79ce2fbd819e5abc2327563d02a200255b7cb3',
+      value: '000000000000000000000000bf79ce2fbd819e5abc2327563d02a200255b7cb3'
+    })
+    test({
       type: 'address[2]',
       expected: ['0x407d73d8a49eeb85d32cf465507dd71d507100c1', '0x407d73d8a49eeb85d32cf465507dd71d507100c3'],
       value:
@@ -538,6 +543,13 @@ describe('lib/solidity/coder', function() {
       values:
         '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c1' +
         '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c3'
+    })
+    test({
+      types: ['address', 'address'],
+      expected: ['0x6224fe0bea79701d338cf65ebc0da0caa566c544', '0xBF79cE2fbd819e5aBC2327563D02a200255B7Cb3'],
+      values:
+        '0000000000000000000000006224fe0bea79701d338cf65ebc0da0caa566c544' +
+        '000000000000000000000000BF79cE2fbd819e5aBC2327563D02a200255B7Cb3'
     })
     test({
       types: ['bool[2]', 'bool[3]'],

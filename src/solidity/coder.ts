@@ -101,18 +101,23 @@ export class SolidityCoder {
     return result
   }
 
-  encodeMultiWithOffset(types: string[], solidityTypes: SolidityType<any>[], encodeds: any[][], _dynamicOffset: number) {
+  encodeMultiWithOffset(
+    types: string[],
+    solidityTypes: SolidityType<any>[],
+    encodeds: (string | string[])[],
+    _dynamicOffset: number
+  ): string {
     let dynamicOffset = _dynamicOffset
-    let result = ''
+    let results: string[] = []
 
     types.forEach((_, i) => {
       if (isDynamic(solidityTypes[i], types[i])) {
-        result += formatter.formatInputInt(dynamicOffset).encode()
+        results.push(formatter.formatInputInt(dynamicOffset).encode())
         let e = this.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
         dynamicOffset += e.length / 2
       } else {
         // don't add length to dynamicOffset. it's already counted
-        result += this.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
+        results.push(this.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset))
       }
 
       // TODO: figure out nested arrays
@@ -122,14 +127,14 @@ export class SolidityCoder {
       if (isDynamic(solidityTypes[i], types[i])) {
         let e = this.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
         dynamicOffset += e.length / 2
-        result += e
+        results.push(e)
       }
     })
-    return result
+    return results.join('')
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  encodeWithOffset(type: string, solidityType: SolidityType<any>, encoded: any[], offset: number) {
+  encodeWithOffset(type: string, solidityType: SolidityType<any>, encoded: string | string[], offset: number): string {
     /* jshint maxcomplexity: 17 */
     /* jshint maxdepth: 5 */
 
@@ -144,7 +149,11 @@ export class SolidityCoder {
     if (mode !== encodingMode.other) {
       let nestedName = solidityType.nestedName(type)
       let nestedStaticPartLength = solidityType.staticPartLength(nestedName)
-      let result = mode === encodingMode.dynamic ? encoded[0] : ''
+      let results: string[] = []
+
+      if (mode === encodingMode.dynamic) {
+        results.push(encoded[0] as string)
+      }
 
       if (solidityType.isDynamicArray(nestedName)) {
         let previousLength = mode === encodingMode.dynamic ? 2 : 0
@@ -156,24 +165,28 @@ export class SolidityCoder {
           } else if (mode === encodingMode.static) {
             previousLength += +(encoded[i - 1] || [])[0] || 0
           }
-          result += formatter.formatInputInt(offset + i * nestedStaticPartLength + previousLength * 32).encode()
+          results.push(formatter.formatInputInt(offset + i * nestedStaticPartLength + previousLength * 32).encode())
         }
       }
 
       let len = mode === encodingMode.dynamic ? encoded.length - 1 : encoded.length
       for (let c = 0; c < len; c++) {
-        let additionalOffset = result / 2
+        let additionalOffset = results.join('').length / 2
         if (mode === encodingMode.dynamic) {
-          result += this.encodeWithOffset(nestedName, solidityType, encoded[c + 1], offset + additionalOffset)
+          results.push(this.encodeWithOffset(nestedName, solidityType, encoded[c + 1], offset + additionalOffset))
         } else if (mode === encodingMode.static) {
-          result += this.encodeWithOffset(nestedName, solidityType, encoded[c], offset + additionalOffset)
+          results.push(this.encodeWithOffset(nestedName, solidityType, encoded[c], offset + additionalOffset))
         }
       }
 
-      return result
+      return results.join('')
     }
 
-    return encoded
+    if (typeof encoded != 'string') {
+      throw new Error('Encoded is not string')
+    }
+
+    return encoded as any
   }
 
   /**

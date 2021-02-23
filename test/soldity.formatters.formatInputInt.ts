@@ -10,9 +10,9 @@ let tests = [
 ]
 
 describe('formatters', function () {
-  describe('inputAddressFormatter', function () {
-    tests.forEach(function (test) {
-      it('should return the correct value', function () {
+  describe('formatInputInt', function () {
+    tests.forEach(function (test, i) {
+      it('should return the correct value: ' + i, function () {
         expect(formatters.formatInputInt(test.input)).toEqual(test.result)
       })
     })

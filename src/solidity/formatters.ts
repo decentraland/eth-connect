@@ -28,8 +28,16 @@ import { inputAddressFormatter } from '../utils/formatters'
  */
 export function formatInputInt(value: BigNumber.Value) {
   BigNumber.config(config.ETH_BIGNUMBER_ROUNDING_MODE)
+
   let result = utils.padLeft(utils.toTwosComplement(value).toString(16), 64)
-  return new SolidityParam(result)
+
+  const ret = new SolidityParam(result)
+
+  if (ret.value.indexOf('NaN') != -1) {
+    throw new Error(`The number ${JSON.stringify(value)} can't be parsed.`)
+  }
+
+  return ret
 }
 
 export function formatInputAddress(value: string) {

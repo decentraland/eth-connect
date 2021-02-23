@@ -403,11 +403,15 @@ export function toBigNumber(_num: BigNumber.Value): BigNumber {
     return num as BigNumber
   }
 
-  if (typeof num === 'string' && (num.indexOf('0x') === 0 || num.indexOf('-0x') === 0)) {
-    return new BigNumber(num.replace('0x', ''), 16)
+  if (typeof num === 'string') {
+    num = num.trim()
   }
 
-  return new BigNumber(num.toString(10), 10)
+  if (typeof num === 'string' && (num.indexOf('0x') === 0 || num.indexOf('-0x') === 0)) {
+    return new BigNumber(num.replace('0x', '').toLowerCase(), 16)
+  }
+
+  return new BigNumber(num, 10)
 }
 
 /**
