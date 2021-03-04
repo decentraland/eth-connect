@@ -130,7 +130,7 @@ export class SolidityEvent {
    *
    * @param {object} data
    */
-  decode(data: LogObject) {
+  decode(data: LogObject): LogObject & { event: string; address: string; args: Record<string, any> } {
     data.data = data.data || ''
     data.topics = data.topics || []
 
@@ -173,7 +173,6 @@ export class SolidityEvent {
   /**
    * Should be used to attach event to contract object
    *
-   * @method attachToContract
    * @param {Contract}
    */
   attachToContract(contract: Contract) {
