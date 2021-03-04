@@ -76,9 +76,9 @@ local-node:
 				--identity="TEST_NODE" --networkid="53611" \
         --allow-insecure-unlock \
 				--rpc --rpcaddr 0.0.0.0 --rpcapi="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" \
-				--ws  --wsaddr 0.0.0.0  --wsapi="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" --wsorigins \* \
-				--mine --minerthreads=1 \
-				--dev
+				--ws  --ws.addr 0.0.0.0  --ws.api="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" --ws.origins \* \
+				--mine --miner.threads=1 \
+				--dev --dev.period 0
 
 kill-docker:
 		# stop the node

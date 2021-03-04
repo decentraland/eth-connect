@@ -22,13 +22,12 @@ import * as errors from './utils/errors'
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
-import { AbiFunction } from './Schema'
+import { AbiFunction, Quantity } from './Schema'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
  */
 export class SolidityFunction {
-  _address: string
   _inputTypes: string[]
   _outputTypes: string[]
   _constant: boolean
@@ -37,7 +36,7 @@ export class SolidityFunction {
 
   needsToBeTransaction: boolean
 
-  constructor(public requestManager: RequestManager, public json: AbiFunction, address: string) {
+  constructor(public json: AbiFunction) {
     this._inputTypes = (json.inputs || []).map(function (i) {
       return i.type
     })
@@ -52,7 +51,6 @@ export class SolidityFunction {
       json.payable || ('constant' in json && !json.constant) || json.stateMutability === 'nonpayable'
 
     this._name = utils.transformToFullName(json)
-    this._address = address
   }
 
   extractDefaultBlock(args: any[]): string {
@@ -101,7 +99,6 @@ export class SolidityFunction {
 
     this.validateArgs(args)
 
-    options.to = this._address
     const signature = this.signature()
     let params = coder.encodeParams(this._inputTypes, args)
     if (params.indexOf('0x') == 0) params = params.substr(2)
@@ -132,13 +129,14 @@ export class SolidityFunction {
    *
    * @param requestManager - The RequestManager instance
    */
-  async execute(requestManager: RequestManager, ...args: any[]) {
+  async execute(requestManager: RequestManager, address: string, ...args: any[]) {
     if (!requestManager) {
       throw new Error(`Cannot call function ${this.displayName()} because there is no requestManager`)
     }
 
     if (this.needsToBeTransaction) {
       const payload = this.toPayload(args)
+      payload.to = address
       if (payload.value > 0 && !this._payable) {
         throw new Error('Cannot send value to non-payable function')
       }
@@ -150,6 +148,7 @@ export class SolidityFunction {
     } else {
       const defaultBlock = this.extractDefaultBlock(args)
       const payload = this.toPayload(args)
+      payload.to = address
       const output = await requestManager.eth_call(payload, defaultBlock)
       return this.unpackOutput(output)
     }
@@ -158,10 +157,14 @@ export class SolidityFunction {
   /**
    * Should be used to estimateGas of solidity function
    */
-  estimateGas(...args: any[]) {
-    let payload = this.toPayload(args)
+  estimateGas(requestManager: RequestManager, address: string, ...args: any[]): Promise<Quantity> {
+    if (!(requestManager instanceof RequestManager))
+      throw new Error('estimateGas needs to receive a RequestManager as first argument')
 
-    return this.requestManager.eth_estimateGas(payload)
+    let payload = this.toPayload(args)
+    payload.to = address
+
+    return requestManager.eth_estimateGas(payload)
   }
 
   /**
@@ -185,15 +188,12 @@ export class SolidityFunction {
    */
   attachToContract(contract: Contract) {
     let displayName = this.displayName()
-    const fun = this
 
     const execute = Object.assign(
       (...args: any[]) => {
-        const requestManager = this.requestManager || fun.requestManager
-
-        return fun.execute(requestManager, ...args)
+        return this.execute(contract.requestManager, contract.address, ...args)
       },
-      { estimateGas: this.estimateGas.bind(this) }
+      { estimateGas: this.estimateGas.bind(this, contract.requestManager, contract.address) }
     )
 
     if (!(contract as any)[displayName]) {

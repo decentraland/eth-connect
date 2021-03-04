@@ -17,7 +17,7 @@
 
 // tslint:disable:variable-name
 
-import { RPCSendableMessage, toPayload, isValidResponse } from './utils/jsonrpc'
+import { RPCSendableMessage, toJsonRpcRequest, isValidResponse } from './utils/jsonrpc'
 import { InvalidProvider, InvalidResponse } from './utils/errors'
 import { BigNumber } from './utils/BigNumber'
 import { IFuture, future } from 'fp-future'
@@ -373,7 +373,7 @@ export class RequestManager {
       throw InvalidProvider()
     }
 
-    let payload = toPayload(data.method, data.params)
+    let payload = toJsonRpcRequest(data.method, data.params)
 
     const defer = future()
 

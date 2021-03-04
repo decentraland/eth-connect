@@ -32,6 +32,8 @@ export { Method } from './Method'
 export * from './Property'
 export * from './utils/BigNumber'
 export { eth } from './methods/eth'
+export { SolidityFunction } from './SolidityFunction'
+export { SolidityEvent } from './SolidityEvent'
 
 import { RequestManager } from './RequestManager'
 export default RequestManager

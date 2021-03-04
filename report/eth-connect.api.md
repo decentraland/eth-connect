@@ -1241,6 +1241,82 @@ export type SHHPost = {
     ttl: Quantity;
 };
 
+// Warning: (ae-missing-release-tag) "SolidityEvent" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public
+export class SolidityEvent {
+    constructor(requestManager: RequestManager, json: AbiEvent, address: string);
+    // (undocumented)
+    address: string;
+    // (undocumented)
+    _anonymous: boolean;
+    // Warning: (tsdoc-escape-right-brace) The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag
+    // Warning: (tsdoc-malformed-inline-tag) Expecting a TSDoc tag starting with "{@"
+    // Warning: (tsdoc-param-tag-with-invalid-name) The @param block should be followed by a parameter name
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    attachToContract(contract: Contract): void;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    decode(data: LogObject): LogObject & {
+        event: string;
+        address: string;
+        args: Record<string, any>;
+    };
+    displayName(): string;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    encode(indexed?: Record<string, any>, options?: FilterOptions): FilterOptions;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    execute(indexed: Record<string, any>, options?: FilterOptions): Promise<EthFilter<LogObject>>;
+    // (undocumented)
+    _name: string;
+    // (undocumented)
+    _params: AbiInput[];
+    // (undocumented)
+    requestManager: RequestManager;
+    signature(): string;
+    typeName(): string;
+    types(indexed: boolean): string[];
+}
+
+// Warning: (ae-missing-release-tag) "SolidityFunction" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public
+export class SolidityFunction {
+    constructor(json: AbiFunction);
+    attachToContract(contract: Contract): void;
+    // (undocumented)
+    _constant: boolean;
+    displayName(): string;
+    estimateGas(requestManager: RequestManager, address: string, ...args: any[]): Promise<Quantity>;
+    execute(requestManager: RequestManager, address: string, ...args: any[]): Promise<any>;
+    // (undocumented)
+    extractDefaultBlock(args: any[]): string;
+    // (undocumented)
+    _inputTypes: string[];
+    // (undocumented)
+    json: AbiFunction;
+    // (undocumented)
+    _name: string;
+    // (undocumented)
+    needsToBeTransaction: boolean;
+    // (undocumented)
+    _outputTypes: string[];
+    // (undocumented)
+    _payable: boolean;
+    signature(): string;
+    toPayload(args: any[]): any;
+    typeName(): string;
+    // (undocumented)
+    unpackOutput(output: string): any;
+    validateArgs(args: any[]): void;
+}
+
 // @public (undocumented)
 export type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
 
@@ -1291,18 +1367,18 @@ export function toDecimal(value: BigNumber.Value): number;
 // @public
 export function toHex(val: BigNumber.Value | boolean): string;
 
-// @public
-export function toNullDecimal(value: BigNumber.Value): number;
-
-// Warning: (ae-missing-release-tag) "toPayload" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "toJsonRpcRequest" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
-export function toPayload(method: string, params: any[]): {
+export function toJsonRpcRequest(method: string, params: any[]): {
     jsonrpc: string;
     id: number;
     method: string;
     params: any[];
 };
+
+// @public
+export function toNullDecimal(value: BigNumber.Value): number;
 
 // Warning: (ae-missing-release-tag) "TopicFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //

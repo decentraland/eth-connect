@@ -45,7 +45,6 @@ export class SolidityCoder {
   /**
    * This method should be used to transform type to SolidityType
    *
-   * @method _requireType
    * @param {string} type
    * @returns {SolidityType}
    * @throws {Error} throws if no matching type is found
