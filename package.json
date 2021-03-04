@@ -44,7 +44,7 @@
   "dependencies": {},
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "@microsoft/api-documenter": "^7.12.7",
+    "@microsoft/api-documenter": "^7.12.9",
     "@microsoft/api-extractor": "^7.13.1",
     "@types/mocha": "^8.2.1",
     "@types/utf8": "^2.1.6",
