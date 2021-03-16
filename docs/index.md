@@ -20,6 +20,8 @@
 |  [Property](./eth-connect.property.md) |  |
 |  [RequestManager](./eth-connect.requestmanager.md) | It's responsible for passing messages to providers It's also responsible for polling the ethereum node for incoming messages Default poll timeout is 1 second |
 |  [SHHFilter](./eth-connect.shhfilter.md) |  |
+|  [SolidityEvent](./eth-connect.solidityevent.md) | This prototype should be used to create event filters |
+|  [SolidityFunction](./eth-connect.solidityfunction.md) | This prototype should be used to call/sendTransaction to solidity functions |
 |  [WebSocketProvider](./eth-connect.websocketprovider.md) |  |
 
 ## Enumerations
@@ -69,8 +71,8 @@
 |  [toData(val)](./eth-connect.todata.md) | Converts value to it's hex representation in string |
 |  [toDecimal(value)](./eth-connect.todecimal.md) | Converts value to it's decimal representation in string |
 |  [toHex(val)](./eth-connect.tohex.md) | Auto converts any given value into it's hex representation.<!-- -->And even stringifys objects before. |
+|  [toJsonRpcRequest(method, params)](./eth-connect.tojsonrpcrequest.md) | Should be called to valid json create payload object |
 |  [toNullDecimal(value)](./eth-connect.tonulldecimal.md) | Converts value to it's decimal representation in string |
-|  [toPayload(method, params)](./eth-connect.topayload.md) | Should be called to valid json create payload object |
 |  [toString\_2(value)](./eth-connect.tostring_2.md) | Converts value to string |
 |  [toTwosComplement(num)](./eth-connect.totwoscomplement.md) | Takes and input transforms it into bignumber and if it is negative value, into two's complement |
 |  [toUtf8(hex)](./eth-connect.toutf8.md) | Should be called to get utf8 from it's hex representation |

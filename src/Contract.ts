@@ -16,7 +16,7 @@ function addFunctionsToContract(contract: Contract) {
       return json.type === 'function'
     })
     .map(function (json) {
-      return new SolidityFunction(contract.requestManager, json, contract.address)
+      return new SolidityFunction(json)
     })
     .forEach(function (f) {
       f.attachToContract(contract)

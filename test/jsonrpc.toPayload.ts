@@ -8,7 +8,7 @@ describe('jsonrpc', function () {
       let method = 'helloworld'
 
       // when
-      let payload = Jsonrpc.toPayload(method, [])
+      let payload = Jsonrpc.toJsonRpcRequest(method, [])
 
       // then
       expect(payload.jsonrpc).toEqual('2.0')
@@ -24,7 +24,7 @@ describe('jsonrpc', function () {
       let params = [123, 'test']
 
       // when
-      let payload = Jsonrpc.toPayload(method, params)
+      let payload = Jsonrpc.toJsonRpcRequest(method, params)
 
       // then
       expect(payload.jsonrpc).toEqual('2.0')
