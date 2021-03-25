@@ -45,10 +45,10 @@ export class SolidityFunction {
     })
 
     this._constant = !!json.constant
-    this._payable = !!json.payable
+    this._payable = !!json.payable || json.stateMutability === 'payable'
 
     this.needsToBeTransaction =
-      json.payable || ('constant' in json && !json.constant) || json.stateMutability === 'nonpayable'
+      this._payable || ('constant' in json && !json.constant) || json.stateMutability === 'nonpayable'
 
     this._name = utils.transformToFullName(json)
   }
