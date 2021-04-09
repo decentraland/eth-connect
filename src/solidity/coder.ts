@@ -36,7 +36,7 @@ var ethersAbiCoder = new AbiCoder(function (_, value) {
     return utils.toBigNumber(value.toString())
   }
 
-  if (!utils.isArray(value) && (!utils.isObject(value) || value.constructor.name !== 'BN')) {
+  if (!utils.isBoolean(value) && !utils.isArray(value) && (!utils.isObject(value) || value.constructor.name !== 'BN')) {
     return value.toString()
   }
 

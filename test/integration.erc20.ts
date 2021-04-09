@@ -146,7 +146,7 @@ function doTest(requestManager: RequestManager) {
 
     const result = await mintingFinished
     console.log(result)
-    expect(typeof result).toEqual('string')
+    expect(typeof result).toEqual('boolean')
   })
 
   it('total supply must be 0', async () => {
