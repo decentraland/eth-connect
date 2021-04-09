@@ -234,7 +234,6 @@ export class SolidityCoder {
       mappedTypes.push(type)
     })
 
-    console.log('c', mappedTypes)
     return mappedTypes
   }
 
@@ -405,10 +404,7 @@ export class SolidityCoder {
       )
     }
 
-    console.log('a', outputs)
-
     var res = ethersAbiCoder.decode(this.mapTypes(outputs), '0x' + bytes.replace(/0x/i, ''))
-    console.log('b', res)
     var returnValue: any = new Result()
     returnValue.__length__ = 0
 
