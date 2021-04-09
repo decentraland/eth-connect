@@ -44,7 +44,7 @@ describe('formatters', function () {
     tests.forEach(function (test) {
       it('formatInputAddress: ' + test.input, () => {
         const t = formatInputAddress(test.input)
-        expect(coder.decodeParam('address', t.encode())).toEqual(test.result.toLowerCase())
+        expect(coder.decodeParam('address', t.encode()).toLowerCase()).toEqual(test.result.toLowerCase())
       })
     })
   })

@@ -15,7 +15,9 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import { AbiCoder, ParamType } from '@ethersproject/abi'
 import * as formatter from './formatters'
+import * as utils from '../utils/utils'
 
 import { SolidityTypeAddress } from './address'
 import { SolidityTypeBool } from './bool'
@@ -27,6 +29,23 @@ import { SolidityTypeReal } from './real'
 import { SolidityTypeUReal } from './ureal'
 import { SolidityTypeBytes } from './bytes'
 import { SolidityType } from './type'
+
+
+var ethersAbiCoder = new AbiCoder(function (_, value) {
+  if (utils.isObject(value) && value.constructor.name === 'BigNumber') {
+    return utils.toBigNumber(value.toString())
+  }
+
+  if (!utils.isArray(value) && (!utils.isObject(value) || value.constructor.name !== 'BN')) {
+    return value.toString()
+  }
+
+  return value
+})
+
+// result method
+class Result {
+}
 
 function isDynamic(solidityType: SolidityType<any>, type: string) {
   return solidityType.isDynamicType(type) || solidityType.isDynamicArray(type)
@@ -81,24 +100,185 @@ export class SolidityCoder {
    * @param {Array} params
    * @return {string} encoded list of params
    */
-  encodeParams(types: string[], params: any[]): string {
-    let solidityTypes = this.getSolidityTypes(types)
+  encodeParams(types: any, params: any[]): string {
+    var self = this
+    types = self.mapTypes(types)
+    params = params.map(function (param, index) {
+      let type = types[index]
+      if (typeof type === 'object' && type.type) {
+        // We may get a named type of shape {name, type}
+        type = type.type
+      }
 
-    let encodeds = solidityTypes.map(function (solidityType, index) {
-      return solidityType.encode(params[index], types[index])
+      param = self.formatParam(type, param)
+
+      // Format params for tuples
+      if (typeof type === 'string' && type.includes('tuple')) {
+        const coder = ethersAbiCoder._getCoder(ParamType.from(type))
+
+        const modifyParams = (coder: any, param: any) => {
+          if (coder.name === 'array') {
+            return param.map((p: any) =>
+              modifyParams(
+                ethersAbiCoder._getCoder(ParamType.from(coder.type.replace('[]', ''))),
+                p
+              )
+            )
+          }
+          coder.coders.forEach((c: any, i: any) => {
+            if (c.name === 'tuple') {
+              modifyParams(c, param[i])
+            } else {
+              param[i] = self.formatParam(c.name, param[i])
+            }
+          })
+        }
+        modifyParams(coder, param)
+      }
+
+      return param
     })
 
-    let dynamicOffset = solidityTypes.reduce(function (acc, solidityType, index) {
-      let staticPartLength = solidityType.staticPartLength(types[index])
-      let roundedStaticPartLength = Math.floor((staticPartLength + 31) / 32) * 32
-
-      return acc + (isDynamic(solidityTypes[index], types[index]) ? 32 : roundedStaticPartLength)
-    }, 0)
-
-    let result = this.encodeMultiWithOffset(types, solidityTypes, encodeds, dynamicOffset)
-
-    return result
+    return ethersAbiCoder.encode(types, params)
   }
+
+  formatParam(type: any, param: any) {
+    const paramTypeBytes = new RegExp(/^bytes([0-9]*)$/)
+    const paramTypeBytesArray = new RegExp(/^bytes([0-9]*)\[\]$/)
+    const paramTypeNumber = new RegExp(/^(u?int)([0-9]*)$/)
+    const paramTypeNumberArray = new RegExp(/^(u?int)([0-9]*)\[\]$/)
+
+    // @TODO: Add BN as legacy codebase
+    // Format BN to string
+    if (utils.isBigNumber(param)) {
+      return param.toString(10)
+    }
+
+    if (type.match(paramTypeBytesArray) || type.match(paramTypeNumberArray)) {
+      return param.map((p: any) => this.formatParam(type.replace('[]', ''), p))
+    }
+
+    // Format correct width for u?int[0-9]*
+    let match = type.match(paramTypeNumber)
+    if (match) {
+      let size = parseInt(match[2] || "256")
+      if (size / 8 < param.length) {
+        // pad to correct bit width
+        param = utils.padLeft(param, size)
+      }
+    }
+
+    // Format correct length for bytes[0-9]+
+    match = type.match(paramTypeBytes)
+    if (match) {
+      // @TODO: check if we can install Buffer
+      // if (Buffer.isBuffer(param)) {
+      //   param = utils.toHex(param)
+      // }
+
+      // format to correct length
+      let size = parseInt(match[1])
+      if (size) {
+        let maxSize = size * 2
+        if (param.substring(0, 2) === '0x') {
+          maxSize += 2
+        }
+        if (param.length < maxSize) {
+          // pad to correct length
+          param = utils.padRight(param, size * 2)
+        }
+      }
+
+      // format odd-length bytes to even-length
+      if (param.length % 2 === 1) {
+        param = '0x0' + param.substring(2)
+      }
+    }
+
+    return param
+  };
+
+
+  /**
+ * Map types if simplified format is used
+ *
+ * @method mapTypes
+ * @param {Array} types
+ * @return {Array}
+ */
+  mapTypes(types: any) {
+    var self = this
+    var mappedTypes: any = []
+
+    types.forEach(function (type: any) {
+      // Remap `function` type params to bytes24 since Ethers does not
+      // recognize former type. Solidity docs say `Function` is a bytes24
+      // encoding the contract address followed by the function selector hash.
+      if (typeof type === 'object' && type.type === 'function') {
+        type = Object.assign({}, type, { type: "bytes24" })
+      }
+      if (self.isSimplifiedStructFormat(type)) {
+        var structName = Object.keys(type)[0]
+        mappedTypes.push(
+          Object.assign(
+            self.mapStructNameAndType(structName),
+            {
+              components: self.mapStructToCoderFormat(type[structName])
+            }
+          )
+        )
+
+        return
+      }
+
+      mappedTypes.push(type)
+    })
+
+    console.log('c', mappedTypes)
+    return mappedTypes
+  }
+
+  mapStructNameAndType(structName: string) {
+    var type = 'tuple'
+
+    if (structName.indexOf('[]') > -1) {
+      type = 'tuple[]'
+      structName = structName.slice(0, -2)
+    }
+
+    return { type: type, name: structName }
+  };
+
+  mapStructToCoderFormat(struct: any) {
+    var self = this
+    var components: any = []
+    Object.keys(struct).forEach(function (key) {
+      if (typeof struct[key] === 'object') {
+        components.push(
+          Object.assign(
+            self.mapStructNameAndType(key),
+            {
+              components: self.mapStructToCoderFormat(struct[key])
+            }
+          )
+        )
+
+        return
+      }
+
+      components.push({
+        name: key,
+        type: struct[key]
+      })
+    })
+
+    return components
+  };
+
+
+  isSimplifiedStructFormat(type: any) {
+    return typeof type === 'object' && typeof type.components === 'undefined' && typeof type.name === 'undefined'
+  };
 
   encodeMultiWithOffset(
     types: string[],
@@ -142,8 +322,8 @@ export class SolidityCoder {
     let mode = solidityType.isDynamicArray(type)
       ? encodingMode.dynamic
       : solidityType.isStaticArray(type)
-      ? encodingMode.static
-      : encodingMode.other
+        ? encodingMode.static
+        : encodingMode.other
 
     if (mode !== encodingMode.other) {
       let nestedName = solidityType.nestedName(type)
@@ -208,14 +388,45 @@ export class SolidityCoder {
    * @param {string} bytes
    * @return {Array} array of plain params
    */
-  decodeParams(types: string[], bytes: string): any[] {
-    let solidityTypes = this.getSolidityTypes(types)
-    let offsets = this.getOffsets(types, solidityTypes)
-
-    return solidityTypes.map(function (solidityType, index) {
-      return solidityType.decode(bytes, offsets[index], types[index])
-    })
+  decodeParams(outputs: string[], bytes: string): any {
+    return this.decodeParametersWith(outputs, bytes)
   }
+
+
+
+  decodeParametersWith(outputs: any, bytes: string) {
+    if (outputs.length > 0 && (!bytes || bytes === '0x' || bytes === '0X')) {
+      throw new Error(
+        'Returned values aren\'t valid, did it run Out of Gas? ' +
+        'You might also see this error if you are not using the ' +
+        'correct ABI for the contract you are retrieving data from, ' +
+        'requesting data from a block number that does not exist, ' +
+        'or querying a node which is not fully synced.'
+      )
+    }
+
+    console.log('a', outputs)
+
+    var res = ethersAbiCoder.decode(this.mapTypes(outputs), '0x' + bytes.replace(/0x/i, ''))
+    console.log('b', res)
+    var returnValue: any = new Result()
+    returnValue.__length__ = 0
+
+    outputs.forEach(function (output: any, i: any) {
+      var decodedValue = res[returnValue.__length__]
+      decodedValue = (decodedValue === '0x') ? null : decodedValue
+
+      returnValue[i] = decodedValue
+
+      if (utils.isObject(output) && (output as any).name) {
+        returnValue[(output as any).name] = decodedValue
+      }
+
+      returnValue.__length__++
+    })
+
+    return returnValue
+  };
 
   // tslint:disable-next-line:prefer-function-over-method
   getOffsets(types: string[], solidityTypes: SolidityType<any>[]): number[] {

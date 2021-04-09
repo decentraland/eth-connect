@@ -59,6 +59,41 @@ let desc = [
     ],
   },
   {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "contract IERC721CollectionV2",
+            "name": "collection",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "ids",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "prices",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "beneficiaries",
+            "type": "address[]"
+          }
+        ],
+        "internalType": "struct CollectionStore.ItemToBuy[]",
+        "name": "_itemsToBuy",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "buy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     name: 'Changed',
     type: 'event',
     inputs: [
@@ -375,6 +410,33 @@ describe('contract', function () {
       let contract: any = await new ContractFactory(rm, desc).at(address)
 
       await contract.send(address, 17, { from: address })
+
+      await didCall
+    })
+
+    it('should sendTransaction with tuples to contract function', async function () {
+      const provider = new FakeHttpProvider()
+      const rm = new RequestManager(provider)
+      let address = '0x1234567890123456789012345678901234567891'
+
+      const didCall = provider.injectHandler('eth_sendTransaction', async (payload) => {
+        expect(payload.params).toEqual([
+          {
+            data:
+              '0xa4fdc78a0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000006b80863d347a7bde24ee9317f04baaa9259a5d6a000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000008ac7230489e80000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000014dc79964da2c08b23698b3d3cc7ca32193d9955',
+            from: address,
+            to: address,
+          },
+        ])
+        provider.injectResult('0xb')
+      })
+
+      let contract: any = await new ContractFactory(rm, desc).at(address)
+
+      await contract.buy(
+        [
+          ['0x6b80863d347a7bde24ee9317f04baaa9259a5d6a', [0], ['10000000000000000000'], ['0x14dC79964da2C08b23698B3D3cc7Ca32193d9955']]
+        ], { from: address })
 
       await didCall
     })

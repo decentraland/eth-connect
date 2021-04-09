@@ -456,7 +456,7 @@ export interface AbiFunction {
   type: 'function'
   anonymous?: boolean
   constant?: boolean
-  inputs?: AbiInput[]
+  inputs: AbiInput[]
   name?: string
   outputs?: AbiOutput[]
   payable?: boolean
@@ -471,7 +471,7 @@ export interface AbiEvent {
   type: 'event'
   anonymous?: boolean
   constant?: boolean
-  inputs?: AbiInput[]
+  inputs: AbiInput[]
   name?: string
   outputs?: AbiOutput[]
   payable?: boolean
@@ -486,7 +486,7 @@ export interface AbiFallback {
   type: 'fallback'
   anonymous?: boolean
   constant?: boolean
-  inputs?: AbiInput[]
+  inputs: AbiInput[]
   name?: string
   outputs?: AbiOutput[]
   payable?: boolean
@@ -501,7 +501,7 @@ export interface AbiItemGeneric {
   type: string
   anonymous?: boolean
   constant?: boolean
-  inputs?: AbiInput[]
+  inputs: AbiInput[]
   name?: string
   outputs?: AbiOutput[]
   payable?: boolean
@@ -516,7 +516,7 @@ export interface AbiConstructor {
   type: 'constructor'
   anonymous?: boolean
   constant?: boolean
-  inputs?: AbiInput[]
+  inputs: AbiInput[]
   name?: string
   outputs?: AbiOutput[]
   payable?: boolean

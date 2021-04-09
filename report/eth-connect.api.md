@@ -13,7 +13,7 @@ export interface AbiConstructor {
     // (undocumented)
     gas?: number;
     // (undocumented)
-    inputs?: AbiInput[];
+    inputs: AbiInput[];
     // (undocumented)
     name?: string;
     // (undocumented)
@@ -35,7 +35,7 @@ export interface AbiEvent {
     // (undocumented)
     gas?: number;
     // (undocumented)
-    inputs?: AbiInput[];
+    inputs: AbiInput[];
     // (undocumented)
     name?: string;
     // (undocumented)
@@ -57,7 +57,7 @@ export interface AbiFallback {
     // (undocumented)
     gas?: number;
     // (undocumented)
-    inputs?: AbiInput[];
+    inputs: AbiInput[];
     // (undocumented)
     name?: string;
     // (undocumented)
@@ -79,7 +79,7 @@ export interface AbiFunction {
     // (undocumented)
     gas?: number;
     // (undocumented)
-    inputs?: AbiInput[];
+    inputs: AbiInput[];
     // (undocumented)
     name?: string;
     // (undocumented)
@@ -118,7 +118,7 @@ export interface AbiItemGeneric {
     // (undocumented)
     gas?: number;
     // (undocumented)
-    inputs?: AbiInput[];
+    inputs: AbiInput[];
     // (undocumented)
     name?: string;
     // (undocumented)
@@ -1298,7 +1298,7 @@ export class SolidityFunction {
     // (undocumented)
     extractDefaultBlock(args: any[]): string;
     // (undocumented)
-    _inputTypes: string[];
+    _inputTypes: any[];
     // (undocumented)
     json: AbiFunction;
     // (undocumented)

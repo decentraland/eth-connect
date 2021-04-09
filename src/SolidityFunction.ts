@@ -28,7 +28,7 @@ import { AbiFunction, Quantity } from './Schema'
  * This prototype should be used to call/sendTransaction to solidity functions
  */
 export class SolidityFunction {
-  _inputTypes: string[]
+  _inputTypes: any[]
   _outputTypes: string[]
   _constant: boolean
   _name: string
@@ -38,7 +38,7 @@ export class SolidityFunction {
 
   constructor(public json: AbiFunction) {
     this._inputTypes = (json.inputs || []).map(function (i) {
-      return i.type
+      return i.type.indexOf('tuple') !== -1 ? i : i.type
     })
     this._outputTypes = (json.outputs || []).map(function (i) {
       return i.type
@@ -94,7 +94,7 @@ export class SolidityFunction {
     }
 
     if (args.length > this._inputTypes.length && utils.isObject(args[args.length - 1])) {
-      options = args[args.length - 1]
+      options = args.pop()
     }
 
     this.validateArgs(args)
@@ -121,7 +121,14 @@ export class SolidityFunction {
 
     const encodedOutput = output.length >= 2 ? output.slice(2) : output
     let result = coder.decodeParams(this._outputTypes, encodedOutput)
-    return result.length === 1 ? result[0] : result
+
+    if (result.__length__ === 1) {
+      return result[0]
+    }
+
+    delete result.__length__
+    return result
+
   }
 
   /**
@@ -197,9 +204,9 @@ export class SolidityFunction {
     )
 
     if (!(contract as any)[displayName]) {
-      ;(contract as any)[displayName] = execute
+      ; (contract as any)[displayName] = execute
     }
 
-    ;(contract as any)[displayName][this.typeName()] = execute
+    ; (contract as any)[displayName][this.typeName()] = execute
   }
 }

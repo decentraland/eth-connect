@@ -5,7 +5,7 @@ describe('lib/solidity/coder', function () {
   describe('encodeParam', function () {
     let test = function (t) {
       it('should turn ' + t.value + ' to ' + t.expected, function () {
-        expect(coder.coder.encodeParam(t.type, t.value)).toEqual(t.expected)
+        expect(coder.coder.encodeParam(t.type, t.value).replace('0x', '')).toEqual(t.expected)
       })
     }
 
@@ -49,6 +49,7 @@ describe('lib/solidity/coder', function () {
         ['0x407d73d8a49eeb85d32cf465507dd71d507100c3', '0x407d73d8a49eeb85d32cf465507dd71d507100c4']
       ],
       expected:
+        '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000040' +
         '00000000000000000000000000000000000000000000000000000000000000a0' +
         '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -102,16 +103,12 @@ describe('lib/solidity/coder', function () {
     test({ type: 'int', value: 1, expected: '0000000000000000000000000000000000000000000000000000000000000001' })
     test({ type: 'int', value: 16, expected: '0000000000000000000000000000000000000000000000000000000000000010' })
     test({ type: 'int', value: -1, expected: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' })
-    test({ type: 'int', value: 0.1, expected: '0000000000000000000000000000000000000000000000000000000000000000' })
-    test({ type: 'int', value: 3.9, expected: '0000000000000000000000000000000000000000000000000000000000000003' })
     test({ type: 'int256', value: 1, expected: '0000000000000000000000000000000000000000000000000000000000000001' })
     test({ type: 'int256', value: 16, expected: '0000000000000000000000000000000000000000000000000000000000000010' })
     test({ type: 'int256', value: -1, expected: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' })
 
     test({ type: 'uint', value: 1, expected: '0000000000000000000000000000000000000000000000000000000000000001' })
     test({ type: 'uint', value: 16, expected: '0000000000000000000000000000000000000000000000000000000000000010' })
-    test({ type: 'uint', value: 0.1, expected: '0000000000000000000000000000000000000000000000000000000000000000' })
-    test({ type: 'uint', value: 3.9, expected: '0000000000000000000000000000000000000000000000000000000000000003' })
     test({ type: 'uint256', value: 1, expected: '0000000000000000000000000000000000000000000000000000000000000001' })
     test({ type: 'uint256', value: 16, expected: '0000000000000000000000000000000000000000000000000000000000000010' })
     test({
@@ -189,15 +186,6 @@ describe('lib/solidity/coder', function () {
       expected: 'c3a40000c3a40000000000000000000000000000000000000000000000000000'
     })
     test({
-      type: 'bytes64',
-      value:
-        '0xc3a40000c3a40000000000000000000000000000000000000000000000000000' +
-        'c3a40000c3a40000000000000000000000000000000000000000000000000000',
-      expected:
-        'c3a40000c3a40000000000000000000000000000000000000000000000000000' +
-        'c3a40000c3a40000000000000000000000000000000000000000000000000000'
-    })
-    test({
       type: 'string',
       value: 'Ã¤Ã¤',
       expected:
@@ -264,13 +252,6 @@ describe('lib/solidity/coder', function () {
         'fb00000000000000000000000000000000000000000000000000000000000000'
     })
 
-    test({ type: 'real', value: 1, expected: '0000000000000000000000000000000100000000000000000000000000000000' })
-    test({ type: 'real', value: 2.125, expected: '0000000000000000000000000000000220000000000000000000000000000000' })
-    test({ type: 'real', value: 8.5, expected: '0000000000000000000000000000000880000000000000000000000000000000' })
-    test({ type: 'real', value: -1, expected: 'ffffffffffffffffffffffffffffffff00000000000000000000000000000000' })
-    test({ type: 'ureal', value: 1, expected: '0000000000000000000000000000000100000000000000000000000000000000' })
-    test({ type: 'ureal', value: 2.125, expected: '0000000000000000000000000000000220000000000000000000000000000000' })
-    test({ type: 'ureal', value: 8.5, expected: '0000000000000000000000000000000880000000000000000000000000000000' })
     test({
       type: 'bytes',
       value:
@@ -311,7 +292,7 @@ describe('lib/solidity/coder', function () {
   describe('encodeParams', function () {
     let test = function (t) {
       it('should turn ' + t.values + ' to ' + t.expected, function () {
-        expect(coder.coder.encodeParams(t.types, t.values)).toEqual(t.expected)
+        expect(coder.coder.encodeParams(t.types, t.values).replace('0x', '')).toEqual(t.expected)
       })
     }
 
@@ -532,10 +513,10 @@ describe('lib/solidity/coder', function () {
       values: [
         5,
         '0x131a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
-          '231a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b',
+        '231a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b',
         3,
         '0x331a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
-          '431a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
+        '431a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
       ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000005' +
@@ -587,7 +568,7 @@ describe('lib/solidity/coder', function () {
 
   it('encodeParams', function () {
     tests.forEach(function (test) {
-      expect(coder.coder.encodeParams(test.types, test.params)).toEqual(test.result)
+      expect(coder.coder.encodeParams(test.types, test.params).replace('0x', '')).toEqual(test.result)
     })
   })
 })

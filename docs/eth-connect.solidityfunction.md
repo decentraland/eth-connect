@@ -23,7 +23,7 @@ export declare class SolidityFunction
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [\_constant](./eth-connect.solidityfunction._constant.md) |  | boolean |  |
-|  [\_inputTypes](./eth-connect.solidityfunction._inputtypes.md) |  | string\[\] |  |
+|  [\_inputTypes](./eth-connect.solidityfunction._inputtypes.md) |  | any\[\] |  |
 |  [\_name](./eth-connect.solidityfunction._name.md) |  | string |  |
 |  [\_outputTypes](./eth-connect.solidityfunction._outputtypes.md) |  | string\[\] |  |
 |  [\_payable](./eth-connect.solidityfunction._payable.md) |  | boolean |  |

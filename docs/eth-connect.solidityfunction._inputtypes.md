@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-_inputTypes: string[];
+_inputTypes: any[];
 ```

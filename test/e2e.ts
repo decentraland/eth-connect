@@ -145,7 +145,7 @@ function doTest(requestManager: EthConnect.RequestManager) {
     expect(mintingFinished).toHaveProperty('then')
 
     const result = await mintingFinished
-    expect(typeof result).toEqual('boolean')
+    expect(typeof result).toEqual('string')
   })
 
   it('total supply 0', async function () {

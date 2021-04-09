@@ -114,10 +114,10 @@ export class SolidityEvent {
 
         if (utils.isArray(value)) {
           return value.map(function (v) {
-            return '0x' + coder.encodeParam(i.type, v)
+            return coder.encodeParam(i.type, v)
           })
         }
-        return '0x' + coder.encodeParam(i.type, value)
+        return coder.encodeParam(i.type, value)
       })
 
     result.topics = result.topics.concat(indexedTopics)
@@ -140,10 +140,10 @@ export class SolidityEvent {
         return topics.slice(2)
       })
       .join('')
-    let indexedParams = coder.decodeParams(this.types(true), indexedData)
+    let indexedParams = Object.values(coder.decodeParams(this.types(true), indexedData))
 
     let notIndexedData = data.data.slice(2)
-    let notIndexedParams = coder.decodeParams(this.types(false), notIndexedData)
+    let notIndexedParams = Object.values(coder.decodeParams(this.types(false), notIndexedData))
 
     const args = this._params.reduce(function (acc, current) {
       acc[current.name] = current.indexed ? indexedParams.shift() : notIndexedParams.shift()
@@ -181,6 +181,6 @@ export class SolidityEvent {
     if (!contract.events[displayName]) {
       contract.events[displayName] = execute
     }
-    ;(contract.events[displayName] as any)[this.typeName()] = this.execute.bind(this, contract)
+    ; (contract.events[displayName] as any)[this.typeName()] = this.execute.bind(this, contract)
   }
 }

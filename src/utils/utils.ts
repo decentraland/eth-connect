@@ -18,7 +18,7 @@
 import * as utf8 from 'utf8'
 import { keccak256 } from 'js-sha3'
 import { BigNumber } from './BigNumber'
-import { AbiItem } from '../Schema'
+import { AbiInput, AbiItem } from '../Schema'
 
 /**
  * @public
@@ -100,7 +100,12 @@ export type Unit = keyof typeof unitMap
  * Should be called to pad string to expected length
  */
 export function padLeft(str: string, chars: number, sign?: string) {
-  return new Array(chars - str.length + 1).join(sign ? sign : '0') + str
+  const hasPrefix = /^0x/i.test(str) || typeof str === 'number'
+  str = str.replace(/^0x/i, '')
+
+  var padding = (chars - str.length + 1 >= 0) ? chars - str.length + 1 : 0
+
+  return (hasPrefix ? '0x' : '') + new Array(padding).join(sign ? sign : "0") + str
 }
 
 /**
@@ -108,7 +113,12 @@ export function padLeft(str: string, chars: number, sign?: string) {
  * Should be called to pad string to expected length
  */
 export function padRight(str: string, chars: number, sign?: string) {
-  return str + new Array(chars - str.length + 1).join(sign ? sign : '0')
+  var hasPrefix = /^0x/i.test(str) || typeof str === 'number'
+  str = str.replace(/^0x/i, '')
+
+  var padding = (chars - str.length + 1 >= 0) ? chars - str.length + 1 : 0
+
+  return (hasPrefix ? '0x' : '') + str + (new Array(padding).join(sign ? sign : "0"))
 }
 
 /**
@@ -197,21 +207,54 @@ export function fromAscii(str: string, num: number = 0) {
  * Should be used to create full function/event name from json abi
  */
 export function transformToFullName(json: AbiItem) {
-  if (json.name && json.name.indexOf('(') !== -1) {
+  if (isObject(json) && json.name && json.name.indexOf('(') !== -1) {
     return json.name
   }
 
-  let typeName: string = ''
-  if (json.inputs) {
-    typeName = json.inputs
-      .map(function (i) {
-        return i.type
-      })
-      .join()
-  }
-
-  return json.name + '(' + typeName + ')'
+  return json.name + '(' + _flattenTypes(false, json.inputs).join(',') + ')'
 }
+
+/**
+ * Should be used to flatten json abi inputs/outputs into an array of type-representing-strings
+ *
+ * @method _flattenTypes
+ * @param {bool} includeTuple
+ * @param {Object} puts
+ * @return {Array} parameters as strings
+ */
+function _flattenTypes(includeTuple: boolean, puts: AbiInput[]) {
+  const types: string[] = []
+
+  puts.forEach(function (param) {
+    if (typeof param.components === 'object') {
+      if (param.type.substring(0, 5) !== 'tuple') {
+        throw new Error('components found but type is not tuple; report on GitHub')
+      }
+      var suffix = ''
+      var arrayBracket = param.type.indexOf('[')
+      if (arrayBracket >= 0) { suffix = param.type.substring(arrayBracket) }
+      var result = _flattenTypes(includeTuple, param.components)
+      // console.log("result should have things: " + result)
+      if (isArray(result) && includeTuple) {
+        // console.log("include tuple word, and its an array. joining...: " + result.types)
+        types.push('tuple(' + result.join(',') + ')' + suffix)
+      }
+      else if (!includeTuple) {
+        // console.log("don't include tuple, but its an array. joining...: " + result)
+        types.push('(' + result.join(',') + ')' + suffix)
+      }
+      else {
+        // console.log("its a single type within a tuple: " + result.types)
+        types.push('(' + result + ')')
+      }
+    } else {
+      // console.log("its a type and not directly in a tuple: " + param.type)
+      types.push(param.type)
+    }
+  })
+
+  return types
+};
 
 /**
  * @public
