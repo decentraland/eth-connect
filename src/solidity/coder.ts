@@ -20,7 +20,7 @@ import * as utils from '../utils/utils'
 
 
 const ethersAbiCoder = new AbiCoder(function (_, value) {
-  if (utils.isObject(value) && value.constructor.name === 'BigNumber') {
+  if (utils.isObject(value) && (utils.isBigNumber(value) || (value as any)._isBigNumber || value.constructor.name === 'BigNumber')) {
     return utils.toBigNumber(value.toString())
   }
 
