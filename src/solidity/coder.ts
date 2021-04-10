@@ -16,22 +16,10 @@
 */
 
 import { AbiCoder, ParamType } from '@ethersproject/abi'
-import * as formatter from './formatters'
 import * as utils from '../utils/utils'
 
-import { SolidityTypeAddress } from './address'
-import { SolidityTypeBool } from './bool'
-import { SolidityTypeInt } from './int'
-import { SolidityTypeUInt } from './uint'
-import { SolidityTypeDynamicBytes } from './dynamicbytes'
-import { SolidityTypeString } from './string'
-import { SolidityTypeReal } from './real'
-import { SolidityTypeUReal } from './ureal'
-import { SolidityTypeBytes } from './bytes'
-import { SolidityType } from './type'
 
-
-var ethersAbiCoder = new AbiCoder(function (_, value) {
+const ethersAbiCoder = new AbiCoder(function (_, value) {
   if (utils.isObject(value) && value.constructor.name === 'BigNumber') {
     return utils.toBigNumber(value.toString())
   }
@@ -47,48 +35,19 @@ var ethersAbiCoder = new AbiCoder(function (_, value) {
 class Result {
 }
 
-function isDynamic(solidityType: SolidityType<any>, type: string) {
-  return solidityType.isDynamicType(type) || solidityType.isDynamicArray(type)
-}
-
 /**
  * SolidityCoder prototype should be used to encode/decode solidity params of any type
  */
 export class SolidityCoder {
-  _types: SolidityType<any>[]
-
-  constructor(types: SolidityType<any>[]) {
-    this._types = types
-  }
-
-  /**
-   * This method should be used to transform type to SolidityType
-   *
-   * @param {string} type
-   * @returns {SolidityType}
-   * @throws {Error} throws if no matching type is found
-   */
-  _requireType(type: string): SolidityType<unknown> {
-    let solidityType = this._types.filter(function (t) {
-      return t.isType(type)
-    })[0]
-
-    if (!solidityType) {
-      throw Error('invalid solidity type!: ' + type)
-    }
-
-    return solidityType
-  }
-
   /**
    * Should be used to encode plain param
    *
    * @method encodeParam
-   * @param {string} type
+   * @param {any} type
    * @param {object} plain param
    * @return {string} encoded plain param
    */
-  encodeParam(type: string, param: any): string {
+  encodeParam(type: any, param: any): string {
     return this.encodeParams([type], [param])
   }
 
@@ -101,7 +60,7 @@ export class SolidityCoder {
    * @return {string} encoded list of params
    */
   encodeParams(types: any, params: any[]): string {
-    var self = this
+    const self = this
     types = self.mapTypes(types)
     params = params.map(function (param, index) {
       let type = types[index]
@@ -142,15 +101,23 @@ export class SolidityCoder {
     return ethersAbiCoder.encode(types, params)
   }
 
-  formatParam(type: any, param: any) {
+  /**
+   * Handle some formatting of params for backwards compatability with Ethers V4
+   *
+   * @method formatParam
+   * @param {any} - type
+   * @param {any} - param
+   * @return {any} - The formatted param
+   */
+  formatParam(type: any, param: any): any {
     const paramTypeBytes = new RegExp(/^bytes([0-9]*)$/)
     const paramTypeBytesArray = new RegExp(/^bytes([0-9]*)\[\]$/)
     const paramTypeNumber = new RegExp(/^(u?int)([0-9]*)$/)
     const paramTypeNumberArray = new RegExp(/^(u?int)([0-9]*)\[\]$/)
 
-    // @TODO: Add BN as legacy codebase
     // Format BN to string
-    if (utils.isBigNumber(param)) {
+    // @TODO: check if we need BN here
+    if (/*utils.isBN(param) ||*/ utils.isBigNumber(param)) {
       return param.toString(10)
     }
 
@@ -200,15 +167,15 @@ export class SolidityCoder {
 
 
   /**
- * Map types if simplified format is used
- *
- * @method mapTypes
- * @param {Array} types
- * @return {Array}
- */
-  mapTypes(types: any) {
-    var self = this
-    var mappedTypes: any = []
+   * Map types if simplified format is used
+   *
+   * @method mapTypes
+   * @param {Array} types
+   * @return {Array}
+   */
+  mapTypes(types: any[]) {
+    const self = this
+    const mappedTypes: any = []
 
     types.forEach(function (type: any) {
       // Remap `function` type params to bytes24 since Ethers does not
@@ -218,7 +185,7 @@ export class SolidityCoder {
         type = Object.assign({}, type, { type: "bytes24" })
       }
       if (self.isSimplifiedStructFormat(type)) {
-        var structName = Object.keys(type)[0]
+        const structName = Object.keys(type)[0]
         mappedTypes.push(
           Object.assign(
             self.mapStructNameAndType(structName),
@@ -237,8 +204,15 @@ export class SolidityCoder {
     return mappedTypes
   }
 
-  mapStructNameAndType(structName: string) {
-    var type = 'tuple'
+  /**
+   * Maps the correct tuple type and name when the simplified format in encode/decodeParameter is used
+   *
+   * @method mapStructNameAndType
+   * @param {string} structName
+   * @return {{type: string, name: *}}
+   */
+  mapStructNameAndType(structName: string): { type: string, name: string } {
+    let type = 'tuple'
 
     if (structName.indexOf('[]') > -1) {
       type = 'tuple[]'
@@ -248,9 +222,16 @@ export class SolidityCoder {
     return { type: type, name: structName }
   };
 
-  mapStructToCoderFormat(struct: any) {
-    var self = this
-    var components: any = []
+  /**
+   * Maps the simplified format in to the expected format of the ABICoder
+   *
+   * @method mapStructToCoderFormat
+   * @param {Object} struct
+   * @return {Array}
+   */
+  mapStructToCoderFormat(struct: any): any[] {
+    const self = this
+    const components: any = []
     Object.keys(struct).forEach(function (key) {
       if (typeof struct[key] === 'object') {
         components.push(
@@ -275,96 +256,15 @@ export class SolidityCoder {
   };
 
 
-  isSimplifiedStructFormat(type: any) {
+  /**
+   * Check if type is simplified struct format
+   *
+   * @method isSimplifiedStructFormat
+   * @param {string | Object} type
+   * @returns {boolean}
+   */
+  isSimplifiedStructFormat(type: any): boolean {
     return typeof type === 'object' && typeof type.components === 'undefined' && typeof type.name === 'undefined'
-  };
-
-  encodeMultiWithOffset(
-    types: string[],
-    solidityTypes: SolidityType<any>[],
-    encodeds: (string | string[])[],
-    _dynamicOffset: number
-  ): string {
-    let dynamicOffset = _dynamicOffset
-    let results: string[] = []
-
-    types.forEach((_, i) => {
-      if (isDynamic(solidityTypes[i], types[i])) {
-        results.push(formatter.formatInputInt(dynamicOffset).encode())
-        let e = this.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
-        dynamicOffset += e.length / 2
-      } else {
-        // don't add length to dynamicOffset. it's already counted
-        results.push(this.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset))
-      }
-
-      // TODO: figure out nested arrays
-    })
-
-    types.forEach((_, i) => {
-      if (isDynamic(solidityTypes[i], types[i])) {
-        let e = this.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset)
-        dynamicOffset += e.length / 2
-        results.push(e)
-      }
-    })
-    return results.join('')
-  }
-
-  // tslint:disable-next-line:prefer-function-over-method
-  encodeWithOffset(type: string, solidityType: SolidityType<any>, encoded: string | string[], offset: number): string {
-    /* jshint maxcomplexity: 17 */
-    /* jshint maxdepth: 5 */
-
-    let encodingMode = { dynamic: 1, static: 2, other: 3 }
-
-    let mode = solidityType.isDynamicArray(type)
-      ? encodingMode.dynamic
-      : solidityType.isStaticArray(type)
-        ? encodingMode.static
-        : encodingMode.other
-
-    if (mode !== encodingMode.other) {
-      let nestedName = solidityType.nestedName(type)
-      let nestedStaticPartLength = solidityType.staticPartLength(nestedName)
-      let results: string[] = []
-
-      if (mode === encodingMode.dynamic) {
-        results.push(encoded[0] as string)
-      }
-
-      if (solidityType.isDynamicArray(nestedName)) {
-        let previousLength = mode === encodingMode.dynamic ? 2 : 0
-
-        for (let i = 0; i < encoded.length; i++) {
-          // calculate length of previous item
-          if (mode === encodingMode.dynamic) {
-            previousLength += +encoded[i - 1][0] || 0
-          } else if (mode === encodingMode.static) {
-            previousLength += +(encoded[i - 1] || [])[0] || 0
-          }
-          results.push(formatter.formatInputInt(offset + i * nestedStaticPartLength + previousLength * 32).encode())
-        }
-      }
-
-      let len = mode === encodingMode.dynamic ? encoded.length - 1 : encoded.length
-      for (let c = 0; c < len; c++) {
-        let additionalOffset = results.join('').length / 2
-        if (mode === encodingMode.dynamic) {
-          results.push(this.encodeWithOffset(nestedName, solidityType, encoded[c + 1], offset + additionalOffset))
-        } else if (mode === encodingMode.static) {
-          results.push(this.encodeWithOffset(nestedName, solidityType, encoded[c], offset + additionalOffset))
-        }
-      }
-
-      return results.join('')
-    }
-
-    if (typeof encoded != 'string') {
-      throw new Error('Encoded is not string')
-    }
-
-    return encoded as any
   }
 
   /**
@@ -375,7 +275,7 @@ export class SolidityCoder {
    * @param {string} bytes
    * @return {object} plain param
    */
-  decodeParam(type: string, bytes: string) {
+  decodeParam(type: string, bytes: string): any {
     return this.decodeParams([type], bytes)[0]
   }
 
@@ -391,8 +291,15 @@ export class SolidityCoder {
     return this.decodeParametersWith(outputs, bytes)
   }
 
-
-
+  /**
+ * Should be used to decode list of params
+ *
+ * @method decodeParameter
+ * @param {Array} outputs
+ * @param {String} bytes
+ * @param {Boolean} loose
+ * @return {Array} array of plain params
+ */
   decodeParametersWith(outputs: any, bytes: string) {
     if (outputs.length > 0 && (!bytes || bytes === '0x' || bytes === '0X')) {
       throw new Error(
@@ -404,12 +311,12 @@ export class SolidityCoder {
       )
     }
 
-    var res = ethersAbiCoder.decode(this.mapTypes(outputs), '0x' + bytes.replace(/0x/i, ''))
-    var returnValue: any = new Result()
+    const res = ethersAbiCoder.decode(this.mapTypes(outputs), '0x' + bytes.replace(/0x/i, ''))
+    const returnValue: any = new Result()
     returnValue.__length__ = 0
 
     outputs.forEach(function (output: any, i: any) {
-      var decodedValue = res[returnValue.__length__]
+      let decodedValue = res[returnValue.__length__]
       decodedValue = (decodedValue === '0x') ? null : decodedValue
 
       returnValue[i] = decodedValue
@@ -422,39 +329,7 @@ export class SolidityCoder {
     })
 
     return returnValue
-  };
-
-  // tslint:disable-next-line:prefer-function-over-method
-  getOffsets(types: string[], solidityTypes: SolidityType<any>[]): number[] {
-    let lengths = solidityTypes.map(function (solidityType, index) {
-      return solidityType.staticPartLength(types[index])
-    })
-
-    for (let i = 1; i < lengths.length; i++) {
-      // sum with length of previous element
-      lengths[i] += lengths[i - 1]
-    }
-
-    return lengths.map(function (length, index) {
-      // remove the current length, so the length is sum of previous elements
-      let staticPartLength = solidityTypes[index].staticPartLength(types[index])
-      return length - staticPartLength
-    })
-  }
-
-  getSolidityTypes(types: string[]): SolidityType<any>[] {
-    return types.map((type) => this._requireType(type))
   }
 }
 
-export const coder = new SolidityCoder([
-  new SolidityTypeAddress(),
-  new SolidityTypeBool(),
-  new SolidityTypeInt(),
-  new SolidityTypeUInt(),
-  new SolidityTypeDynamicBytes(),
-  new SolidityTypeBytes(),
-  new SolidityTypeString(),
-  new SolidityTypeReal(),
-  new SolidityTypeUReal()
-])
+export const coder = new SolidityCoder()

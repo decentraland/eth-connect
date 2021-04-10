@@ -22,13 +22,13 @@ import * as errors from './utils/errors'
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
-import { AbiFunction, Quantity } from './Schema'
+import { AbiFunction, AbiInput, Quantity } from './Schema'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
  */
 export class SolidityFunction {
-  _inputTypes: any[]
+  _inputTypes: (AbiInput | string)[]
   _outputTypes: string[]
   _constant: boolean
   _name: string

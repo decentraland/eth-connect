@@ -1298,7 +1298,7 @@ export class SolidityFunction {
     // (undocumented)
     extractDefaultBlock(args: any[]): string;
     // (undocumented)
-    _inputTypes: any[];
+    _inputTypes: (AbiInput | string)[];
     // (undocumented)
     json: AbiFunction;
     // (undocumented)
