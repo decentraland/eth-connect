@@ -145,7 +145,6 @@ function doTest(requestManager: RequestManager) {
     expect(mintingFinished).toHaveProperty('then')
 
     const result = await mintingFinished
-    console.log(result)
     expect(typeof result).toEqual('boolean')
   })
 
@@ -203,7 +202,7 @@ function doTest(requestManager: RequestManager) {
   it('test allowance, invalid address', async function () {
     this.timeout(30000)
     const accounts = await requestManager.eth_accounts()
-    await expect(ERC20Contract.allowance(accounts[0], '0x1')).rejects.toThrow('invalid address (argument=\"address\", value=\"0x1\", code=INVALID_ARGUMENT, version=address/5.1.0) (argument=null, value=\"0x1\", code=INVALID_ARGUMENT, version=abi/5.1.0)')
+    await expect(ERC20Contract.allowance(accounts[0], '0x1')).rejects.toThrow('Invalid address')
   })
 
   it('test allowance', async function () {
@@ -214,6 +213,18 @@ function doTest(requestManager: RequestManager) {
     {
       console.log(`> allowance(${accounts[0]},${allowanceAddress})`)
       const allowedNumber: BigNumber = await ERC20Contract.allowance(accounts[0], allowanceAddress)
+      expect(allowedNumber).toBeInstanceOf(BigNumber)
+    }
+  })
+
+  it('test allowance with malformed addressess', async function () {
+    this.timeout(30000)
+    const accounts = await requestManager.eth_accounts()
+    const account = ` ${accounts[0]} `
+    const allowanceAddress = '   0x0f5d2fb29fb7d3cfee444a200298f468908cc942   \n'
+    {
+      console.log(`> allowance(${account},${allowanceAddress})`)
+      const allowedNumber: BigNumber = await ERC20Contract.allowance(account, allowanceAddress)
       expect(allowedNumber).toBeInstanceOf(BigNumber)
     }
   })

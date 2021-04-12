@@ -1,11 +1,12 @@
 import * as expect from 'expect'
 import * as coder from '../src/solidity/coder'
+import { parseParamType } from '../src/utils/typeParser'
 
 describe('lib/solidity/coder', function () {
   describe('encodeParam', function () {
     let test = function (t) {
-      it('should turn ' + t.value + ' to ' + t.expected, function () {
-        expect(coder.coder.encodeParam(t.type, t.value).replace('0x', '')).toEqual(t.expected)
+      it('should turn ' + t.type + ' ' + t.value + ' to ' + t.expected, function () {
+        expect(coder.coder.encodeParam(parseParamType(t.type, true), t.value)).toEqual(t.expected)
       })
     }
 
@@ -103,12 +104,16 @@ describe('lib/solidity/coder', function () {
     test({ type: 'int', value: 1, expected: '0000000000000000000000000000000000000000000000000000000000000001' })
     test({ type: 'int', value: 16, expected: '0000000000000000000000000000000000000000000000000000000000000010' })
     test({ type: 'int', value: -1, expected: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' })
+    test({ type: 'int', value: 0.1, expected: '0000000000000000000000000000000000000000000000000000000000000000' })
+    test({ type: 'int', value: 3.9, expected: '0000000000000000000000000000000000000000000000000000000000000003' })
     test({ type: 'int256', value: 1, expected: '0000000000000000000000000000000000000000000000000000000000000001' })
     test({ type: 'int256', value: 16, expected: '0000000000000000000000000000000000000000000000000000000000000010' })
     test({ type: 'int256', value: -1, expected: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' })
 
     test({ type: 'uint', value: 1, expected: '0000000000000000000000000000000000000000000000000000000000000001' })
     test({ type: 'uint', value: 16, expected: '0000000000000000000000000000000000000000000000000000000000000010' })
+    test({ type: 'uint', value: 0.1, expected: '0000000000000000000000000000000000000000000000000000000000000000' })
+    test({ type: 'uint', value: 3.9, expected: '0000000000000000000000000000000000000000000000000000000000000003' })
     test({ type: 'uint256', value: 1, expected: '0000000000000000000000000000000000000000000000000000000000000001' })
     test({ type: 'uint256', value: 16, expected: '0000000000000000000000000000000000000000000000000000000000000010' })
     test({
@@ -186,6 +191,15 @@ describe('lib/solidity/coder', function () {
       expected: 'c3a40000c3a40000000000000000000000000000000000000000000000000000'
     })
     test({
+      type: 'bytes64',
+      value:
+        '0xc3a40000c3a40000000000000000000000000000000000000000000000000000' +
+        'c3a40000c3a40000000000000000000000000000000000000000000000000000',
+      expected:
+        'c3a40000c3a40000000000000000000000000000000000000000000000000000' +
+        'c3a40000c3a40000000000000000000000000000000000000000000000000000'
+    })
+    test({
       type: 'string',
       value: 'Ã¤Ã¤',
       expected:
@@ -252,6 +266,13 @@ describe('lib/solidity/coder', function () {
         'fb00000000000000000000000000000000000000000000000000000000000000'
     })
 
+    test({ type: 'real', value: 1, expected: '0000000000000000000000000000000100000000000000000000000000000000' })
+    test({ type: 'real', value: 2.125, expected: '0000000000000000000000000000000220000000000000000000000000000000' })
+    test({ type: 'real', value: 8.5, expected: '0000000000000000000000000000000880000000000000000000000000000000' })
+    test({ type: 'real', value: -1, expected: 'ffffffffffffffffffffffffffffffff00000000000000000000000000000000' })
+    test({ type: 'ureal', value: 1, expected: '0000000000000000000000000000000100000000000000000000000000000000' })
+    test({ type: 'ureal', value: 2.125, expected: '0000000000000000000000000000000220000000000000000000000000000000' })
+    test({ type: 'ureal', value: 8.5, expected: '0000000000000000000000000000000880000000000000000000000000000000' })
     test({
       type: 'bytes',
       value:
@@ -288,8 +309,9 @@ describe('lib/solidity/coder', function () {
 
     test({
       type: 'tuple(string,string)',
-      value: ["welcome to ethereum.", "welcome to ethereum."],
-      expected: '0000000000000000000000000000000000000000000000000000000000000020' +
+      value: ['welcome to ethereum.', 'welcome to ethereum.'],
+      expected:
+        '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000040' +
         '0000000000000000000000000000000000000000000000000000000000000080' +
         '0000000000000000000000000000000000000000000000000000000000000014' +
@@ -299,7 +321,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(bytes,bytes)',
-      value: ["0x77656c636f6d6520746f20657468657265756d2e", "0x77656c636f6d6520746f20657468657265756d2e"],
+      value: ['0x77656c636f6d6520746f20657468657265756d2e', '0x77656c636f6d6520746f20657468657265756d2e'],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000040' +
@@ -311,7 +333,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(bytes,bool,uint256)',
-      value: ["0x77656c636f6d6520746f20657468657265756d2e", true, 124515],
+      value: ['0x77656c636f6d6520746f20657468657265756d2e', true, 124515],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000060' +
@@ -322,7 +344,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(string,tuple(bool,int256),address)',
-      value: ["hello", [true, -151], "0x0175010374017501037401750103740175010374"],
+      value: ['hello', [true, -151], '0x0175010374017501037401750103740175010374'],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000080' +
@@ -334,7 +356,11 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(tuple(bool,bool),tuple(address,address),tuple(string,string))',
-      value: [[true, false], ["0x81017589ab81017589ab81017589ab81017589ab", "0x81017589ab81017589ab81017589ab81017589ab"], ["string One", "string Two"]],
+      value: [
+        [true, false],
+        ['0x81017589ab81017589ab81017589ab81017589ab', '0x81017589ab81017589ab81017589ab81017589ab'],
+        ['string One', 'string Two']
+      ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -351,7 +377,14 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(tuple(tuple(bool,bool),tuple(bytes,bytes),tuple(address,bool)),address)',
-      value: [[[false, false], ["0xab1394581edfa2ef9ca71", "0x15abe391df19aef19a4561"], ["0xec2270c849236333c86834728e783cd2f789088e", true]], "0x81017589ab81017589ab81017589ab81017589ab"],
+      value: [
+        [
+          [false, false],
+          ['0xab1394581edfa2ef9ca71', '0x15abe391df19aef19a4561'],
+          ['0xec2270c849236333c86834728e783cd2f789088e', true]
+        ],
+        '0x81017589ab81017589ab81017589ab81017589ab'
+      ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000040' +
@@ -370,7 +403,12 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(bool,string,bool,tuple(address,address))',
-      value: [true, "testing", false, ["0x1981710abe1981710abe1981710abe1981710abe", "0x1981710abe1981710abe1981710abe1981710abe"]],
+      value: [
+        true,
+        'testing',
+        false,
+        ['0x1981710abe1981710abe1981710abe1981710abe', '0x1981710abe1981710abe1981710abe1981710abe']
+      ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -383,7 +421,11 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(address,address,tuple(string,tuple(int256,int256),string))',
-      value: ["0x1981710abe1981710abe1981710abe1981710abe", "0x1981710abe1981710abe1981710abe1981710abe", ["structs are great", [-1951, 194018], "so many possibilities"]],
+      value: [
+        '0x1981710abe1981710abe1981710abe1981710abe',
+        '0x1981710abe1981710abe1981710abe1981710abe',
+        ['structs are great', [-1951, 194018], 'so many possibilities']
+      ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000001981710abe1981710abe1981710abe1981710abe' +
@@ -400,7 +442,16 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(bool,tuple(bytes32,int256,tuple(bytes24,bytes8)),tuple(bool,bool,bool),string)',
-      value: [true, ["0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18", -18291849, ["0xabdef18710a18a18abdef18710a18a18abdef18710a18a18", "0xabdef18710a18a18"]], [false, true, false], "testing testing"],
+      value: [
+        true,
+        [
+          '0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18',
+          -18291849,
+          ['0xabdef18710a18a18abdef18710a18a18abdef18710a18a18', '0xabdef18710a18a18']
+        ],
+        [false, true, false],
+        'testing testing'
+      ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -417,7 +468,12 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(bool,tuple(bytes32,int256,tuple(bytes24,bytes8)),tuple(bool,bool,bool),string)',
-      value: [true, ["0xabdef", -18291849, ["0xabdef18710a18a18abdef18710a18a18abdef18710a18a18", "0xabdef18710a18a18"]], [false, true, false], "testing testing"],
+      value: [
+        true,
+        ['0xabdef', -18291849, ['0xabdef18710a18a18abdef18710a18a18abdef18710a18a18', '0xabdef18710a18a18']],
+        [false, true, false],
+        'testing testing'
+      ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -439,7 +495,7 @@ describe('lib/solidity/coder', function () {
   describe('encodeParams', function () {
     let test = function (t) {
       it('should turn ' + t.values + ' to ' + t.expected, function () {
-        expect(coder.coder.encodeParams(t.types, t.values).replace('0x', '')).toEqual(t.expected)
+        expect(coder.coder.encodeParams(t.types.map(type => parseParamType(type, true)), t.values)).toEqual(t.expected)
       })
     }
 
@@ -660,10 +716,10 @@ describe('lib/solidity/coder', function () {
       values: [
         5,
         '0x131a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
-        '231a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b',
+          '231a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b',
         3,
         '0x331a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
-        '431a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
+          '431a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
       ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000005' +
@@ -690,8 +746,9 @@ describe('lib/solidity/coder', function () {
 
     test({
       types: ['string', 'tuple(string,string)'],
-      values: ["what", ["what what", "what what"]],
-      expected: '0000000000000000000000000000000000000000000000000000000000000040' +
+      values: ['what', ['what what', 'what what']],
+      expected:
+        '0000000000000000000000000000000000000000000000000000000000000040' +
         '0000000000000000000000000000000000000000000000000000000000000080' +
         '0000000000000000000000000000000000000000000000000000000000000004' +
         '7768617400000000000000000000000000000000000000000000000000000000' +
@@ -704,24 +761,40 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['tuple(bytes32,bool)', 'tuple(bool,address)'],
-      values: [["0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18", true], [true, "0x77656c636f6d6520746f20657468657265756d2e"]],
-      expected: 'abdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18' +
+      values: [
+        ['0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18', true],
+        [true, '0x77656c636f6d6520746f20657468657265756d2e']
+      ],
+      expected:
+        'abdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '00000000000000000000000077656c636f6d6520746f20657468657265756d2e'
     })
     test({
       types: ['tuple(bytes32,bool)', 'tuple(bool,address)'],
-      values: [["0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18", true], [true, "0x77656c636f6d6520746f20657468657265756d2e"]],
-      expected: 'abdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18' +
+      values: [
+        ['0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18', true],
+        [true, '0x77656c636f6d6520746f20657468657265756d2e']
+      ],
+      expected:
+        'abdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '00000000000000000000000077656c636f6d6520746f20657468657265756d2e'
     })
     test({
       types: ['tuple(address,uint256)', 'tuple(uint256,bool)', 'tuple(bytes32,bytes32)'],
-      values: [["0x77656c636f6d6520746f20657468657265756d2e", "148"], ["5910", true], ["0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18", "0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18"]],
-      expected: '00000000000000000000000077656c636f6d6520746f20657468657265756d2e' +
+      values: [
+        ['0x77656c636f6d6520746f20657468657265756d2e', '148'],
+        ['5910', true],
+        [
+          '0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18',
+          '0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18'
+        ]
+      ],
+      expected:
+        '00000000000000000000000077656c636f6d6520746f20657468657265756d2e' +
         '0000000000000000000000000000000000000000000000000000000000000094' +
         '0000000000000000000000000000000000000000000000000000000000001716' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -730,9 +803,25 @@ describe('lib/solidity/coder', function () {
     })
 
     test({
-      types: ['tuple(tuple(address,address),tuple(bool,bool))', 'tuple(tuple(bool,bool),tuple(bytes,bytes),tuple(uint256,uint256))', 'address'],
-      values: [[["0x77656c636f6d6520746f20657468657265756d2e", "0x77656c636f6d6520746f20657468657265756d2e"], [true, false]], [[false, true], ["0xab1394581edfa2ef9ca71", "0x15abe391df19aef19a4561"], ["182", "1937"]], "0x77656c636f6d6520746f20657468657265756d2e"],
-      expected: '00000000000000000000000077656c636f6d6520746f20657468657265756d2e' +
+      types: [
+        'tuple(tuple(address,address),tuple(bool,bool))',
+        'tuple(tuple(bool,bool),tuple(bytes,bytes),tuple(uint256,uint256))',
+        'address'
+      ],
+      values: [
+        [
+          ['0x77656c636f6d6520746f20657468657265756d2e', '0x77656c636f6d6520746f20657468657265756d2e'],
+          [true, false]
+        ],
+        [
+          [false, true],
+          ['0xab1394581edfa2ef9ca71', '0x15abe391df19aef19a4561'],
+          ['182', '1937']
+        ],
+        '0x77656c636f6d6520746f20657468657265756d2e'
+      ],
+      expected:
+        '00000000000000000000000077656c636f6d6520746f20657468657265756d2e' +
         '00000000000000000000000077656c636f6d6520746f20657468657265756d2e' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000000' +
@@ -752,9 +841,25 @@ describe('lib/solidity/coder', function () {
     })
 
     test({
-      types: ['tuple(tuple(uint256,bool),tuple(uint256,tuple(bytes,bytes)))', 'bytes', 'tuple(bool,tuple(bytes,address),bytes)'],
-      values: [[["18320", true], ["691", ["0xab1394581edfa2ef9ca71", "0x15abe391df19aef19a4561"]]], "0xab1394581edfa2ef9ca71", [false, ["0xfe", "0x77656c636f6d6520746f20657468657265756d2e"], "0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18"]],
-      expected: '0000000000000000000000000000000000000000000000000000000000000060' +
+      types: [
+        'tuple(tuple(uint256,bool),tuple(uint256,tuple(bytes,bytes)))',
+        'bytes',
+        'tuple(bool,tuple(bytes,address),bytes)'
+      ],
+      values: [
+        [
+          ['18320', true],
+          ['691', ['0xab1394581edfa2ef9ca71', '0x15abe391df19aef19a4561']]
+        ],
+        '0xab1394581edfa2ef9ca71',
+        [
+          false,
+          ['0xfe', '0x77656c636f6d6520746f20657468657265756d2e'],
+          '0xabdef18710a18a18abdef18710a18a18abdef18710a18a18abdef18710a18a18'
+        ]
+      ],
+      expected:
+        '0000000000000000000000000000000000000000000000000000000000000060' +
         '00000000000000000000000000000000000000000000000000000000000001c0' +
         '0000000000000000000000000000000000000000000000000000000000000200' +
         '0000000000000000000000000000000000000000000000000000000000004790' +
@@ -783,8 +888,13 @@ describe('lib/solidity/coder', function () {
 
     test({
       types: ['address', 'tuple(bool,tuple(address,address))', 'tuple(tuple(address,tuple(int256,int256)),bool)'],
-      values: ["0x77656c636f6d6520746f20657468657265756d2e", [true, ["0x77656c636f6d6520746f20657468657265756d2e", "0x77656c636f6d6520746f20657468657265756d2e"]], [["0x77656c636f6d6520746f20657468657265756d2e", ["-12451", "-12451018"]], false]],
-      expected: '00000000000000000000000077656c636f6d6520746f20657468657265756d2e' +
+      values: [
+        '0x77656c636f6d6520746f20657468657265756d2e',
+        [true, ['0x77656c636f6d6520746f20657468657265756d2e', '0x77656c636f6d6520746f20657468657265756d2e']],
+        [['0x77656c636f6d6520746f20657468657265756d2e', ['-12451', '-12451018']], false]
+      ],
+      expected:
+        '00000000000000000000000077656c636f6d6520746f20657468657265756d2e' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '00000000000000000000000077656c636f6d6520746f20657468657265756d2e' +
         '00000000000000000000000077656c636f6d6520746f20657468657265756d2e' +
@@ -795,9 +905,29 @@ describe('lib/solidity/coder', function () {
     })
 
     test({
-      types: ['bytes', 'tuple(tuple(bool,bool,bool),tuple(bytes,bytes,bytes),tuple(bytes,bool,address),tuple(uint256,int256,address))', 'tuple(bytes,tuple(tuple(int256,bool),tuple(uint256,bytes)))'],
-      values: ["0xabef15", [[true, false, true], ["0xabef15", "0xcdef151", "0xabfe151"], ["0x15abe391df19aef19a4561", true, "0x77656c636f6d6520746f20657468657265756d2e"], ["1840181", "-819184919", "0x77656c636f6d6520746f20657468657265756d2e"]], ["0x77656c636f6d6520746f20657468657265756d2e", [["-18491", false], ["1918491", "0xabdcf151dae"]]]],
-      expected: '0000000000000000000000000000000000000000000000000000000000000060' +
+      types: [
+        'bytes',
+        'tuple(tuple(bool,bool,bool),tuple(bytes,bytes,bytes),tuple(bytes,bool,address),tuple(uint256,int256,address))',
+        'tuple(bytes,tuple(tuple(int256,bool),tuple(uint256,bytes)))'
+      ],
+      values: [
+        '0xabef15',
+        [
+          [true, false, true],
+          ['0xabef15', '0xcdef151', '0xabfe151'],
+          ['0x15abe391df19aef19a4561', true, '0x77656c636f6d6520746f20657468657265756d2e'],
+          ['1840181', '-819184919', '0x77656c636f6d6520746f20657468657265756d2e']
+        ],
+        [
+          '0x77656c636f6d6520746f20657468657265756d2e',
+          [
+            ['-18491', false],
+            ['1918491', '0xabdcf151dae']
+          ]
+        ]
+      ],
+      expected:
+        '0000000000000000000000000000000000000000000000000000000000000060' +
         '00000000000000000000000000000000000000000000000000000000000000a0' +
         '0000000000000000000000000000000000000000000000000000000000000360' +
         '0000000000000000000000000000000000000000000000000000000000000003' +
@@ -838,9 +968,27 @@ describe('lib/solidity/coder', function () {
     })
 
     test({
-      types: ['tuple(bytes,tuple(address,address))', 'tuple(address,address,address,bytes,address)', 'tuple(address,tuple(address,tuple(address,bool)))'],
-      values: [["0xabef15", ["0x77656c636f6d6520746f20657468657265756d2e", "0x77656c636f6d6520746f20657468657265756d2e"]], ["0x77656c636f6d6520746f20657468657265756d2e", "0x77656c636f6d6520746f20657468657265756d2e", "0x77656c636f6d6520746f20657468657265756d2e", "0xabef15", "0x77656c636f6d6520746f20657468657265756d2e"], ["0x81017589ab81017589ab81017589ab81017589ab", ["0x77656c636f6d6520746f20657468657265756d2e", ["0x81017589ab81017589ab81017589ab81017589ab", false]]]],
-      expected: '00000000000000000000000000000000000000000000000000000000000000c0' +
+      types: [
+        'tuple(bytes,tuple(address,address))',
+        'tuple(address,address,address,bytes,address)',
+        'tuple(address,tuple(address,tuple(address,bool)))'
+      ],
+      values: [
+        ['0xabef15', ['0x77656c636f6d6520746f20657468657265756d2e', '0x77656c636f6d6520746f20657468657265756d2e']],
+        [
+          '0x77656c636f6d6520746f20657468657265756d2e',
+          '0x77656c636f6d6520746f20657468657265756d2e',
+          '0x77656c636f6d6520746f20657468657265756d2e',
+          '0xabef15',
+          '0x77656c636f6d6520746f20657468657265756d2e'
+        ],
+        [
+          '0x81017589ab81017589ab81017589ab81017589ab',
+          ['0x77656c636f6d6520746f20657468657265756d2e', ['0x81017589ab81017589ab81017589ab81017589ab', false]]
+        ]
+      ],
+      expected:
+        '00000000000000000000000000000000000000000000000000000000000000c0' +
         '0000000000000000000000000000000000000000000000000000000000000160' +
         '00000000000000000000000081017589ab81017589ab81017589ab81017589ab' +
         '00000000000000000000000077656c636f6d6520746f20657468657265756d2e' +
@@ -862,8 +1010,13 @@ describe('lib/solidity/coder', function () {
 
     test({
       types: ['tuple(bytes,bytes)', 'bytes', 'tuple(tuple(bytes),tuple(bytes,bytes),tuple(bytes,bytes,bytes))'],
-      values: [["0xabef15", "0xa"], "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", [["0xaf"], ["0xaf", "0xbc"], ["0xaf", "0xbc", "0xde"]]],
-      expected: '0000000000000000000000000000000000000000000000000000000000000060' +
+      values: [
+        ['0xabef15', '0xa'],
+        '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+        [['0xaf'], ['0xaf', '0xbc'], ['0xaf', '0xbc', '0xde']]
+      ],
+      expected:
+        '0000000000000000000000000000000000000000000000000000000000000060' +
         '0000000000000000000000000000000000000000000000000000000000000120' +
         '0000000000000000000000000000000000000000000000000000000000000160' +
         '0000000000000000000000000000000000000000000000000000000000000040' +
@@ -898,8 +1051,6 @@ describe('lib/solidity/coder', function () {
     })
   })
 
-
-
   var tests = [
     {
       types: ['uint256', 'string'],
@@ -924,7 +1075,12 @@ describe('lib/solidity/coder', function () {
 
   it('encodeParams', function () {
     tests.forEach(function (test) {
-      expect(coder.coder.encodeParams(test.types, test.params).replace('0x', '')).toEqual(test.result)
+      expect(
+        coder.coder.encodeParams(
+          test.types.map(type => parseParamType(type, true)),
+          test.params
+        )
+      ).toEqual(test.result)
     })
   })
 })

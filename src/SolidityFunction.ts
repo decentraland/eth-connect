@@ -22,14 +22,14 @@ import * as errors from './utils/errors'
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
-import { AbiFunction, AbiInput, Quantity } from './Schema'
+import { AbiFunction, AbiInput, AbiOutput, Quantity } from './Schema'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
  */
 export class SolidityFunction {
-  _inputTypes: (AbiInput | string)[]
-  _outputTypes: string[]
+  _inputTypes: AbiInput[]
+  _outputTypes: AbiOutput[]
   _constant: boolean
   _name: string
   _payable: boolean
@@ -37,12 +37,8 @@ export class SolidityFunction {
   needsToBeTransaction: boolean
 
   constructor(public json: AbiFunction) {
-    this._inputTypes = (json.inputs || []).map(function (i) {
-      return i.type.indexOf('tuple') !== -1 ? i : i.type
-    })
-    this._outputTypes = (json.outputs || []).map(function (i) {
-      return i.type
-    })
+    this._inputTypes = json.inputs || []
+    this._outputTypes = json.outputs || []
 
     this._constant = !!json.constant
     this._payable = !!json.payable || json.stateMutability === 'payable'
@@ -121,14 +117,7 @@ export class SolidityFunction {
 
     const encodedOutput = output.length >= 2 ? output.slice(2) : output
     let result = coder.decodeParams(this._outputTypes, encodedOutput)
-
-    if (result.__length__ === 1) {
-      return result[0]
-    }
-
-    delete result.__length__
-    return result
-
+    return result.length === 1 ? result[0] : result
   }
 
   /**
@@ -204,9 +193,9 @@ export class SolidityFunction {
     )
 
     if (!(contract as any)[displayName]) {
-      ; (contract as any)[displayName] = execute
+      ;(contract as any)[displayName] = execute
     }
 
-    ; (contract as any)[displayName][this.typeName()] = execute
+    ;(contract as any)[displayName][this.typeName()] = execute
   }
 }

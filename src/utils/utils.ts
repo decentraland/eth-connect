@@ -100,12 +100,7 @@ export type Unit = keyof typeof unitMap
  * Should be called to pad string to expected length
  */
 export function padLeft(str: string, chars: number, sign?: string) {
-  const hasPrefix = /^0x/i.test(str) || typeof str === 'number'
-  str = str.replace(/^0x/i, '')
-
-  var padding = (chars - str.length + 1 >= 0) ? chars - str.length + 1 : 0
-
-  return (hasPrefix ? '0x' : '') + new Array(padding).join(sign ? sign : "0") + str
+  return new Array(chars - str.length + 1).join(sign ? sign : '0') + str
 }
 
 /**
@@ -113,12 +108,7 @@ export function padLeft(str: string, chars: number, sign?: string) {
  * Should be called to pad string to expected length
  */
 export function padRight(str: string, chars: number, sign?: string) {
-  var hasPrefix = /^0x/i.test(str) || typeof str === 'number'
-  str = str.replace(/^0x/i, '')
-
-  var padding = (chars - str.length + 1 >= 0) ? chars - str.length + 1 : 0
-
-  return (hasPrefix ? '0x' : '') + str + (new Array(padding).join(sign ? sign : "0"))
+  return str + new Array(chars - str.length + 1).join(sign ? sign : '0')
 }
 
 /**
@@ -211,7 +201,7 @@ export function transformToFullName(json: AbiItem) {
     return json.name
   }
 
-  return json.name + '(' + _flattenTypes(false, json.inputs).join(',') + ')'
+  return json.name + '(' + _flattenTypes(false, json.inputs || []).join(',') + ')'
 }
 
 /**

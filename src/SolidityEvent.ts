@@ -48,14 +48,10 @@ export class SolidityEvent {
    *
    * @param decide - True if returned typed should be indexed
    */
-  types(indexed: boolean): string[] {
-    return this._params
-      .filter(function (i) {
-        return i.indexed === indexed
-      })
-      .map(function (i) {
-        return i.type
-      })
+  types(indexed: boolean): AbiInput[] {
+    return this._params.filter(function (i) {
+      return i.indexed === indexed
+    })
   }
 
   /**
@@ -114,10 +110,10 @@ export class SolidityEvent {
 
         if (utils.isArray(value)) {
           return value.map(function (v) {
-            return coder.encodeParam(i.type, v)
+            return '0x' + coder.encodeParam(i, v)
           })
         }
-        return coder.encodeParam(i.type, value)
+        return '0x' + coder.encodeParam(i, value)
       })
 
     result.topics = result.topics.concat(indexedTopics)
@@ -140,10 +136,10 @@ export class SolidityEvent {
         return topics.slice(2)
       })
       .join('')
-    let indexedParams = Object.values(coder.decodeParams(this.types(true), indexedData))
+    let indexedParams = coder.decodeParams(this.types(true), indexedData)
 
     let notIndexedData = data.data.slice(2)
-    let notIndexedParams = Object.values(coder.decodeParams(this.types(false), notIndexedData))
+    let notIndexedParams = coder.decodeParams(this.types(false), notIndexedData)
 
     const args = this._params.reduce(function (acc, current) {
       acc[current.name] = current.indexed ? indexedParams.shift() : notIndexedParams.shift()
@@ -181,6 +177,6 @@ export class SolidityEvent {
     if (!contract.events[displayName]) {
       contract.events[displayName] = execute
     }
-    ; (contract.events[displayName] as any)[this.typeName()] = this.execute.bind(this, contract)
+    ;(contract.events[displayName] as any)[this.typeName()] = this.execute.bind(this, contract)
   }
 }

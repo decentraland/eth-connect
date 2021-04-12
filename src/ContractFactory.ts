@@ -87,9 +87,7 @@ function encodeConstructorParams(abi: AbiItem[], params: any[]) {
         return json.type === 'constructor' && json.inputs && json.inputs.length === params.length
       })
       .map(function (json) {
-        return json.inputs.map(function (input) {
-          return input.type
-        })
+        return json.inputs || []
       })
       .map(function (types) {
         return coder.encodeParams(types, params)
@@ -102,7 +100,7 @@ function encodeConstructorParams(abi: AbiItem[], params: any[]) {
  * Should be called to create new ContractFactory instance
  */
 export class ContractFactory {
-  constructor(public requestManager: RequestManager, public abi: any[]) { }
+  constructor(public requestManager: RequestManager, public abi: any[]) {}
 
   /**
    * Should be called to create new contract on a blockchain
@@ -143,8 +141,7 @@ export class ContractFactory {
     }
 
     let bytes = encodeConstructorParams(this.abi, args)
-
-    options.data += bytes.replace('0x', '')
+    options.data += bytes
 
     if (!options.gas) {
       options.gas = await this.requestManager.eth_estimateGas(options)

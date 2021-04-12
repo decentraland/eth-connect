@@ -212,9 +212,9 @@ function doTest(rm: RequestManager) {
   })
 
   it('getInstructor()', async () => {
-    const res = await TestContract.getInstructor()
-    expect(res[0]).toEqual('agustin')
-    expect(res[1].toNumber()).toEqual(99)
+    const [name, age] = await TestContract.getInstructor()
+    expect(name).toEqual('agustin')
+    expect(age.toNumber()).toEqual(99)
   })
 
   it('did receive a filter message', async () => {
