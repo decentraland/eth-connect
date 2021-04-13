@@ -10,13 +10,9 @@ import { w3cwebsocket } from 'websocket'
 
 export function testAllProviders(doTest: (x: RequestManager) => void) {
   describe('ganache(injected):', function () {
-    const rm = new RequestManager({})
-    let provider: any
-
-    before('hook provider', () => {
-      const nodeConnectionFactory = new NodeConnectionFactory()
-      rm.setProvider(provider = nodeConnectionFactory.createProvider())
-    })
+    const nodeConnectionFactory = new NodeConnectionFactory()
+    const provider = nodeConnectionFactory.createProvider()
+    const rm = new RequestManager(provider)
 
     it('should return no instantiated contracts', async () => {
       try {
@@ -37,18 +33,14 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
     doTest(rm)
 
-    after((done) => {
+    it('closes the provider', (done) => {
       provider.close(done)
     })
   })
 
   describe('ganache(http):', function () {
-    let provider: any
-
-    before('hook provider', () => {
-      const nodeConnectionFactory = new NodeConnectionFactory()
-      rm.setProvider(provider = nodeConnectionFactory.createServer())
-    })
+    const nodeConnectionFactory = new NodeConnectionFactory()
+    const provider = nodeConnectionFactory.createServer()
 
     it('should start the server', (done) => {
       provider.listen(7654, function (err) {
@@ -68,18 +60,14 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
     doTest(rm)
 
-    after((done) => {
+    it('closes the provider', (done) => {
       provider.close(done)
     })
   })
 
   describe('geth(ws):', function () {
-    let provider: WebSocketProvider<any>
-    const rm = new RequestManager({})
-
-    before('hook provider', () => {
-      rm.setProvider(provider = new WebSocketProvider('ws://127.0.0.1:8546', { WebSocketConstructor: w3cwebsocket }))
-    })
+    const provider = new WebSocketProvider('ws://127.0.0.1:8546', { WebSocketConstructor: w3cwebsocket })
+    const rm = new RequestManager(provider)
 
     doTest(rm)
 

@@ -1,13 +1,14 @@
 import * as expect from 'expect'
 import * as coder from '../src/solidity/coder'
-import {parseParamType} from '../src/utils/typeParser'
+import { parseParamType, Tuple } from '../src/abi/coder'
 import { BigNumber as bn } from '../dist/eth-connect'
+import { hexToBytes } from '../src'
 
 describe('lib/solidity/coder', function () {
   describe('decodeParam', function () {
     let test = function (t) {
       it('should turn ' + t.value + ' to ' + t.type + '=' + t.expected, function () {
-        expect(coder.coder.decodeParam(parseParamType(t.type, false), t.value)).toEqual(t.expected)
+        expect(coder.coder.decodeParam(parseParamType(t.type), t.value)).toEqual(t.expected)
       })
     }
     test({
@@ -75,9 +76,9 @@ describe('lib/solidity/coder', function () {
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000002' /* 20 */ +
-        '0000000000000000000000000000000000000000000000000000000000000080' +
-        '00000000000000000000000000000000000000000000000000000000000000e0' +
-        '0000000000000000000000000000000000000000000000000000000000000002' /* 80 */ +
+        '0000000000000000000000000000000000000000000000000000000000000040' +
+        '00000000000000000000000000000000000000000000000000000000000000a0' +
+        '0000000000000000000000000000000000000000000000000000000000000002' /* 40 */ +
         '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c1' /* a0 */ +
         '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c2' +
         '0000000000000000000000000000000000000000000000000000000000000002' /* e0 */ +
@@ -141,19 +142,19 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'int8',
-      expected: new bn(16),
+      expected: 16,
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
       type: 'int8[2]',
-      expected: [new bn(16), new bn(2)],
+      expected: [16, 2],
       value:
         '0000000000000000000000000000000000000000000000000000000000000010' +
         '0000000000000000000000000000000000000000000000000000000000000002'
     })
     test({
       type: 'int32',
-      expected: new bn(16),
+      expected: 16,
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
@@ -201,7 +202,10 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'int[3][]',
-      expected: [[new bn(1), new bn(2), new bn(3)], [new bn(4), new bn(5), new bn(6)]],
+      expected: [
+        [new bn(1), new bn(2), new bn(3)],
+        [new bn(4), new bn(5), new bn(6)]
+      ],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -245,12 +249,12 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'uint8',
-      expected: new bn(16),
+      expected: 16,
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
       type: 'uint32',
-      expected: new bn(16),
+      expected: 16,
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
@@ -298,7 +302,10 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'uint[3][]',
-      expected: [[new bn(1), new bn(2), new bn(3)], [new bn(4), new bn(5), new bn(6)]],
+      expected: [
+        [new bn(1), new bn(2), new bn(3)],
+        [new bn(4), new bn(5), new bn(6)]
+      ],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -311,7 +318,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'bytes',
-      expected: '0x6761766f66796f726b',
+      expected: hexToBytes('0x6761766f66796f726b'),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000009' +
@@ -319,7 +326,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'bytes',
-      expected: '0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b',
+      expected: hexToBytes('0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000020' +
@@ -327,10 +334,11 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'bytes',
-      expected:
+      expected: hexToBytes(
         '0x131a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
-        '231a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
-        '331a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b',
+          '231a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
+          '331a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
+      ),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000060' +
@@ -340,9 +348,10 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'bytes',
-      expected:
+      expected: hexToBytes(
         '0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
-        '731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b',
+          '731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
+      ),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000040' +
@@ -352,8 +361,8 @@ describe('lib/solidity/coder', function () {
     test({
       type: 'bytes[2]',
       expected: [
-        '0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134a',
-        '0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
+        hexToBytes('0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134a'),
+        hexToBytes('0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b')
       ],
       value:
         '0000000000000000000000000000000000000000000000000000000000000040' +
@@ -366,8 +375,8 @@ describe('lib/solidity/coder', function () {
     test({
       type: 'bytes[2]',
       expected: [
-        '0x00000c8c18f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff',
-        '0x21f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff'
+        hexToBytes('0x00000c8c18f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff'),
+        hexToBytes('0x21f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff')
       ],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
@@ -382,11 +391,13 @@ describe('lib/solidity/coder', function () {
     test({
       type: 'bytes[][2]',
       expected: [
-        ['0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134a'],
+        [hexToBytes('0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134a')],
         [
-          '0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
-            '731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134c',
-          '0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134d'
+          hexToBytes(
+            '0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
+              '731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134c'
+          ),
+          hexToBytes('0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134d')
         ]
       ],
       value:
@@ -409,12 +420,12 @@ describe('lib/solidity/coder', function () {
       type: 'bytes[][2]',
       expected: [
         [
-          '0x00000c8c18f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff',
-          '0x21f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff'
+          hexToBytes('0x00000c8c18f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff'),
+          hexToBytes('0x21f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff')
         ],
         [
-          '0x00000c8c18f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff',
-          '0x21f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff'
+          hexToBytes('0x00000c8c18f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff'),
+          hexToBytes('0x21f9252830fb3c56471c51335a8262f16a6d70e276417a7c7d897f617fff')
         ]
       ],
       value:
@@ -441,12 +452,12 @@ describe('lib/solidity/coder', function () {
 
     test({
       type: 'bytes1',
-      expected: '0xcf',
+      expected: hexToBytes('0xcf'),
       value: 'cf00000000000000000000000000000000000000000000000000000000000000'
     })
     test({
       type: 'bytes1[4]',
-      expected: ['0xcf', '0x68', '0x4d', '0xfb'],
+      expected: [hexToBytes('0xcf'), hexToBytes('0x68'), hexToBytes('0x4d'), hexToBytes('0xfb')],
       value:
         'cf00000000000000000000000000000000000000000000000000000000000000' +
         '6800000000000000000000000000000000000000000000000000000000000000' +
@@ -455,7 +466,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'bytes32',
-      expected: '0x6761766f66796f726b0000000000000000000000000000000000000000000000',
+      expected: hexToBytes('0x6761766f66796f726b0000000000000000000000000000000000000000000000'),
       value: '6761766f66796f726b0000000000000000000000000000000000000000000000'
     })
 
@@ -493,7 +504,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'bytes',
-      expected: '0xc3a40000c3a4',
+      expected: hexToBytes('0xc3a40000c3a4'),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000006' +
@@ -501,43 +512,8 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'bytes32',
-      expected: '0xc3a40000c3a40000000000000000000000000000000000000000000000000000',
+      expected: hexToBytes('0xc3a40000c3a40000000000000000000000000000000000000000000000000000'),
       value: 'c3a40000c3a40000000000000000000000000000000000000000000000000000'
-    })
-    test({
-      type: 'real',
-      expected: new bn(1),
-      value: '0000000000000000000000000000000100000000000000000000000000000000'
-    })
-    test({
-      type: 'real',
-      expected: new bn(2.125),
-      value: '0000000000000000000000000000000220000000000000000000000000000000'
-    })
-    test({
-      type: 'real',
-      expected: new bn(8.5),
-      value: '0000000000000000000000000000000880000000000000000000000000000000'
-    })
-    test({
-      type: 'real',
-      expected: new bn(-1),
-      value: 'ffffffffffffffffffffffffffffffff00000000000000000000000000000000'
-    })
-    test({
-      type: 'ureal',
-      expected: new bn(1),
-      value: '0000000000000000000000000000000100000000000000000000000000000000'
-    })
-    test({
-      type: 'ureal',
-      expected: new bn(2.125),
-      value: '0000000000000000000000000000000220000000000000000000000000000000'
-    })
-    test({
-      type: 'ureal',
-      expected: new bn(8.5),
-      value: '0000000000000000000000000000000880000000000000000000000000000000'
     })
     test({
       type: 'address',
@@ -555,12 +531,13 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'bytes',
-      expected:
+      expected: hexToBytes(
         '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
-        'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
-        'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
-        'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
-        'fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1',
+          'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
+          'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
+          'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
+          'fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1'
+      ),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '000000000000000000000000000000000000000000000000000000000000009f' +
@@ -573,26 +550,26 @@ describe('lib/solidity/coder', function () {
 
     test({
       type: 'tuple(address)',
-      expected: ['0xbBF289D846208c16EDc8474705C748aff07732dB'],
+      expected: new Tuple('0xbbf289d846208c16edc8474705c748aff07732db'),
       value: '000000000000000000000000bbf289d846208c16edc8474705c748aff07732db'
     })
     test({
       type: 'tuple(address,address)',
-      expected: ['0xbBF289D846208c16EDc8474705C748aff07732dB', '0xbBF289D846208c16EDc8474705C748aff07732dB'],
+      expected: new Tuple('0xbbf289d846208c16edc8474705c748aff07732db', '0xbbf289d846208c16edc8474705c748aff07732db'),
       value:
         '000000000000000000000000bbf289d846208c16edc8474705c748aff07732db' +
         '000000000000000000000000bbf289d846208c16edc8474705c748aff07732db'
     })
     test({
       type: 'tuple(uint256,uint256)',
-      expected: [new bn(5), new bn(5)],
+      expected: new Tuple(new bn(5), new bn(5)),
       value:
         '0000000000000000000000000000000000000000000000000000000000000005' +
         '0000000000000000000000000000000000000000000000000000000000000005'
     })
     test({
       type: 'tuple(string,string)',
-      expected: ['hello', 'world'],
+      expected: new Tuple('hello', 'world'),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000040' +
@@ -604,7 +581,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(bytes,bytes)',
-      expected: ['0x01fe517acd15ff', '0xabcdef12345678'],
+      expected: new Tuple(hexToBytes('0x01fe517acd15ff'), hexToBytes('0xabcdef12345678')),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000040' +
@@ -616,14 +593,14 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(bool,bool)',
-      expected: [false, true],
+      expected: new Tuple(false, true),
       value:
         '0000000000000000000000000000000000000000000000000000000000000000' +
         '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
       type: 'tuple(uint256,string,bytes)',
-      expected: [new bn(4), 'what what', '0xabcdef12345678'],
+      expected: new Tuple(new bn(4), 'what what', hexToBytes('0xabcdef12345678')),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000004' +
@@ -636,7 +613,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(uint128,string,bytes)',
-      expected: [new bn(666), 'encode your kids', '0x656e636f646520796f75722077696665'],
+      expected: new Tuple(new bn(666), 'encode your kids', hexToBytes('0x656e636f646520796f75722077696665')),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '000000000000000000000000000000000000000000000000000000000000029a' +
@@ -649,7 +626,12 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(string,bytes32,uint256,bool)',
-      expected: ['foo bar', '0xaabbccddeeff0000000000000000000000000000000000000000000000000000', new bn(321), true],
+      expected: new Tuple(
+        'foo bar',
+        hexToBytes('0xaabbccddeeff0000000000000000000000000000000000000000000000000000'),
+        new bn(321),
+        true
+      ),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000080' +
@@ -661,15 +643,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(uint8,uint8,uint8,uint8,string,address,bool)',
-      expected: [
-        new bn(1),
-        new bn(2),
-        new bn(3),
-        new bn(4),
-        'five',
-        '0x0000000000000000000000000000000000000006',
-        true
-      ],
+      expected: new Tuple(1, 2, 3, 4, 'five', '0x0000000000000000000000000000000000000006', true),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -722,7 +696,12 @@ describe('lib/solidity/coder', function () {
   describe('decodeParams', function () {
     let test = function (t) {
       it('should turn ' + t.values + ' to ' + t.expected, function () {
-        expect(coder.coder.decodeParams(t.types.map(type => parseParamType(type, false)), t.values)).toEqual(t.expected)
+        expect(
+          coder.coder.decodeParams(
+            t.types.map((type) => parseParamType(type)),
+            t.values
+          )
+        ).toEqual(t.expected)
       })
     }
 
@@ -740,14 +719,17 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['address', 'address'],
-      expected: ['0x6224fe0bea79701d338cf65ebc0da0caa566c544', '0xBF79cE2fbd819e5aBC2327563D02a200255B7Cb3'],
+      expected: ['0x6224fe0bea79701d338cf65ebc0da0caa566c544', '0xbf79ce2fbd819e5abc2327563d02a200255b7cb3'],
       values:
         '0000000000000000000000006224fe0bea79701d338cf65ebc0da0caa566c544' +
         '000000000000000000000000BF79cE2fbd819e5aBC2327563D02a200255B7Cb3'
     })
     test({
       types: ['bool[2]', 'bool[3]'],
-      expected: [[true, false], [false, false, true]],
+      expected: [
+        [true, false],
+        [false, false, true]
+      ],
       values:
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000000' +
@@ -757,7 +739,10 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['int[2]', 'int256[3]'],
-      expected: [[new bn(1), new bn(2)], [new bn(3), new bn(4), new bn(5)]],
+      expected: [
+        [new bn(1), new bn(2)],
+        [new bn(3), new bn(4), new bn(5)]
+      ],
       values:
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -772,7 +757,10 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['uint[2]', 'uint256[3]'],
-      expected: [[new bn(1), new bn(2)], [new bn(3), new bn(4), new bn(5)]],
+      expected: [
+        [new bn(1), new bn(2)],
+        [new bn(3), new bn(4), new bn(5)]
+      ],
       values:
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -787,14 +775,14 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['bytes1', 'bytes1'],
-      expected: ['0xaa', '0xbb'],
+      expected: [new Uint8Array([0xaa]), new Uint8Array([0xbb])],
       values:
         'aa00000000000000000000000000000000000000000000000000000000000000' +
         'bb00000000000000000000000000000000000000000000000000000000000000'
     })
     test({
       types: ['bytes1[2]', 'bytes1'],
-      expected: [['0xaa', '0xbb'], '0xcc'],
+      expected: [[new Uint8Array([0xaa]), new Uint8Array([0xbb])], new Uint8Array([0xcc])],
       values:
         'aa00000000000000000000000000000000000000000000000000000000000000' +
         'bb00000000000000000000000000000000000000000000000000000000000000' +
@@ -803,8 +791,8 @@ describe('lib/solidity/coder', function () {
     test({
       types: ['bytes', 'bytes'],
       expected: [
-        '0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b',
-        '0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134c'
+        hexToBytes('0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'),
+        hexToBytes('0x731a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134c')
       ],
       values:
         '0000000000000000000000000000000000000000000000000000000000000040' +
@@ -826,14 +814,14 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['bytes32', 'int'],
-      expected: ['0x6761766f66796f726b0000000000000000000000000000000000000000000000', new bn(5)],
+      expected: [hexToBytes('0x6761766f66796f726b0000000000000000000000000000000000000000000000'), new bn(5)],
       values:
         '6761766f66796f726b0000000000000000000000000000000000000000000000' +
         '0000000000000000000000000000000000000000000000000000000000000005'
     })
     test({
       types: ['int', 'bytes32'],
-      expected: [new bn(5), '0x6761766f66796f726b0000000000000000000000000000000000000000000000'],
+      expected: [new bn(5), hexToBytes('0x6761766f66796f726b0000000000000000000000000000000000000000000000')],
       values:
         '0000000000000000000000000000000000000000000000000000000000000005' +
         '6761766f66796f726b0000000000000000000000000000000000000000000000'
@@ -859,11 +847,15 @@ describe('lib/solidity/coder', function () {
       types: ['int', 'bytes', 'int', 'bytes'],
       expected: [
         new bn(5),
-        '0x131a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
-          '231a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b',
+        hexToBytes(
+          '0x131a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
+            '231a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
+        ),
         new bn(3),
-        '0x331a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
-          '431a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
+        hexToBytes(
+          '0x331a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
+            '431a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
+        )
       ],
       values:
         '0000000000000000000000000000000000000000000000000000000000000005' +
@@ -895,7 +887,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['bytes1[2][1]', 'bool'],
-      expected: [[['0xaa', '0xbb']], true],
+      expected: [[[hexToBytes('0xaa'), hexToBytes('0xbb')]], true],
       values:
         'aa00000000000000000000000000000000000000000000000000000000000000' +
         'bb00000000000000000000000000000000000000000000000000000000000000' +
@@ -910,27 +902,11 @@ describe('lib/solidity/coder', function () {
         '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
-      types: ['real[2][1]', 'bool'],
-      expected: [[[new bn(1), new bn(2.125)]], true],
-      values:
-        '0000000000000000000000000000000100000000000000000000000000000000' +
-        '0000000000000000000000000000000220000000000000000000000000000000' +
-        '0000000000000000000000000000000000000000000000000000000000000001'
-    })
-    test({
       types: ['uint[2][1]', 'bool'],
       expected: [[[new bn(1), new bn(2)]], true],
       values:
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000002' +
-        '0000000000000000000000000000000000000000000000000000000000000001'
-    })
-    test({
-      types: ['ureal[2][1]', 'bool'],
-      expected: [[[new bn(1), new bn(2.125)]], true],
-      values:
-        '0000000000000000000000000000000100000000000000000000000000000000' +
-        '0000000000000000000000000000000220000000000000000000000000000000' +
         '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
@@ -957,9 +933,12 @@ describe('lib/solidity/coder', function () {
       types: ['string', 'tuple(uint256,string)', 'bool', 'tuple(bytes32,bytes)'],
       expected: [
         'the string',
-        [new bn(56), 'some string'],
+        new Tuple(new bn(56), 'some string'),
         true,
-        ['0x1234567890123456789012345678901234567890123456789012345678901234', '0x129581']
+        new Tuple(
+          hexToBytes('0x1234567890123456789012345678901234567890123456789012345678901234'),
+          hexToBytes('0x129581')
+        )
       ],
       values:
         '0000000000000000000000000000000000000000000000000000000000000080' +
@@ -1015,9 +994,9 @@ describe('lib/solidity/coder', function () {
       types: ['string', 'tuple(string,string,tuple(string,string))', 'bytes', 'tuple(bytes,tuple(bytes,string))'],
       expected: [
         'hello world',
-        ['what', 'is', ['even', 'happening']],
-        '0x696e',
-        ['0x74686973', ['0x676f64666f7273616b656e', 'test']]
+        new Tuple('what', 'is', new Tuple('even', 'happening')),
+        hexToBytes('0x696e'),
+        new Tuple(hexToBytes('0x74686973'), new Tuple(hexToBytes('0x676f64666f7273616b656e'), 'test'))
       ],
       values:
         '0000000000000000000000000000000000000000000000000000000000000080' +
@@ -1060,30 +1039,30 @@ describe('lib/solidity/coder', function () {
         'bytes',
         'tuple(bool,tuple(bytes32,address),bytes)'
       ],
-      expected: [
+      expected: new Tuple(
         'this',
         true,
-        [
+        new Tuple(
           'is',
-          [
-            [true, 'utter', true],
-            [
+          new Tuple(
+            new Tuple(true, 'utter', true),
+            new Tuple(
               'madness',
-              '0x1234567890123456789012345678901234567890123456789012345678901234',
-              '0x6275742049206c6f7665206974'
-            ]
-          ]
-        ],
-        '0x6265636175736520697420776f726b73',
-        [
+              hexToBytes('0x1234567890123456789012345678901234567890123456789012345678901234'),
+              hexToBytes('0x6275742049206c6f7665206974')
+            )
+          )
+        ),
+        hexToBytes('0x6265636175736520697420776f726b73'),
+        new Tuple(
           true,
-          [
-            '0x1234567890123456789012345678901234567890123456789012345678901234',
+          new Tuple(
+            hexToBytes('0x1234567890123456789012345678901234567890123456789012345678901234'),
             '0x1337133713371337133713371337133713371337'
-          ],
-          '0x6265636175736520697420776f726b736265636175736520697420776f726b73'
-        ]
-      ],
+          ),
+          hexToBytes('0x6265636175736520697420776f726b736265636175736520697420776f726b73')
+        )
+      ),
       values:
         '00000000000000000000000000000000000000000000000000000000000000a0' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -1129,12 +1108,18 @@ describe('lib/solidity/coder', function () {
         'tuple(int256,uint256,tuple(string,int256,address))'
       ],
       expected: [
-        ['this is more reasonable', [true, false]],
-        '0x1b3F5FE0Fd513E6cbdEE459F0b0e19095FE91958',
-        '0x6c6f6c6f6c6f6c6f6c',
-        ['0xabcdef12345678', '0x87654321fedcba', 'bazbar', false, '0xd13b6e9058E58B8677233CEc2315e1D9e77C79C4'],
+        new Tuple('this is more reasonable', new Tuple(true, false)),
+        '0x1b3f5fe0fd513e6cbdee459f0b0e19095fe91958',
+        hexToBytes('0x6c6f6c6f6c6f6c6f6c'),
+        new Tuple(
+          hexToBytes('0xabcdef12345678'),
+          hexToBytes('0x87654321fedcba'),
+          'bazbar',
+          false,
+          '0xd13b6e9058e58b8677233cec2315e1d9e77c79c4'
+        ),
         new bn(-6),
-        [new bn(-7), new bn(5), ['foobar', new bn(-8), '0xB1eeF147028E9f480DbC5ccaA3277D417D1b85F0']]
+        new Tuple(new bn(-7), new bn(5), new Tuple('foobar', new bn(-8), '0xb1eef147028e9f480dbc5ccaa3277d417d1b85f0'))
       ],
       values:
         '00000000000000000000000000000000000000000000000000000000000000c0' +
@@ -1178,24 +1163,24 @@ describe('lib/solidity/coder', function () {
         'tuple(tuple(address,bool),tuple(address,bytes32),tuple(int256,uint256))'
       ],
       expected: [
-        [
-          '0xffffffffffffffffffffffffffffffffabdef123849181759adebfadecaefbae',
+        new Tuple(
+          hexToBytes('0xffffffffffffffffffffffffffffffffabdef123849181759adebfadecaefbae'),
           true,
-          '0xffffffffffffffffffffffffffffffffabdef123849181759adebfadecaefbae'
-        ],
+          hexToBytes('0xffffffffffffffffffffffffffffffffabdef123849181759adebfadecaefbae')
+        ),
         '0x1234567890123456789012345678901234567890',
-        [
-          '0x0ab3e6dfa1594c15af0000000000000000000000000000000000000000000000',
-          '0xffffffffffffffffffffffffffffffffabdef123849181759adebfadecaefbae',
+        new Tuple(
+          hexToBytes('0x0ab3e6dfa1594c15af0000000000000000000000000000000000000000000000'),
+          hexToBytes('0xffffffffffffffffffffffffffffffffabdef123849181759adebfadecaefbae'),
           'string'
-        ],
+        ),
         [
-          ['0x1234567890123456789012345678901234567890', true],
-          [
+          new Tuple('0x1234567890123456789012345678901234567890', true),
+          new Tuple(
             '0x1234567890123456789012345678901234567890',
-            '0xffffffffffffffffffffffffffffffffabdef123849181759adebfadecaefbae'
-          ],
-          [new bn(-6124612), new bn(89000)]
+            hexToBytes('0xffffffffffffffffffffffffffffffffabdef123849181759adebfadecaefbae')
+          ),
+          new Tuple(new bn(-6124612), new bn(89000))
         ]
       ],
       values:
@@ -1218,4 +1203,3 @@ describe('lib/solidity/coder', function () {
     })
   })
 })
-

@@ -1,307 +1,287 @@
-
-import * as errors from './errors';
+import { BigNumber } from '../utils/BigNumber'
+import { bytesToHex, isBigNumber } from '../utils/utils'
+import * as errors from './errors'
 
 ///////////////////////////////
 // Exported Types
 
-export type Arrayish = string | ArrayLike<number>;
+export type Arrayish = string | ArrayLike<number>
 
 export interface Hexable {
-  toHexString(): string;
+  toHexString(): string
 }
 
 export interface Signature {
-  r: string;
-  s: string;
+  r: string
+  s: string
 
   /* At least one of the following MUST be specified; the other will be derived */
-  recoveryParam?: number;
-  v?: number;
+  recoveryParam?: number
+  v?: number
 }
 
 ///////////////////////////////
 
 export function isHexable(value: any): value is Hexable {
-  return !!value.toHexString;
+  return !!value.toHexString
 }
 
 function addSlice(array: Uint8Array): Uint8Array {
-  if (array.slice) {
-    return array;
+  if ('slice' in array && array.slice) {
+    return array
   }
 
-  array.slice = function() {
-    var args: any = Array.prototype.slice.call(arguments);
-    return new Uint8Array(Array.prototype.slice.apply(array, args));
-  };
+  array.slice = function () {
+    var args: any = Array.prototype.slice.call(arguments)
+    return new Uint8Array(Array.prototype.slice.apply(array, args))
+  }
 
-  return array;
+  return array
 }
 
 export function isArrayish(value: any): value is Arrayish {
   if (!value || parseInt(String(value.length)) != value.length || typeof value === 'string') {
-    return false;
+    return false
   }
 
   for (var i = 0; i < value.length; i++) {
-    var v = value[i];
+    var v = value[i]
     if (v < 0 || v >= 256 || parseInt(String(v)) != v) {
-      return false;
+      return false
     }
   }
 
-  return true;
+  return true
 }
 
 export function arrayify(value: Arrayish | Hexable): Uint8Array {
   if (value == null) {
-    errors.throwError('cannot convert null value to array', errors.INVALID_ARGUMENT, { arg: 'value', value: value });
+    errors.throwError('cannot convert null value to array', errors.INVALID_ARGUMENT, { arg: 'value', value: value })
+  }
+
+  if (value instanceof Uint8Array) {
+    return addSlice(new Uint8Array(value))
   }
 
   if (isHexable(value)) {
-    value = value.toHexString();
+    value = value.toHexString()
   }
 
   if (typeof value === 'string') {
-    let match = value.match(/^(0x)?[0-9a-fA-F]*$/);
+    let match = value.match(/^(0x)?[0-9a-fA-F]*$/)
 
     if (!match) {
-      return errors.throwError('invalid hexidecimal string', errors.INVALID_ARGUMENT, { arg: 'value', value: value });
+      return errors.throwError('invalid hexidecimal string', errors.INVALID_ARGUMENT, { arg: 'value', value: value })
     }
 
     if (match[1] !== '0x') {
       return errors.throwError('hex string must have 0x prefix', errors.INVALID_ARGUMENT, {
         arg: 'value',
-        value: value,
-      });
+        value: value
+      })
     }
 
-    value = value.substring(2);
+    value = value.substring(2)
     if (value.length % 2) {
-      value = '0' + value;
+      value = '0' + value
     }
 
-    var result: any = [];
+    var result: any = []
     for (var i = 0; i < value.length; i += 2) {
-      result.push(parseInt(value.substr(i, 2), 16));
+      result.push(parseInt(value.substr(i, 2), 16))
     }
 
-    return addSlice(new Uint8Array(result));
+    return addSlice(new Uint8Array(result))
   }
 
   if (isArrayish(value)) {
-    return addSlice(new Uint8Array(value));
+    return addSlice(new Uint8Array(value))
   }
 
-  return errors.throwError('invalid arrayify value', undefined, { arg: 'value', value: value, type: typeof value });
+  return errors.throwError('invalid arrayify value', undefined, { arg: 'value', value: value, type: typeof value })
 }
 
 export function concat(objects: Array<Arrayish>): Uint8Array {
-  var arrays: any[] = [];
-  var length = 0;
+  var arrays: any[] = []
+  var length = 0
   for (var i = 0; i < objects.length; i++) {
-    var object = arrayify(objects[i]);
-    arrays.push(object);
-    length += object.length;
+    var object = arrayify(objects[i])
+    arrays.push(object)
+    length += object.length
   }
 
-  var result = new Uint8Array(length);
-  var offset = 0;
+  var result = new Uint8Array(length)
+  var offset = 0
   for (var i = 0; i < arrays.length; i++) {
-    result.set(arrays[i], offset);
-    offset += arrays[i].length;
+    result.set(arrays[i], offset)
+    offset += arrays[i].length
   }
 
-  return addSlice(result);
+  return addSlice(result)
 }
 
 export function stripZeros(value: Arrayish): Uint8Array {
-  let result: Uint8Array = arrayify(value);
+  let result: Uint8Array = arrayify(value)
 
   if (result.length === 0) {
-    return result;
+    return result
   }
 
   // Find the first non-zero entry
-  var start = 0;
+  var start = 0
   while (result[start] === 0) {
-    start++;
+    start++
   }
 
   // If we started with zeros, strip them
   if (start) {
-    result = result.slice(start);
+    result = result.slice(start)
   }
 
-  return result;
+  return result
 }
 
 export function padZeros(value: Arrayish, length: number): Uint8Array {
-  value = arrayify(value);
+  value = arrayify(value)
 
   if (length < value.length) {
-    throw new Error('cannot pad');
+    throw new Error('cannot pad')
   }
 
-  var result = new Uint8Array(length);
-  result.set(value, length - value.length);
-  return addSlice(result);
+  var result = new Uint8Array(length)
+  result.set(value, length - value.length)
+  return addSlice(result)
 }
 
 export function isHexString(value: any, length?: number): boolean {
   if (typeof value !== 'string' || !value.match(/^0x[0-9A-Fa-f]*$/)) {
-    return false;
+    return false
   }
   if (length && value.length !== 2 + 2 * length) {
-    return false;
+    return false
   }
-  return true;
+  return true
 }
 
-const HexCharacters: string = '0123456789abcdef';
+const HexCharacters: string = '0123456789abcdef'
 
-export function hexlify(value: Arrayish | Hexable | number): string {
+export function hexlify(value: Arrayish | number | Hexable | BigNumber | Uint8Array): string {
   if (isHexable(value)) {
-    return value.toHexString();
+    return value.toHexString()
+  }
+
+  if (isBigNumber(value)) {
+    return value.toString(16)
+  }
+
+  if (value instanceof Uint8Array) {
+    return bytesToHex(value)
   }
 
   if (typeof value === 'number') {
     if (value < 0) {
-      errors.throwError('cannot hexlify negative value', errors.INVALID_ARGUMENT, { arg: 'value', value: value });
+      errors.throwError('cannot hexlify negative value', errors.INVALID_ARGUMENT, { arg: 'value', value: value })
     }
 
-    var hex = '';
+    var hex = ''
     while (value) {
-      hex = HexCharacters[value & 0x0f] + hex;
-      value = Math.floor(value / 16);
+      hex = HexCharacters[value & 0x0f] + hex
+      value = Math.floor(value / 16)
     }
 
     if (hex.length) {
       if (hex.length % 2) {
-        hex = '0' + hex;
+        hex = '0' + hex
       }
-      return '0x' + hex;
+      return '0x' + hex
     }
 
-    return '0x00';
+    return '0x00'
   }
 
   if (typeof value === 'string') {
-    let match = value.match(/^(0x)?[0-9a-fA-F]*$/);
+    let match = value.match(/^(0x)?[0-9a-fA-F]*$/)
 
     if (!match) {
-      return errors.throwError('invalid hexidecimal string', errors.INVALID_ARGUMENT, { arg: 'value', value: value });
+      return errors.throwError('invalid hexidecimal string', errors.INVALID_ARGUMENT, { arg: 'value', value: value })
     }
 
     if (match[1] !== '0x') {
       return errors.throwError('hex string must have 0x prefix', errors.INVALID_ARGUMENT, {
         arg: 'value',
-        value: value,
-      });
+        value: value
+      })
     }
 
     if (value.length % 2) {
-      value = '0x0' + value.substring(2);
+      value = '0x0' + value.substring(2)
     }
-    return value;
+    return value
   }
 
   if (isArrayish(value)) {
-    var result: any[] = [];
+    var result: any[] = []
     for (var i = 0; i < value.length; i++) {
-      var v = value[i];
-      result.push(HexCharacters[(v & 0xf0) >> 4] + HexCharacters[v & 0x0f]);
+      var v = value[i]
+      result.push(HexCharacters[(v & 0xf0) >> 4] + HexCharacters[v & 0x0f])
     }
-    return '0x' + result.join('');
+    return '0x' + result.join('')
   }
 
-  return errors.throwError('invalid hexlify value', undefined, { arg: 'value', value: value });
-}
-
-export function hexDataLength(data: string) {
-  if (!isHexString(data) || data.length % 2 !== 0) {
-    return null;
-  }
-  return (data.length - 2) / 2;
-}
-
-export function hexDataSlice(data: string, offset: number, endOffset?: number): string {
-  if (!isHexString(data)) {
-    errors.throwError('invalid hex data', errors.INVALID_ARGUMENT, { arg: 'value', value: data });
-  }
-  if (data.length % 2 !== 0) {
-    errors.throwError('hex data length must be even', errors.INVALID_ARGUMENT, { arg: 'value', value: data });
-  }
-  offset = 2 + 2 * offset;
-
-  if (endOffset != null) {
-    return '0x' + data.substring(offset, 2 + 2 * endOffset);
-  }
-
-  return '0x' + data.substring(offset);
-}
-
-export function hexStripZeros(value: string): string {
-  if (!isHexString(value)) {
-    errors.throwError('invalid hex string', errors.INVALID_ARGUMENT, { arg: 'value', value: value });
-  }
-  while (value.length > 3 && value.substring(0, 3) === '0x0') {
-    value = '0x' + value.substring(3);
-  }
-  return value;
+  return errors.throwError('invalid hexlify value', undefined, { arg: 'value', value: value })
 }
 
 export function hexZeroPad(value: string, length: number): string {
   if (!isHexString(value)) {
-    errors.throwError('invalid hex string', errors.INVALID_ARGUMENT, { arg: 'value', value: value });
+    errors.throwError('invalid hex string', errors.INVALID_ARGUMENT, { arg: 'value', value: value })
   }
 
   while (value.length < 2 * length + 2) {
-    value = '0x0' + value.substring(2);
+    value = '0x0' + value.substring(2)
   }
-  return value;
+  return value
 }
 
 function isSignature(value: any): value is Signature {
-  return value && value.r != null && value.s != null;
+  return value && value.r != null && value.s != null
 }
 
 export function splitSignature(signature: Arrayish | Signature): Signature {
-  let v: any = 0;
+  let v: any = 0
   let r = '0x',
-    s = '0x';
+    s = '0x'
 
   if (isSignature(signature)) {
     if (signature.v == null && signature.recoveryParam == null) {
       errors.throwError('at least on of recoveryParam or v must be specified', errors.INVALID_ARGUMENT, {
         argument: 'signature',
-        value: signature,
-      });
+        value: signature
+      })
     }
-    r = hexZeroPad(signature.r, 32);
-    s = hexZeroPad(signature.s, 32);
+    r = hexZeroPad(signature.r, 32)
+    s = hexZeroPad(signature.s, 32)
 
-    v = signature.v;
+    v = signature.v
     if (typeof v === 'string') {
-      v = parseInt(v, 16);
+      v = parseInt(v, 16)
     }
 
-    let recoveryParam: any = signature.recoveryParam;
+    let recoveryParam: any = signature.recoveryParam
     if (recoveryParam == null && signature.v != null) {
-      recoveryParam = 1 - (v % 2);
+      recoveryParam = 1 - (v % 2)
     }
-    v = 27 + recoveryParam;
+    v = 27 + recoveryParam
   } else {
-    let bytes: Uint8Array = arrayify(signature);
+    let bytes: Uint8Array = arrayify(signature)
     if (bytes.length !== 65) {
-      throw new Error('invalid signature');
+      throw new Error('invalid signature')
     }
-    r = hexlify(bytes.slice(0, 32));
-    s = hexlify(bytes.slice(32, 64));
+    r = hexlify(bytes.slice(0, 32))
+    s = hexlify(bytes.slice(32, 64))
 
-    v = bytes[64];
+    v = bytes[64]
     if (v !== 27 && v !== 28) {
-      v = 27 + (v % 2);
+      v = 27 + (v % 2)
     }
   }
 
@@ -309,12 +289,12 @@ export function splitSignature(signature: Arrayish | Signature): Signature {
     r: r,
     s: s,
     recoveryParam: v - 27,
-    v: v,
-  };
+    v: v
+  }
 }
 
 export function joinSignature(signature: Signature): string {
-  signature = splitSignature(signature);
+  signature = splitSignature(signature)
 
-  return hexlify(concat([signature.r, signature.s, signature.recoveryParam ? '0x1c' : '0x1b']));
+  return hexlify(concat([signature.r, signature.s, signature.recoveryParam ? '0x1c' : '0x1b']))
 }

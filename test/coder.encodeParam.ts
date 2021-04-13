@@ -1,12 +1,13 @@
 import * as expect from 'expect'
 import * as coder from '../src/solidity/coder'
-import { parseParamType } from '../src/utils/typeParser'
+import { parseParamType } from '../src/abi/coder'
+import { hexToBytes } from '../src'
 
 describe('lib/solidity/coder', function () {
   describe('encodeParam', function () {
     let test = function (t) {
       it('should turn ' + t.type + ' ' + t.value + ' to ' + t.expected, function () {
-        expect(coder.coder.encodeParam(parseParamType(t.type, true), t.value)).toEqual(t.expected)
+        expect(coder.coder.encodeParam(parseParamType(t.type), t.value)).toEqual(t.expected)
       })
     }
 
@@ -191,15 +192,6 @@ describe('lib/solidity/coder', function () {
       expected: 'c3a40000c3a40000000000000000000000000000000000000000000000000000'
     })
     test({
-      type: 'bytes64',
-      value:
-        '0xc3a40000c3a40000000000000000000000000000000000000000000000000000' +
-        'c3a40000c3a40000000000000000000000000000000000000000000000000000',
-      expected:
-        'c3a40000c3a40000000000000000000000000000000000000000000000000000' +
-        'c3a40000c3a40000000000000000000000000000000000000000000000000000'
-    })
-    test({
       type: 'string',
       value: 'Ã¤Ã¤',
       expected:
@@ -266,13 +258,6 @@ describe('lib/solidity/coder', function () {
         'fb00000000000000000000000000000000000000000000000000000000000000'
     })
 
-    test({ type: 'real', value: 1, expected: '0000000000000000000000000000000100000000000000000000000000000000' })
-    test({ type: 'real', value: 2.125, expected: '0000000000000000000000000000000220000000000000000000000000000000' })
-    test({ type: 'real', value: 8.5, expected: '0000000000000000000000000000000880000000000000000000000000000000' })
-    test({ type: 'real', value: -1, expected: 'ffffffffffffffffffffffffffffffff00000000000000000000000000000000' })
-    test({ type: 'ureal', value: 1, expected: '0000000000000000000000000000000100000000000000000000000000000000' })
-    test({ type: 'ureal', value: 2.125, expected: '0000000000000000000000000000000220000000000000000000000000000000' })
-    test({ type: 'ureal', value: 8.5, expected: '0000000000000000000000000000000880000000000000000000000000000000' })
     test({
       type: 'bytes',
       value:
@@ -470,14 +455,18 @@ describe('lib/solidity/coder', function () {
       type: 'tuple(bool,tuple(bytes32,int256,tuple(bytes24,bytes8)),tuple(bool,bool,bool),string)',
       value: [
         true,
-        ['0xabdef', -18291849, ['0xabdef18710a18a18abdef18710a18a18abdef18710a18a18', '0xabdef18710a18a18']],
+        [
+          hexToBytes('0xdeadbeef01'),
+          -18291849,
+          ['0xabdef18710a18a18abdef18710a18a18abdef18710a18a18', '0xabdef18710a18a18']
+        ],
         [false, true, false],
         'testing testing'
       ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
-        'abdef00000000000000000000000000000000000000000000000000000000000' +
+        'deadbeef01000000000000000000000000000000000000000000000000000000' +
         'fffffffffffffffffffffffffffffffffffffffffffffffffffffffffee8e377' +
         'abdef18710a18a18abdef18710a18a18abdef18710a18a180000000000000000' +
         'abdef18710a18a18000000000000000000000000000000000000000000000000' +
@@ -495,7 +484,12 @@ describe('lib/solidity/coder', function () {
   describe('encodeParams', function () {
     let test = function (t) {
       it('should turn ' + t.values + ' to ' + t.expected, function () {
-        expect(coder.coder.encodeParams(t.types.map(type => parseParamType(type, true)), t.values)).toEqual(t.expected)
+        expect(
+          coder.coder.encodeParams(
+            t.types.map((type) => parseParamType(type)),
+            t.values
+          )
+        ).toEqual(t.expected)
       })
     }
 
@@ -1072,15 +1066,22 @@ describe('lib/solidity/coder', function () {
     }
   ]
 
-
   it('encodeParams', function () {
     tests.forEach(function (test) {
       expect(
         coder.coder.encodeParams(
-          test.types.map(type => parseParamType(type, true)),
+          test.types.map((type) => parseParamType(type)),
           test.params
         )
       ).toEqual(test.result)
     })
+  })
+
+  it('sanity hexToBytes', () => {
+    expect(hexToBytes('0xf')).toEqual(new Uint8Array([0xf]))
+    expect(hexToBytes('0x0f')).toEqual(new Uint8Array([0xf]))
+    expect(hexToBytes('0x81')).toEqual(new Uint8Array([0x81]))
+    expect(hexToBytes('0x0f1')).toEqual(new Uint8Array([0xf, 0x1]))
+    expect(hexToBytes('0xf1')).toEqual(new Uint8Array([0xf1]))
   })
 })

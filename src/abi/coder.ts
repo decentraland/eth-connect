@@ -2,33 +2,35 @@
 
 // See: https://github.com/ethereum/wiki/wiki/Ethereum-Contract-ABI
 
-import { NegativeOne, Zero, One, MaxUint256 } from './constants'
-
 import * as errors from './errors'
 
 import { getAddress } from './address'
 import { BigNumber } from '../utils/BigNumber'
-import { arrayify, concat, hexlify, padZeros } from './bytes'
+import { arrayify, concat, hexlify } from './bytes'
 import { toUtf8Bytes, toUtf8String } from './utf8'
-import { deepCopy, defineReadOnly, shallowCopy } from './properties'
+import { defineReadOnly } from './properties'
 
 ///////////////////////////////
 // Imported Types
 
 import { Arrayish } from './bytes'
-import { toBigNumber } from 'utils/utils'
+import {
+  bytesToHex,
+  fromTwosComplement,
+  hexToBytes,
+  isAddress,
+  padLeft,
+  toBigNumber,
+  toTwosComplement
+} from '../utils/utils'
+import { inputAddressFormatter } from '../utils/formatters'
+import { AbiInput, AbiOutput } from '../Schema'
+import { MaxUint256, NegativeOne, One, Zero } from './constants'
 
 ///////////////////////////////
 // Exported Types
 
 export type CoerceFunc = (type: string, value: any) => any
-
-export type ParamType = {
-  name?: string
-  type: string
-  indexed?: boolean
-  components?: Array<any>
-}
 
 // @TODO: should this just be a combined Fragment?
 
@@ -38,7 +40,7 @@ export type EventFragment = {
 
   anonymous: boolean
 
-  inputs: Array<ParamType>
+  inputs: Array<AbiInput>
 }
 
 export type FunctionFragment = {
@@ -47,8 +49,8 @@ export type FunctionFragment = {
 
   constant: boolean
 
-  inputs: Array<ParamType>
-  outputs: Array<ParamType>
+  inputs: Array<AbiInput>
+  outputs: Array<AbiOutput>
 
   payable: boolean
   stateMutability: string | null
@@ -104,7 +106,7 @@ type ParseNode = {
   components?: Array<any>
 }
 
-function parseParam(param: string, allowIndexed?: boolean): ParamType {
+function parseParam(param: string, allowIndexed?: boolean): AbiInput {
   function throwError(i: number) {
     throw new Error('unexpected character "' + param[i] + '" at position ' + i + ' in "' + param + '"')
   }
@@ -237,7 +239,7 @@ function parseParam(param: string, allowIndexed?: boolean): ParamType {
 
   parent.type = verifyType(parent.type!)
 
-  return <ParamType>parent
+  return parent as AbiInput
 }
 
 // @TODO: Better return type
@@ -348,8 +350,8 @@ function parseSignatureFunction(fragment: string): FunctionFragment {
 
   // We have outputs
   if (comps.length > 1) {
-    var right: any = comps[1].match(regexParen)
-    if (right[1].trim() != '' || right[3].trim() != '') {
+    var right = comps[1].match(regexParen)
+    if (!right || right[1].trim() != '' || right[3].trim() != '') {
       throw new Error('unexpected tokens')
     }
 
@@ -365,19 +367,19 @@ function parseSignatureFunction(fragment: string): FunctionFragment {
       throw new Error('constructor may not have outputs')
     }
 
-    delete abi.name
-    delete abi.outputs
+    // delete abi.name
+    // delete abi.outputs
   }
 
   return abi
 }
 
-export function parseParamType(type: string): ParamType {
+export function parseParamType(type: string): AbiInput {
   return parseParam(type, true)
 }
 
 // @TODO: Allow a second boolean to expose names
-export function formatParamType(paramType: ParamType): string {
+export function formatParamType(paramType: Readonly<AbiInput>): string {
   return getParamCoder(defaultCoerceFunc, paramType).type
 }
 
@@ -408,7 +410,7 @@ export function parseSignature(fragment: string): EventFragment | FunctionFragme
 ///////////////////////////////////
 // Coders
 
-type DecodedResult = { consumed: number; value: any }
+type DecodedResult<T = any> = { consumed: number; value: T }
 abstract class Coder {
   readonly coerceFunc: CoerceFunc
   readonly name: string
@@ -447,7 +449,7 @@ class CoderNull extends Coder {
     super(coerceFunc, 'null', '', localName, false)
   }
 
-  encode(value: any): Uint8Array {
+  encode(_value: any): Uint8Array {
     return arrayify([])
   }
 
@@ -460,6 +462,10 @@ class CoderNull extends Coder {
       value: this.coerceFunc('null', undefined)
     }
   }
+}
+
+function maskn(v: BigNumber, bits: number): BigNumber {
+  return new BigNumber(v.toString(2).substr(-bits), 2)
 }
 
 class CoderNumber extends Coder {
@@ -476,30 +482,48 @@ class CoderNumber extends Coder {
   encode(value: BigNumber.Value): Uint8Array {
     try {
       let v = toBigNumber(value)
+
       if (this.signed) {
-        let bounds = MaxUint256.maskn(this.size * 8 - 1)
+        let bounds = maskn(MaxUint256, this.size * 8 - 1)
         if (v.gt(bounds)) {
           throw new Error('out-of-bounds')
         }
-        bounds = bounds.add(One).mul(NegativeOne)
+        bounds = bounds.plus(One).multipliedBy(NegativeOne)
         if (v.lt(bounds)) {
           throw new Error('out-of-bounds')
         }
-      } else if (v.lt(Zero) || v.gt(MaxUint256.maskn(this.size * 8))) {
+      } else if (v.lt(Zero) || v.gt(maskn(MaxUint256, this.size * 8))) {
         throw new Error('out-of-bounds')
       }
 
-      v = v.toTwos(this.size * 8).maskn(this.size * 8)
+      v = maskn(toTwosComplement(v, this.size * 8), this.size * 8)
+
       if (this.signed) {
-        v = v.fromTwos(this.size * 8).toTwos(256)
+        v = toTwosComplement(fromTwosComplement(v, this.size * 8), 256)
       }
 
-      return padZeros(arrayify(v), 32)
+      let result = padLeft(toTwosComplement(v).toString(16), 64)
+
+      if (result.indexOf('NaN') != -1) {
+        return errors.throwError('invalid number value, NaN', errors.INVALID_ARGUMENT, {
+          arg: this.localName,
+          coderType: this.name,
+          value: value,
+          v,
+          twosComplement: toTwosComplement(v),
+          twosComplement16: toTwosComplement(v).toString(16),
+          pad: padLeft(toTwosComplement(v).toString(16), 64),
+          size: this.size
+        })
+      }
+
+      return hexToBytes(result)
     } catch (error) {
       return errors.throwError('invalid number value', errors.INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: this.name,
-        value: value
+        value: value,
+        message: error.toString()
       })
     }
   }
@@ -513,11 +537,12 @@ class CoderNumber extends Coder {
       })
     }
     var junkLength = 32 - this.size
-    var value = bigNumberify(data.slice(offset + junkLength, offset + 32))
+    var value = new BigNumber(bytesToHex(data.slice(offset + junkLength, offset + 32)), 16)
+
     if (this.signed) {
-      value = value.fromTwos(this.size * 8)
+      value = fromTwosComplement(value, this.size * 8)
     } else {
-      value = value.maskn(this.size * 8)
+      value = maskn(value, this.size * 8)
     }
 
     return {
@@ -527,7 +552,7 @@ class CoderNumber extends Coder {
   }
 }
 var uint256Coder = new CoderNumber(
-  function (type: string, value: any) {
+  function (_type: string, value: any) {
     return value
   },
   32,
@@ -576,26 +601,32 @@ class CoderFixedBytes extends Coder {
     var result = new Uint8Array(32)
 
     try {
-      if (value.length % 2 !== 0) {
-        throw new Error(`hex string cannot be odd-length`)
+      if (typeof value == 'string') {
+        if (value.length % 2 !== 0) {
+          throw new Error(`hex string cannot be odd-length`)
+        }
       }
+
       let data = arrayify(value)
+
       if (data.length > this.length) {
         throw new Error(`incorrect data length`)
       }
+
       result.set(data)
     } catch (error) {
-      errors.throwError('invalid ' + this.name + ' value', errors.INVALID_ARGUMENT, {
+      errors.throwError('invalid ' + this.name + ' value. Use hex strings or Uint8Array', errors.INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: this.name,
-        value: error.value || value
+        value: error.value || value,
+        details: error.message
       })
     }
 
     return result
   }
 
-  decode(data: Uint8Array, offset: number): DecodedResult {
+  decode(data: Uint8Array, offset: number): DecodedResult<Uint8Array> {
     if (data.length < offset + 32) {
       errors.throwError('insufficient data for ' + name + ' type', errors.INVALID_ARGUMENT, {
         arg: this.localName,
@@ -606,7 +637,7 @@ class CoderFixedBytes extends Coder {
 
     return {
       consumed: 32,
-      value: this.coerceFunc(this.name, hexlify(data.slice(offset, offset + this.length)))
+      value: this.coerceFunc(this.name, data.slice(offset, offset + this.length))
     }
   }
 }
@@ -615,16 +646,23 @@ class CoderAddress extends Coder {
   constructor(coerceFunc: CoerceFunc, localName: string) {
     super(coerceFunc, 'address', 'address', localName, false)
   }
-  encode(value: Address | string): Uint8Array {
+  encode(inputAddress: string): Uint8Array {
     let result = new Uint8Array(32)
-    value = isString(value) ? Address.fromString(value) : value
+    const address = inputAddress.trim()
+    if (!isAddress(address)) {
+      errors.throwError(`invalid address format`, errors.INVALID_ARGUMENT, {
+        arg: this.localName,
+        coderType: 'address',
+        value: inputAddress
+      })
+    }
     try {
-      result.set(arrayify(value.toBuffer()), 12)
+      result.set(hexToBytes(inputAddressFormatter(address)), 12)
     } catch (error) {
       errors.throwError(`invalid address (${error.message})`, errors.INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: 'address',
-        value: value
+        value: inputAddress
       })
     }
     return result
@@ -703,7 +741,7 @@ class CoderDynamicBytes extends Coder {
 
   decode(data: Uint8Array, offset: number): DecodedResult {
     var result = _decodeDynamicBytes(data, offset, this.localName)
-    result.value = this.coerceFunc('bytes', hexlify(result.value))
+    result.value = this.coerceFunc('bytes', result.value)
     return result
   }
 }
@@ -798,10 +836,43 @@ function pack(coders: Array<Coder>, values: Array<any>): Uint8Array {
   return data
 }
 
+export class Tuple extends Array<any> {
+  [key: string]: any
+}
+
 function unpack(coders: Array<Coder>, data: Uint8Array, offset: number): DecodedResult {
   var baseOffset = offset
   var consumed = 0
-  var value: any = []
+
+  var value: any[] = []
+  coders.forEach(function (coder) {
+    if (coder.dynamic) {
+      var dynamicOffset = uint256Coder.decode(data, offset)
+      var result = coder.decode(data, baseOffset + dynamicOffset.value.toNumber())
+      // The dynamic part is leap-frogged somewhere else; doesn't count towards size
+      result.consumed = dynamicOffset.consumed
+    } else {
+      var result = coder.decode(data, offset)
+    }
+
+    if (result.value != undefined) {
+      value.push(result.value)
+    }
+
+    offset += result.consumed
+    consumed += result.consumed
+  })
+
+  return {
+    value: value,
+    consumed: consumed
+  }
+}
+
+function unpackWithNames(coders: Array<Coder>, data: Uint8Array, offset: number): DecodedResult {
+  var baseOffset = offset
+  var consumed = 0
+  var value = new Tuple()
   coders.forEach(function (coder) {
     if (coder.dynamic) {
       var dynamicOffset = uint256Coder.decode(data, offset)
@@ -874,7 +945,7 @@ class CoderArray extends Coder {
 
     errors.checkArgumentCount(count, value.length, 'in coder array' + (this.localName ? ' ' + this.localName : ''))
 
-    var coders: any[] = []
+    var coders: Coder[] = []
     for (var i = 0; i < value.length; i++) {
       coders.push(this.coder)
     }
@@ -913,7 +984,7 @@ class CoderArray extends Coder {
       offset += decodedLength.consumed
     }
 
-    var coders: any[] = []
+    var coders: Coder[] = []
     for (var i = 0; i < count; i++) {
       coders.push(new CoderAnonymous(this.coder))
     }
@@ -947,7 +1018,7 @@ class CoderTuple extends Coder {
   }
 
   decode(data: Uint8Array, offset: number): DecodedResult {
-    var result = unpack(this.coders, data, offset)
+    var result = unpackWithNames(this.coders, data, offset)
     result.value = this.coerceFunc(this.type, result.value)
     return result
   }
@@ -996,19 +1067,20 @@ const paramTypeSimple: { [key: string]: any } = {
   bytes: CoderDynamicBytes
 }
 
-function getTupleParamCoder(coerceFunc: CoerceFunc, components: Array<any>, localName: string): CoderTuple {
+function getTupleParamCoder(
+  coerceFunc: CoerceFunc,
+  components: ReadonlyArray<Readonly<AbiInput>>,
+  localName: string
+): CoderTuple {
   if (!components) {
     components = []
   }
-  var coders: Array<Coder> = []
-  components.forEach(function (component) {
-    coders.push(getParamCoder(coerceFunc, component))
-  })
+  var coders = components.map((component) => getParamCoder(coerceFunc, component))
 
   return new CoderTuple(coerceFunc, coders, localName)
 }
 
-function getParamCoder(coerceFunc: CoerceFunc, param: ParamType): Coder {
+function getParamCoder(coerceFunc: CoerceFunc, param: Readonly<AbiInput>): Coder {
   var coder = paramTypeSimple[param.type]
   if (coder) {
     return new coder(coerceFunc, param.name)
@@ -1038,12 +1110,12 @@ function getParamCoder(coerceFunc: CoerceFunc, param: ParamType): Coder {
   }
 
   var match = param.type.match(paramTypeArray)
+
   if (match) {
+    const newParam = { ...param }
     let size = parseInt(match[2] || '-1')
-    param = shallowCopy(param)
-    param.type = match[1]
-    param = deepCopy(param)
-    return new CoderArray(coerceFunc, getParamCoder(coerceFunc, param), size, param.name!)
+    newParam.type = match[1]
+    return new CoderArray(coerceFunc, getParamCoder(coerceFunc, newParam), size, param.name!)
   }
 
   if (param.type.substring(0, 5) === 'tuple') {
@@ -1056,7 +1128,8 @@ function getParamCoder(coerceFunc: CoerceFunc, param: ParamType): Coder {
 
   return errors.throwError('invalid type', errors.INVALID_ARGUMENT, {
     arg: 'type',
-    value: param.type
+    value: param.type,
+    fullType: param
   })
 }
 
@@ -1072,7 +1145,7 @@ export class AbiCoder {
     defineReadOnly(this, 'coerceFunc', coerceFunc)
   }
 
-  encode(types: Array<string | ParamType>, values: Array<any>): string {
+  encode(types: ReadonlyArray<Readonly<AbiInput>>, values: Array<any>): Uint8Array {
     if (types.length !== values.length) {
       errors.throwError('types/values length mismatch', errors.INVALID_ARGUMENT, {
         count: { types: types.length, values: values.length },
@@ -1080,41 +1153,12 @@ export class AbiCoder {
       })
     }
 
-    var coders: Array<Coder> = []
-    types.forEach((type) => {
-      // Convert types to type objects
-      //   - "uint foo" => { type: "uint", name: "foo" }
-      //   - "tuple(uint, uint)" => { type: "tuple", components: [ { type: "uint" }, { type: "uint" }, ] }
-
-      let typeObject: ParamType
-      if (typeof type === 'string') {
-        typeObject = parseParam(type)
-      } else {
-        typeObject = type
-      }
-
-      coders.push(getParamCoder(this.coerceFunc, typeObject))
-    })
-
-    return hexlify(new CoderTuple(this.coerceFunc, coders, '_').encode(values))
+    const coders = types.map((type) => getParamCoder(this.coerceFunc, type))
+    return new CoderTuple(this.coerceFunc, coders, '_').encode(values)
   }
 
-  decode(types: Array<string | ParamType>, data: Arrayish): any {
-    var coders: Array<Coder> = []
-    types.forEach((type) => {
-      // See encode for details
-      let typeObject: ParamType
-      if (typeof type === 'string') {
-        typeObject = parseParam(type)
-      } else {
-        typeObject = deepCopy(type)
-      }
-
-      coders.push(getParamCoder(this.coerceFunc, typeObject))
-    })
-
-    return new CoderTuple(this.coerceFunc, coders, '_').decode(arrayify(data), 0).value
+  decode(types: ReadonlyArray<Readonly<AbiOutput>>, data: Uint8Array): any {
+    const coders = types.map((type) => getParamCoder(this.coerceFunc, type))
+    return new CoderTuple(this.coerceFunc, coders, '_').decode(data, 0).value
   }
 }
-
-export const defaultAbiCoder: AbiCoder = new AbiCoder()

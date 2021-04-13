@@ -41,7 +41,9 @@
     ],
     "all": true
   },
-  "dependencies": {},
+  "dependencies": {
+    "rlp": "^2.2.6"
+  },
   "devDependencies": {
     "@ethersproject/abi": "^5.1.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",

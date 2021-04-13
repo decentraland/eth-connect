@@ -46,6 +46,15 @@ export function hexToBytes(hex: string): Uint8Array {
 /**
  * @public
  */
+export function bytesToHex(bytes: Uint8Array): string {
+  const hashArray = Array.from(bytes) // convert buffer to byte array
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('') // convert bytes to hex string
+  return hashHex
+}
+
+/**
+ * @public
+ */
 export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, options?: { encoding?: 'hex' }): string {
   if (typeof value == 'string') {
     if (options && options.encoding === 'hex' && typeof value == 'string') {
@@ -204,6 +213,17 @@ export function transformToFullName(json: AbiItem) {
   return json.name + '(' + _flattenTypes(false, json.inputs || []).join(',') + ')'
 }
 
+export function concatBytes(...buffers: Uint8Array[]) {
+  const length = buffers.reduce(($, buf) => $ + buf.length, 0)
+  var mergedArray = new Uint8Array(length)
+  let cursor = 0
+  for (let buf of buffers) {
+    mergedArray.set(buf, cursor)
+    cursor += buf.length
+  }
+  return mergedArray
+}
+
 /**
  * Should be used to flatten json abi inputs/outputs into an array of type-representing-strings
  *
@@ -222,18 +242,18 @@ function _flattenTypes(includeTuple: boolean, puts: AbiInput[]) {
       }
       var suffix = ''
       var arrayBracket = param.type.indexOf('[')
-      if (arrayBracket >= 0) { suffix = param.type.substring(arrayBracket) }
+      if (arrayBracket >= 0) {
+        suffix = param.type.substring(arrayBracket)
+      }
       var result = _flattenTypes(includeTuple, param.components)
       // console.log("result should have things: " + result)
       if (isArray(result) && includeTuple) {
         // console.log("include tuple word, and its an array. joining...: " + result.types)
         types.push('tuple(' + result.join(',') + ')' + suffix)
-      }
-      else if (!includeTuple) {
+      } else if (!includeTuple) {
         // console.log("don't include tuple, but its an array. joining...: " + result)
         types.push('(' + result.join(',') + ')' + suffix)
-      }
-      else {
+      } else {
         // console.log("its a single type within a tuple: " + result.types)
         types.push('(' + result + ')')
       }
@@ -244,7 +264,7 @@ function _flattenTypes(includeTuple: boolean, puts: AbiInput[]) {
   })
 
   return types
-};
+}
 
 /**
  * @public
@@ -447,18 +467,45 @@ export function toBigNumber(_num: BigNumber.Value): BigNumber {
   return new BigNumber(num, 10)
 }
 
+function bitMask(bits: number) {
+  return new BigNumber(new Array(bits).fill('1').join(''), 2)
+}
+
 /**
  * @public
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
  */
-export function toTwosComplement(num: BigNumber.Value): BigNumber {
+export function toTwosComplement(num: BigNumber.Value, bits = 256): BigNumber {
   let bigNumber = toBigNumber(num).integerValue() as BigNumber
 
   if (bigNumber.isLessThan(0)) {
-    return new BigNumber('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', 16).plus(bigNumber).plus(1)
+    const mask = bitMask(bits)
+    return mask.plus(bigNumber).plus(1)
   }
 
   return bigNumber
+}
+
+/**
+ * Check if input value is negative in twos complement
+ */
+export function signedIsNegative(value: BigNumber, bits: number) {
+  const binary = padLeft(value.toString(2), bits, '0')
+  return binary[0] == '1'
+}
+
+/**
+ * @public
+ * If the bit N is 1
+ */
+export function fromTwosComplement(num: BigNumber, bits = 256): BigNumber {
+  // check if it's negative number
+  // it it is, return two's complement
+  if (signedIsNegative(num, bits)) {
+    const mask = bitMask(bits)
+    return num.minus(mask).minus(1)
+  }
+  return num
 }
 
 /**

@@ -36,4 +36,5 @@ export { SolidityFunction } from './SolidityFunction'
 export { SolidityEvent } from './SolidityEvent'
 
 import { RequestManager } from './RequestManager'
+
 export default RequestManager

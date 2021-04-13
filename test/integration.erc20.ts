@@ -202,7 +202,7 @@ function doTest(requestManager: RequestManager) {
   it('test allowance, invalid address', async function () {
     this.timeout(30000)
     const accounts = await requestManager.eth_accounts()
-    await expect(ERC20Contract.allowance(accounts[0], '0x1')).rejects.toThrow('Invalid address')
+    await expect(ERC20Contract.allowance(accounts[0], '0x1')).rejects.toThrow(/invalid address/)
   })
 
   it('test allowance', async function () {
