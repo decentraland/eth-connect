@@ -79,11 +79,11 @@ const contract = {
       name: 'getInstructor',
       outputs: [
         {
-          name: '',
+          name: 'name',
           type: 'string'
         },
         {
-          name: '',
+          name: 'age',
           type: 'uint256'
         }
       ],
@@ -211,8 +211,14 @@ function doTest(rm: RequestManager) {
     await rm.waitForCompletion(tx)
   })
 
-  it('getInstructor()', async () => {
+  it('getInstructor() - index', async () => {
     const [name, age] = await TestContract.getInstructor()
+    expect(name).toEqual('agustin')
+    expect(age.toNumber()).toEqual(99)
+  })
+
+  it('getInstructor() - assoc', async () => {
+    const { name, age } = await TestContract.getInstructor()
     expect(name).toEqual('agustin')
     expect(age.toNumber()).toEqual(99)
   })
