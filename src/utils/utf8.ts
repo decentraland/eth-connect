@@ -1,13 +1,4 @@
-import { HashZero } from './constants'
-
-import { arrayify, concat, hexlify } from './bytes'
-
-///////////////////////////////
-// Imported Types
-
-import { Arrayish } from './bytes'
-
-///////////////////////////////
+import { arrayify, Arrayish } from '../abi/bytes'
 
 export enum UnicodeNormalizationForm {
   current = '',
@@ -176,38 +167,4 @@ export function toUtf8String(bytes: Arrayish, ignoreErrors?: boolean): string {
   }
 
   return result
-}
-
-export function formatBytes32String(text: string): string {
-  // Get the bytes
-  let bytes = toUtf8Bytes(text)
-
-  // Check we have room for null-termination
-  if (bytes.length > 31) {
-    throw new Error('bytes32 string must be less than 32 bytes')
-  }
-
-  // Zero-pad (implicitly null-terminates)
-  return hexlify(concat([bytes, HashZero]).slice(0, 32))
-}
-
-export function parseBytes32String(bytes: Arrayish): string {
-  let data = arrayify(bytes)
-
-  // Must be 32 bytes with a null-termination
-  if (data.length !== 32) {
-    throw new Error('invalid bytes32 - not 32 bytes long')
-  }
-  if (data[31] !== 0) {
-    throw new Error('invalid bytes32 sdtring - no null terminator')
-  }
-
-  // Find the null termination
-  let length = 31
-  while (data[length - 1] === 0) {
-    length--
-  }
-
-  // Determine the string value
-  return toUtf8String(data.slice(0, length))
 }

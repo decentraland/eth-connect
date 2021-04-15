@@ -1,19 +1,19 @@
 import * as expect from 'expect'
 import * as coder from '../src/solidity/coder'
-import { parseParamType } from '../src/abi/coder'
 import { hexToBytes } from '../src'
+import { parseParamType } from '../src/abi/parser'
 
 describe('lib/solidity/coder', function () {
   describe('encodeParam', function () {
     let test = function (t) {
       it('should turn ' + t.type + ' ' + t.value + ' to ' + t.expected, function () {
-        expect(coder.coder.encodeParam(parseParamType(t.type), t.value)).toEqual(t.expected)
+        expect(coder.coder.encodeParams([parseParamType(t.type)], [t.value])).toEqual(t.expected)
       })
     }
 
     test({
       type: 'address',
-      value: '0x407d73d8a49eeb85d32cf465507dd71d507100c1',
+      value: '0x407D73d8a49eeb85D32Cf465507dd71d507100c1',
       expected: '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c1'
     })
     test({
@@ -23,21 +23,21 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'address[2]',
-      value: ['0xBF79cE2fbd819e5aBC2327563D02a200255B7Cb3', '0x407d73d8a49eeb85d32cf465507dd71d507100c3'],
+      value: ['0xBF79cE2fbd819e5aBC2327563D02a200255B7Cb3', '0x407D73d8A49eEB85D32Cf465507Dd71d507100c3'],
       expected:
         '000000000000000000000000bf79ce2fbd819e5abc2327563d02a200255b7cb3' +
         '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c3'
     })
     test({
       type: 'address[2]',
-      value: ['0x407d73d8a49eeb85d32cf465507dd71d507100c1', '0x407d73d8a49eeb85d32cf465507dd71d507100c3'],
+      value: ['0x407D73d8a49eeb85D32Cf465507dd71d507100c1', '0x407D73d8A49eEB85D32Cf465507Dd71d507100c3'],
       expected:
         '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c1' +
         '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c3'
     })
     test({
       type: 'address[]',
-      value: ['0x407d73d8a49eeb85d32cf465507dd71d507100c1', '0x407d73d8a49eeb85d32cf465507dd71d507100c3'],
+      value: ['0x407D73d8a49eeb85D32Cf465507dd71d507100c1', '0x407D73d8A49eEB85D32Cf465507Dd71d507100c3'],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -47,8 +47,8 @@ describe('lib/solidity/coder', function () {
     test({
       type: 'address[][2]',
       value: [
-        ['0x407d73d8a49eeb85d32cf465507dd71d507100c1', '0x407d73d8a49eeb85d32cf465507dd71d507100c2'],
-        ['0x407d73d8a49eeb85d32cf465507dd71d507100c3', '0x407d73d8a49eeb85d32cf465507dd71d507100c4']
+        ['0x407D73d8a49eeb85D32Cf465507dd71d507100c1', '0x407d73d8a49EEB85d32Cf465507dD71D507100c2'],
+        ['0x407D73d8A49eEB85D32Cf465507Dd71d507100c3', '0x407D73d8a49eeb85D32CF465507dd71d507100C4']
       ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
@@ -64,8 +64,8 @@ describe('lib/solidity/coder', function () {
     test({
       type: 'address[2][]',
       value: [
-        ['0x407d73d8a49eeb85d32cf465507dd71d507100c1', '0x407d73d8a49eeb85d32cf465507dd71d507100c2'],
-        ['0x407d73d8a49eeb85d32cf465507dd71d507100c3', '0x407d73d8a49eeb85d32cf465507dd71d507100c4']
+        ['0x407D73d8a49eeb85D32Cf465507dd71d507100c1', '0x407d73d8a49EEB85d32Cf465507dD71D507100c2'],
+        ['0x407D73d8A49eEB85D32Cf465507Dd71d507100c3', '0x407D73d8a49eeb85D32CF465507dd71d507100C4']
       ],
       expected:
         '0000000000000000000000000000000000000000000000000000000000000020' +
@@ -495,7 +495,7 @@ describe('lib/solidity/coder', function () {
 
     test({
       types: ['address', 'address'],
-      values: ['0x407d73d8a49eeb85d32cf465507dd71d507100c1', '0x407d73d8a49eeb85d32cf465507dd71d507100c3'],
+      values: ['0x407D73d8a49eeb85D32Cf465507dd71d507100c1', '0x407D73d8A49eEB85D32Cf465507Dd71d507100c3'],
       expected:
         '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c1' +
         '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c3'

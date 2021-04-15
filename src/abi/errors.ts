@@ -71,7 +71,6 @@ export function throwError(message: string, code: string = UNKNOWN_ERROR, params
       messageDetails.push(key + '=' + JSON.stringify(params[key].toString()))
     }
   })
-  messageDetails.push('version=1')
 
   let reason = message
   if (messageDetails.length) {

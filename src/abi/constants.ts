@@ -1,7 +1,7 @@
 import { BigNumber } from '../utils/BigNumber'
 
 const AddressZero = '0x0000000000000000000000000000000000000000'
-const HashZero = '0x0000000000000000000000000000000000000000000000000000000000000000'
+const HashZero = new Uint8Array(32).fill(0)
 
 // NFKD (decomposed)
 //const EtherSymbol = '\uD835\uDF63';

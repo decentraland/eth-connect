@@ -1,7 +1,7 @@
 import { AbiInput, AbiOutput, BigNumber as bn } from '../dist/eth-connect'
 import * as expect from 'expect'
 import { coder } from '../src/solidity/coder'
-import { hexToBytes, isBigNumber } from '../src'
+import { hexToBytes, isArray, isBigNumber } from '../src'
 import { Tuple } from '../src/abi/coder'
 
 var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked: any }> = [
@@ -9,27 +9,27 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   {
     def: [{ type: 'bool' }],
     packed: '0000000000000000000000000000000000000000000000000000000000000001',
-    unpacked: true
+    unpacked: [true]
   },
   {
     def: [{ type: 'bool' }],
     packed: '0000000000000000000000000000000000000000000000000000000000000000',
-    unpacked: false
+    unpacked: [false]
   },
   // Integers
   {
     def: [{ type: 'uint8' }],
-    unpacked: 2,
+    unpacked: [2],
     packed: '0000000000000000000000000000000000000000000000000000000000000002'
   },
   {
     def: [{ type: 'uint256' }],
-    unpacked: new bn(10),
+    unpacked: [new bn(10)],
     packed: '000000000000000000000000000000000000000000000000000000000000000a'
   },
   {
     def: [{ type: 'uint8[]' }],
-    unpacked: [1, 2],
+    unpacked: [[1, 2]],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -38,12 +38,12 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   },
   {
     def: [{ type: 'uint16' }],
-    unpacked: 5,
+    unpacked: [5],
     packed: '0000000000000000000000000000000000000000000000000000000000000005'
   },
   {
     def: [{ type: 'uint16[]' }],
-    unpacked: [1, 2],
+    unpacked: [[1, 2]],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -53,16 +53,16 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   {
     def: [{ type: 'uint16' }],
     packed: '0000000000000000000000000000000000000000000000000000000000000001',
-    unpacked: 1
+    unpacked: [1]
   },
   {
     def: [{ type: 'uint32' }],
     packed: '0000000000000000000000000000000000000000000000000000000000000001',
-    unpacked: 1
+    unpacked: [1]
   },
   {
     def: [{ type: 'uint32[]' }],
-    unpacked: [1, 2],
+    unpacked: [[1, 2]],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -71,12 +71,12 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   },
   {
     def: [{ type: 'uint64' }],
-    unpacked: new bn(6),
+    unpacked: [new bn(6)],
     packed: '0000000000000000000000000000000000000000000000000000000000000006'
   },
   {
     def: [{ type: 'uint64[]' }],
-    unpacked: [new bn(1), new bn(2)],
+    unpacked: [[new bn(1), new bn(2)]],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -85,12 +85,12 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   },
   {
     def: [{ type: 'uint256' }],
-    unpacked: new bn(11),
+    unpacked: [new bn(11)],
     packed: '000000000000000000000000000000000000000000000000000000000000000b'
   },
   {
     def: [{ type: 'uint256[]' }],
-    unpacked: [new bn(1), new bn(2)],
+    unpacked: [[new bn(1), new bn(2)]],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -99,12 +99,12 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   },
   {
     def: [{ type: 'int8' }],
-    unpacked: 2,
+    unpacked: [2],
     packed: '0000000000000000000000000000000000000000000000000000000000000002'
   },
   {
     def: [{ type: 'int8[]' }],
-    unpacked: [1, 2],
+    unpacked: [[1, 2]],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -113,12 +113,12 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   },
   {
     def: [{ type: 'int16' }],
-    unpacked: 2,
+    unpacked: [2],
     packed: '0000000000000000000000000000000000000000000000000000000000000002'
   },
   {
     def: [{ type: 'int16[]' }],
-    unpacked: [1, 2],
+    unpacked: [[1, 2]],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -127,17 +127,17 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   },
   {
     def: [{ type: 'int32' }],
-    unpacked: 2,
+    unpacked: [2],
     packed: '0000000000000000000000000000000000000000000000000000000000000002'
   },
   {
     def: [{ type: 'int32' }],
     packed: '0000000000000000000000000000000000000000000000000000000000000001',
-    unpacked: 1
+    unpacked: [1]
   },
   {
     def: [{ type: 'int32[]' }],
-    unpacked: [1, 2],
+    unpacked: [[1, 2]],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -146,12 +146,12 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   },
   {
     def: [{ type: 'int64' }],
-    unpacked: new bn(2),
+    unpacked: [new bn(2)],
     packed: '0000000000000000000000000000000000000000000000000000000000000002'
   },
   {
     def: [{ type: 'int64[]' }],
-    unpacked: [new bn(1), new bn(2)],
+    unpacked: [[new bn(1), new bn(2)]],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -160,17 +160,17 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   },
   {
     def: [{ type: 'int256' }],
-    unpacked: new bn(2),
+    unpacked: [new bn(2)],
     packed: '0000000000000000000000000000000000000000000000000000000000000002'
   },
   {
     def: [{ type: 'int256' }],
     packed: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
-    unpacked: new bn(-1)
+    unpacked: [new bn(-1)]
   },
   {
     def: [{ type: 'int256[]' }],
-    unpacked: [new bn(1), new bn(2)],
+    unpacked: [[new bn(1), new bn(2)]],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -181,11 +181,11 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   {
     def: [{ type: 'address' }],
     packed: '0000000000000000000000000100000000000000000000000000000000000000',
-    unpacked: '0x0100000000000000000000000000000000000000'
+    unpacked: ['0x0100000000000000000000000000000000000000']
   },
   {
     def: [{ type: 'address[]' }],
-    unpacked: ['0x0100000000000000000000000000000000000000', '0x0200000000000000000000000000000000000000'],
+    unpacked: [['0x0100000000000000000000000000000000000000', '0x0200000000000000000000000000000000000000']],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -195,23 +195,23 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   // Bytes
   {
     def: [{ type: 'bytes1' }],
-    unpacked: hexToBytes('0x01'),
+    unpacked: [hexToBytes('0x01')],
     packed: '0100000000000000000000000000000000000000000000000000000000000000'
   },
   {
     def: [{ type: 'bytes2' }],
-    unpacked: hexToBytes('0100'),
+    unpacked: [hexToBytes('0100')],
     packed: '0100000000000000000000000000000000000000000000000000000000000000'
   },
   {
     def: [{ type: 'bytes3' }],
-    unpacked: hexToBytes('010000'),
+    unpacked: [hexToBytes('010000')],
     packed: '0100000000000000000000000000000000000000000000000000000000000000'
   },
   {
     def: [{ type: 'bytes32' }],
     packed: '0100000000000000000000000000000000000000000000000000000000000000',
-    unpacked: hexToBytes('0100000000000000000000000000000000000000000000000000000000000000')
+    unpacked: [hexToBytes('0100000000000000000000000000000000000000000000000000000000000000')]
   },
   {
     def: [{ type: 'bytes' }],
@@ -219,14 +219,14 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0100000000000000000000000000000000000000000000000000000000000000',
-    unpacked: hexToBytes('0100000000000000000000000000000000000000000000000000000000000000')
+    unpacked: [hexToBytes('0100000000000000000000000000000000000000000000000000000000000000')]
   },
   // TODO:
   // Functions
   {
     def: [{ type: 'function' }],
     packed: '0100000000000000000000000000000000000000000000000000000000000000',
-    unpacked: hexToBytes('0x010000000000000000000000000000000000000000000000')
+    unpacked: [hexToBytes('0x010000000000000000000000000000000000000000000000')]
   },
 
   // Slice and Array
@@ -237,35 +237,35 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'uint8[]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000000',
-    unpacked: []
+    unpacked: [[]]
   },
   {
     def: [{ type: 'uint256[]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000000',
-    unpacked: []
+    unpacked: [[]]
   },
   {
     def: [{ type: 'uint8[2]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'int8[2]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'int16[]' }],
@@ -274,14 +274,14 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'int16[2]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'int32[]' }],
@@ -290,14 +290,14 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'int32[2]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'int64[]' }],
@@ -306,14 +306,14 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [new bn(1), new bn(2)]
+    unpacked: [[new bn(1), new bn(2)]]
   },
   {
     def: [{ type: 'int64[2]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [new bn(1), new bn(2)]
+    unpacked: [[new bn(1), new bn(2)]]
   },
   {
     def: [{ type: 'int256[]' }],
@@ -322,7 +322,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [new bn(1), new bn(2)]
+    unpacked: [[new bn(1), new bn(2)]]
   },
   {
     def: [{ type: 'int256[3]' }],
@@ -330,7 +330,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000003',
-    unpacked: [new bn(1), new bn(2), new bn(3)]
+    unpacked: [[new bn(1), new bn(2), new bn(3)]]
   },
   // multi dimensional, if these pass, all types that don't require length prefix should pass
   {
@@ -338,7 +338,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000000',
-    unpacked: []
+    unpacked: [[]]
   },
   {
     def: [{ type: 'uint8[][]' }],
@@ -354,8 +354,10 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
     unpacked: [
-      [1, 2],
-      [1, 2]
+      [
+        [1, 2],
+        [1, 2]
+      ]
     ]
   },
   {
@@ -373,8 +375,10 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000003',
     unpacked: [
-      [1, 2],
-      [1, 2, 3]
+      [
+        [1, 2],
+        [1, 2, 3]
+      ]
     ]
   },
   {
@@ -385,7 +389,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000060' +
       '0000000000000000000000000000000000000000000000000000000000000000' +
       '0000000000000000000000000000000000000000000000000000000000000000',
-    unpacked: [[], []]
+    unpacked: [[[], []]]
   },
   {
     def: [{ type: 'uint8[2][2]' }],
@@ -395,8 +399,10 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
     unpacked: [
-      [1, 2],
-      [1, 2]
+      [
+        [1, 2],
+        [1, 2]
+      ]
     ]
   },
   {
@@ -409,14 +415,14 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000001',
-    unpacked: [[1], [1]]
+    unpacked: [[[1], [1]]]
   },
   {
     def: [{ type: 'uint8[2][]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000000',
-    unpacked: []
+    unpacked: [[]]
   },
   {
     def: [{ type: 'uint8[2][]' }],
@@ -425,7 +431,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [[1, 2]]
+    unpacked: [[[1, 2]]]
   },
   {
     def: [{ type: 'uint8[2][]' }],
@@ -437,8 +443,10 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
     unpacked: [
-      [1, 2],
-      [1, 2]
+      [
+        [1, 2],
+        [1, 2]
+      ]
     ]
   },
   {
@@ -448,14 +456,14 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'uint16[2]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'uint32[]' }],
@@ -464,30 +472,32 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'uint32[2][3][4]' }],
     unpacked: [
       [
-        [1, 2],
-        [3, 4],
-        [5, 6]
-      ],
-      [
-        [7, 8],
-        [9, 10],
-        [11, 12]
-      ],
-      [
-        [13, 14],
-        [15, 16],
-        [17, 18]
-      ],
-      [
-        [19, 20],
-        [21, 22],
-        [23, 24]
+        [
+          [1, 2],
+          [3, 4],
+          [5, 6]
+        ],
+        [
+          [7, 8],
+          [9, 10],
+          [11, 12]
+        ],
+        [
+          [13, 14],
+          [15, 16],
+          [17, 18]
+        ],
+        [
+          [19, 20],
+          [21, 22],
+          [23, 24]
+        ]
       ]
     ],
     packed:
@@ -520,8 +530,10 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   {
     def: [{ type: 'bytes32[]' }],
     unpacked: [
-      hexToBytes('0100000000000000000000000000000000000000000000000000000000000000'),
-      hexToBytes('0200000000000000000000000000000000000000000000000000000000000000')
+      [
+        hexToBytes('0100000000000000000000000000000000000000000000000000000000000000'),
+        hexToBytes('0200000000000000000000000000000000000000000000000000000000000000')
+      ]
     ],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
@@ -534,14 +546,14 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [1, 2]
+    unpacked: [[1, 2]]
   },
   {
     def: [{ type: 'uint128[2]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [new bn(1), new bn(2)]
+    unpacked: [[new bn(1), new bn(2)]]
   },
   {
     def: [{ type: 'uint64[]' }],
@@ -550,14 +562,14 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [new bn(1), new bn(2)]
+    unpacked: [[new bn(1), new bn(2)]]
   },
   {
     def: [{ type: 'uint64[2]' }],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [new bn(1), new bn(2)]
+    unpacked: [[new bn(1), new bn(2)]]
   },
   {
     def: [{ type: 'uint256[]' }],
@@ -566,7 +578,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: [new bn(1), new bn(2)]
+    unpacked: [[new bn(1), new bn(2)]]
   },
   {
     def: [{ type: 'uint256[3]' }],
@@ -574,7 +586,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002' +
       '0000000000000000000000000000000000000000000000000000000000000003',
-    unpacked: [new bn(1), new bn(2), new bn(3)]
+    unpacked: [[new bn(1), new bn(2), new bn(3)]]
   },
   {
     def: [{ type: 'string[4]' }],
@@ -592,7 +604,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '476f2d657468657265756d000000000000000000000000000000000000000000' +
       '0000000000000000000000000000000000000000000000000000000000000008' +
       '457468657265756d000000000000000000000000000000000000000000000000',
-    unpacked: ['Hello', 'World', 'Go-ethereum', 'Ethereum']
+    unpacked: [['Hello', 'World', 'Go-ethereum', 'Ethereum']]
   },
   {
     def: [{ type: 'string[]' }],
@@ -605,7 +617,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '457468657265756d000000000000000000000000000000000000000000000000' +
       '000000000000000000000000000000000000000000000000000000000000000b' +
       '676f2d657468657265756d000000000000000000000000000000000000000000',
-    unpacked: ['Ethereum', 'go-ethereum']
+    unpacked: [['Ethereum', 'go-ethereum']]
   },
   {
     def: [{ type: 'bytes[]' }],
@@ -618,7 +630,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       'f0f0f00000000000000000000000000000000000000000000000000000000000' +
       '0000000000000000000000000000000000000000000000000000000000000003' +
       'f0f0f00000000000000000000000000000000000000000000000000000000000',
-    unpacked: [hexToBytes('f0f0f0'), hexToBytes('f0f0f0')]
+    unpacked: [[hexToBytes('f0f0f0'), hexToBytes('f0f0f0')]]
   },
   {
     def: [{ type: 'uint256[2][][]' }],
@@ -639,12 +651,14 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       '00000000000000000000000000000000000000000000000000000000000003e8',
     unpacked: [
       [
-        [new bn(1), new bn(200)],
-        [new bn(1), new bn(1000)]
-      ],
-      [
-        [new bn(1), new bn(200)],
-        [new bn(1), new bn(1000)]
+        [
+          [new bn(1), new bn(200)],
+          [new bn(1), new bn(1000)]
+        ],
+        [
+          [new bn(1), new bn(200)],
+          [new bn(1), new bn(1000)]
+        ]
       ]
     ]
   },
@@ -662,31 +676,39 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: {
-      int1: new bn(1),
-      int2: new bn(2)
-    }
+    unpacked: [
+      {
+        int1: new bn(1),
+        int2: new bn(2)
+      }
+    ]
   },
   {
     def: [{ components: [{ name: 'int_one', type: 'int256' }], type: 'tuple' }],
     packed: '0000000000000000000000000000000000000000000000000000000000000001',
-    unpacked: {
-      int_one: new bn(1)
-    }
+    unpacked: [
+      {
+        int_one: new bn(1)
+      }
+    ]
   },
   {
     def: [{ components: [{ name: 'int__one', type: 'int256' }], type: 'tuple' }],
     packed: '0000000000000000000000000000000000000000000000000000000000000001',
-    unpacked: {
-      int__one: new bn(1)
-    }
+    unpacked: [
+      {
+        int__one: new bn(1)
+      }
+    ]
   },
   {
     def: [{ components: [{ name: 'int_one_', type: 'int256' }], type: 'tuple' }],
     packed: '0000000000000000000000000000000000000000000000000000000000000001',
-    unpacked: {
-      int_one_: new bn(1)
-    }
+    unpacked: [
+      {
+        int_one_: new bn(1)
+      }
+    ]
   },
   {
     def: [
@@ -701,14 +723,16 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' +
       '0000000000000000000000000000000000000000000000000000000000000002',
-    unpacked: {
-      int_one: new bn(1),
-      intone: new bn(2)
-    }
+    unpacked: [
+      {
+        int_one: new bn(1),
+        intone: new bn(2)
+      }
+    ]
   },
   {
     def: [{ type: 'string' }],
-    unpacked: 'foobar',
+    unpacked: ['foobar'],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000006' +
@@ -716,7 +740,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   },
   {
     def: [{ type: 'string[]' }],
-    unpacked: ['hello', 'foobar'],
+    unpacked: [['hello', 'foobar']],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' + // len(array) = 2
@@ -729,7 +753,7 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   },
   {
     def: [{ type: 'string[2]' }],
-    unpacked: ['hello', 'foobar'],
+    unpacked: [['hello', 'foobar']],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000040' + // offset to i = 0
@@ -743,13 +767,15 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
     def: [{ type: 'bytes32[][]' }],
     unpacked: [
       [
-        hexToBytes('0100000000000000000000000000000000000000000000000000000000000000'),
-        hexToBytes('0200000000000000000000000000000000000000000000000000000000000000')
-      ],
-      [
-        hexToBytes('0300000000000000000000000000000000000000000000000000000000000000'),
-        hexToBytes('0400000000000000000000000000000000000000000000000000000000000000'),
-        hexToBytes('0500000000000000000000000000000000000000000000000000000000000000')
+        [
+          hexToBytes('0100000000000000000000000000000000000000000000000000000000000000'),
+          hexToBytes('0200000000000000000000000000000000000000000000000000000000000000')
+        ],
+        [
+          hexToBytes('0300000000000000000000000000000000000000000000000000000000000000'),
+          hexToBytes('0400000000000000000000000000000000000000000000000000000000000000'),
+          hexToBytes('0500000000000000000000000000000000000000000000000000000000000000')
+        ]
       ]
     ],
     packed:
@@ -769,13 +795,15 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
     def: [{ type: 'bytes32[][2]' }],
     unpacked: [
       [
-        hexToBytes('0100000000000000000000000000000000000000000000000000000000000000'),
-        hexToBytes('0200000000000000000000000000000000000000000000000000000000000000')
-      ],
-      [
-        hexToBytes('0300000000000000000000000000000000000000000000000000000000000000'),
-        hexToBytes('0400000000000000000000000000000000000000000000000000000000000000'),
-        hexToBytes('0500000000000000000000000000000000000000000000000000000000000000')
+        [
+          hexToBytes('0100000000000000000000000000000000000000000000000000000000000000'),
+          hexToBytes('0200000000000000000000000000000000000000000000000000000000000000')
+        ],
+        [
+          hexToBytes('0300000000000000000000000000000000000000000000000000000000000000'),
+          hexToBytes('0400000000000000000000000000000000000000000000000000000000000000'),
+          hexToBytes('0500000000000000000000000000000000000000000000000000000000000000')
+        ]
       ]
     ],
     packed:
@@ -793,8 +821,18 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
   {
     def: [{ type: 'bytes32[3][2]' }],
     unpacked: [
-      [hexToBytes('01'), hexToBytes('02'), hexToBytes('03')],
-      [hexToBytes('03'), hexToBytes('04'), hexToBytes('05')]
+      [
+        [
+          hexToBytes('0100000000000000000000000000000000000000000000000000000000000000'),
+          hexToBytes('0200000000000000000000000000000000000000000000000000000000000000'),
+          hexToBytes('0300000000000000000000000000000000000000000000000000000000000000')
+        ],
+        [
+          hexToBytes('0300000000000000000000000000000000000000000000000000000000000000'),
+          hexToBytes('0400000000000000000000000000000000000000000000000000000000000000'),
+          hexToBytes('0500000000000000000000000000000000000000000000000000000000000000')
+        ]
+      ]
     ],
     packed:
       '0100000000000000000000000000000000000000000000000000000000000000' + // array[0][0]
@@ -819,16 +857,26 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
         type: 'tuple'
       }
     ],
-    unpacked: {
-      a: new bn(1),
-      b: new bn(1),
-      c: new bn(-1),
-      d: true,
-      e: [
-        [Uint8Array.from([1]), Uint8Array.from([2]), Uint8Array.from([3])],
-        [Uint8Array.from([3]), Uint8Array.from([4]), Uint8Array.from([5])]
-      ]
-    },
+    unpacked: [
+      {
+        a: new bn(1),
+        b: new bn(1),
+        c: new bn(-1),
+        d: true,
+        e: [
+          [
+            hexToBytes('0100000000000000000000000000000000000000000000000000000000000000'),
+            hexToBytes('0200000000000000000000000000000000000000000000000000000000000000'),
+            hexToBytes('0300000000000000000000000000000000000000000000000000000000000000')
+          ],
+          [
+            hexToBytes('0300000000000000000000000000000000000000000000000000000000000000'),
+            hexToBytes('0400000000000000000000000000000000000000000000000000000000000000'),
+            hexToBytes('0500000000000000000000000000000000000000000000000000000000000000')
+          ]
+        ]
+      }
+    ],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000001' + // struct[a]
       '0000000000000000000000000000000000000000000000000000000000000001' + // struct[b]
@@ -855,14 +903,16 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
         type: 'tuple'
       }
     ],
-    unpacked: {
-      a: 'foobar',
-      b: new bn(1),
-      c: new Uint8Array([1]),
-      d: ['foo', 'bar'],
-      e: [new bn(1), new bn(-1)],
-      f: ['0x407d73d8a49eeb85d32cf465507dd71d507100c1', '0x407d73d8a49eeb85d32cf465507dd71d507100c2']
-    },
+    unpacked: [
+      {
+        a: 'foobar',
+        b: new bn(1),
+        c: new Uint8Array([1]),
+        d: ['foo', 'bar'],
+        e: [new bn(1), new bn(-1)],
+        f: ['0x407D73d8a49eeb85D32Cf465507dd71d507100c1', '0x407d73d8a49EEB85d32Cf465507dD71D507100c2']
+      }
+    ],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' + // struct a
       '00000000000000000000000000000000000000000000000000000000000000c0' + // struct[a] offset
@@ -896,8 +946,8 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
           {
             type: 'tuple',
             components: [
-              { name: 'a', type: 'uint256' },
-              { name: 'b', type: 'uint256[]' }
+              { name: 'c', type: 'uint256' },
+              { name: 'd', type: 'uint256[]' }
             ],
             name: 'a'
           },
@@ -906,22 +956,24 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
         type: 'tuple'
       }
     ],
-    unpacked: {
-      a: {
-        a: new bn(1),
+    unpacked: [
+      {
+        a: {
+          c: new bn(1),
+          d: [new bn(1), new bn(2)]
+        },
         b: [new bn(1), new bn(2)]
-      },
-      b: [new bn(1), new bn(2)]
-    },
+      }
+    ],
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' + // struct a
       '0000000000000000000000000000000000000000000000000000000000000040' + // a offset
       '00000000000000000000000000000000000000000000000000000000000000e0' + // b offset
-      '0000000000000000000000000000000000000000000000000000000000000001' + // a.a value
-      '0000000000000000000000000000000000000000000000000000000000000040' + // a.b offset
-      '0000000000000000000000000000000000000000000000000000000000000002' + // a.b length
-      '0000000000000000000000000000000000000000000000000000000000000001' + // a.b[0] value
-      '0000000000000000000000000000000000000000000000000000000000000002' + // a.b[1] value
+      '0000000000000000000000000000000000000000000000000000000000000001' + // a.c value
+      '0000000000000000000000000000000000000000000000000000000000000040' + // a.d offset
+      '0000000000000000000000000000000000000000000000000000000000000002' + // a.d length
+      '0000000000000000000000000000000000000000000000000000000000000001' + // a.d[0] value
+      '0000000000000000000000000000000000000000000000000000000000000002' + // a.d[1] value
       '0000000000000000000000000000000000000000000000000000000000000002' + // b length
       '0000000000000000000000000000000000000000000000000000000000000001' + // b[0] value
       '0000000000000000000000000000000000000000000000000000000000000002' // b[1] value
@@ -934,14 +986,16 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
           { name: 'a', type: 'int256' },
           { name: 'b', type: 'int256[]' }
         ],
-        name: 'a',
+        name: 'envelope',
         type: 'tuple[]'
       }
     ],
-    unpacked: [
-      { a: new bn(-1), b: [new bn(1), new bn(3)] },
-      { a: new bn(1), b: [new bn(2), new bn(-1)] }
-    ],
+    unpacked: {
+      envelope: [
+        { a: new bn(-1), b: [new bn(1), new bn(3)] },
+        { a: new bn(1), b: [new bn(2), new bn(-1)] }
+      ]
+    },
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000002' + // tuple length
@@ -969,16 +1023,18 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
         type: 'tuple[2]'
       }
     ],
-    unpacked: [
-      {
-        a: new bn(-1),
-        b: new bn(1)
-      },
-      {
-        a: new bn(1),
-        b: new bn(-1)
-      }
-    ],
+    unpacked: {
+      a: [
+        {
+          a: new bn(-1),
+          b: new bn(1)
+        },
+        {
+          a: new bn(1),
+          b: new bn(-1)
+        }
+      ]
+    },
     packed:
       'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' + // tuple[0].a
       '0000000000000000000000000000000000000000000000000000000000000001' + // tuple[0].b
@@ -986,8 +1042,14 @@ var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked
       'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' // tuple[1].b
   },
   {
-    def: [{ components: [{ name: 'a', type: 'int256[]' }], name: 'a', type: 'tuple[2]' }],
-    unpacked: [[{ a: new bn(-1), b: new bn(1) }], [{ a: new bn(1), b: new bn(-1) }]],
+    def: [
+      {
+        name: 'envelope',
+        components: [{ name: 'a', type: 'int256[]' }],
+        type: 'tuple[2]'
+      }
+    ],
+    unpacked: { envelope: [{ a: [new bn(-1), new bn(1)] }, { a: [new bn(1), new bn(-1)] }] },
     packed:
       '0000000000000000000000000000000000000000000000000000000000000020' +
       '0000000000000000000000000000000000000000000000000000000000000040' + // tuple[0] offset
@@ -1019,8 +1081,8 @@ function coerceTuple(value: any) {
   if (typeof value == 'object' && value && value.__proto__ == ({} as any).__proto__) {
     const ret = new Tuple()
     Object.entries(value).forEach(([key, v], index) => {
-      ret[key] = v //coerceTuple(v) // this vlaue NEEDS to be duplicated in order to make the comparator work
-      ret[index] = v //coerceTuple(v) // this vlaue NEEDS to be duplicated in order to make the comparator work
+      ret[key] = coerceTuple(v) // this vlaue NEEDS to be duplicated in order to make the comparator work
+      ret[index] = coerceTuple(v) // this vlaue NEEDS to be duplicated in order to make the comparator work
     })
     return ret
   }
@@ -1028,13 +1090,23 @@ function coerceTuple(value: any) {
   return value
 }
 
+function coerce(t: any) {
+  if (isArray(t)) {
+    return t.map(coerceTuple)
+  } else {
+    return coerceTuple(t)
+  }
+}
+
 describe('geth/packing', function () {
   packUnpackTests.forEach((test) => {
-    it('pack: should turn ' + JSON.stringify(test.unpacked) + ' to ' + test.packed, function () {
-      expect(coder.encodeParams(test.def as AbiInput[], [test.unpacked])).toEqual(test.packed)
-    })
-    it('unpack: should turn ' + test.packed + ' to ' + JSON.stringify(test.unpacked), function () {
-      expect(coder.decodeParams(test.def as AbiInput[], test.packed)[0]).toEqual(coerceTuple(test.unpacked))
+    describe(JSON.stringify(test.def), () => {
+      it('pack: should turn ' + JSON.stringify(test.unpacked) + ' to ' + test.packed, function () {
+        expect(coder.encodeParams(test.def as AbiInput[], coerce(test.unpacked))).toEqual(test.packed)
+      })
+      it('unpack: should turn ' + test.packed + ' to ' + JSON.stringify(test.unpacked), function () {
+        expect(coder.decodeParams(test.def as AbiInput[], test.packed)).toEqual(coerce(test.unpacked))
+      })
     })
   })
 })

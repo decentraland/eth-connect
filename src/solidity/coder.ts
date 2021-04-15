@@ -16,7 +16,7 @@
 */
 
 import { AbiCoder } from '../abi/coder'
-import { AbiOutput } from '../Schema'
+import { AbiInput, AbiOutput } from '../Schema'
 import * as utils from '../utils/utils'
 import { bytesToHex } from '../utils/utils'
 
@@ -27,18 +27,6 @@ const ethersAbiCoder = new AbiCoder()
  */
 export namespace coder {
   /**
-   * Should be used to encode plain param
-   *
-   * @method encodeParam
-   * @param {any} type
-   * @param {object} plain param
-   * @return {string} encoded plain param
-   */
-  export function encodeParam(type: any, param: any): string {
-    return encodeParams([type], [param])
-  }
-
-  /**
    * Should be used to encode list of params
    *
    * @method encodeParams
@@ -46,20 +34,8 @@ export namespace coder {
    * @param {Array} params
    * @return {string} encoded list of params
    */
-  export function encodeParams(types: any, params: any[]): string {
+  export function encodeParams(types: AbiInput[], params: any[]): string {
     return bytesToHex(ethersAbiCoder.encode(types, params))
-  }
-
-  /**
-   * Should be used to decode bytes to plain param
-   *
-   * @method decodeParam
-   * @param {string} type
-   * @param {string} bytes
-   * @return {object} plain param
-   */
-  export function decodeParam(type: AbiOutput, bytes: string): any {
-    return decodeParams([type], bytes)[0]
   }
 
   /**
@@ -81,7 +57,6 @@ export namespace coder {
       )
     }
 
-    const res = ethersAbiCoder.decode(outputs, utils.hexToBytes('0x' + bytes.replace(/0x/i, '')))
-    return res
+    return ethersAbiCoder.decode(outputs, utils.hexToBytes('0x' + bytes.replace(/0x/i, '')))
   }
 }

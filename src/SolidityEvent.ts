@@ -110,10 +110,10 @@ export class SolidityEvent {
 
         if (utils.isArray(value)) {
           return value.map(function (v) {
-            return '0x' + coder.encodeParam(i, v)
+            return '0x' + coder.encodeParams([i], [v])
           })
         }
-        return '0x' + coder.encodeParam(i, value)
+        return '0x' + coder.encodeParams([i], [value])
       })
 
     result.topics = result.topics.concat(indexedTopics)

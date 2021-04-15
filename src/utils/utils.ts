@@ -15,10 +15,10 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import * as utf8 from 'utf8'
 import { keccak256 } from 'js-sha3'
 import { BigNumber } from './BigNumber'
 import { AbiInput, AbiItem } from '../Schema'
+import { toUtf8Bytes } from './utf8'
 
 /**
  * @public
@@ -36,7 +36,7 @@ export function hexToBytes(hex: string): Uint8Array {
   for (let char = 0; char < hex.length; char += 2) {
     const n = parseInt(hex.substr(char, 2), 16)
     if (isNaN(n)) throw new Error('Cannot read hex string:' + JSON.stringify(hex))
-    result[i] = parseInt(hex.substr(char, 2), 16)
+    result[i] = n
     i++
   }
 
@@ -65,7 +65,7 @@ export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, option
       const t = hexToBytes(mutValue)
       return keccak256(t)
     } else {
-      return keccak256(utf8.encode(value))
+      return keccak256(toUtf8Bytes(value))
     }
   }
 
@@ -122,27 +122,6 @@ export function padRight(str: string, chars: number, sign?: string) {
 
 /**
  * @public
- * Should be called to get utf8 from it's hex representation
- */
-export function toUtf8(hex: string): string {
-  // Find termination
-  let str = ''
-  let i = 0
-  let l = hex.length
-  if (hex.substring(0, 2) === '0x') {
-    i = 2
-  }
-  for (; i < l; i += 2) {
-    let code = parseInt(hex.substr(i, 2), 16)
-    if (code === 0) break
-    str += String.fromCharCode(code)
-  }
-
-  return utf8.decode(str)
-}
-
-/**
- * @public
  * Should be called to get ascii from it's hex representation
  */
 export function toAscii(hex: string) {
@@ -159,31 +138,6 @@ export function toAscii(hex: string) {
   }
 
   return str
-}
-
-/**
- * @public
- * Should be called to get hex representation (prefixed by 0x) of utf8 string
- */
-export function fromUtf8(_str: string, allowZero = false) {
-  let str = utf8.encode(_str)
-  let hex = ''
-
-  for (let i = 0; i < str.length; i++) {
-    let code = str.charCodeAt(i)
-    if (code === 0) {
-      if (allowZero) {
-        hex += '00'
-      } else {
-        break
-      }
-    } else {
-      let n = code.toString(16)
-      hex += n.length < 2 ? '0' + n : n
-    }
-  }
-
-  return '0x' + hex
 }
 
 /**
@@ -246,19 +200,14 @@ function _flattenTypes(includeTuple: boolean, puts: AbiInput[]) {
         suffix = param.type.substring(arrayBracket)
       }
       var result = _flattenTypes(includeTuple, param.components)
-      // console.log("result should have things: " + result)
       if (isArray(result) && includeTuple) {
-        // console.log("include tuple word, and its an array. joining...: " + result.types)
         types.push('tuple(' + result.join(',') + ')' + suffix)
       } else if (!includeTuple) {
-        // console.log("don't include tuple, but its an array. joining...: " + result)
         types.push('(' + result.join(',') + ')' + suffix)
       } else {
-        // console.log("its a single type within a tuple: " + result.types)
         types.push('(' + result + ')')
       }
     } else {
-      // console.log("its a type and not directly in a tuple: " + param.type)
       types.push(param.type)
     }
   })
@@ -363,19 +312,23 @@ export function fromDecimal(value: BigNumber.Value) {
  *
  * And even stringifys objects before.
  */
-export function toHex(val: BigNumber.Value | boolean) {
+export function toHex(val: BigNumber.Value | boolean | Uint8Array) {
   if (isBoolean(val)) return fromDecimal(+val)
 
   if (isBigNumber(val)) return fromDecimal(val)
-
-  if (typeof val === 'object') return fromUtf8(JSON.stringify(val))
 
   // if its a negative number, pass it through fromDecimal
   if (isString(val)) {
     const valStr = val as string
     if (valStr.indexOf('-0x') === 0) return fromDecimal(valStr)
     else if (valStr.indexOf('0x') === 0) return valStr
-    else if (!isFinite(valStr as any)) return fromUtf8(valStr, true)
+    else if (!isFinite(valStr as any)) return bytesToHex(toUtf8Bytes(valStr))
+  }
+
+  if (val instanceof Uint8Array) return '0x' + bytesToHex(val)
+
+  if (isArray(val) || isObject(val)) {
+    throw new Error('toHex can only be called with scalar values, not objects or arrays')
   }
 
   return fromDecimal(val)
@@ -462,6 +415,10 @@ export function toBigNumber(_num: BigNumber.Value): BigNumber {
 
   if (typeof num === 'string' && (num.indexOf('0x') === 0 || num.indexOf('-0x') === 0)) {
     return new BigNumber(num.replace('0x', '').toLowerCase(), 16)
+  }
+
+  if (num instanceof Uint8Array) {
+    return new BigNumber(bytesToHex(num), 16)
   }
 
   return new BigNumber(num, 10)
