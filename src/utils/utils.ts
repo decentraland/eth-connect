@@ -19,6 +19,7 @@ import { keccak256 } from 'js-sha3'
 import { BigNumber } from './BigNumber'
 import { AbiInput, AbiItem } from '../Schema'
 import { toUtf8Bytes } from './utf8'
+import * as errors from './errors'
 
 /**
  * @public
@@ -449,6 +450,26 @@ export function toTwosComplement(num: BigNumber.Value, bits = 256): BigNumber {
 export function signedIsNegative(value: BigNumber, bits: number) {
   const binary = padLeft(value.toString(2), bits, '0')
   return binary[0] == '1'
+}
+
+/**
+ * @public
+ */
+export function getAddress(address: string): string {
+  if (typeof address !== 'string') {
+    throw errors.error('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
+  }
+
+  if (address.trim().match(/^(0x)?[0-9a-fA-F]{40}$/)) {
+    // Missing the 0x prefix
+    if (address.trim().substring(0, 2) !== '0x') {
+      address = '0x' + address
+    }
+
+    return toChecksumAddress(address)
+  } else {
+    throw errors.error('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
+  }
 }
 
 /**

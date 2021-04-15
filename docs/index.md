@@ -44,6 +44,7 @@
 |  [fromTwosComplement(num, bits)](./eth-connect.fromtwoscomplement.md) | If the bit N is 1 |
 |  [fromWei(num, unit)](./eth-connect.fromwei.md) | Takes a number of wei and converts it to any other ether unit.<!-- -->Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |
 |  [fromWei(num, unit)](./eth-connect.fromwei_1.md) |  |
+|  [getAddress(address)](./eth-connect.getaddress.md) |  |
 |  [getValueOfUnit(\_unit)](./eth-connect.getvalueofunit.md) | Returns value of unit in Wei |
 |  [hexToBytes(hex)](./eth-connect.hextobytes.md) |  |
 |  [isAddress(address)](./eth-connect.isaddress.md) | Checks if the given string is an address |
@@ -78,6 +79,8 @@
 |  [toNullDecimal(value)](./eth-connect.tonulldecimal.md) | Converts value to it's decimal representation in string |
 |  [toString\_2(value)](./eth-connect.tostring_2.md) | Converts value to string |
 |  [toTwosComplement(num, bits)](./eth-connect.totwoscomplement.md) | Takes and input transforms it into bignumber and if it is negative value, into two's complement |
+|  [toUtf8Bytes(str)](./eth-connect.toutf8bytes.md) |  |
+|  [toUtf8String(bytesOrHexString)](./eth-connect.toutf8string.md) |  |
 |  [toWei(num, unit)](./eth-connect.towei.md) | Takes a number of a unit and converts it to wei.<!-- -->Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |
 |  [transformToFullName(json)](./eth-connect.transformtofullname.md) | Should be used to create full function/event name from json abi |
 

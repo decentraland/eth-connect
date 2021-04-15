@@ -1,213 +1,11 @@
-
 ///////////////////////////////////
 // Parsing for Solidity Signatures
 
-import { AbiEvent, AbiFunction, AbiInput } from "../Schema"
+import { AbiEvent, AbiFunction, AbiInput } from '../Schema'
+import { formatSignature } from './coder'
 
-const regexParen = new RegExp('^([^)(]*)\\((.*)\\)([^)(]*)$')
-const regexIdentifier = new RegExp('^[A-Za-z_][A-Za-z0-9_]*$')
-
-function verifyType(type: string): string {
-  // These need to be transformed to their full description
-  if (type.match(/^uint($|[^1-9])/)) {
-    type = 'uint256' + type.substring(4)
-  } else if (type.match(/^int($|[^1-9])/)) {
-    type = 'int256' + type.substring(3)
-  }
-
-  return type
-}
-
-type ParseState = {
-  allowArray?: boolean
-  allowName?: boolean
-  allowParams?: boolean
-  allowType?: boolean
-  readArray?: boolean
-}
-
-type ParseNode = {
-  parent?: any
-  type?: string
-  name?: string
-  state?: ParseState
-  indexed?: boolean
-  components?: Array<any>
-}
-
-function parseParam(param: string, allowIndexed?: boolean): AbiInput {
-  function throwError(i: number) {
-    throw new Error('unexpected character "' + param[i] + '" at position ' + i + ' in "' + param + '"')
-  }
-
-  var parent: ParseNode = { type: '', name: '', state: { allowType: true } }
-  var node: any = parent
-
-  for (var i = 0; i < param.length; i++) {
-    var c = param[i]
-    switch (c) {
-      case '(':
-        if (!node.state.allowParams) {
-          throwError(i)
-        }
-        node.state.allowType = false
-        node.type = verifyType(node.type)
-        node.components = [{ type: '', name: '', parent: node, state: { allowType: true } }]
-        node = node.components[0]
-        break
-
-      case ')':
-        delete node.state
-        if (allowIndexed && node.name === 'indexed') {
-          node.indexed = true
-          node.name = ''
-        }
-        node.type = verifyType(node.type)
-
-        var child = node
-        node = node.parent
-        if (!node) {
-          throwError(i)
-        }
-        delete child.parent
-        node.state.allowParams = false
-        node.state.allowName = true
-        node.state.allowArray = true
-        break
-
-      case ',':
-        delete node.state
-        if (allowIndexed && node.name === 'indexed') {
-          node.indexed = true
-          node.name = ''
-        }
-        node.type = verifyType(node.type)
-
-        var sibling: ParseNode = { type: '', name: '', parent: node.parent, state: { allowType: true } }
-        node.parent.components.push(sibling)
-        delete node.parent
-        node = sibling
-        break
-
-      // Hit a space...
-      case ' ':
-        // If reading type, the type is done and may read a param or name
-        if (node.state.allowType) {
-          if (node.type !== '') {
-            node.type = verifyType(node.type)
-            delete node.state.allowType
-            node.state.allowName = true
-            node.state.allowParams = true
-          }
-        }
-
-        // If reading name, the name is done
-        if (node.state.allowName) {
-          if (node.name !== '') {
-            if (allowIndexed && node.name === 'indexed') {
-              node.indexed = true
-              node.name = ''
-            } else {
-              node.state.allowName = false
-            }
-          }
-        }
-
-        break
-
-      case '[':
-        if (!node.state.allowArray) {
-          throwError(i)
-        }
-
-        node.type += c
-
-        node.state.allowArray = false
-        node.state.allowName = false
-        node.state.readArray = true
-        break
-
-      case ']':
-        if (!node.state.readArray) {
-          throwError(i)
-        }
-
-        node.type += c
-
-        node.state.readArray = false
-        node.state.allowArray = true
-        node.state.allowName = true
-        break
-
-      default:
-        if (node.state.allowType) {
-          node.type += c
-          node.state.allowParams = true
-          node.state.allowArray = true
-        } else if (node.state.allowName) {
-          node.name += c
-          delete node.state.allowArray
-        } else if (node.state.readArray) {
-          node.type += c
-        } else {
-          throwError(i)
-        }
-    }
-  }
-
-  if (node.parent) {
-    throw new Error('unexpected eof')
-  }
-
-  delete parent.state
-
-  if (allowIndexed && node.name === 'indexed') {
-    node.indexed = true
-    node.name = ''
-  }
-
-  parent.type = verifyType(parent.type!)
-
-  return parent as AbiInput
-}
-
-// @TODO: Better return type
-export function parseSignatureEvent(fragment: string): AbiEvent {
-  var abi: AbiEvent = {
-    anonymous: false,
-    inputs: [],
-    name: '',
-    type: 'event'
-  }
-
-  var match = fragment.match(regexParen)
-  if (!match) {
-    throw new Error('invalid event: ' + fragment)
-  }
-
-  abi.name = match[1].trim()
-
-  splitNesting(match[2]).forEach(function (param) {
-    param = parseParam(param, true)
-    param.indexed = !!param.indexed
-    abi.inputs!.push(param)
-  })
-
-  match[3].split(' ').forEach(function (modifier) {
-    switch (modifier) {
-      case 'anonymous':
-        abi.anonymous = true
-        break
-      case '':
-        break
-    }
-  })
-
-  if (abi.name && !abi.name.match(regexIdentifier)) {
-    throw new Error('invalid identifier: "' + abi.name + '"')
-  }
-
-  return abi
+export function parseParamType(type: string): AbiInput {
+  return parseParam(type, true)
 }
 
 export function parseSignatureFunction(fragment: string): AbiFunction {
@@ -284,7 +82,7 @@ export function parseSignatureFunction(fragment: string): AbiFunction {
   }
 
   if (abi.name === 'constructor') {
-    (abi as any).type = 'constructor'
+    ;(abi as any).type = 'constructor'
 
     if (abi.outputs!.length) {
       throw new Error('constructor may not have outputs')
@@ -297,6 +95,211 @@ export function parseSignatureFunction(fragment: string): AbiFunction {
   return abi
 }
 
+const regexParen = new RegExp('^([^)(]*)\\((.*)\\)([^)(]*)$')
+const regexIdentifier = new RegExp('^[A-Za-z_][A-Za-z0-9_]*$')
+
+function verifyType(type: string): string {
+  // These need to be transformed to their full description
+  if (type.match(/^uint($|[^1-9])/)) {
+    type = 'uint256' + type.substring(4)
+  } else if (type.match(/^int($|[^1-9])/)) {
+    type = 'int256' + type.substring(3)
+  }
+
+  return type
+}
+
+type ParseState = {
+  allowArray?: boolean
+  allowName?: boolean
+  allowParams?: boolean
+  allowType?: boolean
+  readArray?: boolean
+}
+
+type ParseNode = {
+  parent?: any
+  type?: string
+  name?: string
+  state?: ParseState
+  indexed?: boolean
+  components?: Array<any>
+}
+
+function parseParam(param: string, allowIndexed?: boolean): AbiInput {
+  function throwError(i: number) {
+    return new Error('unexpected character "' + param[i] + '" at position ' + i + ' in "' + param + '"')
+  }
+
+  var parent: ParseNode = { type: '', name: '', state: { allowType: true } }
+  var node: any = parent
+
+  for (var i = 0; i < param.length; i++) {
+    var c = param[i]
+    switch (c) {
+      case '(':
+        if (!node.state.allowParams) {
+          throw throwError(i)
+        }
+        node.state.allowType = false
+        node.type = verifyType(node.type)
+        node.components = [{ type: '', name: '', parent: node, state: { allowType: true } }]
+        node = node.components[0]
+        break
+
+      case ')':
+        delete node.state
+        if (allowIndexed && node.name === 'indexed') {
+          node.indexed = true
+          node.name = ''
+        }
+        node.type = verifyType(node.type)
+
+        var child = node
+        node = node.parent
+        if (!node) {
+          throw throwError(i)
+        }
+        delete child.parent
+        node.state.allowParams = false
+        node.state.allowName = true
+        node.state.allowArray = true
+        break
+
+      case ',':
+        delete node.state
+        if (allowIndexed && node.name === 'indexed') {
+          node.indexed = true
+          node.name = ''
+        }
+        node.type = verifyType(node.type)
+
+        var sibling: ParseNode = { type: '', name: '', parent: node.parent, state: { allowType: true } }
+        node.parent.components.push(sibling)
+        delete node.parent
+        node = sibling
+        break
+
+      // Hit a space...
+      case ' ':
+        // If reading type, the type is done and may read a param or name
+        if (node.state.allowType) {
+          if (node.type !== '') {
+            node.type = verifyType(node.type)
+            delete node.state.allowType
+            node.state.allowName = true
+            node.state.allowParams = true
+          }
+        }
+
+        // If reading name, the name is done
+        if (node.state.allowName) {
+          if (node.name !== '') {
+            if (allowIndexed && node.name === 'indexed') {
+              node.indexed = true
+              node.name = ''
+            } else {
+              node.state.allowName = false
+            }
+          }
+        }
+
+        break
+
+      case '[':
+        if (!node.state.allowArray) {
+          throw throwError(i)
+        }
+
+        node.type += c
+
+        node.state.allowArray = false
+        node.state.allowName = false
+        node.state.readArray = true
+        break
+
+      case ']':
+        if (!node.state.readArray) {
+          throw throwError(i)
+        }
+
+        node.type += c
+
+        node.state.readArray = false
+        node.state.allowArray = true
+        node.state.allowName = true
+        break
+
+      default:
+        if (node.state.allowType) {
+          node.type += c
+          node.state.allowParams = true
+          node.state.allowArray = true
+        } else if (node.state.allowName) {
+          node.name += c
+          delete node.state.allowArray
+        } else if (node.state.readArray) {
+          node.type += c
+        } else {
+          throw throwError(i)
+        }
+    }
+  }
+
+  if (node.parent) {
+    throw new Error('unexpected eof')
+  }
+
+  delete parent.state
+
+  if (allowIndexed && node.name === 'indexed') {
+    node.indexed = true
+    node.name = ''
+  }
+
+  parent.type = verifyType(parent.type!)
+
+  return parent as AbiInput
+}
+
+// @TODO: Better return type
+export function parseSignatureEvent(fragment: string): AbiEvent {
+  var abi: AbiEvent = {
+    anonymous: false,
+    inputs: [],
+    name: '',
+    type: 'event'
+  }
+
+  var match = fragment.match(regexParen)
+  if (!match) {
+    throw new Error('invalid event: ' + fragment)
+  }
+
+  abi.name = match[1].trim()
+
+  splitNesting(match[2]).forEach(function (param) {
+    param = parseParam(param, true)
+    param.indexed = !!param.indexed
+    abi.inputs!.push(param)
+  })
+
+  match[3].split(' ').forEach(function (modifier) {
+    switch (modifier) {
+      case 'anonymous':
+        abi.anonymous = true
+        break
+      case '':
+        break
+    }
+  })
+
+  if (abi.name && !abi.name.match(regexIdentifier)) {
+    throw new Error('invalid identifier: "' + abi.name + '"')
+  }
+
+  return abi
+}
 
 function splitNesting(value: string): Array<any> {
   value = value.trim()
@@ -328,7 +331,32 @@ function splitNesting(value: string): Array<any> {
   return result
 }
 
+export function parseSignature(fragment: string): AbiEvent | AbiFunction {
+  if (typeof fragment === 'string') {
+    // Make sure the "returns" is surrounded by a space and all whitespace is exactly one space
+    fragment = fragment.replace(/\(/g, ' (').replace(/\)/g, ') ').replace(/\s+/g, ' ')
+    fragment = fragment.trim()
 
-export function parseParamType(type: string): AbiInput {
-  return parseParam(type, true)
+    if (fragment.substring(0, 6) === 'event ') {
+      const ret = parseSignatureEvent(fragment.substring(6).trim())
+
+      // check if it throws
+      formatSignature(ret)
+
+      return ret
+    } else {
+      if (fragment.substring(0, 9) === 'function ') {
+        fragment = fragment.substring(9)
+      }
+
+      const ret = parseSignatureFunction(fragment.trim())
+
+      // check if it throws
+      formatSignature(ret)
+
+      return ret
+    }
+  }
+
+  throw new Error('unknown signature')
 }

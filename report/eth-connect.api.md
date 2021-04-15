@@ -885,6 +885,9 @@ export function fromWei(num: BigNumber, unit: Unit): BigNumber;
 // @public (undocumented)
 export function fromWei(num: string | number, unit: Unit): string;
 
+// @public (undocumented)
+export function getAddress(address: string): string;
+
 // @public
 export function getValueOfUnit(_unit: Unit): BigNumber;
 
@@ -1404,6 +1407,16 @@ export { toString_2 as toString }
 
 // @public
 export function toTwosComplement(num: BigNumber.Value, bits?: number): BigNumber;
+
+// Warning: (ae-missing-release-tag) "toUtf8Bytes" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export function toUtf8Bytes(str: string): Uint8Array;
+
+// Warning: (ae-missing-release-tag) "toUtf8String" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export function toUtf8String(bytesOrHexString: Uint8Array | string): string;
 
 // @public
 export function toWei(num: number | string, unit: Unit): string | BigNumber;
