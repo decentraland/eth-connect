@@ -13,7 +13,7 @@ export interface AbiConstructor {
     // (undocumented)
     gas?: number;
     // (undocumented)
-    inputs: AbiInput[];
+    inputs?: AbiInput[];
     // (undocumented)
     name?: string;
     // (undocumented)
@@ -35,7 +35,7 @@ export interface AbiEvent {
     // (undocumented)
     gas?: number;
     // (undocumented)
-    inputs: AbiInput[];
+    inputs?: AbiInput[];
     // (undocumented)
     name?: string;
     // (undocumented)
@@ -57,7 +57,7 @@ export interface AbiFallback {
     // (undocumented)
     gas?: number;
     // (undocumented)
-    inputs: AbiInput[];
+    inputs?: AbiInput[];
     // (undocumented)
     name?: string;
     // (undocumented)
@@ -79,7 +79,7 @@ export interface AbiFunction {
     // (undocumented)
     gas?: number;
     // (undocumented)
-    inputs: AbiInput[];
+    inputs?: AbiInput[];
     // (undocumented)
     name?: string;
     // (undocumented)
@@ -93,17 +93,9 @@ export interface AbiFunction {
 }
 
 // @public (undocumented)
-export interface AbiInput {
-    // (undocumented)
-    components?: AbiInput[];
+export interface AbiInput extends AbiOutput {
     // (undocumented)
     indexed?: boolean;
-    // (undocumented)
-    internalType?: string;
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    type: string;
 }
 
 // @public (undocumented)
@@ -118,7 +110,7 @@ export interface AbiItemGeneric {
     // (undocumented)
     gas?: number;
     // (undocumented)
-    inputs: AbiInput[];
+    inputs?: AbiInput[];
     // (undocumented)
     name?: string;
     // (undocumented)
@@ -599,10 +591,18 @@ export type BlockObject = {
     uncles: Array<TxHash>;
 };
 
+// @public (undocumented)
+export function bytesToHex(bytes: Uint8Array): string;
+
 // Warning: (ae-missing-release-tag) "Callback" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export type Callback = (err: Error | null, message?: any) => void;
+
+// Warning: (ae-missing-release-tag) "concatBytes" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export function concatBytes(...buffers: Uint8Array[]): Uint8Array;
 
 // @public (undocumented)
 export type ConfirmedTransaction = TransactionObject & {
@@ -786,6 +786,13 @@ export namespace eth {
     shh_getMessages: Method<any[]>;
 }
 
+// Warning: (ae-missing-release-tag) "ETH_BIGNUMBER_ROUNDING_MODE" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export const ETH_BIGNUMBER_ROUNDING_MODE: {
+    ROUNDING_MODE: BigNumber.RoundingMode;
+};
+
 // Warning: (ae-missing-release-tag) "EthBlockFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
@@ -868,7 +875,7 @@ export function fromAscii(str: string, num?: number): string;
 export function fromDecimal(value: BigNumber.Value): string;
 
 // @public
-export function fromUtf8(_str: string, allowZero?: boolean): string;
+export function fromTwosComplement(num: BigNumber, bits?: number): BigNumber;
 
 // Warning: (ae-missing-release-tag) "fromWei" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
@@ -1241,6 +1248,11 @@ export type SHHPost = {
     ttl: Quantity;
 };
 
+// Warning: (ae-missing-release-tag) "signedIsNegative" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public
+export function signedIsNegative(value: BigNumber, bits: number): boolean;
+
 // Warning: (ae-missing-release-tag) "SolidityEvent" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
@@ -1281,7 +1293,7 @@ export class SolidityEvent {
     requestManager: RequestManager;
     signature(): string;
     typeName(): string;
-    types(indexed: boolean): string[];
+    types(indexed: boolean): AbiInput[];
 }
 
 // Warning: (ae-missing-release-tag) "SolidityFunction" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
@@ -1298,7 +1310,7 @@ export class SolidityFunction {
     // (undocumented)
     extractDefaultBlock(args: any[]): string;
     // (undocumented)
-    _inputTypes: (AbiInput | string)[];
+    _inputTypes: AbiInput[];
     // (undocumented)
     json: AbiFunction;
     // (undocumented)
@@ -1306,7 +1318,7 @@ export class SolidityFunction {
     // (undocumented)
     needsToBeTransaction: boolean;
     // (undocumented)
-    _outputTypes: string[];
+    _outputTypes: AbiOutput[];
     // (undocumented)
     _payable: boolean;
     signature(): string;
@@ -1365,7 +1377,7 @@ export function toData(val: BigNumber.Value): string;
 export function toDecimal(value: BigNumber.Value): number;
 
 // @public
-export function toHex(val: BigNumber.Value | boolean): string;
+export function toHex(val: BigNumber.Value | boolean | Uint8Array): string;
 
 // Warning: (ae-missing-release-tag) "toJsonRpcRequest" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
@@ -1391,10 +1403,7 @@ function toString_2(value: BigNumber.Value): string;
 export { toString_2 as toString }
 
 // @public
-export function toTwosComplement(num: BigNumber.Value): BigNumber;
-
-// @public
-export function toUtf8(hex: string): string;
+export function toTwosComplement(num: BigNumber.Value, bits?: number): BigNumber;
 
 // @public
 export function toWei(num: number | string, unit: Unit): string | BigNumber;

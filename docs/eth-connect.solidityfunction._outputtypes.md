@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-_outputTypes: string[];
+_outputTypes: AbiOutput[];
 ```

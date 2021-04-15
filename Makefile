@@ -46,7 +46,7 @@ watch:
 		${TSC} --project tsconfig.json --watch
 
 lint:
-		${TSLINT}
+		${TSLINT} --project tsconfig.json
 
 test:
 		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha

@@ -18,7 +18,7 @@ export interface AbiFallback
 |  [anonymous?](./eth-connect.abifallback.anonymous.md) | boolean | <i>(Optional)</i> |
 |  [constant?](./eth-connect.abifallback.constant.md) | boolean | <i>(Optional)</i> |
 |  [gas?](./eth-connect.abifallback.gas.md) | number | <i>(Optional)</i> |
-|  [inputs](./eth-connect.abifallback.inputs.md) | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] |  |
+|  [inputs?](./eth-connect.abifallback.inputs.md) | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] | <i>(Optional)</i> |
 |  [name?](./eth-connect.abifallback.name.md) | string | <i>(Optional)</i> |
 |  [outputs?](./eth-connect.abifallback.outputs.md) | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] | <i>(Optional)</i> |
 |  [payable?](./eth-connect.abifallback.payable.md) | boolean | <i>(Optional)</i> |

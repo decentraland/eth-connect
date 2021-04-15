@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-_inputTypes: (AbiInput | string)[];
+_inputTypes: AbiInput[];
 ```

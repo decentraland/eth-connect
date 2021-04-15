@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-inputs: AbiInput[];
+inputs?: AbiInput[];
 ```

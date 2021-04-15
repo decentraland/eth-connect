@@ -18,7 +18,7 @@ export interface AbiConstructor
 |  [anonymous?](./eth-connect.abiconstructor.anonymous.md) | boolean | <i>(Optional)</i> |
 |  [constant?](./eth-connect.abiconstructor.constant.md) | boolean | <i>(Optional)</i> |
 |  [gas?](./eth-connect.abiconstructor.gas.md) | number | <i>(Optional)</i> |
-|  [inputs](./eth-connect.abiconstructor.inputs.md) | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] |  |
+|  [inputs?](./eth-connect.abiconstructor.inputs.md) | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] | <i>(Optional)</i> |
 |  [name?](./eth-connect.abiconstructor.name.md) | string | <i>(Optional)</i> |
 |  [outputs?](./eth-connect.abiconstructor.outputs.md) | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] | <i>(Optional)</i> |
 |  [payable?](./eth-connect.abiconstructor.payable.md) | boolean | <i>(Optional)</i> |
