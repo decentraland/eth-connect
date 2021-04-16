@@ -46,12 +46,14 @@ watch:
 		${TSC} --project tsconfig.json --watch
 
 lint:
-		${TSLINT}
+		${TSLINT} --project tsconfig.json
 
 test:
 		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha
 test-fast:
 		node --inspect --experimental-modules node_modules/.bin/_mocha
+test-fast-bail:
+		node --inspect --experimental-modules node_modules/.bin/_mocha --bail
 
 test-coveralls:
 		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose

@@ -8,16 +8,13 @@
 <b>Signature:</b>
 
 ```typescript
-export interface AbiInput 
+export interface AbiInput extends AbiOutput 
 ```
+<b>Extends:</b> [AbiOutput](./eth-connect.abioutput.md)
 
 ## Properties
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [components?](./eth-connect.abiinput.components.md) | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] | <i>(Optional)</i> |
 |  [indexed?](./eth-connect.abiinput.indexed.md) | boolean | <i>(Optional)</i> |
-|  [internalType?](./eth-connect.abiinput.internaltype.md) | string | <i>(Optional)</i> |
-|  [name](./eth-connect.abiinput.name.md) | string |  |
-|  [type](./eth-connect.abiinput.type.md) | string |  |
 

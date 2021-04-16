@@ -23,9 +23,9 @@ export declare class SolidityFunction
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [\_constant](./eth-connect.solidityfunction._constant.md) |  | boolean |  |
-|  [\_inputTypes](./eth-connect.solidityfunction._inputtypes.md) |  | string\[\] |  |
+|  [\_inputTypes](./eth-connect.solidityfunction._inputtypes.md) |  | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] |  |
 |  [\_name](./eth-connect.solidityfunction._name.md) |  | string |  |
-|  [\_outputTypes](./eth-connect.solidityfunction._outputtypes.md) |  | string\[\] |  |
+|  [\_outputTypes](./eth-connect.solidityfunction._outputtypes.md) |  | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] |  |
 |  [\_payable](./eth-connect.solidityfunction._payable.md) |  | boolean |  |
 |  [json](./eth-connect.solidityfunction.json.md) |  | [AbiFunction](./eth-connect.abifunction.md) |  |
 |  [needsToBeTransaction](./eth-connect.solidityfunction.needstobetransaction.md) |  | boolean |  |

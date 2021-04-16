@@ -9,7 +9,7 @@ Should be used to get filtered param types
 <b>Signature:</b>
 
 ```typescript
-types(indexed: boolean): string[];
+types(indexed: boolean): AbiInput[];
 ```
 
 ## Parameters
@@ -20,5 +20,5 @@ types(indexed: boolean): string[];
 
 <b>Returns:</b>
 
-string\[\]
+[AbiInput](./eth-connect.abiinput.md)<!-- -->\[\]
 

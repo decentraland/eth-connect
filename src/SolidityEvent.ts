@@ -48,14 +48,10 @@ export class SolidityEvent {
    *
    * @param decide - True if returned typed should be indexed
    */
-  types(indexed: boolean): string[] {
-    return this._params
-      .filter(function (i) {
-        return i.indexed === indexed
-      })
-      .map(function (i) {
-        return i.type
-      })
+  types(indexed: boolean): AbiInput[] {
+    return this._params.filter(function (i) {
+      return i.indexed === indexed
+    })
   }
 
   /**
@@ -114,10 +110,10 @@ export class SolidityEvent {
 
         if (utils.isArray(value)) {
           return value.map(function (v) {
-            return '0x' + coder.encodeParam(i.type, v)
+            return '0x' + coder.encodeParams([i], [v])
           })
         }
-        return '0x' + coder.encodeParam(i.type, value)
+        return '0x' + coder.encodeParams([i], [value])
       })
 
     result.topics = result.topics.concat(indexedTopics)

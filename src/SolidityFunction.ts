@@ -22,14 +22,14 @@ import * as errors from './utils/errors'
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
-import { AbiFunction, Quantity } from './Schema'
+import { AbiFunction, AbiInput, AbiOutput, Quantity } from './Schema'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
  */
 export class SolidityFunction {
-  _inputTypes: string[]
-  _outputTypes: string[]
+  _inputTypes: AbiInput[]
+  _outputTypes: AbiOutput[]
   _constant: boolean
   _name: string
   _payable: boolean
@@ -37,12 +37,8 @@ export class SolidityFunction {
   needsToBeTransaction: boolean
 
   constructor(public json: AbiFunction) {
-    this._inputTypes = (json.inputs || []).map(function (i) {
-      return i.type
-    })
-    this._outputTypes = (json.outputs || []).map(function (i) {
-      return i.type
-    })
+    this._inputTypes = json.inputs || []
+    this._outputTypes = json.outputs || []
 
     this._constant = !!json.constant
     this._payable = !!json.payable || json.stateMutability === 'payable'
@@ -94,7 +90,7 @@ export class SolidityFunction {
     }
 
     if (args.length > this._inputTypes.length && utils.isObject(args[args.length - 1])) {
-      options = args[args.length - 1]
+      options = args.pop()
     }
 
     this.validateArgs(args)

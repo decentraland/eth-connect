@@ -15,10 +15,11 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import * as utf8 from 'utf8'
 import { keccak256 } from 'js-sha3'
 import { BigNumber } from './BigNumber'
-import { AbiItem } from '../Schema'
+import { AbiInput, AbiItem } from '../Schema'
+import { stringToUtf8Bytes } from './utf8'
+import * as errors from './errors'
 
 /**
  * @public
@@ -36,11 +37,20 @@ export function hexToBytes(hex: string): Uint8Array {
   for (let char = 0; char < hex.length; char += 2) {
     const n = parseInt(hex.substr(char, 2), 16)
     if (isNaN(n)) throw new Error('Cannot read hex string:' + JSON.stringify(hex))
-    result[i] = parseInt(hex.substr(char, 2), 16)
+    result[i] = n
     i++
   }
 
   return result
+}
+
+/**
+ * @public
+ */
+export function bytesToHex(bytes: Uint8Array): string {
+  const hashArray = Array.from(bytes) // convert buffer to byte array
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('') // convert bytes to hex string
+  return hashHex
 }
 
 /**
@@ -56,7 +66,7 @@ export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, option
       const t = hexToBytes(mutValue)
       return keccak256(t)
     } else {
-      return keccak256(utf8.encode(value))
+      return keccak256(stringToUtf8Bytes(value))
     }
   }
 
@@ -113,27 +123,6 @@ export function padRight(str: string, chars: number, sign?: string) {
 
 /**
  * @public
- * Should be called to get utf8 from it's hex representation
- */
-export function toUtf8(hex: string): string {
-  // Find termination
-  let str = ''
-  let i = 0
-  let l = hex.length
-  if (hex.substring(0, 2) === '0x') {
-    i = 2
-  }
-  for (; i < l; i += 2) {
-    let code = parseInt(hex.substr(i, 2), 16)
-    if (code === 0) break
-    str += String.fromCharCode(code)
-  }
-
-  return utf8.decode(str)
-}
-
-/**
- * @public
  * Should be called to get ascii from it's hex representation
  */
 export function toAscii(hex: string) {
@@ -150,31 +139,6 @@ export function toAscii(hex: string) {
   }
 
   return str
-}
-
-/**
- * @public
- * Should be called to get hex representation (prefixed by 0x) of utf8 string
- */
-export function fromUtf8(_str: string, allowZero = false) {
-  let str = utf8.encode(_str)
-  let hex = ''
-
-  for (let i = 0; i < str.length; i++) {
-    let code = str.charCodeAt(i)
-    if (code === 0) {
-      if (allowZero) {
-        hex += '00'
-      } else {
-        break
-      }
-    } else {
-      let n = code.toString(16)
-      hex += n.length < 2 ? '0' + n : n
-    }
-  }
-
-  return '0x' + hex
 }
 
 /**
@@ -197,20 +161,59 @@ export function fromAscii(str: string, num: number = 0) {
  * Should be used to create full function/event name from json abi
  */
 export function transformToFullName(json: AbiItem) {
-  if (json.name && json.name.indexOf('(') !== -1) {
+  if (isObject(json) && json.name && json.name.indexOf('(') !== -1) {
     return json.name
   }
 
-  let typeName: string = ''
-  if (json.inputs) {
-    typeName = json.inputs
-      .map(function (i) {
-        return i.type
-      })
-      .join()
-  }
+  return json.name + '(' + _flattenTypes(false, json.inputs || []).join(',') + ')'
+}
 
-  return json.name + '(' + typeName + ')'
+export function concatBytes(...buffers: Uint8Array[]) {
+  const length = buffers.reduce(($, buf) => $ + buf.length, 0)
+  var mergedArray = new Uint8Array(length)
+  let cursor = 0
+  for (let buf of buffers) {
+    mergedArray.set(buf, cursor)
+    cursor += buf.length
+  }
+  return mergedArray
+}
+
+/**
+ * Should be used to flatten json abi inputs/outputs into an array of type-representing-strings
+ *
+ * @method _flattenTypes
+ * @param {bool} includeTuple
+ * @param {Object} puts
+ * @return {Array} parameters as strings
+ */
+function _flattenTypes(includeTuple: boolean, puts: AbiInput[]) {
+  const types: string[] = []
+
+  puts.forEach(function (param) {
+    if (typeof param.components === 'object') {
+      if (param.type.substring(0, 5) !== 'tuple') {
+        throw new Error('components found but type is not tuple; report on GitHub')
+      }
+      var suffix = ''
+      var arrayBracket = param.type.indexOf('[')
+      if (arrayBracket >= 0) {
+        suffix = param.type.substring(arrayBracket)
+      }
+      var result = _flattenTypes(includeTuple, param.components)
+      if (isArray(result) && includeTuple) {
+        types.push('tuple(' + result.join(',') + ')' + suffix)
+      } else if (!includeTuple) {
+        types.push('(' + result.join(',') + ')' + suffix)
+      } else {
+        types.push('(' + result + ')')
+      }
+    } else {
+      types.push(param.type)
+    }
+  })
+
+  return types
 }
 
 /**
@@ -310,19 +313,23 @@ export function fromDecimal(value: BigNumber.Value) {
  *
  * And even stringifys objects before.
  */
-export function toHex(val: BigNumber.Value | boolean) {
+export function toHex(val: BigNumber.Value | boolean | Uint8Array) {
   if (isBoolean(val)) return fromDecimal(+val)
 
   if (isBigNumber(val)) return fromDecimal(val)
-
-  if (typeof val === 'object') return fromUtf8(JSON.stringify(val))
 
   // if its a negative number, pass it through fromDecimal
   if (isString(val)) {
     const valStr = val as string
     if (valStr.indexOf('-0x') === 0) return fromDecimal(valStr)
     else if (valStr.indexOf('0x') === 0) return valStr
-    else if (!isFinite(valStr as any)) return fromUtf8(valStr, true)
+    else if (!isFinite(valStr as any)) return bytesToHex(stringToUtf8Bytes(valStr))
+  }
+
+  if (val instanceof Uint8Array) return '0x' + bytesToHex(val)
+
+  if (isArray(val) || isObject(val)) {
+    throw new Error('toHex can only be called with scalar values, not objects or arrays')
   }
 
   return fromDecimal(val)
@@ -411,21 +418,72 @@ export function toBigNumber(_num: BigNumber.Value): BigNumber {
     return new BigNumber(num.replace('0x', '').toLowerCase(), 16)
   }
 
+  if (num instanceof Uint8Array) {
+    return new BigNumber(bytesToHex(num), 16)
+  }
+
   return new BigNumber(num, 10)
+}
+
+function bitMask(bits: number) {
+  return new BigNumber(new Array(bits).fill('1').join(''), 2)
 }
 
 /**
  * @public
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
  */
-export function toTwosComplement(num: BigNumber.Value): BigNumber {
+export function toTwosComplement(num: BigNumber.Value, bits = 256): BigNumber {
   let bigNumber = toBigNumber(num).integerValue() as BigNumber
 
   if (bigNumber.isLessThan(0)) {
-    return new BigNumber('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', 16).plus(bigNumber).plus(1)
+    const mask = bitMask(bits)
+    return mask.plus(bigNumber).plus(1)
   }
 
   return bigNumber
+}
+
+/**
+ * Check if input value is negative in twos complement
+ */
+export function signedIsNegative(value: BigNumber, bits: number) {
+  const binary = padLeft(value.toString(2), bits, '0')
+  return binary[0] == '1'
+}
+
+/**
+ * @public
+ */
+export function getAddress(address: string): string {
+  if (typeof address !== 'string') {
+    throw errors.error('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
+  }
+
+  if (address.trim().match(/^(0x)?[0-9a-fA-F]{40}$/)) {
+    // Missing the 0x prefix
+    if (address.trim().substring(0, 2) !== '0x') {
+      address = '0x' + address
+    }
+
+    return toChecksumAddress(address)
+  } else {
+    throw errors.error('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
+  }
+}
+
+/**
+ * @public
+ * If the bit N is 1
+ */
+export function fromTwosComplement(num: BigNumber, bits = 256): BigNumber {
+  // check if it's negative number
+  // it it is, return two's complement
+  if (signedIsNegative(num, bits)) {
+    const mask = bitMask(bits)
+    return num.minus(mask).minus(1)
+  }
+  return num
 }
 
 /**

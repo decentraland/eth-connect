@@ -19,6 +19,7 @@ export * from './providers/HTTPProvider'
 export * from './providers/WebSocketProvider'
 export * from './utils/utils'
 export * from './Schema'
+export * from './utils/utf8'
 export * from './utils/jsonrpc'
 
 export { IFuture } from 'fp-future'
@@ -36,4 +37,5 @@ export { SolidityFunction } from './SolidityFunction'
 export { SolidityEvent } from './SolidityEvent'
 
 import { RequestManager } from './RequestManager'
+
 export default RequestManager

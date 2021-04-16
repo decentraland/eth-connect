@@ -87,9 +87,7 @@ function encodeConstructorParams(abi: AbiItem[], params: any[]) {
         return json.type === 'constructor' && json.inputs && json.inputs.length === params.length
       })
       .map(function (json) {
-        return json.inputs!.map(function (input) {
-          return input.type
-        })
+        return json.inputs || []
       })
       .map(function (types) {
         return coder.encodeParams(types, params)
