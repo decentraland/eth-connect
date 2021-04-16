@@ -30,7 +30,7 @@ import {
   TransactionReceipt
 } from '../Schema'
 import { BigNumber } from './BigNumber'
-import { toUtf8Bytes } from './utf8'
+import { stringToUtf8Bytes } from './utf8'
 
 /**
  * Should format the output to a big number
@@ -256,7 +256,7 @@ export function inputPostFormatter(post: any) {
   // format the following options
   post.topics = post.topics.map(function (topic: string) {
     // convert only if not hex
-    return topic.indexOf('0x') === 0 ? topic : '0x' + utils.bytesToHex(toUtf8Bytes(topic))
+    return topic.indexOf('0x') === 0 ? topic : '0x' + utils.bytesToHex(stringToUtf8Bytes(topic))
   })
 
   return post

@@ -2,7 +2,7 @@ import { AbiInput, AbiOutput, BigNumber as bn } from '../dist/eth-connect'
 import * as expect from 'expect'
 import { coder } from '../src/solidity/coder'
 import { hexToBytes, isArray, isBigNumber } from '../src'
-import { Tuple } from '../src/abi/coder'
+import { formatParamType, Tuple } from '../src/abi/coder'
 
 var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked: any }> = [
   // Booleans
@@ -1098,6 +1098,38 @@ function coerce(t: any) {
   }
 }
 
+function coerceTupleNoName(value: any) {
+  if (
+    value instanceof Uint8Array ||
+    typeof value == 'string' ||
+    typeof value == 'boolean' ||
+    typeof value == 'number' ||
+    isBigNumber(value)
+  ) {
+    return value
+  }
+  if (Array.isArray(value)) {
+    return value.map(coerceTupleNoName)
+  }
+  if (typeof value == 'object' && value && value.__proto__ == ({} as any).__proto__) {
+    const ret = new Tuple()
+    Object.entries(value).forEach(([_, v], index) => {
+      ret[index] = coerceTupleNoName(v) // this vlaue NEEDS to be duplicated in order to make the comparator work
+    })
+    return ret
+  }
+
+  return value
+}
+
+function coerceNoName(t: any) {
+  if (isArray(t)) {
+    return t.map(coerceTupleNoName)
+  } else {
+    return coerceTupleNoName(t)
+  }
+}
+
 describe('geth/packing', function () {
   packUnpackTests.forEach((test) => {
     describe(JSON.stringify(test.def), () => {
@@ -1106,6 +1138,21 @@ describe('geth/packing', function () {
       })
       it('unpack: should turn ' + test.packed + ' to ' + JSON.stringify(test.unpacked), function () {
         expect(coder.decodeParams(test.def as AbiInput[], test.packed)).toEqual(coerce(test.unpacked))
+      })
+      const fmt = test.def.map(formatParamType)
+      describe('toStr: ' + fmt, () => {
+        it('pack: should turn ' + JSON.stringify(test.unpacked) + ' to ' + test.packed, function () {
+          expect(coder.encodeParams(fmt, coerceNoName(test.unpacked))).toEqual(test.packed)
+        })
+        const unpacked = coerceNoName(test.unpacked)
+        it('unpack: should turn ' + test.packed + ' to ' + JSON.stringify(unpacked), function () {
+          expect(coder.decodeParams(fmt, test.packed)).toEqual(unpacked)
+        })
+        it('integration: unpacked (str) > packed (str) > unpacked (obj)', function () {
+          expect(
+            coder.decodeParams(test.def as AbiInput[], coder.encodeParams(fmt, coerceNoName(test.unpacked)))
+          ).toEqual(coerce(test.unpacked))
+        })
       })
     })
   })

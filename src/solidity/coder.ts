@@ -16,7 +16,7 @@
 */
 
 import { AbiCoder } from '../abi/coder'
-import { AbiInput, AbiOutput } from '../Schema'
+import { AbiOutput } from '../Schema'
 import * as utils from '../utils/utils'
 import { bytesToHex } from '../utils/utils'
 
@@ -34,7 +34,7 @@ export namespace coder {
    * @param {Array} params
    * @return {string} encoded list of params
    */
-  export function encodeParams(types: AbiInput[], params: any[]): string {
+  export function encodeParams(types: ReadonlyArray<Readonly<AbiOutput | string>>, params: any[]): string {
     return bytesToHex(ethersAbiCoder.encode(types, params))
   }
 
@@ -46,7 +46,7 @@ export namespace coder {
    * @param {string} bytes
    * @return {Array} array of plain params
    */
-  export function decodeParams(outputs: AbiOutput[], bytes: string): any {
+  export function decodeParams(outputs: ReadonlyArray<Readonly<AbiOutput | string>>, bytes: string): any {
     if (outputs.length > 0 && (!bytes || bytes === '0x' || bytes === '0X')) {
       throw new Error(
         "Returned values aren't valid, did it run Out of Gas? " +

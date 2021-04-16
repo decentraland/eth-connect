@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js'
 export { BigNumber }
 
-export const ETH_BIGNUMBER_ROUNDING_MODE = {
+const ETH_BIGNUMBER_ROUNDING_MODE = {
   ROUNDING_MODE: BigNumber.ROUND_DOWN as BigNumber.RoundingMode
 }
 

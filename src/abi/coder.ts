@@ -5,7 +5,7 @@
 import { checkArgumentCount, checkNew, INVALID_ARGUMENT, error } from '../utils/errors'
 import { BigNumber } from '../utils/BigNumber'
 import { arrayify } from './bytes'
-import { toUtf8Bytes, toUtf8String } from '../utils/utf8'
+import { stringToUtf8Bytes, bytesToUtf8String } from '../utils/utf8'
 import { defineReadOnly } from './properties'
 
 ///////////////////////////////
@@ -27,6 +27,7 @@ import {
 import { inputAddressFormatter } from '../utils/formatters'
 import { AbiEvent, AbiFunction, AbiInput, AbiOutput } from '../Schema'
 import { MaxUint256, NegativeOne, One, Zero } from './constants'
+import { parseParamType } from './parser'
 
 ///////////////////////////////
 // Exported Types
@@ -415,12 +416,12 @@ class CoderString extends Coder {
         value: value
       })
     }
-    return _encodeDynamicBytes(toUtf8Bytes(value))
+    return _encodeDynamicBytes(stringToUtf8Bytes(value))
   }
 
   decode(data: Uint8Array, offset: number): DecodedResult {
     var result = _decodeDynamicBytes(data, offset, this.localName)
-    result.value = this.coerceFunc('string', toUtf8String(result.value))
+    result.value = this.coerceFunc('string', bytesToUtf8String(result.value))
     return result
   }
 }
@@ -767,7 +768,7 @@ export class AbiCoder {
     defineReadOnly(this, 'coerceFunc', coerceFunc)
   }
 
-  encode(types: ReadonlyArray<Readonly<AbiInput>>, values: Array<any>): Uint8Array {
+  encode(types: ReadonlyArray<Readonly<AbiInput | string>>, values: Array<any>): Uint8Array {
     if (types.length !== values.length) {
       throw error('types/values length mismatch', INVALID_ARGUMENT, {
         count: { types: types.length, values: values.length },
@@ -775,12 +776,30 @@ export class AbiCoder {
       })
     }
 
-    const coders = types.map((type) => getParamCoder(this.coerceFunc, type))
+    const coders = types
+      .map(($) => {
+        if (typeof $ === 'string') {
+          return parseParamType($)
+        } else {
+          return $
+        }
+      })
+      .map(($) => getParamCoder(this.coerceFunc, $))
+
     return new CoderTuple(this.coerceFunc, coders, '_').encode(values)
   }
 
-  decode(types: ReadonlyArray<Readonly<AbiOutput>>, data: Uint8Array): any {
-    const coders = types.map((type) => getParamCoder(this.coerceFunc, type))
+  decode(types: ReadonlyArray<Readonly<AbiOutput | string>>, data: Uint8Array): any {
+    const coders = types
+      .map(($) => {
+        if (typeof $ === 'string') {
+          return parseParamType($)
+        } else {
+          return $
+        }
+      })
+      .map(($) => getParamCoder(this.coerceFunc, $))
+
     return new CoderTuple(this.coerceFunc, coders, '_').decode(data, 0).value
   }
 }

@@ -18,7 +18,7 @@
 import { keccak256 } from 'js-sha3'
 import { BigNumber } from './BigNumber'
 import { AbiInput, AbiItem } from '../Schema'
-import { toUtf8Bytes } from './utf8'
+import { stringToUtf8Bytes } from './utf8'
 import * as errors from './errors'
 
 /**
@@ -66,7 +66,7 @@ export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, option
       const t = hexToBytes(mutValue)
       return keccak256(t)
     } else {
-      return keccak256(toUtf8Bytes(value))
+      return keccak256(stringToUtf8Bytes(value))
     }
   }
 
@@ -323,7 +323,7 @@ export function toHex(val: BigNumber.Value | boolean | Uint8Array) {
     const valStr = val as string
     if (valStr.indexOf('-0x') === 0) return fromDecimal(valStr)
     else if (valStr.indexOf('0x') === 0) return valStr
-    else if (!isFinite(valStr as any)) return bytesToHex(toUtf8Bytes(valStr))
+    else if (!isFinite(valStr as any)) return bytesToHex(stringToUtf8Bytes(valStr))
   }
 
   if (val instanceof Uint8Array) return '0x' + bytesToHex(val)

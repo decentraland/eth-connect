@@ -594,6 +594,9 @@ export type BlockObject = {
 // @public (undocumented)
 export function bytesToHex(bytes: Uint8Array): string;
 
+// @public
+export function bytesToUtf8String(bytesOrHexString: Uint8Array | string): string;
+
 // Warning: (ae-missing-release-tag) "Callback" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
@@ -785,13 +788,6 @@ export namespace eth {
     const // (undocumented)
     shh_getMessages: Method<any[]>;
 }
-
-// Warning: (ae-missing-release-tag) "ETH_BIGNUMBER_ROUNDING_MODE" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public (undocumented)
-export const ETH_BIGNUMBER_ROUNDING_MODE: {
-    ROUNDING_MODE: BigNumber.RoundingMode;
-};
 
 // Warning: (ae-missing-release-tag) "EthBlockFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
@@ -1335,6 +1331,9 @@ export class SolidityFunction {
 // @public (undocumented)
 export type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
 
+// @public
+export function stringToUtf8Bytes(str: string): Uint8Array;
+
 // @public (undocumented)
 export type Syncing = {
     startingBlock: Quantity;
@@ -1407,16 +1406,6 @@ export { toString_2 as toString }
 
 // @public
 export function toTwosComplement(num: BigNumber.Value, bits?: number): BigNumber;
-
-// Warning: (ae-missing-release-tag) "toUtf8Bytes" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public (undocumented)
-export function toUtf8Bytes(str: string): Uint8Array;
-
-// Warning: (ae-missing-release-tag) "toUtf8String" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public (undocumented)
-export function toUtf8String(bytesOrHexString: Uint8Array | string): string;
 
 // @public
 export function toWei(num: number | string, unit: Unit): string | BigNumber;

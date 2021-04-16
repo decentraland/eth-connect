@@ -10,6 +10,7 @@ describe('lib/solidity/coder', function () {
     let test = function (t) {
       it('should turn ' + t.value + ' to ' + t.type + '=' + t.expected, function () {
         expect(coder.coder.decodeParams([parseParamType(t.type)], t.value)).toEqual([t.expected])
+        expect(coder.coder.decodeParams([t.type], t.value)).toEqual([t.expected])
       })
     }
     test({
@@ -661,6 +662,7 @@ describe('lib/solidity/coder', function () {
             t.values
           )
         ).toEqual(t.expected)
+        expect(coder.coder.decodeParams(t.types, t.values)).toEqual(t.expected)
       })
     }
 

@@ -36,6 +36,7 @@
 |  Function | Description |
 |  --- | --- |
 |  [bytesToHex(bytes)](./eth-connect.bytestohex.md) |  |
+|  [bytesToUtf8String(bytesOrHexString)](./eth-connect.bytestoutf8string.md) | Decodes an Uint8Array or hex string into a UTF-8 string |
 |  [concatBytes(buffers)](./eth-connect.concatbytes.md) |  |
 |  [extractDisplayName(name)](./eth-connect.extractdisplayname.md) | Should be called to get display name of contract function |
 |  [extractTypeName(name)](./eth-connect.extracttypename.md) | Should be called to get type name of contract function |
@@ -65,6 +66,7 @@
 |  [padRight(str, chars, sign)](./eth-connect.padright.md) | Should be called to pad string to expected length |
 |  [sha3(value, options)](./eth-connect.sha3.md) |  |
 |  [signedIsNegative(value, bits)](./eth-connect.signedisnegative.md) | Check if input value is negative in twos complement |
+|  [stringToUtf8Bytes(str)](./eth-connect.stringtoutf8bytes.md) | Converts a string into a Uint8Array encoded with UTF-8 |
 |  [toAddress(address)](./eth-connect.toaddress.md) | Transforms given string to valid 20 bytes-length addres with 0x prefix |
 |  [toArray(value)](./eth-connect.toarray.md) | Ensures the result will be an array |
 |  [toAscii(hex)](./eth-connect.toascii.md) | Should be called to get ascii from it's hex representation |
@@ -79,8 +81,6 @@
 |  [toNullDecimal(value)](./eth-connect.tonulldecimal.md) | Converts value to it's decimal representation in string |
 |  [toString\_2(value)](./eth-connect.tostring_2.md) | Converts value to string |
 |  [toTwosComplement(num, bits)](./eth-connect.totwoscomplement.md) | Takes and input transforms it into bignumber and if it is negative value, into two's complement |
-|  [toUtf8Bytes(str)](./eth-connect.toutf8bytes.md) |  |
-|  [toUtf8String(bytesOrHexString)](./eth-connect.toutf8string.md) |  |
 |  [toWei(num, unit)](./eth-connect.towei.md) | Takes a number of a unit and converts it to wei.<!-- -->Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |
 |  [transformToFullName(json)](./eth-connect.transformtofullname.md) | Should be used to create full function/event name from json abi |
 
@@ -109,7 +109,6 @@
 
 |  Variable | Description |
 |  --- | --- |
-|  [ETH\_BIGNUMBER\_ROUNDING\_MODE](./eth-connect.eth_bignumber_rounding_mode.md) |  |
 |  [messageId](./eth-connect.messageid.md) |  |
 
 ## Type Aliases

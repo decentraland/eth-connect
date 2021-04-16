@@ -14,7 +14,7 @@ describe('lib/utils/utils', function () {
   describe('toUtf8', function () {
     tests.forEach(function (test) {
       it('should turn ' + test.value + ' to ' + test.expected, function () {
-        expect(utils.toUtf8String(test.value)).toEqual(test.expected)
+        expect(utils.bytesToUtf8String(test.value)).toEqual(test.expected)
       })
     })
   })

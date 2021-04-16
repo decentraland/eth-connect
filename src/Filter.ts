@@ -21,7 +21,7 @@ import { RequestManager } from './RequestManager'
 import * as config from './utils/config'
 import { FilterOptions, LogObject, TxHash, SHHFilterOptions, Data, SHHFilterMessage } from './Schema'
 import { future, IFuture } from 'fp-future'
-import { toUtf8Bytes } from './utils/utf8'
+import { stringToUtf8Bytes } from './utils/utf8'
 
 function safeAsync(fn: () => Promise<any>) {
   return function () {
@@ -43,7 +43,7 @@ function toTopic(value: any): string | null {
   if (strValue.indexOf('0x') === 0) {
     return strValue
   } else {
-    return utils.bytesToHex(toUtf8Bytes(strValue))
+    return utils.bytesToHex(stringToUtf8Bytes(strValue))
   }
 }
 
