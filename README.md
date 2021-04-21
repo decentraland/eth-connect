@@ -141,4 +141,3 @@ make test-local
 You can find full documentation [here](docs/index.md).
 
 You may find issues while using this library, as it's still under development. Please report any issues you come accross.
-
