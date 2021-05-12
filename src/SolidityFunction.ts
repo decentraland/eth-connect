@@ -186,10 +186,11 @@ export class SolidityFunction {
     let displayName = this.displayName()
 
     const execute = Object.assign(
-      (...args: any[]) => {
-        return this.execute(contract.requestManager, contract.address, ...args)
-      },
-      { estimateGas: this.estimateGas.bind(this, contract.requestManager, contract.address) }
+      (...args: any[]) => this.execute(contract.requestManager, contract.address, ...args),
+      {
+        estimateGas: this.estimateGas.bind(this, contract.requestManager, contract.address),
+        toPayload: (...args: any[]) => this.toPayload(args)
+      }
     )
 
     if (!(contract as any)[displayName]) {
