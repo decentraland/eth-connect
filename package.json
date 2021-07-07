@@ -45,7 +45,7 @@
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@microsoft/api-documenter": "^7.13.7",
     "@microsoft/api-extractor": "^7.13.2",
-    "@types/mocha": "^8.2.1",
+    "@types/mocha": "^8.2.3",
     "bignumber.js": "^9.0.1",
     "coveralls": "^3.1.0",
     "dcl-tslint-config-standard": "^3.0.0",
