@@ -27,8 +27,6 @@ function doTest(requestManager: RequestManager) {
     expect(accountUnlocked).toEqual(true)
   })
 
-  // let manaAddress = '0x0'
-
   let CatalystContract = null
 
   it('deploys a new contract', async function () {
@@ -41,8 +39,6 @@ function doTest(requestManager: RequestManager) {
     CatalystContract = await factory.deploy({ data: bytecode, from: account, to: null })
 
     console.log(`> Tx: ${CatalystContract.transactionHash}`)
-
-    // manaAddress = txRecipt.contractAddress
   })
 
   it('getCatalyst', async function () {
