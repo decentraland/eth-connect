@@ -68,7 +68,7 @@ export class SolidityFunction {
 
     let inputArgs = args.filter(function (a) {
       // filter the options object but not arguments that are arrays
-      return !(utils.isObject(a) === true && utils.isArray(a) === false && utils.isBigNumber(a) === false)
+      return !(utils.isObject(a) === true && utils.isArray(a) === false && utils.isBigNumber(a) === false && !(a instanceof Uint8Array))
     })
     if (inputArgs.length !== this._inputTypes.length) {
       throw errors.InvalidNumberOfSolidityArgs(inputArgs.length, this._inputTypes.length)
