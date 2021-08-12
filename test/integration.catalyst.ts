@@ -51,8 +51,11 @@ function doTest(requestManager: RequestManager) {
     console.log('getCatalyst => ', t)
   })
 
-  it('getCatalyst 0x0', async function () {
-    const t = await CatalystContract.catalystById('0x0')
-    console.log('getCatalyst => ', t)
+  it('getCatalyst 0x0 should fail', async function () {
+    await expect(() => CatalystContract.catalystById('0x0')).rejects.toThrow()
+  })
+
+  it('getCatalyst 0x00 should not fail', async function () {
+    await CatalystContract.catalystById('0x00')
   })
 }

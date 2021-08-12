@@ -264,12 +264,12 @@ class CoderFixedBytes extends Coder {
       }
 
       result.set(data)
-    } catch (error) {
+    } catch (err) {
       throw error('invalid ' + this.name + ' value. Use hex strings or Uint8Array', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: this.name,
-        value: error.value || value,
-        details: error.message
+        value: err.value || value,
+        details: err.message
       })
     }
 
