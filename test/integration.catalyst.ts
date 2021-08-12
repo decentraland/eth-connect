@@ -41,9 +41,18 @@ function doTest(requestManager: RequestManager) {
     console.log(`> Tx: ${CatalystContract.transactionHash}`)
   })
 
-  it('getCatalyst', async function () {
+  it('getCatalyst uint8array(32)', async function () {
     const t = await CatalystContract.catalystById(new Uint8Array(32))
     console.log('getCatalyst => ', t)
   })
 
+  it('getCatalyst 0x0{64}', async function () {
+    const t = await CatalystContract.catalystById('0x0000000000000000000000000000000000000000000000000000000000000000')
+    console.log('getCatalyst => ', t)
+  })
+
+  it('getCatalyst 0x0', async function () {
+    const t = await CatalystContract.catalystById('0x0')
+    console.log('getCatalyst => ', t)
+  })
 }
