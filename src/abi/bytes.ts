@@ -1,4 +1,4 @@
-import { INVALID_ARGUMENT, error } from '../utils/errors'
+import { INVALID_ARGUMENT, createError } from '../utils/errors'
 
 ///////////////////////////////
 // Exported Types
@@ -37,7 +37,7 @@ export function isArrayish(value: any): value is Arrayish {
 
 export function arrayify(value: Arrayish): Uint8Array {
   if (value == null) {
-    throw error('cannot convert null value to array', INVALID_ARGUMENT, { arg: 'value', value: value })
+    throw createError('cannot convert null value to array', INVALID_ARGUMENT, { arg: 'value', value: value })
   }
 
   if (value instanceof Uint8Array) {
@@ -48,11 +48,11 @@ export function arrayify(value: Arrayish): Uint8Array {
     let match = value.match(/^(0x)?[0-9a-fA-F]*$/)
 
     if (!match) {
-      throw error('invalid hexidecimal string', INVALID_ARGUMENT, { arg: 'value', value: value })
+      throw createError('invalid hexidecimal string', INVALID_ARGUMENT, { arg: 'value', value: value })
     }
 
     if (match[1] !== '0x') {
-      throw error('hex string must have 0x prefix', INVALID_ARGUMENT, {
+      throw createError('hex string must have 0x prefix', INVALID_ARGUMENT, {
         arg: 'value',
         value: value
       })
@@ -75,5 +75,5 @@ export function arrayify(value: Arrayish): Uint8Array {
     return addSlice(new Uint8Array(value))
   }
 
-  throw error('invalid arrayify value', undefined, { arg: 'value', value: value, type: typeof value })
+  throw createError('invalid arrayify value', undefined, { arg: 'value', value: value, type: typeof value })
 }

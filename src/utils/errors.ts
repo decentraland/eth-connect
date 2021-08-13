@@ -104,7 +104,7 @@ export function ConnectionTimeout(ms: number) {
 let _permanentCensorErrors = false
 let _censorErrors = false
 
-export function error(message: string, code: string = UNKNOWN_ERROR, params: any = {}): Error {
+export function createError(message: string, code: string = UNKNOWN_ERROR, params: any = {}): Error {
   if (_censorErrors) {
     return new Error('unknown error')
   }
@@ -137,7 +137,7 @@ export function error(message: string, code: string = UNKNOWN_ERROR, params: any
 
 export function checkNew(self: any, kind: any): void {
   if (!(self instanceof kind)) {
-    throw error('missing new', MISSING_NEW, { name: kind.name })
+    throw createError('missing new', MISSING_NEW, { name: kind.name })
   }
 }
 
@@ -146,16 +146,16 @@ export function checkArgumentCount(count: number, expectedCount: number, suffix?
     suffix = ''
   }
   if (count < expectedCount) {
-    throw error('missing argument' + suffix, MISSING_ARGUMENT, { count: count, expectedCount: expectedCount })
+    throw createError('missing argument' + suffix, MISSING_ARGUMENT, { count: count, expectedCount: expectedCount })
   }
   if (count > expectedCount) {
-    throw error('too many arguments' + suffix, UNEXPECTED_ARGUMENT, { count: count, expectedCount: expectedCount })
+    throw createError('too many arguments' + suffix, UNEXPECTED_ARGUMENT, { count: count, expectedCount: expectedCount })
   }
 }
 
 export function setCensorship(censorship: boolean, permanent?: boolean): void {
   if (_permanentCensorErrors) {
-    throw error('error censorship permanent', UNSUPPORTED_OPERATION, { operation: 'setCersorship' })
+    throw createError('error censorship permanent', UNSUPPORTED_OPERATION, { operation: 'setCersorship' })
   }
 
   _censorErrors = !!censorship
