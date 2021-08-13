@@ -2,7 +2,7 @@
 
 // See: https://github.com/ethereum/wiki/wiki/Ethereum-Contract-ABI
 
-import { checkArgumentCount, checkNew, INVALID_ARGUMENT, error } from '../utils/errors'
+import { checkArgumentCount, checkNew, INVALID_ARGUMENT, createError } from '../utils/errors'
 import { BigNumber } from '../utils/BigNumber'
 import { arrayify } from './bytes'
 import { stringToUtf8Bytes, bytesToUtf8String } from '../utils/utf8'
@@ -155,7 +155,7 @@ class CoderNumber extends Coder {
       let result = padLeft(toTwosComplement(v).toString(16), 64)
 
       if (result.indexOf('NaN') != -1) {
-        throw error('invalid number value, NaN', INVALID_ARGUMENT, {
+        throw createError('invalid number value, NaN', INVALID_ARGUMENT, {
           arg: this.localName,
           coderType: this.name,
           value: value,
@@ -169,7 +169,7 @@ class CoderNumber extends Coder {
 
       return hexToBytes(result)
     } catch (error) {
-      throw error('invalid number value', INVALID_ARGUMENT, {
+      throw createError('invalid number value', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: this.name,
         value: value,
@@ -180,7 +180,7 @@ class CoderNumber extends Coder {
 
   decode(data: Uint8Array, offset: number): DecodedResult {
     if (data.length < offset + 32) {
-      throw error('insufficient data for ' + this.name + ' type', INVALID_ARGUMENT, {
+      throw createError('insufficient data for ' + this.name + ' type', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: this.name,
         value: toHex(data.slice(offset, offset + 32))
@@ -224,7 +224,7 @@ class CoderBoolean extends Coder {
       var result = uint256Coder.decode(data, offset)
     } catch (error) {
       if (error.reason === 'insufficient data for uint256 type') {
-        throw error('insufficient data for boolean type', INVALID_ARGUMENT, {
+        throw createError('insufficient data for boolean type', INVALID_ARGUMENT, {
           arg: this.localName,
           coderType: 'boolean',
           value: error.value
@@ -264,12 +264,12 @@ class CoderFixedBytes extends Coder {
       }
 
       result.set(data)
-    } catch (err) {
-      throw error('invalid ' + this.name + ' value. Use hex strings or Uint8Array', INVALID_ARGUMENT, {
+    } catch (error) {
+      throw createError('invalid ' + this.name + ' value. Use hex strings or Uint8Array', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: this.name,
-        value: err.value || value,
-        details: err.message
+        value: error.value || value,
+        details: error.message
       })
     }
 
@@ -278,7 +278,7 @@ class CoderFixedBytes extends Coder {
 
   decode(data: Uint8Array, offset: number): DecodedResult<Uint8Array> {
     if (data.length < offset + 32) {
-      throw error('insufficient data for ' + this.name + ' type', INVALID_ARGUMENT, {
+      throw createError('insufficient data for ' + this.name + ' type', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: this.name,
         value: toHex(data.slice(offset, offset + 32))
@@ -306,7 +306,7 @@ class CoderAddress extends Coder {
     let result = new Uint8Array(32)
     const address = inputAddress.trim()
     if (!isAddress(address)) {
-      throw error(`invalid address format`, INVALID_ARGUMENT, {
+      throw createError(`invalid address format`, INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: 'address',
         value: inputAddress
@@ -315,7 +315,7 @@ class CoderAddress extends Coder {
     try {
       result.set(hexToBytes(inputAddressFormatter(address)), 12)
     } catch (error) {
-      throw error(`invalid address (${error.message})`, INVALID_ARGUMENT, {
+      throw createError(`invalid address (${error.message})`, INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: 'address',
         value: inputAddress
@@ -325,7 +325,7 @@ class CoderAddress extends Coder {
   }
   decode(data: Uint8Array, offset: number): DecodedResult {
     if (data.length < offset + 32) {
-      throw error('insufficuent data for address type', INVALID_ARGUMENT, {
+      throw createError('insufficuent data for address type', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: 'address',
         value: toHex(data.slice(offset, offset + 32)),
@@ -348,7 +348,7 @@ function _encodeDynamicBytes(value: Uint8Array): Uint8Array {
 
 function _decodeDynamicBytes(data: Uint8Array, offset: number, localName: string): DecodedResult {
   if (data.length < offset + 32) {
-    throw error('insufficient data for dynamicBytes length', INVALID_ARGUMENT, {
+    throw createError('insufficient data for dynamicBytes length', INVALID_ARGUMENT, {
       arg: localName,
       coderType: 'dynamicBytes',
       value: toHex(data.slice(offset, offset + 32))
@@ -367,7 +367,7 @@ function _decodeDynamicBytes(data: Uint8Array, offset: number, localName: string
   }
 
   if (data.length < offset + 32 + length) {
-    throw error('insufficient data for dynamicBytes type', INVALID_ARGUMENT, {
+    throw createError('insufficient data for dynamicBytes type', INVALID_ARGUMENT, {
       arg: localName,
       coderType: 'dynamicBytes',
       value: toHex(data.slice(offset, offset + 32 + length))
@@ -410,7 +410,7 @@ class CoderString extends Coder {
 
   encode(value: string): Uint8Array {
     if (typeof value !== 'string') {
-      throw error('invalid string value', INVALID_ARGUMENT, {
+      throw createError('invalid string value', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: 'string',
         value: value
@@ -440,14 +440,14 @@ function pack(coders: Array<Coder>, values: Array<any>): Uint8Array {
     })
     values = arrayValues
   } else {
-    throw error('invalid tuple value', INVALID_ARGUMENT, {
+    throw createError('invalid tuple value', INVALID_ARGUMENT, {
       coderType: 'tuple',
       value: values
     })
   }
 
   if (coders.length !== values.length) {
-    throw error('types/value length mismatch', INVALID_ARGUMENT, {
+    throw createError('types/value length mismatch', INVALID_ARGUMENT, {
       coderType: 'tuple',
       value: values
     })
@@ -585,7 +585,7 @@ class CoderArray extends Coder {
 
   encode(value: Array<any>): Uint8Array {
     if (!Array.isArray(value)) {
-      throw error('expected array value', INVALID_ARGUMENT, {
+      throw createError('expected array value', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: 'array',
         value: value
@@ -712,7 +712,7 @@ function getParamCoder(coerceFunc: CoerceFunc, param: Readonly<AbiInput>): Coder
   if (match) {
     let size = parseInt(match[2] || '256')
     if (size === 0 || size > 256 || size % 8 !== 0) {
-      throw error('invalid ' + match[1] + ' bit length', INVALID_ARGUMENT, {
+      throw createError('invalid ' + match[1] + ' bit length', INVALID_ARGUMENT, {
         arg: 'param',
         value: param
       })
@@ -724,7 +724,7 @@ function getParamCoder(coerceFunc: CoerceFunc, param: Readonly<AbiInput>): Coder
   if (match) {
     let size = parseInt(match[1])
     if (size === 0 || size > 32) {
-      throw error('invalid bytes length', INVALID_ARGUMENT, {
+      throw createError('invalid bytes length', INVALID_ARGUMENT, {
         arg: 'param',
         value: param
       })
@@ -749,7 +749,7 @@ function getParamCoder(coerceFunc: CoerceFunc, param: Readonly<AbiInput>): Coder
     return new CoderNull(coerceFunc, param.name!)
   }
 
-  throw error('invalid type', INVALID_ARGUMENT, {
+  throw createError('invalid type', INVALID_ARGUMENT, {
     arg: 'type',
     value: param.type,
     fullType: param
@@ -770,7 +770,7 @@ export class AbiCoder {
 
   encode(types: ReadonlyArray<Readonly<AbiInput | string>>, values: Array<any>): Uint8Array {
     if (types.length !== values.length) {
-      throw error('types/values length mismatch', INVALID_ARGUMENT, {
+      throw createError('types/values length mismatch', INVALID_ARGUMENT, {
         count: { types: types.length, values: values.length },
         value: { types: types, values: values }
       })

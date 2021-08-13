@@ -457,7 +457,7 @@ export function signedIsNegative(value: BigNumber, bits: number) {
  */
 export function getAddress(address: string): string {
   if (typeof address !== 'string') {
-    throw errors.error('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
+    throw errors.createError('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
   }
 
   if (address.trim().match(/^(0x)?[0-9a-fA-F]{40}$/)) {
@@ -468,7 +468,7 @@ export function getAddress(address: string): string {
 
     return toChecksumAddress(address)
   } else {
-    throw errors.error('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
+    throw errors.createError('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
   }
 }
 
