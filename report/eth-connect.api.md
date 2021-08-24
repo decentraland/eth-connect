@@ -1405,6 +1405,9 @@ function toString_2(value: BigNumber.Value): string;
 export { toString_2 as toString }
 
 // @public
+export function toStringData(val: BigNumber.Value): string;
+
+// @public
 export function toTwosComplement(num: BigNumber.Value, bits?: number): BigNumber;
 
 // @public
