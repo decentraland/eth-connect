@@ -49,7 +49,7 @@
     "bignumber.js": "^9.0.1",
     "coveralls": "^3.1.0",
     "dcl-tslint-config-standard": "^3.0.0",
-    "expect": "^26.6.2",
+    "expect": "^27.2.5",
     "fp-future": "^1.0.1",
     "ganache-cli": "^6.12.2",
     "isomorphic-fetch": "^3.0.0",
