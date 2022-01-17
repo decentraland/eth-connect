@@ -4,6 +4,7 @@ export { RPCMessage, Callback } from './common'
 export type HTTPProviderOptions = {
   headers?: { [key: string]: string }
   timeout?: number
+  requestMode?: 'cors' | 'navigate' | 'no-cors' | 'same-origin'
 }
 
 /**
@@ -33,7 +34,7 @@ export class HTTPProvider {
       let toSend = null
 
       if (payload instanceof Array) {
-        toSend = payload.map($ => toRPC($))
+        toSend = payload.map(($) => toRPC($))
       } else {
         toSend = toRPC(payload)
       }
@@ -46,7 +47,7 @@ export class HTTPProvider {
       const params: RequestInit = {
         body: JSON.stringify(toSend),
         method: 'POST',
-        // mode: 'cors',
+        mode: this.options.requestMode,
         headers: {
           ...this.options.headers,
           'Content-Type': 'application/json'
@@ -58,7 +59,7 @@ export class HTTPProvider {
       if (this.debug) console.log('SEND >> ' + params.body)
 
       fetch(this.host, params).then(
-        async $ => {
+        async ($) => {
           if (!$.ok) {
             /* istanbul ignore if */
             // tslint:disable-next-line:no-console
@@ -76,7 +77,7 @@ export class HTTPProvider {
             }
           }
         },
-        err => {
+        (err) => {
           /* istanbul ignore if */
           // tslint:disable-next-line:no-console
           if (this.debug) console.log('ERR << ' + JSON.stringify(err))
