@@ -12,5 +12,6 @@ export declare type HTTPProviderOptions = {
         [key: string]: string;
     };
     timeout?: number;
+    requestMode?: 'cors' | 'navigate' | 'no-cors' | 'same-origin';
 };
 ```

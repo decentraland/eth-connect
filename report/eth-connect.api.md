@@ -915,6 +915,7 @@ export type HTTPProviderOptions = {
         [key: string]: string;
     };
     timeout?: number;
+    requestMode?: 'cors' | 'navigate' | 'no-cors' | 'same-origin';
 };
 
 // Warning: (ae-missing-release-tag) "IFuture" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
