@@ -1,10 +1,17 @@
 import { RPCMessage, Callback, toRPC } from './common'
 export { RPCMessage, Callback } from './common'
 
+export type PseudoFetch = (url: string, params: {
+  body?: any,
+  method?: string,
+  mode?: string,
+  headers?: any
+}) => Promise<any>
+
 export type HTTPProviderOptions = {
   headers?: { [key: string]: string }
   timeout?: number
-  requestMode?: 'cors' | 'navigate' | 'no-cors' | 'same-origin'
+  fetch?: PseudoFetch
 }
 
 /**
@@ -39,15 +46,16 @@ export class HTTPProvider {
         toSend = toRPC(payload)
       }
 
+      const fetch = this.options.fetch || globalThis.fetch
+
       /* istanbul ignore if */
       if (typeof fetch === 'undefined') {
-        throw new Error('There is no global fetch object. Please install and import isomorphic-fetch')
+        throw new Error('There is no global fetch object nor it was provided. Please install and import isomorphic-fetch')
       }
 
       const params: RequestInit = {
         body: JSON.stringify(toSend),
         method: 'POST',
-        mode: this.options.requestMode,
         headers: {
           ...this.options.headers,
           'Content-Type': 'application/json'
@@ -84,7 +92,7 @@ export class HTTPProvider {
           callback(err)
         }
       )
-    } catch (e) {
+    } catch (e: any) {
       /* istanbul ignore if */
       // tslint:disable-next-line:no-console
       if (this.debug) console.log('ERR << ' + JSON.stringify(e))
