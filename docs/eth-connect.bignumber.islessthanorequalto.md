@@ -12,7 +12,6 @@ x = new BigNumber(0.1)
 x.isLessThanOrEqualTo(BigNumber(0.3).minus(0.2))   // true
 BigNumber(-1).isLessThanOrEqualTo(x)               // true
 BigNumber(10, 18).isLessThanOrEqualTo('i', 36)     // true
-
 ```
 
 <b>Signature:</b>

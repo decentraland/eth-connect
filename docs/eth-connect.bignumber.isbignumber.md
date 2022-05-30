@@ -20,7 +20,6 @@ BN = BigNumber.clone();
 z = new BN(x)
 z instanceof BigNumber               // false
 BigNumber.isBigNumber(z)             // true
-
 ```
 
 <b>Signature:</b>

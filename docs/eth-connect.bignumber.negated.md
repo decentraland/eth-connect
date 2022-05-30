@@ -11,7 +11,6 @@ x = new BigNumber(1.8)
 x.negated()                     // '-1.8'
 y = new BigNumber(-1.3)
 y.negated()                     // '1.3'
-
 ```
 
 <b>Signature:</b>

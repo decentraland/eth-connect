@@ -33,7 +33,6 @@ BigNumber.config({
     suffix: ''
   }
 })
-
 ```
 
 <b>Signature:</b>

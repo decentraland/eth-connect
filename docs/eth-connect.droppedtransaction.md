@@ -14,5 +14,5 @@ export declare type DroppedTransaction = {
     nonce: number;
 };
 ```
-<b>References:</b> [TransactionType.dropped](./eth-connect.transactiontype.dropped.md)
+<b>References:</b> [TransactionType.dropped](./eth-connect.transactiontype.md)
 

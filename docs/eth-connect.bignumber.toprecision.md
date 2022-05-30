@@ -25,7 +25,6 @@ y.toPrecision(2, 0)             // '4.6e+1'  (ROUND_UP)
 y.toPrecision(2, 1)             // '4.5e+1'  (ROUND_DOWN)
 x.toPrecision(5)                // '45.600'
 y.toPrecision(5)                // '45.600'
-
 ```
 
 <b>Signature:</b>

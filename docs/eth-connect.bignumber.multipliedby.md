@@ -14,7 +14,6 @@ x = new BigNumber(0.6)
 y = x.multipliedBy(3)                  // '1.8'
 BigNumber('7e+500').multipliedBy(y)    // '1.26e+501'
 x.multipliedBy('-a', 16)               // '-6'
-
 ```
 
 <b>Signature:</b>

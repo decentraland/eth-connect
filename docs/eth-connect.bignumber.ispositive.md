@@ -11,7 +11,6 @@ x = new BigNumber(-0)
 x.isPositive()                  // false
 y = new BigNumber(2)
 y.isPositive()                  // true
-
 ```
 
 <b>Signature:</b>

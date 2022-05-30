@@ -27,7 +27,6 @@ y.toFixed(2)                    // '3.46'
 y.toFixed(2, 1)                 // '3.45'  (ROUND_DOWN)
 x.toFixed(5)                    // '3.45600'
 y.toFixed(5)                    // '3.45600'
-
 ```
 
 <b>Signature:</b>

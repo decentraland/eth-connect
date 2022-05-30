@@ -11,7 +11,6 @@ x = new BigNumber(1)
 x.isInteger()                   // true
 y = new BigNumber(123.456)
 y.isInteger()                   // false
-
 ```
 
 <b>Signature:</b>

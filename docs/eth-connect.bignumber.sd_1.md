@@ -17,7 +17,6 @@ x.sd(6, BigNumber.ROUND_UP)       // '9876.55'
 x.sd(2)                           // '9900'
 x.sd(2, 1)                        // '9800'
 x                                 // '9876.54321'
-
 ```
 
 <b>Signature:</b>

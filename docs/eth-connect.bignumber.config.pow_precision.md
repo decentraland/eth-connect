@@ -14,7 +14,6 @@ See `exponentiatedBy`<!-- -->.
 
 ```ts
 BigNumber.config({ POW_PRECISION: 100 })
-
 ```
 
 <b>Signature:</b>

@@ -17,7 +17,6 @@ BigNumber(255).eq('ff', 16)     // true
 
 y = new BigNumber(NaN)
 y.eq(NaN)                       // false
-
 ```
 
 <b>Signature:</b>
