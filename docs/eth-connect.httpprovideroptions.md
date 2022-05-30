@@ -12,6 +12,8 @@ export declare type HTTPProviderOptions = {
         [key: string]: string;
     };
     timeout?: number;
-    requestMode?: 'cors' | 'navigate' | 'no-cors' | 'same-origin';
+    fetch?: FetchFunction;
 };
 ```
+<b>References:</b> [FetchFunction](./eth-connect.fetchfunction.md)
+
