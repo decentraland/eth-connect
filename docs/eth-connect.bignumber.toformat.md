@@ -52,7 +52,6 @@ x.toFormat()                              // '123 456 789.12345 6789'
 x.toFormat(fmt)                           // '12.34.56.789,123456789'
 x.toFormat(2, fmt)                        // '12.34.56.789,12'
 x.toFormat(3, BigNumber.ROUND_UP, fmt)    // '12.34.56.789,124'
-
 ```
 
 <b>Signature:</b>

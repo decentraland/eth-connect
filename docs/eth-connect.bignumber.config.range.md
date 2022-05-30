@@ -27,7 +27,6 @@ new BigNumber(99999)         // '99999'      e is only 4
 new BigNumber(100000)        // 'Infinity'   e is 5
 new BigNumber(0.001)         // '0.01'       e is only -3
 new BigNumber(0.0001)        // '0'          e is -4
-
 ```
 The largest possible magnitude of a finite BigNumber is 9.999...e+1000000000. The smallest possible magnitude of a non-zero BigNumber is 1e-1000000000.
 

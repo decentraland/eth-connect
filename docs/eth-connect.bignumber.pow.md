@@ -21,7 +21,6 @@ Math.pow(0.7, 2)                   // 0.48999999999999994
 x = new BigNumber(0.7)
 x.pow(2)                           // '0.49'
 BigNumber(3).pow(-2)               // '0.11111111111111111111'
-
 ```
 
 <b>Signature:</b>

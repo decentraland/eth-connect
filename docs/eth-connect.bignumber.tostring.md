@@ -31,7 +31,6 @@ BigNumber.config({ DECIMAL_PLACES: 4 });
 z = new BigNumber('1.23456789')
 z.toString()                    // '1.23456789'
 z.toString(10)                  // '1.2346'
-
 ```
 
 <b>Signature:</b>

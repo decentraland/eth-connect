@@ -13,7 +13,6 @@ The return value is always exact and unrounded.
 x = new BigNumber(0.3)
 x.minus(0.1)                    // '0.2'
 x.minus(0.6, 20)                // '0'
-
 ```
 
 <b>Signature:</b>

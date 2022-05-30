@@ -14,7 +14,6 @@ x.comparedTo(y)                 // 1
 x.comparedTo(x.minus(1))        // 0
 y.comparedTo(NaN)               // null
 y.comparedTo('110', 2)          // -1
-
 ```
 
 <b>Signature:</b>

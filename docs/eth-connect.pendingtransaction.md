@@ -12,5 +12,5 @@ export declare type PendingTransaction = TransactionObject & {
     type: TransactionType.pending;
 };
 ```
-<b>References:</b> [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.pending](./eth-connect.transactiontype.pending.md)
+<b>References:</b> [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.pending](./eth-connect.transactiontype.md)
 

@@ -12,7 +12,6 @@ y = new BigNumber(3)
 x.idiv(y)                       // '1'
 x.idiv(0.7)                     // '7'
 x.idiv('0.f', 16)               // '5'
-
 ```
 
 <b>Signature:</b>

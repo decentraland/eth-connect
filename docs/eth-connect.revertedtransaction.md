@@ -12,5 +12,5 @@ export declare type RevertedTransaction = TransactionObject & {
     type: TransactionType.reverted;
 };
 ```
-<b>References:</b> [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.reverted](./eth-connect.transactiontype.reverted.md)
+<b>References:</b> [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.reverted](./eth-connect.transactiontype.md)
 

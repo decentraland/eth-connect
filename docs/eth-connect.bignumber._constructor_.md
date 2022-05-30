@@ -10,7 +10,6 @@ Returns a new instance of a BigNumber object with value `n`<!-- -->, where `n` i
 x = new BigNumber(123.4567)              // '123.4567'
 // 'new' is optional
 y = BigNumber(x)                         // '123.4567'
-
 ```
 If `n` is a base 10 value it can be in normal (fixed-point) or exponential notation. Values in other bases must be in normal notation. Values in any base can have fraction digits, i.e. digits after the decimal point.
 
@@ -19,7 +18,6 @@ new BigNumber(43210)                     // '43210'
 new BigNumber('4.321e+4')                // '43210'
 new BigNumber('-735.0918e-430')          // '-7.350918e-428'
 new BigNumber('123412421.234324', 5)     // '607236.557696'
-
 ```
 Signed `0`<!-- -->, signed `Infinity` and `NaN` are supported.
 
@@ -29,7 +27,6 @@ new BigNumber(NaN)                       // 'NaN'
 new BigNumber(-0)                        // '0'
 new BigNumber('.5')                      // '0.5'
 new BigNumber('+2')                      // '2'
-
 ```
 String values in hexadecimal literal form, e.g. `'0xff'`<!-- -->, are valid, as are string values with the octal and binary prefixs `'0o'` and `'0b'`<!-- -->. String values in octal literal form without the prefix will be interpreted as decimals, e.g. `'011'` is interpreted as 11, not 9.
 
@@ -38,7 +35,6 @@ new BigNumber(-10110100.1, 2)            // '-180.5'
 new BigNumber('-0b10110100.1')           // '-180.5'
 new BigNumber('ff.8', 16)                // '255.5'
 new BigNumber('0xff.8')                  // '255.5'
-
 ```
 If a base is specified, `n` is rounded according to the current `DECIMAL_PLACES` and `ROUNDING_MODE` settings. This includes base 10, so don't include a `base` parameter for decimal values unless this behaviour is desired.
 
@@ -46,7 +42,6 @@ If a base is specified, `n` is rounded according to the current `DECIMAL_PLACES`
 BigNumber.config({ DECIMAL_PLACES: 5 })
 new BigNumber(1.23456789)                // '1.23456789'
 new BigNumber(1.23456789, 10)            // '1.23457'
-
 ```
 An error is thrown if `base` is invalid.
 
@@ -55,7 +50,6 @@ There is no limit to the number of digits of a value of type string (other than 
 ```ts
 new BigNumber('5032485723458348569331745.33434346346912144534543')
 new BigNumber('4.321e10000000')
-
 ```
 BigNumber `NaN` is returned if `n` is invalid (unless `BigNumber.DEBUG` is `true`<!-- -->, see below).
 
@@ -63,7 +57,6 @@ BigNumber `NaN` is returned if `n` is invalid (unless `BigNumber.DEBUG` is `true
 new BigNumber('.1*')                    // 'NaN'
 new BigNumber('blurgh')                 // 'NaN'
 new BigNumber(9, 2)                     // 'NaN'
-
 ```
 To aid in debugging, if `BigNumber.DEBUG` is `true` then an error will be thrown on an invalid `n`<!-- -->. An error will also be thrown if `n` is of type number with more than 15 significant digits, as calling `toString` or `valueOf` on these numbers may not result in the intended value.
 
@@ -75,13 +68,11 @@ BigNumber.DEBUG = true
 new BigNumber(823456789123456.3)
 // 'Error: Not a base 2 number'
 new BigNumber(9, 2)
-
 ```
 A BigNumber can also be created from an object literal. Use `isBigNumber` to check that it is well-formed.
 
 ```ts
 new BigNumber({ s: 1, e: 2, c: [ 777, 12300000000000 ], _isBigNumber: true })    // '777.123'
-
 ```
 
 <b>Signature:</b>

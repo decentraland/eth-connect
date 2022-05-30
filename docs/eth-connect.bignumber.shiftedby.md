@@ -16,7 +16,6 @@ Throws if `n` is invalid.
 x = new BigNumber(1.23)
 x.shiftedBy(3)                      // '1230'
 x.shiftedBy(-3)                     // '0.00123'
-
 ```
 
 <b>Signature:</b>

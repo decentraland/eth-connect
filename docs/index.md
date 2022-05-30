@@ -127,6 +127,7 @@
 |  [DroppedTransaction](./eth-connect.droppedtransaction.md) |  |
 |  [EventData](./eth-connect.eventdata.md) |  |
 |  [EventFilterCreator](./eth-connect.eventfiltercreator.md) |  |
+|  [FetchFunction](./eth-connect.fetchfunction.md) |  |
 |  [FilterCallback](./eth-connect.filtercallback.md) |  |
 |  [FilterOptions](./eth-connect.filteroptions.md) |  |
 |  [FinishedTransactionAndReceipt](./eth-connect.finishedtransactionandreceipt.md) |  |

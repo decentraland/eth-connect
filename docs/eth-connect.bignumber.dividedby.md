@@ -12,7 +12,6 @@ y = new BigNumber(113)
 x.dividedBy(y)                  // '3.14159292035398230088'
 x.dividedBy(5)                  // '71'
 x.dividedBy(47, 16)             // '5'
-
 ```
 
 <b>Signature:</b>

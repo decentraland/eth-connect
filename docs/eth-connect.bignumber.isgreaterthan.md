@@ -12,7 +12,6 @@ x = new BigNumber(0.1)
 x.isGreaterThan(BigNumber(0.3).minus(0.2))    // false
 BigNumber(0).isGreaterThan(x)                 // false
 BigNumber(11, 3).isGreaterThan(11.1, 2)       // true
-
 ```
 
 <b>Signature:</b>

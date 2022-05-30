@@ -16,7 +16,6 @@ x.precision()                         // 9
 y = new BigNumber(987000)
 y.precision(false)                    // 3
 y.precision(true)                     // 6
-
 ```
 
 <b>Signature:</b>

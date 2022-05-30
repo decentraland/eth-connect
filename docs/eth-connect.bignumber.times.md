@@ -14,7 +14,6 @@ x = new BigNumber(0.6)
 y = x.times(3)                  // '1.8'
 BigNumber('7e+500').times(y)    // '1.26e+501'
 x.times('-a', 16)               // '-6'
-
 ```
 
 <b>Signature:</b>

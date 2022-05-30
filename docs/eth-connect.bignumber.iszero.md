@@ -9,7 +9,6 @@ Returns `true` if the value of this BigNumber is zero or minus zero, otherwise r
 ```ts
 x = new BigNumber(-0)
 x.isZero()                 // true
-
 ```
 
 <b>Signature:</b>

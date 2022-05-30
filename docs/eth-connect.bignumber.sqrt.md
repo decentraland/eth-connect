@@ -13,7 +13,6 @@ x = new BigNumber(16)
 x.sqrt()                  // '4'
 y = new BigNumber(3)
 y.sqrt()                  // '1.73205080756887729353'
-
 ```
 
 <b>Signature:</b>

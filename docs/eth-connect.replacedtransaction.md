@@ -14,5 +14,5 @@ export declare type ReplacedTransaction = {
     nonce: number;
 };
 ```
-<b>References:</b> [TransactionType.replaced](./eth-connect.transactiontype.replaced.md)
+<b>References:</b> [TransactionType.replaced](./eth-connect.transactiontype.md)
 

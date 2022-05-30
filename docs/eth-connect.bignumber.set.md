@@ -30,7 +30,6 @@ BigNumber.set({
 });
 
 BigNumber.set().DECIMAL_PLACES        // 40
-
 ```
 
 <b>Signature:</b>

@@ -12,7 +12,6 @@ x = new BigNumber(0.1)
 x.gt(BigNumber(0.3).minus(0.2))    // false
 BigNumber(0).gt(x)                 // false
 BigNumber(11, 3).gt(11.1, 2)       // true
-
 ```
 
 <b>Signature:</b>

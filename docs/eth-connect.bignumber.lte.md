@@ -12,7 +12,6 @@ x = new BigNumber(0.1)
 x.lte(BigNumber(0.3).minus(0.2))    // true
 BigNumber(-1).lte(x)                // true
 BigNumber(10, 18).lte('i', 36)      // true
-
 ```
 
 <b>Signature:</b>
