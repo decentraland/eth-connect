@@ -9,7 +9,6 @@ updates:
   open-pull-requests-limit: 10
   allow:
     - dependency-name: "@dcl/*"
-    - dependency-name: "@catalyst/*"
     - dependency-name: "@well-known-components/*"
     - dependency-name: "dcl-*"
   versioning-strategy: auto
