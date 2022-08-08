@@ -5,39 +5,11 @@ updates:
   schedule:
     interval: daily
     time: "10:00"
+    timezone: "America/Buenos_Aires"
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: "@microsoft/api-extractor"
-    versions:
-    - 7.13.3
-    - 7.13.4
-    - 7.13.5
-  - dependency-name: rollup
-    versions:
-    - 2.38.5
-    - 2.39.1
-    - 2.41.0
-    - 2.41.4
-    - 2.42.0
-    - 2.42.2
-    - 2.42.3
-  - dependency-name: "@microsoft/api-documenter"
-    versions:
-    - 7.12.11
-    - 7.12.8
-    - 7.12.9
-  - dependency-name: rollup-plugin-typescript2
-    versions:
-    - 0.30.0
-  - dependency-name: "@types/mocha"
-    versions:
-    - 8.2.1
-  - dependency-name: bignumber.js
-    versions:
-    - 9.0.1
-  - dependency-name: chai
-    versions:
-    - 4.3.0
-  - dependency-name: crypto-js
-    versions:
-    - 4.0.0
+  allow:
+    - dependency-name: "@dcl/*"
+    - dependency-name: "@catalyst/*"
+    - dependency-name: "@well-known-components/*"
+    - dependency-name: "dcl-*"
+  versioning-strategy: auto
