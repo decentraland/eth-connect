@@ -13,5 +13,5 @@ export declare type ConfirmedTransaction = TransactionObject & {
     receipt: TransactionReceipt;
 };
 ```
-<b>References:</b> [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.confirmed](./eth-connect.transactiontype.confirmed.md)<!-- -->, [TransactionReceipt](./eth-connect.transactionreceipt.md)
+<b>References:</b> [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.confirmed](./eth-connect.transactiontype.md)<!-- -->, [TransactionReceipt](./eth-connect.transactionreceipt.md)
 

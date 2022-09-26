@@ -289,6 +289,24 @@ export function toData(val: BigNumber.Value) {
 
 /**
  * @public
+ * Converts a UTF8 string to it's hex representation as a 0x string.
+ * If the argument is already a 0xHEX prefixed string, the conversion is skipped.
+ */
+export function toStringData(val: BigNumber.Value) {
+  if (typeof val === 'string') {
+    if (val.startsWith('0x') && /^[A-Za-z0-9]+$/.test(val)) {
+      return toHex(val)
+    }
+    return '0x' + bytesToHex(stringToUtf8Bytes(val))
+  }
+  if (val instanceof Uint8Array) {
+    return '0x' + bytesToHex(val)
+  }
+  throw new Error(`toStringData: Error trying to convert ${val} (${typeof val}) to a hex string.`)
+}
+
+/**
+ * @public
  * Converts value to it's boolean representation (x != 0)
  */
 export function toBoolean(value: BigNumber.Value | boolean) {
@@ -457,7 +475,7 @@ export function signedIsNegative(value: BigNumber, bits: number) {
  */
 export function getAddress(address: string): string {
   if (typeof address !== 'string') {
-    throw errors.error('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
+    throw errors.createError('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
   }
 
   if (address.trim().match(/^(0x)?[0-9a-fA-F]{40}$/)) {
@@ -468,7 +486,7 @@ export function getAddress(address: string): string {
 
     return toChecksumAddress(address)
   } else {
-    throw errors.error('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
+    throw errors.createError('invalid address', errors.INVALID_ARGUMENT, { arg: 'address', value: address })
   }
 }
 

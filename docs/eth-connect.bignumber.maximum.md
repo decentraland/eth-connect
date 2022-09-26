@@ -14,7 +14,6 @@ BigNumber.maximum(4e9, x, '123456789.9')      // '4000000000'
 
 arr = [12, '13', new BigNumber(14)]
 BigNumber.maximum.apply(null, arr)            // '14'
-
 ```
 
 <b>Signature:</b>

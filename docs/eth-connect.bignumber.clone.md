@@ -21,7 +21,6 @@ y.div(3)                        // 0.333333333
 // BN = BigNumber.clone({ DECIMAL_PLACES: 9 }) is equivalent to:
 BN = BigNumber.clone()
 BN.config({ DECIMAL_PLACES: 9 })
-
 ```
 
 <b>Signature:</b>

@@ -11,7 +11,6 @@ The return value is always exact and unrounded.
 ```ts
 x = new BigNumber(-0.8)
 x.absoluteValue()           // '0.8'
-
 ```
 
 <b>Signature:</b>

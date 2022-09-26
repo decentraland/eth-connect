@@ -846,6 +846,16 @@ export function extractDisplayName(name: string): string;
 // @public
 export function extractTypeName(name: string): string;
 
+// Warning: (ae-missing-release-tag) "FetchFunction" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export type FetchFunction = (url: string, params: {
+    body?: any;
+    method?: string;
+    mode?: string;
+    headers?: any;
+}) => Promise<any>;
+
 // Warning: (ae-missing-release-tag) "FilterCallback" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
@@ -915,6 +925,7 @@ export type HTTPProviderOptions = {
         [key: string]: string;
     };
     timeout?: number;
+    fetch?: FetchFunction;
 };
 
 // Warning: (ae-missing-release-tag) "IFuture" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
@@ -1403,6 +1414,9 @@ export type TopicFilter = Array<Data | null | TopicFilter>;
 function toString_2(value: BigNumber.Value): string;
 
 export { toString_2 as toString }
+
+// @public
+export function toStringData(val: BigNumber.Value): string;
 
 // @public
 export function toTwosComplement(num: BigNumber.Value, bits?: number): BigNumber;

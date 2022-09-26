@@ -51,9 +51,9 @@ lint:
 test:
 		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha
 test-fast:
-		node --inspect --experimental-modules node_modules/.bin/_mocha
+		node --inspect --experimental-modules node_modules/.bin/_mocha  $(TEST_ARGS)
 test-fast-bail:
-		node --inspect --experimental-modules node_modules/.bin/_mocha --bail
+		node --inspect --experimental-modules node_modules/.bin/_mocha --bail $(TEST_ARGS)
 
 test-coveralls:
 		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose
@@ -77,7 +77,7 @@ local-node:
 						ethereum/client-go \
 				--identity="TEST_NODE" --networkid="53611" \
         --allow-insecure-unlock \
-				--rpc --rpcaddr 0.0.0.0 --rpcapi="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" \
+				--http --http.addr 0.0.0.0 --http.api="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" \
 				--ws  --ws.addr 0.0.0.0  --ws.api="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" --ws.origins \* \
 				--mine --miner.threads=1 \
 				--dev --dev.period 0

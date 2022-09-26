@@ -202,7 +202,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
     // reset all requests and callbacks
     if (!this.isDisposed) {
-      this.connect()
+      setTimeout(() => this.connect(), 1000)
     }
   }
 
@@ -232,7 +232,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
     connection.onerror = (error) => {
       const theError = new Error('Error in web socket')
-      ;(theError as any).data = error
+        ; (theError as any).data = error
       this.timeout(theError)
     }
 

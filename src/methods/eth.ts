@@ -292,14 +292,14 @@ export namespace eth {
   export const personal_sign = new Method({
     callName: 'personal_sign',
     params: 3,
-    inputFormatter: [null, formatters.inputAddressFormatter, null],
+    inputFormatter: [utils.toStringData, formatters.inputAddressFormatter, null],
     outputFormatter: utils.toData
   })
 
   export const personal_ecRecover = new Method({
     callName: 'personal_ecRecover',
     params: 2,
-    inputFormatter: [null /* message */, null /* signature */],
+    inputFormatter: [utils.toStringData /* message */, null /* signature */],
     outputFormatter: utils.toAddress
   })
 

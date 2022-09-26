@@ -17,7 +17,6 @@ x.integerValue(BigNumber.ROUND_CEIL)    // '124'
 y = new BigNumber(-12.7)
 y.integerValue()                        // '-13'
 x.integerValue(BigNumber.ROUND_DOWN)    // '-12'
-
 ```
 
 <b>Signature:</b>

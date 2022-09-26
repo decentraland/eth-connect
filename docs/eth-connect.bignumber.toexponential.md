@@ -26,7 +26,6 @@ y.toExponential(1)              // '4.6e+1'
 y.toExponential(1, 1)           // '4.5e+1'  (ROUND_DOWN)
 x.toExponential(3)              // '4.560e+1'
 y.toExponential(3)              // '4.560e+1'
-
 ```
 
 <b>Signature:</b>

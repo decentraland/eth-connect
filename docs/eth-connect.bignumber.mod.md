@@ -18,7 +18,6 @@ x = new BigNumber(1)
 x.mod(0.9)                   // '0.1'
 y = new BigNumber(33)
 y.mod('a', 33)               // '3'
-
 ```
 
 <b>Signature:</b>

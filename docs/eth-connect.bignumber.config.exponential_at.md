@@ -30,7 +30,6 @@ BigNumber.config({ EXPONENTIAL_AT: 1e+9 })
 
 // Always return exponential notation:
 BigNumber.config({ EXPONENTIAL_AT: 0 })
-
 ```
 Regardless of the value of `EXPONENTIAL_AT`<!-- -->, the `toFixed` method will always return a value in normal notation and the `toExponential` method will always return a value in exponential form. Calling `toString` with a base argument, e.g. `toString(10)`<!-- -->, will also always return normal notation.
 

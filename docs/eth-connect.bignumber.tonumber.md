@@ -19,7 +19,6 @@ y.toNumber()                    // 4.598734985763409e+34
 z = new BigNumber(-0)
 1 / z.toNumber()                // -Infinity
 1 / +z                          // -Infinity
-
 ```
 
 <b>Signature:</b>

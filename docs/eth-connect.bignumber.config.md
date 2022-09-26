@@ -23,7 +23,6 @@ BigNumber.config({ ALPHABET: '0123456789TE' })
 x = new BigNumber('T', 12)
 x.toString()                // '10'
 x.toString(12)              // 'T'
-
 ```
  |
 |  [CRYPTO?](./eth-connect.bignumber.config.crypto.md) | boolean | <i>(Optional)</i> A boolean: <code>true</code> or <code>false</code>. Default value: <code>false</code>.<!-- -->The value that determines whether cryptographically-secure pseudo-random number generation is used. If <code>CRYPTO</code> is set to true then the random method will generate random digits using <code>crypto.getRandomValues</code> in browsers that support it, or <code>crypto.randomBytes</code> if using a version of Node.js that supports it.<!-- -->If neither function is supported by the host environment then attempting to set <code>CRYPTO</code> to <code>true</code> will fail and an exception will be thrown.<!-- -->If <code>CRYPTO</code> is <code>false</code> then the source of randomness used will be <code>Math.random</code> (which is assumed to generate at least 30 bits of randomness).<!-- -->See <code>BigNumber.random</code>.
@@ -34,14 +33,12 @@ global.crypto = require('crypto')
 BigNumber.config({ CRYPTO: true })
 BigNumber.config().CRYPTO       // true
 BigNumber.random()              // 0.54340758610486147524
-
 ```
  |
 |  [DECIMAL\_PLACES?](./eth-connect.bignumber.config.decimal_places.md) | number | <i>(Optional)</i> An integer, 0 to 1e+9. Default value: 20.<!-- -->The maximum number of decimal places of the result of operations involving division, i.e. division, square root and base conversion operations, and exponentiation when the exponent is negative.
 ```ts
 BigNumber.config({ DECIMAL_PLACES: 5 })
 BigNumber.set({ DECIMAL_PLACES: 5 })
-
 ```
  |
 |  [EXPONENTIAL\_AT?](./eth-connect.bignumber.config.exponential_at.md) | number \| \[number, number\] | <i>(Optional)</i> An integer, 0 to 1e+9, or an array, \[-1e+9 to 0, 0 to 1e+9\]. Default value: <code>[-7, 20]</code>.<!-- -->The exponent value(s) at which <code>toString</code> returns exponential notation.<!-- -->If a single number is assigned, the value is the exponent magnitude.<!-- -->If an array of two numbers is assigned then the first number is the negative exponent value at and beneath which exponential notation is used, and the second number is the positive exponent value at and above which exponential notation is used.<!-- -->For example, to emulate JavaScript numbers in terms of the exponent values at which they begin to use exponential notation, use <code>[-7, 20]</code>.
@@ -61,7 +58,6 @@ BigNumber.config({ EXPONENTIAL_AT: 1e+9 })
 
 // Always return exponential notation:
 BigNumber.config({ EXPONENTIAL_AT: 0 })
-
 ```
 Regardless of the value of <code>EXPONENTIAL_AT</code>, the <code>toFixed</code> method will always return a value in normal notation and the <code>toExponential</code> method will always return a value in exponential form. Calling <code>toString</code> with a base argument, e.g. <code>toString(10)</code>, will also always return normal notation. |
 |  [FORMAT?](./eth-connect.bignumber.config.format.md) | [BigNumber.Format](./eth-connect.bignumber.format.md) | <i>(Optional)</i> An object including any number of the properties shown below.<!-- -->The object configures the format of the string returned by the <code>toFormat</code> method. The example below shows the properties of the object that are recognised, and their default values.<!-- -->Unlike the other configuration properties, the values of the properties of the <code>FORMAT</code> object will not be checked for validity - the existing object will simply be replaced by the object that is passed in.<!-- -->See <code>toFormat</code>.
@@ -86,20 +82,17 @@ BigNumber.config({
     suffix: ''
   }
 })
-
 ```
  |
 |  [MODULO\_MODE?](./eth-connect.bignumber.config.modulo_mode.md) | [BigNumber.ModuloMode](./eth-connect.bignumber.modulomode.md) | <i>(Optional)</i> An integer, 0, 1, 3, 6 or 9. Default value: <code>BigNumber.ROUND_DOWN</code> (1).<!-- -->The modulo mode used when calculating the modulus: <code>a mod n</code>. The quotient, <code>q = a / n</code>, is calculated according to the <code>ROUNDING_MODE</code> that corresponds to the chosen <code>MODULO_MODE</code>. The remainder, <code>r</code>, is calculated as: <code>r = a - n * q</code>.<!-- -->The modes that are most commonly used for the modulus/remainder operation are shown in the following table. Although the other rounding modes can be used, they may not give useful results.<!-- -->Property \| Value \| Description :\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\|:\-\-\-\-\-\-\|:\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\- <code>ROUND_UP</code> \| 0 \| The remainder is positive if the dividend is negative. <code>ROUND_DOWN</code> \| 1 \| The remainder has the same sign as the dividend. \| \| Uses 'truncating division' and matches JavaScript's <code>%</code> operator . <code>ROUND_FLOOR</code> \| 3 \| The remainder has the same sign as the divisor. \| \| This matches Python's <code>%</code> operator. <code>ROUND_HALF_EVEN</code> \| 6 \| The IEEE 754 remainder function. <code>EUCLID</code> \| 9 \| The remainder is always positive. \| \| Euclidian division: <code>q = sign(n) * floor(a / abs(n))</code>The rounding/modulo modes are available as enumerated properties of the BigNumber constructor.<!-- -->See <code>modulo</code>.
 ```ts
 BigNumber.config({ MODULO_MODE: BigNumber.EUCLID })
 BigNumber.set({ MODULO_MODE: 9 })          // equivalent
-
 ```
  |
 |  [POW\_PRECISION?](./eth-connect.bignumber.config.pow_precision.md) | number | <i>(Optional)</i> An integer, 0 to 1e+9. Default value: 0.<!-- -->The maximum precision, i.e. number of significant digits, of the result of the power operation - unless a modulus is specified.<!-- -->If set to 0, the number of significant digits will not be limited.<!-- -->See <code>exponentiatedBy</code>.
 ```ts
 BigNumber.config({ POW_PRECISION: 100 })
-
 ```
  |
 |  [RANGE?](./eth-connect.bignumber.config.range.md) | number \| \[number, number\] | <i>(Optional)</i> An integer, magnitude 1 to 1e+9, or an array, \[-1e+9 to -1, 1 to 1e+9\]. Default value: <code>[-1e+9, 1e+9]</code>.<!-- -->The exponent value(s) beyond which overflow to Infinity and underflow to zero occurs.<!-- -->If a single number is assigned, it is the maximum exponent magnitude: values wth a positive exponent of greater magnitude become Infinity and those with a negative exponent of greater magnitude become zero.<!-- -->If an array of two numbers is assigned then the first number is the negative exponent limit and the second number is the positive exponent limit.<!-- -->For example, to emulate JavaScript numbers in terms of the exponent values at which they become zero and Infinity, use \[-324, 308\].
@@ -116,14 +109,12 @@ new BigNumber(99999)         // '99999'      e is only 4
 new BigNumber(100000)        // 'Infinity'   e is 5
 new BigNumber(0.001)         // '0.01'       e is only -3
 new BigNumber(0.0001)        // '0'          e is -4
-
 ```
 The largest possible magnitude of a finite BigNumber is 9.999...e+1000000000. The smallest possible magnitude of a non-zero BigNumber is 1e-1000000000. |
 |  [ROUNDING\_MODE?](./eth-connect.bignumber.config.rounding_mode.md) | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | <i>(Optional)</i> An integer, 0 to 8. Default value: <code>BigNumber.ROUND_HALF_UP</code> (4).<!-- -->The rounding mode used in operations that involve division (see <code>DECIMAL_PLACES</code>) and the default rounding mode of the <code>decimalPlaces</code>, <code>precision</code>, <code>toExponential</code>, <code>toFixed</code>, <code>toFormat</code> and <code>toPrecision</code> methods.<!-- -->The modes are available as enumerated properties of the BigNumber constructor.
 ```ts
 BigNumber.config({ ROUNDING_MODE: 0 })
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_UP })
-
 ```
  |
 

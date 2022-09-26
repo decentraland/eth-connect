@@ -11,7 +11,6 @@ x = new BigNumber(NaN)
 x.isNaN()                       // true
 y = new BigNumber('Infinity')
 y.isNaN()                       // false
-
 ```
 
 <b>Signature:</b>

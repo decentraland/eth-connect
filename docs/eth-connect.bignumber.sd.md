@@ -16,7 +16,6 @@ x.sd()                         // 9
 y = new BigNumber(987000)
 y.sd(false)                    // 3
 y.sd(true)                     // 6
-
 ```
 
 <b>Signature:</b>

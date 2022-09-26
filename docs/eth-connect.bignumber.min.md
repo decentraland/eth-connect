@@ -14,7 +14,6 @@ BigNumber.min(4e9, x, '123456789.9')             // '123456789.9'
 
 arr = [2, new BigNumber(-14), '-15.9999', -12]
 BigNumber.min.apply(null, arr)                   // '-15.9999'
-
 ```
 
 <b>Signature:</b>

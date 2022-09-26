@@ -12,7 +12,6 @@ y = new BigNumber(113)
 x.div(y)                    // '3.14159292035398230088'
 x.div(5)                    // '71'
 x.div(47, 16)               // '5'
-
 ```
 
 <b>Signature:</b>

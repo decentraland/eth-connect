@@ -19,7 +19,6 @@ pi.toFraction(10000)            // '355, 113'
 pi.toFraction(100)              // '311, 99'
 pi.toFraction(10)               // '22, 7'
 pi.toFraction(1)                // '3, 1'
-
 ```
 
 <b>Signature:</b>

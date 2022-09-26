@@ -1,5 +1,5 @@
 import 'isomorphic-fetch'
-// tslint:disable
+import fetch from 'node-fetch'
 
 import { NodeConnectionFactory } from '../helpers/NodeConnectionFactory'
 import { ContractFactory, RequestManager } from '../../src'
@@ -48,7 +48,7 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
       })
     })
 
-    const rm = new RequestManager(new HTTPProvider('http://127.0.0.1:7654'))
+    const rm = new RequestManager(new HTTPProvider('http://127.0.0.1:7654', { fetch: Math.random() > 0.5 ? fetch : undefined }))
 
     it('should get the network', async () => {
       console.log('Network version:', await rm.net_version())

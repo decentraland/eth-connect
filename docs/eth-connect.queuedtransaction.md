@@ -14,5 +14,5 @@ export declare type QueuedTransaction = {
     nonce: number;
 };
 ```
-<b>References:</b> [TransactionType.queued](./eth-connect.transactiontype.queued.md)
+<b>References:</b> [TransactionType.queued](./eth-connect.transactiontype.md)
 

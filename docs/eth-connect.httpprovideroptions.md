@@ -12,5 +12,8 @@ export declare type HTTPProviderOptions = {
         [key: string]: string;
     };
     timeout?: number;
+    fetch?: FetchFunction;
 };
 ```
+<b>References:</b> [FetchFunction](./eth-connect.fetchfunction.md)
+

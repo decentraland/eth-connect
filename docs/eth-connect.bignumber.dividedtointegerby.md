@@ -12,7 +12,6 @@ y = new BigNumber(3)
 x.dividedToIntegerBy(y)              // '1'
 x.dividedToIntegerBy(0.7)            // '7'
 x.dividedToIntegerBy('0.f', 16)      // '5'
-
 ```
 
 <b>Signature:</b>
