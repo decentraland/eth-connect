@@ -68,7 +68,12 @@ export class SolidityFunction {
 
     let inputArgs = args.filter(function (a) {
       // filter the options object but not arguments that are arrays
-      return !(utils.isObject(a) === true && utils.isArray(a) === false && utils.isBigNumber(a) === false && !(a instanceof Uint8Array))
+      return !(
+        utils.isObject(a) === true &&
+        utils.isArray(a) === false &&
+        utils.isBigNumber(a) === false &&
+        !(a instanceof Uint8Array)
+      )
     })
     if (inputArgs.length !== this._inputTypes.length) {
       throw errors.InvalidNumberOfSolidityArgs(inputArgs.length, this._inputTypes.length)
@@ -189,7 +194,14 @@ export class SolidityFunction {
       (...args: any[]) => this.execute(contract.requestManager, contract.address, ...args),
       {
         estimateGas: this.estimateGas.bind(this, contract.requestManager, contract.address),
-        toPayload: (...args: any[]) => this.toPayload(args)
+        toPayload: (...args: any[]) => this.toPayload(args),
+        toEthCall: (...args: any[]) => {
+          const defaultBlock = this.extractDefaultBlock(args)
+          const payload = this.toPayload(args)
+          payload.to = contract.address
+          return { method: 'eth_call', params: [payload, defaultBlock] }
+        },
+        unpackOutput: (output: string) => this.unpackOutput(output)
       }
     )
 

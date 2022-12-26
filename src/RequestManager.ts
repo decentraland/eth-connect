@@ -17,7 +17,13 @@
 
 // tslint:disable:variable-name
 
-import { RPCSendableMessage, toJsonRpcRequest, isValidResponse } from './utils/jsonrpc'
+import {
+  RPCSendableMessage,
+  toJsonRpcRequest,
+  isValidResponse,
+  toBatchPayload,
+  getBatchRequestId
+} from './utils/jsonrpc'
 import { InvalidProvider, InvalidResponse } from './utils/errors'
 import { BigNumber } from './utils/BigNumber'
 import { IFuture, future } from 'fp-future'
@@ -393,6 +399,46 @@ export class RequestManager {
         return
       }
       defer.resolve(result.result)
+    })
+
+    return defer
+  }
+
+  /**
+   * Should be used to asynchronously send a batch request
+   *
+   * @param data - The RPC message to be sent
+   */
+  async sendBatchAsync(data: RPCSendableMessage[]) {
+    const provider = await this.provider
+
+    /* istanbul ignore if */
+    if (!provider) {
+      throw InvalidProvider()
+    }
+
+    const payload = toBatchPayload(data)
+
+    const defer = future()
+
+    const id = getBatchRequestId()
+    this.requests.set(id, defer)
+
+    provider.sendAsync(payload, (err: any, result: any) => {
+      this.requests.delete(id)
+
+      if (err) {
+        defer.reject(err)
+        return
+      }
+
+      /* istanbul ignore if */
+      if (!isValidResponse(result)) {
+        defer.reject(InvalidResponse(result))
+        return
+      }
+
+      defer.resolve(result.map((r: any) => r.result))
     })
 
     return defer

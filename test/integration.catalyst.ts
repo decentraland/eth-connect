@@ -1,6 +1,6 @@
 import 'isomorphic-fetch'
 import * as expect from 'expect'
-import { ContractFactory, RequestManager } from '../src'
+import { ContractFactory, RequestManager, RPCSendableMessage } from '../src'
 import { testAllProviders } from './helpers/testAllProviders'
 import { abi, bytecode } from './fixtures/Catalyst.json'
 
@@ -56,6 +56,19 @@ function doTest(requestManager: RequestManager) {
   })
 
   it('getCatalyst 0x00 should not fail', async function () {
-    await CatalystContract.catalystById('0x00')
+    console.log('normal output', await CatalystContract.catalystById('0x00'))
+  })
+
+  it('batch call should not fail', async function () {
+    const batch: RPCSendableMessage[] = [
+      CatalystContract.catalystById.toEthCall('0x00'),
+      CatalystContract.catalystById.toEthCall('0x00', 'latest')
+    ]
+
+    const output = await requestManager.sendBatchAsync(batch)
+    console.log(
+      'batch output',
+      output.map((r: any) => CatalystContract.catalystById.unpackOutput(r))
+    )
   })
 }

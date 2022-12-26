@@ -96,6 +96,7 @@ export declare class RequestManager
 |  [isPending(tx)](./eth-connect.requestmanager.ispending.md) |  | Expects the result of getTransaction's geth command and returns true if the transaction is still pending. It'll also check for a pending status prop against TRANSACTION\_STATUS |
 |  [isTxDropped(txId, \_retryAttemps)](./eth-connect.requestmanager.istxdropped.md) |  | Wait retryAttemps \* TRANSACTION\_FETCH\_DELAY for a transaction status to be in the mempool |
 |  [sendAsync(data)](./eth-connect.requestmanager.sendasync.md) |  | Should be used to asynchronously send request |
+|  [sendBatchAsync(data)](./eth-connect.requestmanager.sendbatchasync.md) |  | Should be used to asynchronously send a batch request |
 |  [setProvider(p)](./eth-connect.requestmanager.setprovider.md) |  | Should be used to set provider of request manager |
 |  [waitForCompletion(txId, retriesOnEmpty)](./eth-connect.requestmanager.waitforcompletion.md) |  | Wait until a transaction finishes by either being mined or failing |
 

@@ -64,6 +64,10 @@ export function isValidResponse(response: RPCResponse | RPCResponse[]) {
   }
 }
 
+export function getBatchRequestId() {
+  messageId++
+  return messageId
+}
 /**
  * Should be called to create batch payload object
  *

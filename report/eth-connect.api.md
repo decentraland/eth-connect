@@ -894,6 +894,11 @@ export function fromWei(num: string | number, unit: Unit): string;
 // @public (undocumented)
 export function getAddress(address: string): string;
 
+// Warning: (ae-missing-release-tag) "getBatchRequestId" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export function getBatchRequestId(): number;
+
 // @public
 export function getValueOfUnit(_unit: Unit): BigNumber;
 
@@ -1158,6 +1163,7 @@ class RequestManager {
     // (undocumented)
     provider: any;
     sendAsync(data: RPCSendableMessage): Promise<any>;
+    sendBatchAsync(data: RPCSendableMessage[]): Promise<any>;
     setProvider(p: any): void;
     // (undocumented)
     shh_addToGroup: (group: Data) => Promise<boolean>;
