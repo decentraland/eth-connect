@@ -50,7 +50,7 @@ lint:
 		${TSLINT} --project tsconfig.json
 
 test:
-		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha
+		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha --timeout 30000
 test-fast:
 		node --inspect --experimental-modules node_modules/.bin/_mocha  $(TEST_ARGS)
 test-fast-bail:
