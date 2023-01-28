@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type TransactionObject = {
+export type TransactionObject = {
     hash: TxHash;
     nonce: number;
     blockHash: TxHash;

@@ -25,7 +25,7 @@ dividedToIntegerBy(n: BigNumber.Value, base?: number): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | <i>(Optional)</i> The base of n. |
 
 <b>Returns:</b>
 

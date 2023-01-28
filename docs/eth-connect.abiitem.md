@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type AbiItem = AbiFunction | AbiEvent | AbiConstructor | AbiFallback | AbiItemGeneric;
+export type AbiItem = AbiFunction | AbiEvent | AbiConstructor | AbiFallback | AbiItemGeneric;
 ```
 <b>References:</b> [AbiFunction](./eth-connect.abifunction.md)<!-- -->, [AbiEvent](./eth-connect.abievent.md)<!-- -->, [AbiConstructor](./eth-connect.abiconstructor.md)<!-- -->, [AbiFallback](./eth-connect.abifallback.md)<!-- -->, [AbiItemGeneric](./eth-connect.abiitemgeneric.md)
 

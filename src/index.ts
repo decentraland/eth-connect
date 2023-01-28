@@ -22,7 +22,7 @@ export * from './Schema'
 export * from './utils/utf8'
 export * from './utils/jsonrpc'
 
-export { IFuture } from 'fp-future'
+export type { IFuture } from 'fp-future'
 
 export { RequestManager } from './RequestManager'
 export * from './Contract'

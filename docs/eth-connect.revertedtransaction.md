@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type RevertedTransaction = TransactionObject & {
+export type RevertedTransaction = TransactionObject & {
     type: TransactionType.reverted;
 };
 ```

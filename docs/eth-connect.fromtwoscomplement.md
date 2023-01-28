@@ -17,7 +17,7 @@ export declare function fromTwosComplement(num: BigNumber, bits?: number): BigNu
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  num | [BigNumber](./eth-connect.bignumber.md) |  |
-|  bits | number |  |
+|  bits | number | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

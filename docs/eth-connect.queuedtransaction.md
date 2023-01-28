@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type QueuedTransaction = {
+export type QueuedTransaction = {
     type: TransactionType.queued;
     hash: string;
     nonce: number;

@@ -30,7 +30,7 @@ precision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): Big
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  significantDigits | number | Significant digits, integer, 1 to 1e+9. |
-|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | Rounding mode, integer, 0 to 8. |
+|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | <i>(Optional)</i> Rounding mode, integer, 0 to 8. |
 
 <b>Returns:</b>
 

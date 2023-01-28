@@ -16,8 +16,8 @@ encode(indexed?: Record<string, any>, options?: FilterOptions): FilterOptions;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  indexed | Record&lt;string, any&gt; |  |
-|  options | [FilterOptions](./eth-connect.filteroptions.md) |  |
+|  indexed | Record&lt;string, any&gt; | <i>(Optional)</i> |
+|  options | [FilterOptions](./eth-connect.filteroptions.md) | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

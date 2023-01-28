@@ -35,7 +35,7 @@ static random(decimalPlaces?: number): BigNumber;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  decimalPlaces | number | Decimal places, integer, 0 to 1e+9. |
+|  decimalPlaces | number | <i>(Optional)</i> Decimal places, integer, 0 to 1e+9. |
 
 <b>Returns:</b>
 

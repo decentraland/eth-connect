@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { BigNumber } from '../src/utils/BigNumber'
 import { AllSolidityEvents } from '../src/AllSolidityEvents'
 import { RequestManager } from '../src'
@@ -172,12 +172,12 @@ let tests = [
 
 describe('lib/web3/allevents', function () {
   describe('decode', function () {
-    tests.forEach(function (test, index) {
-      it('test no: ' + index, function () {
+    tests.forEach(function (tests, index) {
+      it('tests no: ' + index, function () {
         let requestManager = new RequestManager(provider)
-        let allEvents = new AllSolidityEvents(requestManager, test.abi, address)
-        let result = allEvents.decode(test.data)
-        expect(result).toEqual(test.expected)
+        let allEvents = new AllSolidityEvents(requestManager, tests.abi, address)
+        let result = allEvents.decode(tests.data)
+        expect(result).toEqual(tests.expected)
       })
     })
   })

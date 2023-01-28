@@ -17,7 +17,7 @@ execute(indexed: Record<string, any>, options?: FilterOptions): Promise<EthFilte
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  indexed | Record&lt;string, any&gt; |  |
-|  options | [FilterOptions](./eth-connect.filteroptions.md) |  |
+|  options | [FilterOptions](./eth-connect.filteroptions.md) | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

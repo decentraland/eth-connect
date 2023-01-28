@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as utils from '../src/utils/utils'
 
 let tests = [
@@ -16,9 +16,9 @@ let tests = [
 
 describe('lib/utils/utils', function () {
   describe('isChecksumAddress', function () {
-    tests.forEach(function (test) {
-      it('shoud test if address ' + test.value + ' passes checksum: ' + test.is, function () {
-        expect(utils.isChecksumAddress(test.value)).toEqual(test.is)
+    tests.forEach(function (tests) {
+      it('shoud tests if address ' + tests.value + ' passes checksum: ' + tests.is, function () {
+        expect(utils.isChecksumAddress(tests.value)).toEqual(tests.is)
       })
     })
   })

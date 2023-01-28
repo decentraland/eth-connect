@@ -86,5 +86,5 @@ constructor(n: BigNumber.Value, base?: number);
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of <code>n</code>, integer, 2 to 36 (or <code>ALPHABET.length</code>, see <code>ALPHABET</code>). |
+|  base | number | <i>(Optional)</i> The base of <code>n</code>, integer, 2 to 36 (or <code>ALPHABET.length</code>, see <code>ALPHABET</code>). |
 

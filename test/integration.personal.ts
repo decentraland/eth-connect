@@ -1,20 +1,20 @@
-import * as expect from 'expect'
-import 'isomorphic-fetch'
+import expect from 'expect'
+
 import { RequestManager, isStrictAddress, isArray } from '../src'
-import { testAllProviders } from './helpers/testAllProviders'
+import { testsAllProviders } from './helpers/testAllProviders'
 import { WebSocketProvider } from '../src/providers/WebSocketProvider'
 
 describe('integration.personal', function () {
-  testAllProviders(doTest)
+  testsAllProviders(doTest)
 })
 
 function doTest(requestManager: RequestManager) {
   let account = null
 
   it('should create an account', async function () {
-    this.timeout(30000)
+
     // this should not fail, that's all
-    account = await requestManager.personal_newAccount('test')
+    account = await requestManager.personal_newAccount('tests')
     expect(isStrictAddress(account)).toEqual(true) // 'is strict address'
   })
 
@@ -27,41 +27,41 @@ function doTest(requestManager: RequestManager) {
   })
 
   it('should sign a message (geth only) and recover the signer address', async () => {
-    if (requestManager.provider instanceof WebSocketProvider /* test in geth node only */) {
+    if (requestManager.provider instanceof WebSocketProvider /* tests in geth node only */) {
       const message = '0xad1231'
-      const signature = await requestManager.personal_sign(message, account, 'test')
+      const signature = await requestManager.personal_sign(message, account, 'tests')
       const signerAddress = await requestManager.personal_ecRecover(message, signature)
       expect(signerAddress).toEqual(account)
     }
   })
 
   it('should sign a string message (geth only)', async () => {
-    if (requestManager.provider instanceof WebSocketProvider /* test in geth node only */) {
+    if (requestManager.provider instanceof WebSocketProvider /* tests in geth node only */) {
       const message = 'TEST MESSAGE'
-      await requestManager.personal_sign(message, account, 'test')
+      await requestManager.personal_sign(message, account, 'tests')
     }
   })
 
   it('should sign a string message (geth only) and recover the signer address', async () => {
-    if (requestManager.provider instanceof WebSocketProvider /* test in geth node only */) {
+    if (requestManager.provider instanceof WebSocketProvider /* tests in geth node only */) {
       const message = 'TEST MESSAGE'
-      const signature = await requestManager.personal_sign(message, account, 'test')
+      const signature = await requestManager.personal_sign(message, account, 'tests')
       const signerAddress = await requestManager.personal_ecRecover(message, signature)
       expect(signerAddress).toEqual(account)
     }
   })
 
   it('should sign a Uint8Array message (geth only) and recover the signer address', async () => {
-    if (requestManager.provider instanceof WebSocketProvider /* test in geth node only */) {
+    if (requestManager.provider instanceof WebSocketProvider /* tests in geth node only */) {
       const message = new Uint8Array([14, 15, 99]) as any
-      const signature = await requestManager.personal_sign(message, account, 'test')
+      const signature = await requestManager.personal_sign(message, account, 'tests')
       const signerAddress = await requestManager.personal_ecRecover(message, signature)
       expect(signerAddress).toEqual(account)
     }
   })
 
   it('should unlock the account', async () => {
-    const unlocked = await requestManager.personal_unlockAccount(account, 'test')
+    const unlocked = await requestManager.personal_unlockAccount(account, 'tests')
     expect(unlocked).toEqual(true) // 'must unlock'
   })
 

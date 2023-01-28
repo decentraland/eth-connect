@@ -28,8 +28,8 @@ export declare class SHHFilter extends AbstractFilter<SHHFilterMessage>
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [getChanges()](./eth-connect.shhfilter.getchanges.md) |  |  |
+|  [getChanges()](./eth-connect.shhfilter.getchanges.md) | <code>protected</code> |  |
 |  [getMessages()](./eth-connect.shhfilter.getmessages.md) |  |  |
-|  [getNewFilter()](./eth-connect.shhfilter.getnewfilter.md) |  |  |
-|  [uninstall()](./eth-connect.shhfilter.uninstall.md) |  |  |
+|  [getNewFilter()](./eth-connect.shhfilter.getnewfilter.md) | <code>protected</code> |  |
+|  [uninstall()](./eth-connect.shhfilter.uninstall.md) | <code>protected</code> |  |
 

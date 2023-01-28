@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 
 import { RequestManager } from '../src'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
@@ -20,37 +20,37 @@ let tests = [
 ]
 
 describe('async', function () {
-  tests.forEach(function (test, index) {
-    it('test: ' + index, async function () {
+  tests.forEach(function (tests, index) {
+    it('tests: ' + index, async function () {
       // given
       const provider = new FakeHttpProvider()
 
       provider.injectValidation(async (payload) => {
         expect(payload.jsonrpc).toEqual('2.0')
-        expect(payload.method).toEqual(test.call)
-        expect(payload.params).toEqual([test.formattedInput])
-        provider.injectResult(test.result)
+        expect(payload.method).toEqual(tests.call)
+        expect(payload.params).toEqual([tests.formattedInput])
+        provider.injectResult(tests.result)
       })
 
       const rm = new RequestManager(provider)
 
       // when
-      const result = await rm.eth_sendTransaction(test.input as any)
+      const result = await rm.eth_sendTransaction(tests.input as any)
 
-      expect(test.formattedResult).toStrictEqual(result)
+      expect(tests.formattedResult).toStrictEqual(result)
     })
 
-    it('error test: ' + index, async function () {
+    it('error tests: ' + index, async function () {
       // given
       const provider = new FakeHttpProvider()
 
       provider.injectValidation(async (payload) => {
         expect(payload.jsonrpc).toEqual('2.0')
-        expect(payload.method).toEqual(test.call)
-        expect(payload.params).toEqual([test.formattedInput])
+        expect(payload.method).toEqual(tests.call)
+        expect(payload.params).toEqual([tests.formattedInput])
 
         provider.injectError({
-          message: test.result,
+          message: tests.result,
           code: -32603,
         })
       })
@@ -59,9 +59,9 @@ describe('async', function () {
 
       // when
       try {
-        await rm.eth_sendTransaction(test.input as any)
+        await rm.eth_sendTransaction(tests.input as any)
       } catch (error) {
-        expect(test.formattedResult).toStrictEqual(error.message)
+        expect(tests.formattedResult).toStrictEqual(error.message)
       }
     })
   })

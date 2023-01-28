@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as Jsonrpc from '../src/utils/jsonrpc'
 
 describe('jsonrpc', function () {
@@ -21,7 +21,7 @@ describe('jsonrpc', function () {
     it('should create payload with params', function () {
       // given
       let method = 'helloworld1'
-      let params = [123, 'test']
+      let params = [123, 'tests']
 
       // when
       let payload = Jsonrpc.toJsonRpcRequest(method, params)

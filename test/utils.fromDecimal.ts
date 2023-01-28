@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as utils from '../src/utils/utils'
 
 let tests = [
@@ -44,9 +44,9 @@ let tests = [
 
 describe('lib/utils/utils', function () {
   describe('fromDecimal', function () {
-    tests.forEach(function (test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function () {
-        expect(utils.fromDecimal(test.value)).toEqual(test.expected)
+    tests.forEach(function (tests) {
+      it('should turn ' + tests.value + ' to ' + tests.expected, function () {
+        expect(utils.fromDecimal(tests.value)).toEqual(tests.expected)
       })
     })
   })

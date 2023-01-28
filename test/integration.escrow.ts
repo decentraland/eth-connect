@@ -1,11 +1,11 @@
-import 'isomorphic-fetch'
-import * as expect from 'expect'
+
+import expect from 'expect'
 import { ContractFactory, RequestManager, BigNumber } from '../src'
-import { testAllProviders } from './helpers/testAllProviders'
+import { testsAllProviders } from './helpers/testAllProviders'
 import { abi, bytecode } from './fixtures/Escrow.json'
 
 describe('integration.escrow', function () {
-  testAllProviders(doTest)
+  testsAllProviders(doTest)
 })
 
 function doTest(requestManager: RequestManager) {
@@ -20,7 +20,7 @@ function doTest(requestManager: RequestManager) {
   let EscrowContract = null
 
   it('deploys a new contract', async function () {
-    this.timeout(100000)
+
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
 
@@ -32,7 +32,7 @@ function doTest(requestManager: RequestManager) {
   })
 
   it('deposit', async function () {
-    this.timeout(1000000)
+
     const account = (await requestManager.eth_accounts())[0]
     const depositResult = await EscrowContract.deposit(account, { from: account, value: 123 })
     const tx = await requestManager.getConfirmedTransaction(depositResult)

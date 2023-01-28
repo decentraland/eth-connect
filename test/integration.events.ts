@@ -1,8 +1,8 @@
-import * as expect from 'expect'
+import expect from 'expect'
 
 import { ContractFactory, RequestManager, Contract } from '../src'
 import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../src/Filter'
-import { testAllProviders } from './helpers/testAllProviders'
+import { testsAllProviders } from './helpers/testAllProviders'
 import { future } from 'fp-future'
 import WebSocketProvider from '../src/providers/WebSocketProvider'
 
@@ -112,7 +112,7 @@ const contract = {
 }
 
 describe('integration.events', function () {
-  testAllProviders(doTest)
+  testsAllProviders(doTest)
 })
 
 function doTest(rm: RequestManager) {
@@ -162,7 +162,7 @@ function doTest(rm: RequestManager) {
   })
 
   it('deploys a new contract', async function () {
-    this.timeout(100000)
+
     const accounts = await rm.eth_accounts()
     const account = accounts[0]
 
@@ -196,7 +196,7 @@ function doTest(rm: RequestManager) {
   })
 
   it('setInstructor("agustin", 99)', async function () {
-    this.timeout(5000)
+
     const accounts = await rm.eth_accounts()
     const from = accounts[0]
     const tx = await TestContract.setInstructor('agustin', 99, { from })
@@ -204,7 +204,7 @@ function doTest(rm: RequestManager) {
   })
 
   it('setInstructorEvent("agustin", 99)', async function () {
-    this.timeout(5000)
+
     const accounts = await rm.eth_accounts()
     const from = accounts[0]
     const tx = await TestContract.setInstructorEvent('agustin', 99, { from })
@@ -232,7 +232,7 @@ function doTest(rm: RequestManager) {
   })
 
   it('did receive a filter pending message', async () => {
-    if (rm.provider instanceof WebSocketProvider /* test in geth node only */) {
+    if (rm.provider instanceof WebSocketProvider /* tests in geth node only */) {
       await didReceiveAnyPending
     }
   })

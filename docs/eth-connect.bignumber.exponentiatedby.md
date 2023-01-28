@@ -34,7 +34,7 @@ exponentiatedBy(n: BigNumber.Value, m?: BigNumber.Value): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | The exponent, an integer. |
-|  m | [BigNumber.Value](./eth-connect.bignumber.value.md) | The modulus. |
+|  m | [BigNumber.Value](./eth-connect.bignumber.value.md) | <i>(Optional)</i> The modulus. |
 
 <b>Returns:</b>
 

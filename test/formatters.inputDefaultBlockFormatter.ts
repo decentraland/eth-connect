@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as formatters from '../src/utils/formatters'
 
 let tests = [
@@ -11,9 +11,9 @@ let tests = [
 
 describe('lib/web3/formatters', function () {
   describe('inputDefaultBlockNumberFormatter', function () {
-    tests.forEach(function (test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function () {
-        expect(formatters.inputDefaultBlockNumberFormatter(test.value as any)).toStrictEqual(test.expected)
+    tests.forEach(function (tests) {
+      it('should turn ' + tests.value + ' to ' + tests.expected, function () {
+        expect(formatters.inputDefaultBlockNumberFormatter(tests.value as any)).toStrictEqual(tests.expected)
       })
     })
   })

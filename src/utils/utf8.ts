@@ -1,4 +1,4 @@
-import { hexToBytes } from './utils'
+import { hexToBytes } from './hexToBytes'
 
 /**
  * Converts a string into a Uint8Array encoded with UTF-8

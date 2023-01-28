@@ -1,5 +1,6 @@
-import * as expect from 'expect'
-import { BigNumber, toBigNumber } from '../dist/eth-connect'
+import expect from 'expect'
+import { BigNumber } from 'bignumber.js'
+import * as utils from '../src/utils/utils'
 
 let tests = [
   { value: 1, expected: '1' },
@@ -46,9 +47,9 @@ let tests = [
 
 describe('lib/utils/utils', function () {
   describe('toBigNumber', function () {
-    tests.forEach(function (test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function () {
-        expect(toBigNumber(test.value).toString(10)).toEqual(test.expected)
+    tests.forEach(function (tests) {
+      it('should turn ' + tests.value + ' to ' + tests.expected, function () {
+        expect(utils.toBigNumber(tests.value).toString(10)).toEqual(tests.expected)
       })
     })
   })

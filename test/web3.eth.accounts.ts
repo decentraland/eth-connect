@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { RequestManager } from '../src'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 
@@ -14,15 +14,15 @@ let tests = [
 
 describe('web3.eth', function () {
   describe(method, function () {
-    tests.forEach(function (test, index) {
-      it('property test: ' + index, async function () {
+    tests.forEach(function (tests, index) {
+      it('property tests: ' + index, async function () {
         // given
         const provider = new FakeHttpProvider()
         const rm = new RequestManager(provider)
-        provider.injectResult(test.result)
+        provider.injectResult(tests.result)
         provider.injectValidation(async (payload) => {
           expect(payload.jsonrpc).toEqual('2.0')
-          expect(payload.method).toEqual(test.call)
+          expect(payload.method).toEqual(tests.call)
           expect(payload.params).toEqual([])
         })
 
@@ -30,7 +30,7 @@ describe('web3.eth', function () {
         let result = await rm.eth_accounts()
 
         // then
-        expect(test.formattedResult).toEqual(result)
+        expect(tests.formattedResult).toEqual(result)
       })
     })
   })

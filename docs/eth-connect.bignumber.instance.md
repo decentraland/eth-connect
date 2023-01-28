@@ -12,9 +12,9 @@ interface Instance
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [c](./eth-connect.bignumber.instance.c.md) | number\[\] \| null | The coefficient of the value of this BigNumber, an array of base 1e14 integer numbers, or null. |
-|  [e](./eth-connect.bignumber.instance.e.md) | number \| null | The exponent of the value of this BigNumber, an integer number, -1000000000 to 1000000000, or null. |
-|  [s](./eth-connect.bignumber.instance.s.md) | number \| null | The sign of the value of this BigNumber, -1, 1, or null. |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [c](./eth-connect.bignumber.instance.c.md) | <code>readonly</code> | number\[\] \| null | The coefficient of the value of this BigNumber, an array of base 1e14 integer numbers, or null. |
+|  [e](./eth-connect.bignumber.instance.e.md) | <code>readonly</code> | number \| null | The exponent of the value of this BigNumber, an integer number, -1000000000 to 1000000000, or null. |
+|  [s](./eth-connect.bignumber.instance.s.md) | <code>readonly</code> | number \| null | The sign of the value of this BigNumber, -1, 1, or null. |
 

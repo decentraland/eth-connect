@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { stringToUtf8Bytes } from '../src/utils/utf8'
 import * as utils from '../src/utils/utils'
 
@@ -19,9 +19,9 @@ let tests = [
 
 describe('lib/utils/utils', function () {
   describe('fromUtf8', function () {
-    tests.forEach(function (test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function () {
-        expect(utils.bytesToHex(stringToUtf8Bytes(test.value))).toEqual(test.expected)
+    tests.forEach(function (tests) {
+      it('should turn ' + tests.value + ' to ' + tests.expected, function () {
+        expect(utils.bytesToHex(stringToUtf8Bytes(tests.value))).toEqual(tests.expected)
       })
     })
   })

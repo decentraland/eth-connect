@@ -8,7 +8,6 @@
 
 |  Class | Description |
 |  --- | --- |
-|  [AbstractFilter](./eth-connect.abstractfilter.md) |  |
 |  [BigNumber](./eth-connect.bignumber.md) |  |
 |  [Contract](./eth-connect.contract.md) | Should be called to create new contract instance |
 |  [ContractFactory](./eth-connect.contractfactory.md) | Should be called to create new ContractFactory instance |
@@ -24,6 +23,12 @@
 |  [SolidityFunction](./eth-connect.solidityfunction.md) | This prototype should be used to call/sendTransaction to solidity functions |
 |  [WebSocketProvider](./eth-connect.websocketprovider.md) |  |
 
+## Abstract Classes
+
+|  Abstract Class | Description |
+|  --- | --- |
+|  [AbstractFilter](./eth-connect.abstractfilter.md) |  |
+
 ## Enumerations
 
 |  Enumeration | Description |
@@ -35,6 +40,7 @@
 
 |  Function | Description |
 |  --- | --- |
+|  [BigNumber(n, base)](./eth-connect.bignumber.md) |  |
 |  [bytesToHex(bytes)](./eth-connect.bytestohex.md) |  |
 |  [bytesToUtf8String(bytesOrHexString)](./eth-connect.bytestoutf8string.md) | Decodes an Uint8Array or hex string into a UTF-8 string |
 |  [concatBytes(buffers)](./eth-connect.concatbytes.md) |  |
@@ -43,7 +49,7 @@
 |  [fromAscii(str, num)](./eth-connect.fromascii.md) | Should be called to get hex representation (prefixed by 0x) of ascii string |
 |  [fromDecimal(value)](./eth-connect.fromdecimal.md) | Converts value to it's hex representation |
 |  [fromTwosComplement(num, bits)](./eth-connect.fromtwoscomplement.md) | If the bit N is 1 |
-|  [fromWei(num, unit)](./eth-connect.fromwei.md) | Takes a number of wei and converts it to any other ether unit.<!-- -->Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |
+|  [fromWei(num, unit)](./eth-connect.fromwei.md) | <p>Takes a number of wei and converts it to any other ether unit.</p><p>Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether</p> |
 |  [fromWei(num, unit)](./eth-connect.fromwei_1.md) |  |
 |  [getAddress(address)](./eth-connect.getaddress.md) |  |
 |  [getValueOfUnit(\_unit)](./eth-connect.getvalueofunit.md) | Returns value of unit in Wei |
@@ -76,13 +82,13 @@
 |  [toChecksumAddress(\_address)](./eth-connect.tochecksumaddress.md) | Makes a checksum address |
 |  [toData(val)](./eth-connect.todata.md) | Converts value to it's hex representation in string |
 |  [toDecimal(value)](./eth-connect.todecimal.md) | Converts value to it's decimal representation in string |
-|  [toHex(val)](./eth-connect.tohex.md) | Auto converts any given value into it's hex representation.<!-- -->And even stringifys objects before. |
+|  [toHex(val)](./eth-connect.tohex.md) | <p>Auto converts any given value into it's hex representation.</p><p>And even stringifys objects before.</p> |
 |  [toJsonRpcRequest(method, params)](./eth-connect.tojsonrpcrequest.md) | Should be called to valid json create payload object |
 |  [toNullDecimal(value)](./eth-connect.tonulldecimal.md) | Converts value to it's decimal representation in string |
 |  [toString\_2(value)](./eth-connect.tostring_2.md) | Converts value to string |
 |  [toStringData(val)](./eth-connect.tostringdata.md) | Converts a UTF8 string to it's hex representation as a 0x string. If the argument is already a 0xHEX prefixed string, the conversion is skipped. |
 |  [toTwosComplement(num, bits)](./eth-connect.totwoscomplement.md) | Takes and input transforms it into bignumber and if it is negative value, into two's complement |
-|  [toWei(num, unit)](./eth-connect.towei.md) | Takes a number of a unit and converts it to wei.<!-- -->Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |
+|  [toWei(num, unit)](./eth-connect.towei.md) | <p>Takes a number of a unit and converts it to wei.</p><p>Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether</p> |
 |  [transformToFullName(json)](./eth-connect.transformtofullname.md) | Should be used to create full function/event name from json abi |
 
 ## Interfaces

@@ -13,15 +13,15 @@ export interface AbiFallback
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [anonymous?](./eth-connect.abifallback.anonymous.md) | boolean | <i>(Optional)</i> |
-|  [constant?](./eth-connect.abifallback.constant.md) | boolean | <i>(Optional)</i> |
-|  [gas?](./eth-connect.abifallback.gas.md) | number | <i>(Optional)</i> |
-|  [inputs?](./eth-connect.abifallback.inputs.md) | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [name?](./eth-connect.abifallback.name.md) | string | <i>(Optional)</i> |
-|  [outputs?](./eth-connect.abifallback.outputs.md) | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [payable?](./eth-connect.abifallback.payable.md) | boolean | <i>(Optional)</i> |
-|  [stateMutability?](./eth-connect.abifallback.statemutability.md) | [StateMutabilityType](./eth-connect.statemutabilitytype.md) | <i>(Optional)</i> |
-|  [type](./eth-connect.abifallback.type.md) | 'fallback' |  |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [anonymous?](./eth-connect.abifallback.anonymous.md) |  | boolean | <i>(Optional)</i> |
+|  [constant?](./eth-connect.abifallback.constant.md) |  | boolean | <i>(Optional)</i> |
+|  [gas?](./eth-connect.abifallback.gas.md) |  | number | <i>(Optional)</i> |
+|  [inputs?](./eth-connect.abifallback.inputs.md) |  | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] | <i>(Optional)</i> |
+|  [name?](./eth-connect.abifallback.name.md) |  | string | <i>(Optional)</i> |
+|  [outputs?](./eth-connect.abifallback.outputs.md) |  | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] | <i>(Optional)</i> |
+|  [payable?](./eth-connect.abifallback.payable.md) |  | boolean | <i>(Optional)</i> |
+|  [stateMutability?](./eth-connect.abifallback.statemutability.md) |  | [StateMutabilityType](./eth-connect.statemutabilitytype.md) | <i>(Optional)</i> |
+|  [type](./eth-connect.abifallback.type.md) |  | 'fallback' |  |
 

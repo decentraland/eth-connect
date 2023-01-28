@@ -30,7 +30,7 @@ eq(n: BigNumber.Value, base?: number): boolean;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | <i>(Optional)</i> The base of n. |
 
 <b>Returns:</b>
 

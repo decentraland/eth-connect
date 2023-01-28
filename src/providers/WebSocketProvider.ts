@@ -1,5 +1,6 @@
 import { Callback, RPCResponse, RPCMessage, toRPC } from './common'
-import { IFuture, future } from 'fp-future'
+import type { IFuture } from 'fp-future'
+import future from 'fp-future'
 
 export interface IWebSocket {
   /**
@@ -75,7 +76,7 @@ export class WebSocketProvider<T extends IWebSocket> {
             const message = toRPC($)
             toSend.push(message)
             this.responseCallbacks.set(message.id, defer)
-          } catch (e) {
+          } catch (e: any) {
             defer.reject(e)
           }
 
@@ -88,7 +89,7 @@ export class WebSocketProvider<T extends IWebSocket> {
         const message = toRPC(payload)
         toSend.push(message)
         this.responseCallbacks.set(message.id, defer)
-      } catch (e) {
+      } catch (e: any) {
         defer.reject(e)
       }
       didFinish = defer

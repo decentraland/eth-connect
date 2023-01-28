@@ -18,7 +18,7 @@ export declare function padLeft(str: string, chars: number, sign?: string): stri
 |  --- | --- | --- |
 |  str | string |  |
 |  chars | number |  |
-|  sign | string |  |
+|  sign | string | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

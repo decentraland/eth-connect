@@ -28,7 +28,7 @@ precision(includeZeros?: boolean): number;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  includeZeros | boolean | Whether to include integer trailing zeros in the significant digit count. |
+|  includeZeros | boolean | <i>(Optional)</i> Whether to include integer trailing zeros in the significant digit count. |
 
 <b>Returns:</b>
 

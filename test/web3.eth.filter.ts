@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { RequestManager } from '../src'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 
@@ -64,7 +64,6 @@ describe('eth.filter', function () {
   })
 
   it('Test EthFilter polling', async function () {
-    this.timeout(100000)
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)

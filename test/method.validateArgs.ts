@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { Method } from '../src'
 import * as errors from '../src/utils/errors'
 
@@ -17,16 +17,16 @@ describe('lib/web3/method', function () {
       let args2 = ['heloas']
 
       // when
-      let test = function () {
+      let tests = function () {
         method.validateArgs(args)
       }
-      let test2 = function () {
+      let tests2 = function () {
         method.validateArgs(args2)
       }
 
       // then
-      expect(test).not.toThrow()
-      expect(test2).not.toThrow()
+      expect(tests).not.toThrow()
+      expect(tests2).not.toThrow()
     })
 
     it('should return call based on args', function () {
@@ -42,16 +42,16 @@ describe('lib/web3/method', function () {
       let args2 = ['heloas', '12', 3]
 
       // when
-      let test = function () {
+      let tests = function () {
         method.validateArgs(args)
       }
-      let test2 = function () {
+      let tests2 = function () {
         method.validateArgs(args2)
       }
 
       // then
-      expect(test).toThrow(errors.InvalidNumberOfRPCParams('dummy', 1, 2).message)
-      expect(test2).toThrow(errors.InvalidNumberOfRPCParams('dummy', 3, 2).message)
+      expect(tests).toThrow(errors.InvalidNumberOfRPCParams('dummy', 1, 2).message)
+      expect(tests2).toThrow(errors.InvalidNumberOfRPCParams('dummy', 3, 2).message)
     })
   })
 })

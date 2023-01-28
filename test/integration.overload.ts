@@ -1,21 +1,21 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { ContractFactory, RequestManager } from '../src'
-import { testAllProviders } from './helpers/testAllProviders'
+import { testsAllProviders } from './helpers/testAllProviders'
 
 /*
 
   pragma solidity ^0.4.20;
 
   contract OverloadTest {
-    function test() pure public returns(uint256 d) {
+    function tests() pure public returns(uint256 d) {
       d = 1;
     }
 
-    function test(uint256 _a) pure public returns(uint256 d) {
+    function tests(uint256 _a) pure public returns(uint256 d) {
       d = _a;
     }
 
-    function test(uint256 _aa, uint256 _bb) pure public returns(uint256 d) {
+    function tests(uint256 _aa, uint256 _bb) pure public returns(uint256 d) {
       d = _aa + _bb;
     }
   }
@@ -34,7 +34,7 @@ const contract = {
           type: 'uint256'
         }
       ],
-      name: 'test',
+      name: 'tests',
       outputs: [
         {
           name: 'd',
@@ -57,7 +57,7 @@ const contract = {
           type: 'uint256'
         }
       ],
-      name: 'test',
+      name: 'tests',
       outputs: [
         {
           name: 'd',
@@ -71,7 +71,7 @@ const contract = {
     {
       constant: true,
       inputs: [],
-      name: 'test',
+      name: 'tests',
       outputs: [
         {
           name: 'd',
@@ -86,7 +86,7 @@ const contract = {
 }
 
 describe('integration.overload', function () {
-  testAllProviders(doTest)
+  testsAllProviders(doTest)
 })
 
 function doTest(requestManager: RequestManager) {
@@ -118,7 +118,7 @@ function doTest(requestManager: RequestManager) {
   let TestContract = null
 
   it('deploys a new contract', async function () {
-    this.timeout(100000)
+
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
 
@@ -141,18 +141,18 @@ function doTest(requestManager: RequestManager) {
     expect(x.hash).toEqual(TestContract.transactionHash)
   })
 
-  it('test() == 1', async () => {
-    const balance = await TestContract.test.void()
+  it('tests() == 1', async () => {
+    const balance = await TestContract.tests.void()
     expect(balance.toString()).toEqual('1')
   })
 
-  it('test(uint256) == 222', async () => {
-    const balance = await TestContract.test.uint256(222)
+  it('tests(uint256) == 222', async () => {
+    const balance = await TestContract.tests.uint256(222)
     expect(balance.toString()).toEqual('222')
   })
 
-  it('test(uint256,uint256) == 333', async () => {
-    const balance = await TestContract.test['uint256,uint256'](222, 111)
+  it('tests(uint256,uint256) == 333', async () => {
+    const balance = await TestContract.tests['uint256,uint256'](222, 111)
     expect(balance.toString()).toEqual('333')
   })
 }

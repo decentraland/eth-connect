@@ -17,7 +17,7 @@ export declare function fromAscii(str: string, num?: number): string;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  str | string |  |
-|  num | number |  |
+|  num | number | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

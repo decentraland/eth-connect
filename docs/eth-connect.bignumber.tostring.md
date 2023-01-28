@@ -43,7 +43,7 @@ toString(base?: number): string;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  base | number | The base, integer, 2 to 36 (or <code>ALPHABET.length</code>, see <code>ALPHABET</code>). |
+|  base | number | <i>(Optional)</i> The base, integer, 2 to 36 (or <code>ALPHABET.length</code>, see <code>ALPHABET</code>). |
 
 <b>Returns:</b>
 

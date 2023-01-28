@@ -8,5 +8,5 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
+export type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
 ```

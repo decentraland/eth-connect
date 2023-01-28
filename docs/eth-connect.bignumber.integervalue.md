@@ -29,7 +29,7 @@ integerValue(rm?: BigNumber.RoundingMode): BigNumber;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  rm | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | The roundng mode, an integer, 0 to 8. |
+|  rm | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | <i>(Optional)</i> The roundng mode, an integer, 0 to 8. |
 
 <b>Returns:</b>
 

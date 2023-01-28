@@ -17,7 +17,7 @@ isTxDropped(txId: string, _retryAttemps?: number): Promise<boolean>;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  txId | string | Transaction id to watch |
-|  \_retryAttemps | number |  |
+|  \_retryAttemps | number | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

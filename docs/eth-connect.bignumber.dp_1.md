@@ -15,7 +15,7 @@ dp(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  decimalPlaces | number |  |
-|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) |  |
+|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

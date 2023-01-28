@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type Quantity = number | Hex;
+export type Quantity = number | Hex;
 ```
 <b>References:</b> [Hex](./eth-connect.hex.md)
 

@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 
 import { RequestManager, ContractFactory } from '../src'
 import { future } from 'fp-future'
@@ -42,7 +42,7 @@ let desc = [
     payable: true,
   },
   {
-    name: 'testArr(int[])',
+    name: 'testsArr(int[])',
     type: 'function',
     inputs: [
       {
@@ -749,10 +749,10 @@ describe('contract', function () {
       await didCall
     })
 
-    it('should call testArr method and properly parse result', async function () {
+    it('should call testsArr method and properly parse result', async function () {
       let provider = new FakeHttpProvider2()
       const rm = new RequestManager(provider)
-      let signature = 'testArr(int[])'
+      let signature = 'testsArr(int[])'
       let address = '0x1234567890123456789012345678901234567891'
       provider.injectResultList([
         {
@@ -777,15 +777,15 @@ describe('contract', function () {
       })
 
       let contract: any = await new ContractFactory(rm, desc).at(address)
-      let result = await contract.testArr([3])
+      let result = await contract.testsArr([3])
 
       expect(new BigNumber(5)).toEqual(result)
     })
 
-    it('should call testArr method, properly parse result and return the result async', async function () {
+    it('should call testsArr method, properly parse result and return the result async', async function () {
       let provider = new FakeHttpProvider2()
       const rm = new RequestManager(provider)
-      let signature = 'testArr(int[])'
+      let signature = 'testsArr(int[])'
       let address = '0x1234567890123456789012345678901234567891'
       provider.injectResultList([
         {
@@ -810,7 +810,7 @@ describe('contract', function () {
 
       let contract: any = await new ContractFactory(rm, desc).at(address)
 
-      const result = await contract.testArr([3])
+      const result = await contract.testsArr([3])
 
       expect(new BigNumber(5)).toEqual(result)
     })

@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { AbiEvent, BigNumber } from '../src'
 import { SolidityEvent } from '../src/SolidityEvent'
 
@@ -202,12 +202,12 @@ let tests = [
 
 describe('lib/web3/event', function () {
   describe('decode', function () {
-    tests.forEach(function (test, index) {
-      it('test no: ' + index, function () {
-        let event = new SolidityEvent(null, test.abi as any, address)
+    tests.forEach(function (tests, index) {
+      it('tests no: ' + index, function () {
+        let event = new SolidityEvent(null, tests.abi as any, address)
 
-        let result = event.decode(test.data as any)
-        expect(result).toEqual(test.expected)
+        let result = event.decode(tests.data as any)
+        expect(result).toEqual(tests.expected)
       })
     })
   })

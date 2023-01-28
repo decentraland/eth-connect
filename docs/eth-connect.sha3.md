@@ -18,7 +18,7 @@ export declare function sha3(value: string | number[] | ArrayBuffer | Uint8Array
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  value | string \| number\[\] \| ArrayBuffer \| Uint8Array |  |
-|  options | { encoding?: 'hex'; } |  |
+|  options | { encoding?: 'hex'; } | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

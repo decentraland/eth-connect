@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type SHHPost = {
+export type SHHPost = {
     from: Data;
     to: Data;
     topics: Array<Data>;

@@ -14,7 +14,7 @@ export interface AbiInput extends AbiOutput
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [indexed?](./eth-connect.abiinput.indexed.md) | boolean | <i>(Optional)</i> |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [indexed?](./eth-connect.abiinput.indexed.md) |  | boolean | <i>(Optional)</i> |
 

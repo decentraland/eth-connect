@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as Jsonrpc from '../src/utils/jsonrpc'
 
 describe('jsonrpc', function () {
@@ -11,7 +11,7 @@ describe('jsonrpc', function () {
           params: []
         },
         {
-          method: 'test2',
+          method: 'tests2',
           params: [1]
         }
       ]
@@ -25,7 +25,7 @@ describe('jsonrpc', function () {
       expect(payload[0].jsonrpc).toEqual('2.0')
       expect(payload[1].jsonrpc).toEqual('2.0')
       expect(payload[0].method).toEqual('helloworld')
-      expect(payload[1].method).toEqual('test2')
+      expect(payload[1].method).toEqual('tests2')
       expect(Array.isArray(payload[0].params)).toEqual(true)
       expect(payload[1].params.length).toEqual(1)
       expect(payload[1].params[0]).toEqual(1)

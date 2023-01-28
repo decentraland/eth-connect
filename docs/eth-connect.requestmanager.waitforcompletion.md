@@ -17,7 +17,7 @@ waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransa
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  txId | string | Transaction id to watch |
-|  retriesOnEmpty | number | Number of retries when a transaction status returns empty |
+|  retriesOnEmpty | number | <i>(Optional)</i> Number of retries when a transaction status returns empty |
 
 <b>Returns:</b>
 

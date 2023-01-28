@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type FetchFunction = (url: string, params: {
+export type FetchFunction = (url: string, params: {
     body?: any;
     method?: string;
     mode?: string;

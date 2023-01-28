@@ -8,7 +8,7 @@ export type Arrayish = string | ArrayLike<number>
 ///////////////////////////////
 
 function addSlice(array: Uint8Array): Uint8Array {
-  if ('slice' in array && array.slice) {
+  if ('slice' in array && (array as any).slice) {
     return array
   }
 

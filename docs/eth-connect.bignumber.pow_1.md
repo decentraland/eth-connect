@@ -15,7 +15,7 @@ pow(n: number, m?: BigNumber.Value): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | number |  |
-|  m | [BigNumber.Value](./eth-connect.bignumber.value.md) |  |
+|  m | [BigNumber.Value](./eth-connect.bignumber.value.md) | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

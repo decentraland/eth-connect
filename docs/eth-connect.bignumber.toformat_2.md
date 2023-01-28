@@ -14,7 +14,7 @@ toFormat(decimalPlaces?: number): string;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  decimalPlaces | number |  |
+|  decimalPlaces | number | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

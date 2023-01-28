@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { AbiEvent, AbiFunction } from '../src'
 import { parseSignature } from '../src/abi/parser'
 
@@ -213,7 +213,7 @@ const suite: Record<string, AbiFunction | AbiEvent> = {
     payable: false,
     type: 'function'
   },
-  // TODO: test this with real ABI and integration tests
+  // TODO: tests this with real ABI and integration tests
   'function decodeTokenId(uint256 _id) public pure returns (uint256 itemId, uint256 issuedId)': {
     constant: true,
     inputs: [{ type: 'uint256', name: '_id' }],
@@ -226,7 +226,7 @@ const suite: Record<string, AbiFunction | AbiEvent> = {
     type: 'function',
     stateMutability: 'pure'
   },
-  // TODO: test this with real ABI and integration tests
+  // TODO: tests this with real ABI and integration tests
   'function bar(tuple(uint256,uint256)) returns (tuple(bool a,bool b))': {
     constant: false,
     inputs: [
@@ -268,9 +268,9 @@ const suite: Record<string, AbiFunction | AbiEvent> = {
 }
 
 describe('parser', function () {
-  for (let test in suite) {
-    it(`converts "${test}" to an object`, () => {
-      expect(parseSignature(test)).toEqual(suite[test])
+  for (let tests in suite) {
+    it(`converts "${tests}" to an object`, () => {
+      expect(parseSignature(tests)).toEqual(suite[tests])
     })
   }
 })

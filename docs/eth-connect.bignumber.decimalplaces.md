@@ -30,9 +30,9 @@ y.decimalPlaces()                      // 102
 <b>Signature:</b>
 
 ```typescript
-decimalPlaces(): number;
+decimalPlaces(): number | null;
 ```
 <b>Returns:</b>
 
-number
+number \| null
 

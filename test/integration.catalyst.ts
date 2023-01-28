@@ -1,11 +1,11 @@
-import 'isomorphic-fetch'
-import * as expect from 'expect'
+
+import expect from 'expect'
 import { ContractFactory, RequestManager } from '../src'
-import { testAllProviders } from './helpers/testAllProviders'
+import { testsAllProviders } from './helpers/testAllProviders'
 import { abi, bytecode } from './fixtures/Catalyst.json'
 
 describe('integration.catalyst', function () {
-  testAllProviders(doTest)
+  testsAllProviders(doTest)
 })
 
 function doTest(requestManager: RequestManager) {
@@ -30,7 +30,7 @@ function doTest(requestManager: RequestManager) {
   let CatalystContract = null
 
   it('deploys a new contract', async function () {
-    this.timeout(100000)
+
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
 

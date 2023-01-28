@@ -2,7 +2,7 @@
  * Created by danielbruce on 2017-09-25.
  */
 
-import * as expect from 'expect'
+import expect from 'expect'
 import { BigNumber, toTwosComplement } from '../dist/eth-connect'
 
 let tests = [
@@ -52,9 +52,9 @@ let tests = [
 
 describe('lib/utils/utils', function() {
   describe('toTwosComplement', function() {
-    tests.forEach(function(test) {
-      it('printing ' + test.value, function() {
-        expect(test.expected.eq(toTwosComplement(test.value) as any)).toEqual(true)
+    tests.forEach(function(tests) {
+      it('printing ' + tests.value, function() {
+        expect(tests.expected.eq(toTwosComplement(tests.value) as any)).toEqual(true)
       })
     })
   })

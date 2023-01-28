@@ -20,29 +20,9 @@ import { BigNumber } from './BigNumber'
 import { AbiInput, AbiItem } from '../Schema'
 import { stringToUtf8Bytes } from './utf8'
 import * as errors from './errors'
+import { hexToBytes } from './hexToBytes'
 
-/**
- * @public
- */
-export function hexToBytes(hex: string): Uint8Array {
-  if (typeof hex != 'string') throw new Error('hexToBytes only accept strings, got: ' + typeof hex)
-
-  if (hex.substr(0, 2) === '0x') {
-    return hexToBytes(hex.substr(2))
-  }
-
-  const result = new Uint8Array(Math.ceil(hex.length / 2))
-
-  let i = 0
-  for (let char = 0; char < hex.length; char += 2) {
-    const n = parseInt(hex.substr(char, 2), 16)
-    if (isNaN(n)) throw new Error('Cannot read hex string:' + JSON.stringify(hex))
-    result[i] = n
-    i++
-  }
-
-  return result
-}
+export { hexToBytes }
 
 /**
  * @public
@@ -134,7 +114,7 @@ export function toAscii(hex: string) {
     i = 2
   }
   for (; i < l; i += 2) {
-    let code = parseInt(hex.substr(i, 2), 16)
+    let code = parseInt(hex.substring(i, i + 2), 16)
     str += String.fromCharCode(code)
   }
 

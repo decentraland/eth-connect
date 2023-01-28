@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "ESNext",
-    "target": "es2017",
+    "target": "es2020",
     "noEmit": true,
     "diagnostics": true,
     "emitDecoratorMetadata": true,
@@ -9,7 +9,7 @@
     "inlineSourceMap": false,
     "inlineSources": false,
     "sourceMap": true,
-    "declarationDir": "./dist/decl",
+    "declarationDir": "./decl",
     "declaration": true,
     "declarationMap": true,
     "moduleResolution": "node",
@@ -23,12 +23,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "src",
-    "allowJs": true,
-    "plugins": [
-      {
-        "name": "tslint-language-service"
-      }
-    ]
+    "allowJs": true
   },
   "include": [
     "src"

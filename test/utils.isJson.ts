@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { isJson } from '../src/utils/utils'
 
 let tests = [
@@ -20,9 +20,9 @@ let tests = [
 
 describe('lib/utils/utils', function () {
   describe('isJson', function () {
-    tests.forEach(function (test) {
-      it('shoud test if value ' + test.obj + ' is json: ' + test.is, function () {
-        expect(isJson(test.obj as any)).toEqual(test.is)
+    tests.forEach(function (tests) {
+      it('shoud tests if value ' + tests.obj + ' is json: ' + tests.is, function () {
+        expect(isJson(tests.obj as any)).toEqual(tests.is)
       })
     })
   })

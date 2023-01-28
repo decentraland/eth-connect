@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type Transaction = DroppedTransaction | ReplacedTransaction | QueuedTransaction | PendingTransaction | ConfirmedTransaction | RevertedTransaction;
+export type Transaction = DroppedTransaction | ReplacedTransaction | QueuedTransaction | PendingTransaction | ConfirmedTransaction | RevertedTransaction;
 ```
 <b>References:</b> [DroppedTransaction](./eth-connect.droppedtransaction.md)<!-- -->, [ReplacedTransaction](./eth-connect.replacedtransaction.md)<!-- -->, [QueuedTransaction](./eth-connect.queuedtransaction.md)<!-- -->, [PendingTransaction](./eth-connect.pendingtransaction.md)<!-- -->, [ConfirmedTransaction](./eth-connect.confirmedtransaction.md)<!-- -->, [RevertedTransaction](./eth-connect.revertedtransaction.md)
 

@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type FinishedTransactionAndReceipt = TransactionAndReceipt & {
+export type FinishedTransactionAndReceipt = TransactionAndReceipt & {
     status: TransactionStatus;
 };
 ```

@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type WebSocketProviderOptions = {
+export type WebSocketProviderOptions = {
     WebSocketConstructor?: any;
     timeout?: number;
     protocol?: string;

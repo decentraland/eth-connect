@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { RequestManager } from '../src'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 
@@ -14,7 +14,7 @@ describe('lib/web3/requestmanager', function () {
       provider.injectResult(expected)
 
       const result = await manager.sendAsync({
-        method: 'test',
+        method: 'tests',
         params: [1, 2, 3]
       })
 

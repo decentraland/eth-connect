@@ -8,5 +8,5 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type Hex = string;
+export type Hex = string;
 ```

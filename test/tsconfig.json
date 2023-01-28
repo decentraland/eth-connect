@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2017",
+    "target": "es2020",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
@@ -10,18 +10,13 @@
     "strict": false,
     "resolveJsonModule": true,
     "types": [
-      "mocha",
+      "jest",
       "node"
     ],
     "stripInternal": true,
     "forceConsistentCasingInFileNames": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "plugins": [
-      {
-        "name": "tslint-language-service"
-      }
-    ],
     "noEmit": true,
     "allowJs": true
   },

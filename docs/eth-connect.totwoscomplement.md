@@ -17,7 +17,7 @@ export declare function toTwosComplement(num: BigNumber.Value, bits?: number): B
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  num | [BigNumber.Value](./eth-connect.bignumber.value.md) |  |
-|  bits | number |  |
+|  bits | number | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

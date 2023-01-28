@@ -1,14 +1,14 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as utils from '../src/utils/utils'
 
 describe('lib/utils/utils', function () {
   describe('extractDisplayName', function () {
     it('should extract display name from method with no params', function () {
       // given
-      let test = 'helloworld()'
+      let tests = 'helloworld()'
 
       // when
-      let displayName = utils.extractDisplayName(test)
+      let displayName = utils.extractDisplayName(tests)
 
       // then
       expect(displayName).toEqual('helloworld')
@@ -16,10 +16,10 @@ describe('lib/utils/utils', function () {
 
     it('should extract display name from method with one param', function () {
       // given
-      let test = 'helloworld1(int)'
+      let tests = 'helloworld1(int)'
 
       // when
-      let displayName = utils.extractDisplayName(test)
+      let displayName = utils.extractDisplayName(tests)
 
       // then
       expect(displayName).toEqual('helloworld1')
@@ -27,10 +27,10 @@ describe('lib/utils/utils', function () {
 
     it('should extract display name from method with two params', function () {
       // given
-      let test = 'helloworld2(int,string)'
+      let tests = 'helloworld2(int,string)'
 
       // when
-      let displayName = utils.extractDisplayName(test)
+      let displayName = utils.extractDisplayName(tests)
 
       // then
       expect(displayName).toEqual('helloworld2')

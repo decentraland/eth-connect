@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type EventFilterCreator = (indexed: {
+export type EventFilterCreator = (indexed: {
     [key: string]: any;
 }, options?: FilterOptions) => Promise<EthFilter>;
 ```

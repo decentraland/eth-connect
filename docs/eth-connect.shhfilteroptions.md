@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type SHHFilterOptions = {
+export type SHHFilterOptions = {
     to?: Data;
     topics: TopicFilter;
 };

@@ -1,10 +1,10 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 import { RequestManager } from '../src'
 import { SHHFilter } from '../src/Filter'
 
 describe('shh.filter', function () {
-  it('test shh', async function () {
+  it('tests shh', async function () {
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
@@ -36,7 +36,7 @@ describe('shh.filter', function () {
     })
 
     // call
-    const filter = new SHHFilter(rm, { topics: ['0x32dd4f54', '0x564b4566'], test: 'asd' } as any)
+    const filter = new SHHFilter(rm, { topics: ['0x32dd4f54', '0x564b4566'], tests: 'asd' } as any)
     await filter.start()
     await filter.watch(() => void 0)
 

@@ -18,5 +18,5 @@ constructor(requestManager: RequestManager, options: FilterOptions, formatter?: 
 |  --- | --- | --- |
 |  requestManager | [RequestManager](./eth-connect.requestmanager.md) |  |
 |  options | [FilterOptions](./eth-connect.filteroptions.md) |  |
-|  formatter | (message: ReceivedLog) =&gt; TransformedLog |  |
+|  formatter | (message: ReceivedLog) =&gt; TransformedLog | <i>(Optional)</i> |
 

@@ -33,7 +33,7 @@ static clone(object?: BigNumber.Config): BigNumber.Constructor;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  object | [BigNumber.Config](./eth-connect.bignumber.config.md) | The configuration object. |
+|  object | [BigNumber.Config](./eth-connect.bignumber.config.md) | <i>(Optional)</i> The configuration object. |
 
 <b>Returns:</b>
 

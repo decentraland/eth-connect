@@ -18,7 +18,7 @@ export declare function padRight(str: string, chars: number, sign?: string): str
 |  --- | --- | --- |
 |  str | string |  |
 |  chars | number |  |
-|  sign | string |  |
+|  sign | string | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

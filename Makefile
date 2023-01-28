@@ -1,26 +1,28 @@
+.PHONY: clean
+
 NODE = @node
 TSC = $(NODE) --max-old-space-size=4096 node_modules/.bin/tsc
 MOCHA = $(NODE) --max-old-space-size=4096 node_modules/.bin/mocha
 NYC = $(NODE) --max-old-space-size=4096 node_modules/.bin/nyc
 ROLLUP = $(NODE) --max-old-space-size=4096 node_modules/.bin/rollup
-TSLINT = $(NODE) --max-old-space-size=4096 node_modules/.bin/tslint
-COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
+ESLINT = $(NODE) --max-old-space-size=4096 node_modules/.bin/eslint
+CODECOV = $(NODE) --max-old-space-size=4096 node_modules/.bin/codecov
 
 ifneq ($(CI), true)
 LOCAL_ARG = --local --verbose --diagnostics
 endif
 
-clean:
-		@echo '> Cleaning'
-		@(rm -rf coverage || true)
-		@(rm -rf .nyc_output || true)
-		@(rm *.lcov || true)
-		@(rm -rf dist || true)
-
 build: clean
 		@echo '> Building'
 		${ROLLUP} -c --environment BUILD:production
 		$(MAKE) provision-bundled
+
+clean:
+		@echo '> Cleaning'
+		@(rm -rf coverage || true)
+		@(rm -rf .nyc_output || true)
+		@(rm -rf *.lcov || true)
+		@(rm -rf dist || true)
 
 provision-bundled:
 		@echo '> Generating bundles'
@@ -46,18 +48,14 @@ watch:
 		${TSC} --project tsconfig.json --watch
 
 lint:
-		${TSLINT} --project tsconfig.json
+		${ESLINT} --project tsconfig.json
 
 test:
-		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha
+		node node_modules/.bin/jest
 test-fast:
-		node --inspect --experimental-modules node_modules/.bin/_mocha  $(TEST_ARGS)
+		node --inspect node_modules/.bin/_mocha  $(TEST_ARGS)
 test-fast-bail:
-		node --inspect --experimental-modules node_modules/.bin/_mocha --bail $(TEST_ARGS)
-
-test-coveralls:
-		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose
-
+		node --inspect node_modules/.bin/_mocha --bail $(TEST_ARGS)
 test-codecov:
 		${NYC} report --reporter=text-lcov > coverage.lcov
 
@@ -72,9 +70,9 @@ local-node:
 		# initialize ethereum/client-go node
 		@docker run \
 				-d --name geth-dev \
-				-v "$(PWD)":/eth_common \
+				-v "$(PWD)"/.geth:/root \
 				-p 8545:8545 -p 8546:8546 \
-						ethereum/client-go \
+				  ethereum/client-go \
 				--identity="TEST_NODE" --networkid="53611" \
         --allow-insecure-unlock \
 				--http --http.addr 0.0.0.0 --http.api="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" \
@@ -90,4 +88,4 @@ ci: | build local-node test test-codecov kill-docker
 
 test-local: | build local-node test kill-docker
 
-.PHONY: ci test test-coveralls watch lint build clean kill-docker local-node
+.PHONY: ci test test-codecov watch lint build clean kill-docker local-node

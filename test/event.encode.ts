@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { SolidityEvent } from '../src/SolidityEvent'
 import { FilterOptions } from '../src/Schema'
 
@@ -232,16 +232,16 @@ let tests = [
 
 describe('lib/web3/event', function () {
   describe('encode', function () {
-    tests.forEach(function (test, index) {
-      it('test no: ' + index, function () {
-        let event = new SolidityEvent(null, test.abi as any, address)
+    tests.forEach(function (tests, index) {
+      it('tests no: ' + index, function () {
+        let event = new SolidityEvent(null, tests.abi as any, address)
         event.signature = function () {
           // inject signature
           return signature.slice(2)
         }
 
-        let result = event.encode(test.indexed, test.options as FilterOptions)
-        expect(result).toEqual(test.expected as any)
+        let result = event.encode(tests.indexed, tests.options as FilterOptions)
+        expect(result).toEqual(tests.expected as any)
       })
     })
   })

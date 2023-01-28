@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as utils from '../src/utils/utils'
 
 let tests = [
@@ -26,9 +26,9 @@ let paddedTests = [
 
 describe('lib/utils/utils', function () {
   describe('fromAscii', function () {
-    tests.forEach(function (test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function () {
-        expect(utils.fromAscii(test.value)).toStrictEqual(test.expected)
+    tests.forEach(function (tests) {
+      it('should turn ' + tests.value + ' to ' + tests.expected, function () {
+        expect(utils.fromAscii(tests.value)).toStrictEqual(tests.expected)
       })
     })
 

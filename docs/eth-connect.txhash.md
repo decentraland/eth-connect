@@ -9,5 +9,5 @@ Hex string of 32 bytes
 <b>Signature:</b>
 
 ```typescript
-export declare type TxHash = string;
+export type TxHash = string;
 ```

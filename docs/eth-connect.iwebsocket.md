@@ -12,12 +12,12 @@ export interface IWebSocket
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [onclose](./eth-connect.iwebsocket.onclose.md) | ((this: this, ev: any) =&gt; any) \| null |  |
-|  [onerror](./eth-connect.iwebsocket.onerror.md) | ((this: this, ev: any) =&gt; any) \| null |  |
-|  [onmessage](./eth-connect.iwebsocket.onmessage.md) | ((this: this, ev: any) =&gt; any) \| null |  |
-|  [onopen](./eth-connect.iwebsocket.onopen.md) | ((this: this, ev: any) =&gt; any) \| null |  |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [onclose](./eth-connect.iwebsocket.onclose.md) |  | ((this: this, ev: any) =&gt; any) \| null |  |
+|  [onerror](./eth-connect.iwebsocket.onerror.md) |  | ((this: this, ev: any) =&gt; any) \| null |  |
+|  [onmessage](./eth-connect.iwebsocket.onmessage.md) |  | ((this: this, ev: any) =&gt; any) \| null |  |
+|  [onopen](./eth-connect.iwebsocket.onopen.md) |  | ((this: this, ev: any) =&gt; any) \| null |  |
 
 ## Methods
 

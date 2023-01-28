@@ -31,7 +31,7 @@ toFraction(max_denominator?: BigNumber.Value): [BigNumber, BigNumber];
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  max\_denominator | [BigNumber.Value](./eth-connect.bignumber.value.md) | The maximum denominator, integer &gt; 0, or Infinity. |
+|  max\_denominator | [BigNumber.Value](./eth-connect.bignumber.value.md) | <i>(Optional)</i> The maximum denominator, integer &gt; 0, or Infinity. |
 
 <b>Returns:</b>
 

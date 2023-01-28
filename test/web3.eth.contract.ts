@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 import { RequestManager, ContractFactory } from '../src'
 
@@ -9,7 +9,7 @@ describe('web3.eth.contract', function () {
     // given
     let description = [
       {
-        name: 'test(uint256)',
+        name: 'tests(uint256)',
         type: 'function',
         inputs: [
           {
@@ -36,15 +36,15 @@ describe('web3.eth.contract', function () {
     let myCon: any = await factory.at(address)
 
     // then
-    expect(typeof myCon.test).toEqual('function')
-    expect(typeof myCon.test['uint256']).toEqual('function')
+    expect(typeof myCon.tests).toEqual('function')
+    expect(typeof myCon.tests['uint256']).toEqual('function')
   })
 
   it('should create simple contract with one method from abi with implicit type name', async function () {
     // given
     let description = [
       {
-        name: 'test',
+        name: 'tests',
         type: 'function',
         inputs: [
           {
@@ -67,15 +67,15 @@ describe('web3.eth.contract', function () {
     let myCon: any = await new ContractFactory(rm, description).at(address)
 
     // then
-    expect(typeof myCon.test).toEqual('function')
-    expect(typeof myCon.test['uint256']).toEqual('function')
+    expect(typeof myCon.tests).toEqual('function')
+    expect(typeof myCon.tests['uint256']).toEqual('function')
   })
 
   it('should create contract with multiple methods', async function () {
     // given
     let description = [
       {
-        name: 'test',
+        name: 'tests',
         type: 'function',
         inputs: [
           {
@@ -91,7 +91,7 @@ describe('web3.eth.contract', function () {
         ]
       },
       {
-        name: 'test2',
+        name: 'tests2',
         type: 'function',
         inputs: [
           {
@@ -114,15 +114,15 @@ describe('web3.eth.contract', function () {
     let myCon: any = await new ContractFactory(rm, description).at(address)
 
     // then
-    expect(typeof myCon.test).toEqual('function')
-    expect(typeof myCon.test2).toEqual('function')
+    expect(typeof myCon.tests).toEqual('function')
+    expect(typeof myCon.tests2).toEqual('function')
   })
 
   it('should create contract with overloaded methods', async function () {
     // given
     let description = [
       {
-        name: 'test',
+        name: 'tests',
         type: 'function',
         inputs: [
           {
@@ -138,7 +138,7 @@ describe('web3.eth.contract', function () {
         ]
       },
       {
-        name: 'test',
+        name: 'tests',
         type: 'function',
         inputs: [
           {
@@ -161,16 +161,16 @@ describe('web3.eth.contract', function () {
     let myCon: any = await new ContractFactory(rm, description).at(address)
 
     // then
-    expect(typeof myCon.test).toEqual('function')
-    expect(typeof myCon.test['uint256']).toEqual('function')
-    expect(typeof myCon.test['string']).toEqual('function')
+    expect(typeof myCon.tests).toEqual('function')
+    expect(typeof myCon.tests['uint256']).toEqual('function')
+    expect(typeof myCon.tests['string']).toEqual('function')
   })
 
   it('should create contract with no methods', async function () {
     // given
     let description = [
       {
-        name: 'test(uint256)',
+        name: 'tests(uint256)',
         inputs: [
           {
             name: 'a',
@@ -192,14 +192,14 @@ describe('web3.eth.contract', function () {
     let myCon: any = await new ContractFactory(rm, description).at(address)
 
     // then
-    expect(myCon.test).toBeUndefined()
+    expect(myCon.tests).toBeUndefined()
   })
 
   it('should create contract with one event', async function () {
     // given
     let description = [
       {
-        name: 'test',
+        name: 'tests',
         type: 'event',
         inputs: [
           {
@@ -222,8 +222,8 @@ describe('web3.eth.contract', function () {
     let myCon: any = await new ContractFactory(rm, description).at(address)
 
     // then
-    expect(typeof myCon.events.test).toEqual('function')
-    expect(typeof myCon.events.test['uint256']).toEqual('function')
+    expect(typeof myCon.events.tests).toEqual('function')
+    expect(typeof myCon.events.tests['uint256']).toEqual('function')
   })
 
   it('should create contract with nondefault constructor', async function () {
@@ -235,7 +235,7 @@ describe('web3.eth.contract', function () {
     let code = '0x31241231231123123123123121cf121212i123123123123123512312412512111111'
     let description = [
       {
-        name: 'test',
+        name: 'tests',
         type: 'constructor',
         inputs: [
           {

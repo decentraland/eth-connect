@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as utils from '../src/utils/utils'
 import { BigNumber } from '../src/utils/BigNumber'
 
@@ -49,16 +49,16 @@ let tests = [
 
 describe('lib/utils/utils', function () {
   describe('toHex', function () {
-    tests.forEach(function (test) {
-      it('should turn ' + test.value + ' to ' + test.expected, function () {
-        expect(utils.toHex(test.value as any)).toEqual(test.expected)
+    tests.forEach(function (tests) {
+      it('should turn ' + tests.value + ' to ' + tests.expected, function () {
+        expect(utils.toHex(tests.value as any)).toEqual(tests.expected)
       })
     })
     it('should throw in arrays', function () {
-      expect(() => utils.toHex([1, 2, 3, { test: 'data' }] as any)).toThrow()
+      expect(() => utils.toHex([1, 2, 3, { tests: 'data' }] as any)).toThrow()
     })
     it('should throw in objects', function () {
-      expect(() => utils.toHex({ test: 'data' } as any)).toThrow()
+      expect(() => utils.toHex({ tests: 'data' } as any)).toThrow()
     })
   })
 })
