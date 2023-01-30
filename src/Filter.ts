@@ -116,7 +116,7 @@ export abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> 
   }
 
   protected abstract getNewFilter(): Promise<Data>
-  protected abstract getChanges(): Promise<ReceivedLog[]>
+  protected abstract getChanges(): Promise<null | ReceivedLog[]>
   protected abstract uninstall(): Promise<boolean>
 
   /**
@@ -127,15 +127,17 @@ export abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> 
       if (this.callbacks.length) {
         const result = await this.getChanges()
 
-        this.callbacks.forEach((cb) => {
-          if (this.formatter) {
-            result.forEach(($) => {
-              cb(this.formatter!($))
-            })
-          } else {
-            result.forEach(($) => cb($ as any))
-          }
-        })
+        if (result) {
+          this.callbacks.forEach((cb) => {
+            if (this.formatter) {
+              result.forEach(($) => {
+                cb(this.formatter!($))
+              })
+            } else {
+              result.forEach(($) => cb($ as any))
+            }
+          })
+        }
       }
 
       this.stopSemaphore.resolve(1)
