@@ -116,7 +116,7 @@ export abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> 
   }
 
   protected abstract getNewFilter(): Promise<Data>
-  protected abstract getChanges(): Promise<null | ReceivedLog[]>
+  protected abstract getChanges(): Promise<ReceivedLog[]>
   protected abstract uninstall(): Promise<boolean>
 
   /**
