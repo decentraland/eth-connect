@@ -48,7 +48,7 @@ watch:
 		${TSC} --project tsconfig.json --watch
 
 lint:
-		${ESLINT} --project tsconfig.json
+		${ESLINT}
 
 test:
 		node node_modules/.bin/jest
