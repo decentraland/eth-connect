@@ -8,6 +8,7 @@ _eth-connect_ is a TypeScript-based [web3](https://github.com/ethereum/web3.js) 
 
 You can follow the [JavaScript API documentation](https://github.com/ethereum/wiki/wiki/JavaScript-API) until TypeScript docs are released.
 
+
 ## Design goals
 
 - A Typed web3.js alternative
