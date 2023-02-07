@@ -622,7 +622,7 @@ class CoderArray extends Coder {
       try {
         var decodedLength = uint256Coder.decode(data, offset)
       } catch (error) {
-        throw error('insufficient data for dynamic array length', INVALID_ARGUMENT, {
+        throw createError('insufficient data for dynamic array length', INVALID_ARGUMENT, {
           arg: this.localName,
           coderType: 'array',
           value: error.value
@@ -631,7 +631,7 @@ class CoderArray extends Coder {
       try {
         count = decodedLength.value.toNumber()
       } catch (error) {
-        throw error('array count too large', INVALID_ARGUMENT, {
+        throw createError('array count too large', INVALID_ARGUMENT, {
           arg: this.localName,
           coderType: 'array',
           value: decodedLength.value.toString()
