@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 
 import { ContractFactory, RequestManager, Contract } from '../src'
 import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../src/Filter'

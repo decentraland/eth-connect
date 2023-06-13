@@ -1,5 +1,5 @@
 import 'isomorphic-fetch'
-import * as expect from 'expect'
+import expect from 'expect'
 import { ContractFactory, RequestManager } from '../src'
 import { testAllProviders } from './helpers/testAllProviders'
 import { abi, bytecode } from './fixtures/Catalyst.json'

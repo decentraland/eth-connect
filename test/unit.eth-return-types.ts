@@ -1,7 +1,7 @@
 import { RequestManager, isHex, isAddress } from '../src'
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 import { BigNumber } from '../src/utils/BigNumber'
-import * as expect from 'expect'
+import expect from 'expect'
 import { toRPC } from '../src/providers/common'
 
 export function testReturnType(

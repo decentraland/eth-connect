@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { AbiEvent, AbiFunction } from '../src'
 import { parseSignature } from '../src/abi/parser'
 

@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as coder from '../src/solidity/coder'
 import { hexToBytes } from '../src'
 import { parseParamType } from '../src/abi/parser'

@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import 'isomorphic-fetch'
 import * as EthConnect from '../dist/eth-connect'
 import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'

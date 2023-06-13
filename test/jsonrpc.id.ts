@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as Jsonrpc from '../src/utils/jsonrpc'
 
 describe('lib/web3/jsonrpc', function () {

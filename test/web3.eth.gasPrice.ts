@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { RequestManager } from '../src'
 import { BigNumber } from '../src/utils/BigNumber'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
