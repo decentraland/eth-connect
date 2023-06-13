@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type SHHFilterMessage = {
+export type SHHFilterMessage = {
     hash: TxHash;
     from: Data;
     to: Data;

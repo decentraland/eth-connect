@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type TransactionReceipt = {
+export type TransactionReceipt = {
     transactionHash: TxHash;
     transactionIndex: Quantity;
     blockHash: TxHash;

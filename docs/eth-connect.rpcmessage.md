@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type RPCMessage = {
+export type RPCMessage = {
     jsonrpc: '2.0';
     id: number;
     method: string;

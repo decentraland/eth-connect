@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type LogObject = {
+export type LogObject = {
     removed: boolean;
     logIndex: Quantity;
     transactionIndex: Quantity;

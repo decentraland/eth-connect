@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type DroppedTransaction = {
+export type DroppedTransaction = {
     type: TransactionType.dropped;
     hash: string;
     nonce: number;

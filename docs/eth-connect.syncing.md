@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type Syncing = {
+export type Syncing = {
     startingBlock: Quantity;
     currentBlock: Quantity;
     highestBlock: Quantity;

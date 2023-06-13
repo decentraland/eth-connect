@@ -7,19 +7,6 @@ export type Arrayish = string | ArrayLike<number>
 
 ///////////////////////////////
 
-function addSlice(array: Uint8Array): Uint8Array {
-  if ('slice' in array && array.slice) {
-    return array
-  }
-
-  array.slice = function () {
-    const args: any = Array.prototype.slice.call(arguments)
-    return new Uint8Array(Array.prototype.slice.apply(array, args))
-  }
-
-  return array
-}
-
 export function isArrayish(value: any): value is Arrayish {
   if (!value || parseInt(String(value.length)) != value.length || typeof value === 'string') {
     return false
@@ -41,7 +28,7 @@ export function arrayify(value: Arrayish): Uint8Array {
   }
 
   if (value instanceof Uint8Array) {
-    return addSlice(new Uint8Array(value))
+    return new Uint8Array(value)
   }
 
   if (typeof value === 'string') {
@@ -68,11 +55,11 @@ export function arrayify(value: Arrayish): Uint8Array {
       result.push(parseInt(value.substr(i, 2), 16))
     }
 
-    return addSlice(new Uint8Array(result))
+    return new Uint8Array(result)
   }
 
   if (isArrayish(value)) {
-    return addSlice(new Uint8Array(value))
+    return new Uint8Array(value)
   }
 
   throw createError('invalid arrayify value', undefined, { arg: 'value', value: value, type: typeof value })

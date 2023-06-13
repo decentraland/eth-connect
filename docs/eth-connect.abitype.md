@@ -8,5 +8,5 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
+export type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
 ```

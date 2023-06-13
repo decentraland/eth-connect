@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type FilterOptions = {
+export type FilterOptions = {
     fromBlock?: BlockIdentifier;
     toBlock?: BlockIdentifier;
     address?: Data | Address;

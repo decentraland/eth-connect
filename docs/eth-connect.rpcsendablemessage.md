@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type RPCSendableMessage = {
+export type RPCSendableMessage = {
     method: string;
     params: any[];
 };

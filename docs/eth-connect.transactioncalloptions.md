@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type TransactionCallOptions = {
+export type TransactionCallOptions = {
     from?: Address;
     to: Address;
     gas?: BigNumber.Value;

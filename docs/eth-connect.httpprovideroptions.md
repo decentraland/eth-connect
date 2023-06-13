@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type HTTPProviderOptions = {
+export type HTTPProviderOptions = {
     headers?: {
         [key: string]: string;
     };

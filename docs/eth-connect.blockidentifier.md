@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type BlockIdentifier = Quantity | Tag;
+export type BlockIdentifier = Quantity | Tag;
 ```
 <b>References:</b> [Quantity](./eth-connect.quantity.md)<!-- -->, [Tag](./eth-connect.tag.md)
 

@@ -8,7 +8,7 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type PendingTransaction = TransactionObject & {
+export type PendingTransaction = TransactionObject & {
     type: TransactionType.pending;
 };
 ```

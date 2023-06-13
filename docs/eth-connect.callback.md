@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type Callback = (err: Error | null, message?: any) => void;
+export type Callback = (err: Error | null, message?: any) => void;
 ```

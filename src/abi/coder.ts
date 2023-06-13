@@ -168,7 +168,7 @@ class CoderNumber extends Coder {
       }
 
       return hexToBytes(result)
-    } catch (error) {
+    } catch (error: any) {
       throw createError('invalid number value', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: this.name,
@@ -222,7 +222,7 @@ class CoderBoolean extends Coder {
   decode(data: Uint8Array, offset: number): DecodedResult {
     try {
       var result = uint256Coder.decode(data, offset)
-    } catch (error) {
+    } catch (error: any) {
       if (error.reason === 'insufficient data for uint256 type') {
         throw createError('insufficient data for boolean type', INVALID_ARGUMENT, {
           arg: this.localName,
@@ -264,7 +264,7 @@ class CoderFixedBytes extends Coder {
       }
 
       result.set(data)
-    } catch (error) {
+    } catch (error: any) {
       throw createError('invalid ' + this.name + ' value. Use hex strings or Uint8Array', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: this.name,
@@ -314,7 +314,7 @@ class CoderAddress extends Coder {
     }
     try {
       result.set(hexToBytes(inputAddressFormatter(address)), 12)
-    } catch (error) {
+    } catch (error: any) {
       throw createError(`invalid address (${error.message})`, INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: 'address',
@@ -358,7 +358,7 @@ function _decodeDynamicBytes(data: Uint8Array, offset: number, localName: string
   let length = uint256Coder.decode(data, offset).value
   try {
     length = length.toNumber()
-  } catch (error) {
+  } catch (error: any) {
     throw error('dynamic bytes count too large', INVALID_ARGUMENT, {
       arg: localName,
       coderType: 'dynamicBytes',
@@ -387,7 +387,7 @@ class CoderDynamicBytes extends Coder {
   encode(value: Arrayish): Uint8Array {
     try {
       return _encodeDynamicBytes(arrayify(value))
-    } catch (error) {
+    } catch (error: any) {
       throw error('invalid bytes value', INVALID_ARGUMENT, {
         arg: this.localName,
         coderType: 'bytes',
@@ -621,7 +621,7 @@ class CoderArray extends Coder {
     if (count === -1) {
       try {
         var decodedLength = uint256Coder.decode(data, offset)
-      } catch (error) {
+      } catch (error: any) {
         throw createError('insufficient data for dynamic array length', INVALID_ARGUMENT, {
           arg: this.localName,
           coderType: 'array',
@@ -630,7 +630,7 @@ class CoderArray extends Coder {
       }
       try {
         count = decodedLength.value.toNumber()
-      } catch (error) {
+      } catch (error: any) {
         throw createError('array count too large', INVALID_ARGUMENT, {
           arg: this.localName,
           coderType: 'array',
