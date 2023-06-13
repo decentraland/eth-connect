@@ -29,11 +29,11 @@ function addFunctionsToContract(contract: Contract) {
  * @param contract - The contract instance
  */
 function addEventsToContract(contract: Contract) {
-  let events = contract.abi.filter(function (json): json is AbiEvent {
+  const events = contract.abi.filter(function (json): json is AbiEvent {
     return json.type === 'event'
   })
 
-  let allEvents = new AllSolidityEvents(contract.requestManager, events, contract.address)
+  const allEvents = new AllSolidityEvents(contract.requestManager, events, contract.address)
 
   events
     .map(function (json) {

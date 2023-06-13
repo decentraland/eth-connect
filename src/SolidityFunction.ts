@@ -66,7 +66,7 @@ export class SolidityFunction {
       throw new Error('Invalid call, some arguments are undefined')
     }
 
-    let inputArgs = args.filter(function (a) {
+    const inputArgs = args.filter(function (a) {
       // filter the options object but not arguments that are arrays
       return !(
         utils.isObject(a) === true &&
@@ -121,7 +121,7 @@ export class SolidityFunction {
     }
 
     const encodedOutput = output.length >= 2 ? output.slice(2) : output
-    let result = coder.decodeParams(this._outputTypes, encodedOutput)
+    const result = coder.decodeParams(this._outputTypes, encodedOutput)
     return result.length === 1 ? result[0] : result
   }
 
@@ -162,7 +162,7 @@ export class SolidityFunction {
     if (!(requestManager instanceof RequestManager))
       throw new Error('estimateGas needs to receive a RequestManager as first argument')
 
-    let payload = this.toPayload(args)
+    const payload = this.toPayload(args)
     payload.to = address
 
     return requestManager.eth_estimateGas(payload)
@@ -188,7 +188,7 @@ export class SolidityFunction {
    * @param contract - The contract instance
    */
   attachToContract(contract: Contract) {
-    let displayName = this.displayName()
+    const displayName = this.displayName()
 
     const execute = Object.assign(
       (...args: any[]) => this.execute(contract.requestManager, contract.address, ...args),

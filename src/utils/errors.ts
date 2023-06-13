@@ -90,7 +90,7 @@ export function InvalidProvider() {
 }
 
 export function InvalidResponse(result: any) {
-  let message =
+  const message =
     !!result && !!result.error && !!result.error.message
       ? result.error.message
       : 'Invalid JSON RPC response: ' + JSON.stringify(result)
@@ -109,7 +109,7 @@ export function createError(message: string, code: string = UNKNOWN_ERROR, param
     return new Error('unknown error')
   }
 
-  let messageDetails: Array<string> = []
+  const messageDetails: Array<string> = []
   Object.keys(params).forEach((key) => {
     try {
       messageDetails.push(key + '=' + JSON.stringify(params[key]))
@@ -118,13 +118,13 @@ export function createError(message: string, code: string = UNKNOWN_ERROR, param
     }
   })
 
-  let reason = message
+  const reason = message
   if (messageDetails.length) {
     message += ' (' + messageDetails.join(', ') + ')'
   }
 
   // @TODO: Any??
-  let error: any = new Error(message)
+  const error: any = new Error(message)
   error.reason = reason
   error.code = code
 
@@ -149,7 +149,10 @@ export function checkArgumentCount(count: number, expectedCount: number, suffix?
     throw createError('missing argument' + suffix, MISSING_ARGUMENT, { count: count, expectedCount: expectedCount })
   }
   if (count > expectedCount) {
-    throw createError('too many arguments' + suffix, UNEXPECTED_ARGUMENT, { count: count, expectedCount: expectedCount })
+    throw createError('too many arguments' + suffix, UNEXPECTED_ARGUMENT, {
+      count: count,
+      expectedCount: expectedCount
+    })
   }
 }
 

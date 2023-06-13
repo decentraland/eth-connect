@@ -1,12 +1,15 @@
 import { RPCMessage, Callback, toRPC } from './common'
 export { RPCMessage, Callback } from './common'
 
-export type FetchFunction = (url: string, params: {
-  body?: any,
-  method?: string,
-  mode?: string,
-  headers?: any
-}) => Promise<any>
+export type FetchFunction = (
+  url: string,
+  params: {
+    body?: any
+    method?: string
+    mode?: string
+    headers?: any
+  }
+) => Promise<any>
 
 export type HTTPProviderOptions = {
   headers?: { [key: string]: string }
@@ -50,7 +53,9 @@ export class HTTPProvider {
 
       /* istanbul ignore if */
       if (typeof fetch === 'undefined') {
-        throw new Error('There is no global fetch object nor it was provided. Please install and import isomorphic-fetch')
+        throw new Error(
+          'There is no global fetch object nor it was provided. Please install and import isomorphic-fetch'
+        )
       }
 
       const params: RequestInit = {

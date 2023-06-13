@@ -97,15 +97,15 @@ export function inputCallFormatter(options: TransactionOptions) {
  * Ensures a correct transactionId is provided
  */
 export function inputTransactionId(txId: string) {
-  if (typeof txId != 'string') {
+  if (typeof txId !== 'string') {
     throw new Error('The provided input for transactionId is not a string, got: ' + JSON.stringify(txId))
   }
 
-  if (txId.indexOf('0x') !== 0){
+  if (txId.indexOf('0x') !== 0) {
     throw new Error('TransactionID must start with 0x, got: ' + JSON.stringify(txId))
   }
 
-  if (txId.length !== 66){
+  if (txId.length !== 66) {
     throw new Error('TransactionID must be a 32 byte hex, got: ' + JSON.stringify(txId))
   }
 

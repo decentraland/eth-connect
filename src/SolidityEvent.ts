@@ -82,7 +82,7 @@ export class SolidityEvent {
    * @param {object} options
    */
   encode(indexed: Record<string, any> = {}, options: FilterOptions = {}): FilterOptions {
-    let result: FilterOptions = {
+    const result: FilterOptions = {
       topics: [],
       address: this.address
     }
@@ -98,12 +98,12 @@ export class SolidityEvent {
       result.topics.push('0x' + this.signature())
     }
 
-    let indexedTopics: TopicFilter = this._params
+    const indexedTopics: TopicFilter = this._params
       .filter(function (i) {
         return i.indexed === true
       })
       .map(function (i) {
-        let value = indexed[i.name]
+        const value = indexed[i.name]
         if (value === undefined || value === null) {
           return null
         }
@@ -130,16 +130,16 @@ export class SolidityEvent {
     data.data = data.data || ''
     data.topics = data.topics || []
 
-    let argTopics = this._anonymous ? data.topics : data.topics.slice(1)
-    let indexedData = argTopics
+    const argTopics = this._anonymous ? data.topics : data.topics.slice(1)
+    const indexedData = argTopics
       .map(function (topics) {
         return topics.slice(2)
       })
       .join('')
-    let indexedParams = coder.decodeParams(this.types(true), indexedData)
+    const indexedParams = coder.decodeParams(this.types(true), indexedData)
 
-    let notIndexedData = data.data.slice(2)
-    let notIndexedParams = coder.decodeParams(this.types(false), notIndexedData)
+    const notIndexedData = data.data.slice(2)
+    const notIndexedParams = coder.decodeParams(this.types(false), notIndexedData)
 
     const args = this._params.reduce(function (acc, current) {
       acc[current.name] = current.indexed ? indexedParams.shift() : notIndexedParams.shift()
@@ -161,8 +161,8 @@ export class SolidityEvent {
    * @param {object} options
    */
   async execute(indexed: Record<string, any>, options?: FilterOptions): Promise<EthFilter<LogObject>> {
-    let o = this.encode(indexed, options)
-    let formatter = this.decode.bind(this)
+    const o = this.encode(indexed, options)
+    const formatter = this.decode.bind(this)
     return new EthFilter<LogObject>(this.requestManager, o, formatter)
   }
 
@@ -172,8 +172,8 @@ export class SolidityEvent {
    * @param {Contract}
    */
   attachToContract(contract: Contract) {
-    let execute = this.execute.bind(this)
-    let displayName = this.displayName()
+    const execute = this.execute.bind(this)
+    const displayName = this.displayName()
     if (!contract.events[displayName]) {
       contract.events[displayName] = execute
     }

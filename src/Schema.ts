@@ -524,11 +524,10 @@ export interface AbiConstructor {
   gas?: number
 }
 
-
 /**
  * @public
  */
- export interface AbiOutput {
+export interface AbiOutput {
   name: string
   type: string
   components?: AbiOutput[]

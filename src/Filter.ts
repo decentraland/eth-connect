@@ -53,7 +53,7 @@ export abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> 
   public isStarted = false
   public isDisposed = false
 
-  public formatter: (x: ReceivedLog) => TransformedLog = x => x as any
+  public formatter: (x: ReceivedLog) => TransformedLog = (x) => x as any
 
   protected filterId: IFuture<Data> = future()
   protected callbacks: ((message: TransformedLog) => void)[] = []
@@ -191,7 +191,10 @@ export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
   }
 }
 
-export class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObject> extends AbstractFilter<ReceivedLog, TransformedLog> {
+export class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObject> extends AbstractFilter<
+  ReceivedLog,
+  TransformedLog
+> {
   constructor(
     public requestManager: RequestManager,
     public options: FilterOptions,

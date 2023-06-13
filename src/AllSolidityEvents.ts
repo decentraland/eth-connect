@@ -27,7 +27,7 @@ export class AllSolidityEvents {
   constructor(public _requestManager: RequestManager, public _json: AbiEvent[], public _address: string) {}
 
   encode(options: FilterOptions = {}) {
-    let result: FilterOptions = {
+    const result: FilterOptions = {
       address: this._address
     }
 
@@ -43,9 +43,9 @@ export class AllSolidityEvents {
   decode(data: LogObject) {
     data.data = data.data || ''
 
-    let eventTopic = utils.isArray(data.topics) && utils.isString(data.topics[0]) ? data.topics[0].slice(2) : ''
+    const eventTopic = utils.isArray(data.topics) && utils.isString(data.topics[0]) ? data.topics[0].slice(2) : ''
 
-    let match = this._json.filter(function (j) {
+    const match = this._json.filter(function (j) {
       return eventTopic === utils.sha3(utils.transformToFullName(j))
     })[0]
 
@@ -54,13 +54,13 @@ export class AllSolidityEvents {
       return formatters.outputLogFormatter(data)
     }
 
-    let event = new SolidityEvent(this._requestManager, match, this._address)
+    const event = new SolidityEvent(this._requestManager, match, this._address)
     return event.decode(data)
   }
 
   async execute(options: FilterOptions) {
-    let filterOptions = this.encode(options)
-    let formatter = this.decode.bind(this)
+    const filterOptions = this.encode(options)
+    const formatter = this.decode.bind(this)
     return new EthFilter<any>(this._requestManager, filterOptions, formatter)
   }
 

@@ -3,7 +3,6 @@ TSC = $(NODE) --max-old-space-size=4096 node_modules/.bin/tsc
 MOCHA = $(NODE) --max-old-space-size=4096 node_modules/.bin/mocha
 NYC = $(NODE) --max-old-space-size=4096 node_modules/.bin/nyc
 ROLLUP = $(NODE) --max-old-space-size=4096 node_modules/.bin/rollup
-TSLINT = $(NODE) --max-old-space-size=4096 node_modules/.bin/tslint
 COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
 
 ifneq ($(CI), true)
@@ -20,7 +19,7 @@ clean:
 build: clean
 		@echo '> Building'
 		${TSC} --project . --declarationDir ./dist --outDir ./dist --noEmit false
-		${ROLLUP} -c --environment BUILD:production
+		${ROLLUP} --bundleConfigAsCjs -c --environment BUILD:production
 		$(MAKE) provision-bundled
 
 provision-bundled:
@@ -45,9 +44,6 @@ provision-bundled:
 
 watch:
 		${TSC} --project tsconfig.json --watch
-
-lint:
-		${TSLINT} --project tsconfig.json
 
 test:
 		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha --timeout 60000
@@ -80,7 +76,7 @@ local-node:
         --allow-insecure-unlock \
 				--http --http.addr 0.0.0.0 --http.api="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" \
 				--ws  --ws.addr 0.0.0.0  --ws.api="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" --ws.origins \* \
-				--mine --miner.threads=1 \
+				--mine \
 				--dev --dev.period 0
 
 kill-docker:
