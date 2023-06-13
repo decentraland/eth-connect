@@ -60,7 +60,7 @@
     "@types/mocha": "^8.2.1",
     "@types/node-fetch": "^2.6.1",
     "bignumber.js": "^9.0.1",
-    "coveralls": "^3.1.0",
+    "coveralls": "^3.1.1",
     "expect": "^29.5.0",
     "fp-future": "^1.0.1",
     "ganache-cli": "^6.12.2",
