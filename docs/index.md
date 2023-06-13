@@ -40,6 +40,7 @@
 
 |  Function | Description |
 |  --- | --- |
+|  [BigNumber(n, base)](./eth-connect.bignumber.md) |  |
 |  [bytesToHex(bytes)](./eth-connect.bytestohex.md) |  |
 |  [bytesToUtf8String(bytesOrHexString)](./eth-connect.bytestoutf8string.md) | Decodes an Uint8Array or hex string into a UTF-8 string |
 |  [concatBytes(buffers)](./eth-connect.concatbytes.md) |  |

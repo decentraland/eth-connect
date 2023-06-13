@@ -59,7 +59,7 @@
     "@rollup/plugin-typescript": "^11.1.1",
     "@types/mocha": "^10.0.1",
     "@types/node-fetch": "^2.6.4",
-    "bignumber.js": "^9.0.1",
+    "bignumber.js": "^9.1.1",
     "coveralls": "^3.1.1",
     "expect": "^29.5.0",
     "fp-future": "^1.0.1",

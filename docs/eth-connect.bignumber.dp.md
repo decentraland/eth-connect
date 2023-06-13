@@ -30,9 +30,9 @@ y.dp()                                 // 102
 **Signature:**
 
 ```typescript
-dp(): number;
+dp(): number | null;
 ```
 **Returns:**
 
-number
+number \| null
 

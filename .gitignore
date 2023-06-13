@@ -30,3 +30,4 @@ src/temp
 **/*.lcov
 coverage.lcov
 test-result
+.dir-locals.el
