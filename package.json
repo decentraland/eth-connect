@@ -4,7 +4,10 @@
   "private": true,
   "description": "Ethereum TypeScript API, middleware to talk to a ethereum node using an async provider",
   "decentralandLibrary": {},
-  "repository": "decentraland/eth-connect",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decentraland/eth-connect.git"
+  },
   "homepage": "https://github.com/decentraland/eth-connect",
   "bugs": "https://github.com/decentraland/eth-connect/issues",
   "scripts": {
