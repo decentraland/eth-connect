@@ -41,7 +41,7 @@ const paramTypeNumber = new RegExp(/^(u?int)([0-9]*)$/)
 const paramTypeArray = new RegExp(/^(.*)\[([0-9]*)\]$/)
 
 export const defaultCoerceFunc: CoerceFunc = function (type: string, value: any): any {
-  var match = type.match(paramTypeNumber)
+  const match = type.match(paramTypeNumber)
   if (match && parseInt(match[2]) <= 48) {
     return value.toNumber()
   }
@@ -152,7 +152,7 @@ class CoderNumber extends Coder {
         v = toTwosComplement(fromTwosComplement(v, this.size * 8), 256)
       }
 
-      let result = padLeft(toTwosComplement(v).toString(16), 64)
+      const result = padLeft(toTwosComplement(v).toString(16), 64)
 
       if (result.indexOf('NaN') != -1) {
         throw createError('invalid number value, NaN', INVALID_ARGUMENT, {
@@ -186,8 +186,8 @@ class CoderNumber extends Coder {
         value: toHex(data.slice(offset, offset + 32))
       })
     }
-    var junkLength = 32 - this.size
-    var value = new BigNumber(bytesToHex(data.slice(offset + junkLength, offset + 32)), 16)
+    const junkLength = 32 - this.size
+    let value = new BigNumber(bytesToHex(data.slice(offset + junkLength, offset + 32)), 16)
 
     if (this.signed) {
       value = fromTwosComplement(value, this.size * 8)
@@ -201,7 +201,7 @@ class CoderNumber extends Coder {
     }
   }
 }
-var uint256Coder = new CoderNumber(
+const uint256Coder = new CoderNumber(
   function (_type: string, value: any) {
     return value
   },
@@ -248,16 +248,16 @@ class CoderFixedBytes extends Coder {
   }
 
   encode(value: Arrayish): Uint8Array {
-    var result = new Uint8Array(32)
+    const result = new Uint8Array(32)
 
     try {
-      if (typeof value == 'string') {
+      if (typeof value === 'string') {
         if (value.length % 2 !== 0) {
           throw new Error(`hex string cannot be odd-length`)
         }
       }
 
-      let data = arrayify(value)
+      const data = arrayify(value)
 
       if (data.length > this.length) {
         throw new Error(`incorrect data length`)
@@ -303,7 +303,7 @@ class CoderAddress extends Coder {
     super(coerceFunc, 'address', 'address', localName, false)
   }
   encode(inputAddress: string): Uint8Array {
-    let result = new Uint8Array(32)
+    const result = new Uint8Array(32)
     const address = inputAddress.trim()
     if (!isAddress(address)) {
       throw createError(`invalid address format`, INVALID_ARGUMENT, {
@@ -340,8 +340,8 @@ class CoderAddress extends Coder {
 }
 
 function _encodeDynamicBytes(value: Uint8Array): Uint8Array {
-  var dataLength = 32 * Math.ceil(value.length / 32)
-  var padding = new Uint8Array(dataLength - value.length)
+  const dataLength = 32 * Math.ceil(value.length / 32)
+  const padding = new Uint8Array(dataLength - value.length)
 
   return concatBytes(uint256Coder.encode(value.length), value, padding)
 }
@@ -355,7 +355,7 @@ function _decodeDynamicBytes(data: Uint8Array, offset: number, localName: string
     })
   }
 
-  var length = uint256Coder.decode(data, offset).value
+  let length = uint256Coder.decode(data, offset).value
   try {
     length = length.toNumber()
   } catch (error) {
@@ -397,7 +397,7 @@ class CoderDynamicBytes extends Coder {
   }
 
   decode(data: Uint8Array, offset: number): DecodedResult {
-    var result = _decodeDynamicBytes(data, offset, this.localName)
+    const result = _decodeDynamicBytes(data, offset, this.localName)
     result.value = this.coerceFunc('bytes', result.value)
     return result
   }
@@ -420,7 +420,7 @@ class CoderString extends Coder {
   }
 
   decode(data: Uint8Array, offset: number): DecodedResult {
-    var result = _decodeDynamicBytes(data, offset, this.localName)
+    const result = _decodeDynamicBytes(data, offset, this.localName)
     result.value = this.coerceFunc('string', bytesToUtf8String(result.value))
     return result
   }
@@ -434,7 +434,7 @@ function pack(coders: Array<Coder>, values: Array<any>): Uint8Array {
   if (Array.isArray(values)) {
     // do nothing
   } else if (values && typeof values === 'object') {
-    var arrayValues: Array<any> = []
+    const arrayValues: Array<any> = []
     coders.forEach(function (coder) {
       arrayValues.push((<any>values)[coder.localName])
     })
@@ -453,13 +453,13 @@ function pack(coders: Array<Coder>, values: Array<any>): Uint8Array {
     })
   }
 
-  var parts: Array<{ dynamic: boolean; value: any }> = []
+  const parts: Array<{ dynamic: boolean; value: any }> = []
 
   coders.forEach(function (coder, index) {
     parts.push({ dynamic: coder.dynamic, value: coder.encode(values[index]) })
   })
 
-  var staticSize = 0,
+  let staticSize = 0,
     dynamicSize = 0
   parts.forEach(function (part) {
     if (part.dynamic) {
@@ -470,9 +470,9 @@ function pack(coders: Array<Coder>, values: Array<any>): Uint8Array {
     }
   })
 
-  var offset = 0,
+  let offset = 0,
     dynamicOffset = staticSize
-  var data = new Uint8Array(staticSize + dynamicSize)
+  const data = new Uint8Array(staticSize + dynamicSize)
 
   parts.forEach(function (part) {
     if (part.dynamic) {
@@ -498,13 +498,13 @@ export class Tuple extends Array<any> {
 }
 
 function unpack(coders: Array<Coder>, data: Uint8Array, offset: number): DecodedResult {
-  var baseOffset = offset
-  var consumed = 0
+  const baseOffset = offset
+  let consumed = 0
 
-  var value: any[] = []
+  const value: any[] = []
   coders.forEach(function (coder) {
     if (coder.dynamic) {
-      var dynamicOffset = uint256Coder.decode(data, offset)
+      const dynamicOffset = uint256Coder.decode(data, offset)
       var result = coder.decode(data, baseOffset + dynamicOffset.value.toNumber())
       // The dynamic part is leap-frogged somewhere else; doesn't count towards size
       result.consumed = dynamicOffset.consumed
@@ -527,12 +527,12 @@ function unpack(coders: Array<Coder>, data: Uint8Array, offset: number): Decoded
 }
 
 function unpackWithNames(coders: Array<Coder>, data: Uint8Array, offset: number): DecodedResult {
-  var baseOffset = offset
-  var consumed = 0
-  var value = new Tuple()
+  const baseOffset = offset
+  let consumed = 0
+  const value = new Tuple()
   coders.forEach(function (coder) {
     if (coder.dynamic) {
-      var dynamicOffset = uint256Coder.decode(data, offset)
+      const dynamicOffset = uint256Coder.decode(data, offset)
       var result = coder.decode(data, baseOffset + dynamicOffset.value.toNumber())
       // The dynamic part is leap-frogged somewhere else; doesn't count towards size
       result.consumed = dynamicOffset.consumed
@@ -592,9 +592,9 @@ class CoderArray extends Coder {
       })
     }
 
-    var count = this.length
+    let count = this.length
 
-    var result = new Uint8Array(0)
+    let result = new Uint8Array(0)
     if (count === -1) {
       count = value.length
       result = uint256Coder.encode(count)
@@ -602,8 +602,8 @@ class CoderArray extends Coder {
 
     checkArgumentCount(count, value.length, 'in coder array' + (this.localName ? ' ' + this.localName : ''))
 
-    var coders: Coder[] = []
-    for (var i = 0; i < value.length; i++) {
+    const coders: Coder[] = []
+    for (let i = 0; i < value.length; i++) {
       coders.push(this.coder)
     }
 
@@ -614,9 +614,9 @@ class CoderArray extends Coder {
     // @TODO:
     //if (data.length < offset + length * 32) { throw new Error('invalid array'); }
 
-    var consumed = 0
+    let consumed = 0
 
-    var count = this.length
+    let count = this.length
 
     if (count === -1) {
       try {
@@ -641,12 +641,12 @@ class CoderArray extends Coder {
       offset += decodedLength.consumed
     }
 
-    var coders: Coder[] = []
-    for (var i = 0; i < count; i++) {
+    const coders: Coder[] = []
+    for (let i = 0; i < count; i++) {
       coders.push(new CoderAnonymous(this.coder))
     }
 
-    var result = unpack(coders, data, offset)
+    const result = unpack(coders, data, offset)
     result.consumed += consumed
     result.value = this.coerceFunc(this.type, result.value)
     return result
@@ -656,15 +656,15 @@ class CoderArray extends Coder {
 class CoderTuple extends Coder {
   readonly coders: Array<Coder>
   constructor(coerceFunc: CoerceFunc, coders: Array<Coder>, localName: string) {
-    var dynamic = false
-    var types: Array<string> = []
+    let dynamic = false
+    const types: Array<string> = []
     coders.forEach(function (coder) {
       if (coder.dynamic) {
         dynamic = true
       }
       types.push(coder.type)
     })
-    var type = 'tuple(' + types.join(',') + ')'
+    const type = 'tuple(' + types.join(',') + ')'
 
     super(coerceFunc, 'tuple', type, localName, dynamic)
     this.coders = coders
@@ -675,7 +675,7 @@ class CoderTuple extends Coder {
   }
 
   decode(data: Uint8Array, offset: number): DecodedResult {
-    var result = unpackWithNames(this.coders, data, offset)
+    const result = unpackWithNames(this.coders, data, offset)
     result.value = this.coerceFunc(this.type, result.value)
     return result
   }
@@ -698,19 +698,19 @@ function getTupleParamCoder(
   if (!components) {
     components = []
   }
-  var coders = components.map((component) => getParamCoder(coerceFunc, component))
+  const coders = components.map((component) => getParamCoder(coerceFunc, component))
 
   return new CoderTuple(coerceFunc, coders, localName)
 }
 
 function getParamCoder(coerceFunc: CoerceFunc, param: Readonly<AbiInput>): Coder {
-  var coder = paramTypeSimple[param.type]
+  const coder = paramTypeSimple[param.type]
   if (coder) {
     return new coder(coerceFunc, param.name)
   }
   var match = param.type.match(paramTypeNumber)
   if (match) {
-    let size = parseInt(match[2] || '256')
+    const size = parseInt(match[2] || '256')
     if (size === 0 || size > 256 || size % 8 !== 0) {
       throw createError('invalid ' + match[1] + ' bit length', INVALID_ARGUMENT, {
         arg: 'param',
@@ -722,7 +722,7 @@ function getParamCoder(coerceFunc: CoerceFunc, param: Readonly<AbiInput>): Coder
 
   var match = param.type.match(paramTypeBytes)
   if (match) {
-    let size = parseInt(match[1])
+    const size = parseInt(match[1])
     if (size === 0 || size > 32) {
       throw createError('invalid bytes length', INVALID_ARGUMENT, {
         arg: 'param',
@@ -736,7 +736,7 @@ function getParamCoder(coerceFunc: CoerceFunc, param: Readonly<AbiInput>): Coder
 
   if (match) {
     const newParam = { ...param }
-    let size = parseInt(match[2] || '-1')
+    const size = parseInt(match[2] || '-1')
     newParam.type = match[1]
     return new CoderArray(coerceFunc, getParamCoder(coerceFunc, newParam), size, param.name!)
   }

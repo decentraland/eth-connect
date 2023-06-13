@@ -1,16 +1,16 @@
 export interface RequestArguments {
-  readonly method: string;
-  readonly params?: readonly unknown[] | object;
+  readonly method: string
+  readonly params?: readonly unknown[] | object
 }
 
 interface ProviderConnectInfo {
-  readonly chainId: string;
+  readonly chainId: string
 }
 
 interface ProviderRpcError extends Error {
-  message: string;
-  code: number;
-  data?: unknown;
+  message: string
+  code: number
+  data?: unknown
 }
 
 export type EIP1193Events = {

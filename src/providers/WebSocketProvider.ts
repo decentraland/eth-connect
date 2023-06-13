@@ -120,10 +120,10 @@ export class WebSocketProvider<T extends IWebSocket> {
    * Will parse the response and make an array out of it.
    */
   private parseResponse(data: string) {
-    let returnValues: any[] = []
+    const returnValues: any[] = []
 
     // DE-CHUNKER
-    let dechunkedData = data
+    const dechunkedData = data
       .replace(/\}[\n\r]?\{/g, '}|--|{') // }{
       .replace(/\}\][\n\r]?\[\{/g, '}]|--|[{') // }][{
       .replace(/\}[\n\r]?\[\{/g, '}|--|[{') // }[{
@@ -218,7 +218,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
     this.lastChunk = ''
 
-    let ctor = this.options.WebSocketConstructor || (typeof WebSocket !== 'undefined' ? WebSocket : void 0)
+    const ctor = this.options.WebSocketConstructor || (typeof WebSocket !== 'undefined' ? WebSocket : void 0)
 
     if (!ctor) {
       throw new Error('Please provide a WebSocketConstructor')
@@ -232,7 +232,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
     connection.onerror = (error) => {
       const theError = new Error('Error in web socket')
-        ; (theError as any).data = error
+      ;(theError as any).data = error
       this.timeout(theError)
     }
 
@@ -242,7 +242,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
     // LISTEN FOR CONNECTION RESPONSES
     connection.onmessage = (e) => {
-      let data = typeof e.data === 'string' ? e.data : ''
+      const data = typeof e.data === 'string' ? e.data : ''
 
       /* istanbul ignore if */
       // tslint:disable-next-line:no-console

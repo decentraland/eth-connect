@@ -13,7 +13,7 @@ export function stringToUtf8Bytes(str: string): Uint8Array {
  * @public
  */
 export function bytesToUtf8String(bytesOrHexString: Uint8Array | string): string {
-  if (typeof bytesOrHexString == 'string') {
+  if (typeof bytesOrHexString === 'string') {
     return bytesToUtf8String(hexToBytes(bytesOrHexString))
   }
   return new TextDecoder().decode(bytesOrHexString)

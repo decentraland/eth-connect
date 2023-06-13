@@ -9,7 +9,7 @@ export function parseParamType(type: string): AbiInput {
 }
 
 export function parseSignatureFunction(fragment: string): AbiFunction {
-  var abi: AbiFunction = {
+  const abi: AbiFunction = {
     constant: false,
     inputs: [],
     name: '',
@@ -31,7 +31,7 @@ export function parseSignatureFunction(fragment: string): AbiFunction {
   }
 
   comps = fragment.split(' returns ')
-  var left = comps[0].match(regexParen)
+  const left = comps[0].match(regexParen)
   if (!left) {
     throw new Error('invalid signature')
   }
@@ -71,7 +71,7 @@ export function parseSignatureFunction(fragment: string): AbiFunction {
 
   // We have outputs
   if (comps.length > 1) {
-    var right = comps[1].match(regexParen)
+    const right = comps[1].match(regexParen)
     if (!right || right[1].trim() != '' || right[3].trim() != '') {
       throw new Error('unexpected tokens')
     }
@@ -131,11 +131,11 @@ function parseParam(param: string, allowIndexed?: boolean): AbiInput {
     return new Error('unexpected character "' + param[i] + '" at position ' + i + ' in "' + param + '"')
   }
 
-  var parent: ParseNode = { type: '', name: '', state: { allowType: true } }
-  var node: any = parent
+  const parent: ParseNode = { type: '', name: '', state: { allowType: true } }
+  let node: any = parent
 
-  for (var i = 0; i < param.length; i++) {
-    var c = param[i]
+  for (let i = 0; i < param.length; i++) {
+    const c = param[i]
     switch (c) {
       case '(':
         if (!node.state.allowParams) {
@@ -264,14 +264,14 @@ function parseParam(param: string, allowIndexed?: boolean): AbiInput {
 
 // @TODO: Better return type
 export function parseSignatureEvent(fragment: string): AbiEvent {
-  var abi: AbiEvent = {
+  const abi: AbiEvent = {
     anonymous: false,
     inputs: [],
     name: '',
     type: 'event'
   }
 
-  var match = fragment.match(regexParen)
+  const match = fragment.match(regexParen)
   if (!match) {
     throw new Error('invalid event: ' + fragment)
   }
@@ -304,11 +304,11 @@ export function parseSignatureEvent(fragment: string): AbiEvent {
 function splitNesting(value: string): Array<any> {
   value = value.trim()
 
-  var result: string[] = []
-  var accum = ''
-  var depth = 0
-  for (var offset = 0; offset < value.length; offset++) {
-    var c = value[offset]
+  const result: string[] = []
+  let accum = ''
+  let depth = 0
+  for (let offset = 0; offset < value.length; offset++) {
+    const c = value[offset]
     if (c === ',' && depth === 0) {
       result.push(accum)
       accum = ''

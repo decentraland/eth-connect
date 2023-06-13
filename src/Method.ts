@@ -27,7 +27,12 @@ export class Method<Output> {
   inputFormatter: Array<null | ((a: any) => any)>
   outputFormatter: (something: any) => Output
 
-  constructor(options: { callName: string; params: number; inputFormatter: Array<null | ((a: any) => any)>; outputFormatter: (val: any) => Output }) {
+  constructor(options: {
+    callName: string
+    params: number
+    inputFormatter: Array<null | ((a: any) => any)>
+    outputFormatter: (val: any) => Output
+  }) {
     this.callName = options.callName
     this.params = options.params || 0
     this.inputFormatter = options.inputFormatter || null
@@ -55,7 +60,7 @@ export class Method<Output> {
       return args
     }
 
-    return this.inputFormatter.map(function(formatter, index) {
+    return this.inputFormatter.map(function (formatter, index) {
       return formatter ? formatter(args[index]) : args[index]
     })
   }
@@ -75,7 +80,7 @@ export class Method<Output> {
    * @param args - The given input arguments
    */
   toPayload(args: any[]) {
-    let params = this.formatInput(args)
+    const params = this.formatInput(args)
 
     this.validateArgs(params)
 
@@ -86,7 +91,7 @@ export class Method<Output> {
   }
 
   async execute(requestManager: RequestManager, ...args: any[]) {
-    let payload = this.toPayload(args)
+    const payload = this.toPayload(args)
     if (!requestManager) throw new Error('Missing RequestManager in method#exec')
     const result = await requestManager.sendAsync(payload)
     return this.formatOutput(result)

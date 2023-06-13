@@ -25,7 +25,7 @@ import * as errors from './errors'
  * @public
  */
 export function hexToBytes(hex: string): Uint8Array {
-  if (typeof hex != 'string') throw new Error('hexToBytes only accept strings, got: ' + typeof hex)
+  if (typeof hex !== 'string') throw new Error('hexToBytes only accept strings, got: ' + typeof hex)
 
   if (hex.substr(0, 2) === '0x') {
     return hexToBytes(hex.substr(2))
@@ -57,8 +57,8 @@ export function bytesToHex(bytes: Uint8Array): string {
  * @public
  */
 export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, options?: { encoding?: 'hex' }): string {
-  if (typeof value == 'string') {
-    if (options && options.encoding === 'hex' && typeof value == 'string') {
+  if (typeof value === 'string') {
+    if (options && options.encoding === 'hex' && typeof value === 'string') {
       let mutValue = value
       if (mutValue.length > 2 && mutValue.substr(0, 2) === '0x') {
         mutValue = mutValue.substr(2)
@@ -73,7 +73,7 @@ export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, option
   return keccak256(value)
 }
 
-let unitMap = {
+const unitMap = {
   noether: '0',
   wei: '1',
   kwei: '1000',
@@ -129,12 +129,12 @@ export function toAscii(hex: string) {
   // Find termination
   let str = ''
   let i = 0
-  let l = hex.length
+  const l = hex.length
   if (hex.substring(0, 2) === '0x') {
     i = 2
   }
   for (; i < l; i += 2) {
-    let code = parseInt(hex.substr(i, 2), 16)
+    const code = parseInt(hex.substr(i, 2), 16)
     str += String.fromCharCode(code)
   }
 
@@ -148,8 +148,8 @@ export function toAscii(hex: string) {
 export function fromAscii(str: string, num: number = 0) {
   let hex = ''
   for (let i = 0; i < str.length; i++) {
-    let code = str.charCodeAt(i)
-    let n = code.toString(16)
+    const code = str.charCodeAt(i)
+    const n = code.toString(16)
     hex += n.length < 2 ? '0' + n : n
   }
 
@@ -170,9 +170,9 @@ export function transformToFullName(json: AbiItem) {
 
 export function concatBytes(...buffers: Uint8Array[]) {
   const length = buffers.reduce(($, buf) => $ + buf.length, 0)
-  var mergedArray = new Uint8Array(length)
+  const mergedArray = new Uint8Array(length)
   let cursor = 0
-  for (let buf of buffers) {
+  for (const buf of buffers) {
     mergedArray.set(buf, cursor)
     cursor += buf.length
   }
@@ -195,12 +195,12 @@ function _flattenTypes(includeTuple: boolean, puts: AbiInput[]) {
       if (param.type.substring(0, 5) !== 'tuple') {
         throw new Error('components found but type is not tuple; report on GitHub')
       }
-      var suffix = ''
-      var arrayBracket = param.type.indexOf('[')
+      let suffix = ''
+      const arrayBracket = param.type.indexOf('[')
       if (arrayBracket >= 0) {
         suffix = param.type.substring(arrayBracket)
       }
-      var result = _flattenTypes(includeTuple, param.components)
+      const result = _flattenTypes(includeTuple, param.components)
       if (isArray(result) && includeTuple) {
         types.push('tuple(' + result.join(',') + ')' + suffix)
       } else if (!includeTuple) {
@@ -221,8 +221,8 @@ function _flattenTypes(includeTuple: boolean, puts: AbiInput[]) {
  * Should be called to get display name of contract function
  */
 export function extractDisplayName(name: string) {
-  let stBracket = name.indexOf('(')
-  let endBracket = name.indexOf(')')
+  const stBracket = name.indexOf('(')
+  const endBracket = name.indexOf(')')
   return stBracket !== -1 && endBracket !== -1 ? name.substr(0, stBracket) : name
 }
 
@@ -231,8 +231,8 @@ export function extractDisplayName(name: string) {
  * Should be called to get type name of contract function
  */
 export function extractTypeName(name: string) {
-  let stBracket = name.indexOf('(')
-  let endBracket = name.indexOf(')')
+  const stBracket = name.indexOf('(')
+  const endBracket = name.indexOf(')')
   return stBracket !== -1 && endBracket !== -1
     ? name.substr(stBracket + 1, endBracket - stBracket - 1).replace(' ', '')
     : ''
@@ -319,8 +319,8 @@ export function toBoolean(value: BigNumber.Value | boolean) {
  * Converts value to it's hex representation
  */
 export function fromDecimal(value: BigNumber.Value) {
-  let num = toBigNumber(value)
-  let result = num.toString(16)
+  const num = toBigNumber(value)
+  const result = num.toString(16)
 
   return num.isLessThan(0) ? '-0x' + result.substr(1) : '0x' + result
 }
@@ -358,8 +358,8 @@ export function toHex(val: BigNumber.Value | boolean | Uint8Array) {
  * Returns value of unit in Wei
  */
 export function getValueOfUnit(_unit: Unit): BigNumber {
-  let unit: Unit = _unit ? (_unit.toLowerCase() as Unit) : 'ether'
-  let unitValue = unitMap[unit]
+  const unit: Unit = _unit ? (_unit.toLowerCase() as Unit) : 'ether'
+  const unitValue = unitMap[unit]
   if (unitValue === undefined) {
     throw new Error(
       "This unit doesn't exists, please use the one of the following units" + JSON.stringify(unitMap, null, 2)
@@ -389,7 +389,7 @@ export function getValueOfUnit(_unit: Unit): BigNumber {
 export function fromWei(num: BigNumber, unit: Unit): BigNumber
 export function fromWei(num: string | number, unit: Unit): string
 export function fromWei(num: BigNumber.Value, unit: Unit) {
-  let returnValue = toBigNumber(num).dividedBy(getValueOfUnit(unit))
+  const returnValue = toBigNumber(num).dividedBy(getValueOfUnit(unit))
 
   return isBigNumber(num) ? returnValue : returnValue.toString(10)
 }
@@ -412,7 +412,7 @@ export function fromWei(num: BigNumber.Value, unit: Unit) {
  * - tether
  */
 export function toWei(num: number | string, unit: Unit) {
-  let returnValue = toBigNumber(num).times(getValueOfUnit(unit))
+  const returnValue = toBigNumber(num).times(getValueOfUnit(unit))
 
   return isBigNumber(num) ? returnValue : returnValue.toString(10)
 }
@@ -452,7 +452,7 @@ function bitMask(bits: number) {
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
  */
 export function toTwosComplement(num: BigNumber.Value, bits = 256): BigNumber {
-  let bigNumber = toBigNumber(num).integerValue() as BigNumber
+  const bigNumber = toBigNumber(num).integerValue() as BigNumber
 
   if (bigNumber.isLessThan(0)) {
     const mask = bitMask(bits)
@@ -536,7 +536,7 @@ export function isAddress(address: any) {
 export function isChecksumAddress(_address: string) {
   // Check each case
   const address = _address.replace('0x', '')
-  let addressHash = sha3(address.toLowerCase())
+  const addressHash = sha3(address.toLowerCase())
 
   for (let i = 0; i < 40; i++) {
     // the nth letter should be uppercase if the nth digit of casemap is 1

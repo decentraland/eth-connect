@@ -112,7 +112,7 @@ export class ContractFactory {
     // parse arguments
     let options: TransactionOptions | undefined = undefined
 
-    let last = args[args.length - 1]
+    const last = args[args.length - 1]
 
     if (utils.isObject(last) && !utils.isArray(last)) {
       options = args.pop()
@@ -129,7 +129,7 @@ export class ContractFactory {
     }
 
     if (toDecimal(options.value!) > 0) {
-      let constructorAbi =
+      const constructorAbi =
         this.abi.filter(function (json) {
           return json.type === 'constructor' && json.inputs.length === args.length
         })[0] || {}
@@ -140,7 +140,7 @@ export class ContractFactory {
       }
     }
 
-    let bytes = encodeConstructorParams(this.abi, args)
+    const bytes = encodeConstructorParams(this.abi, args)
     options.data += bytes
 
     if (!options.gas) {

@@ -54,7 +54,7 @@ import {
 import { sleep } from './utils/sleep'
 import { inputTransactionId } from './utils/formatters'
 
-export let TRANSACTION_FETCH_DELAY: number = 2 * 1000
+export const TRANSACTION_FETCH_DELAY: number = 2 * 1000
 
 export function inject(target: RequestManager, propertyKey: keyof typeof eth) {
   const method = eth[propertyKey]
@@ -373,7 +373,7 @@ export class RequestManager {
       throw InvalidProvider()
     }
 
-    let payload = toJsonRpcRequest(data.method, data.params)
+    const payload = toJsonRpcRequest(data.method, data.params)
 
     const defer = future()
 
