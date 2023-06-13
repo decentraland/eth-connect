@@ -10,14 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16.x
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
+        uses: github/codeql-action/init@v2
         with:
           languages: typescript
           # If you wish to specify custom queries, you can do so here or in a config file.
@@ -34,7 +34,7 @@ jobs:
         if: ${{ failure() }}
         run: cp dist/temp/eth-connect.api.md report/eth-connect.api.md && git diff
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
+        uses: github/codeql-action/analyze@v2
       - name: report coverage
         uses: coverallsapp/github-action@master
         with:
