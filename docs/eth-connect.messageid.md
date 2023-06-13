@@ -4,7 +4,7 @@
 
 ## messageId variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 messageId: number

@@ -13,12 +13,12 @@ y = new BigNumber(2)
 y.isPositive()                  // true
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isPositive(): boolean;
 ```
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

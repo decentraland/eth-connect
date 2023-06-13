@@ -4,7 +4,7 @@
 
 ## Contract.transactionHash property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 transactionHash: string | null;

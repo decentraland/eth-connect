@@ -5,7 +5,7 @@
 ## Hex type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Hex = string;

@@ -6,7 +6,7 @@
 
 Returns all the Ethereum account addresses of all keys in the key store.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_listAccounts: () => Promise<Array<Address>>;

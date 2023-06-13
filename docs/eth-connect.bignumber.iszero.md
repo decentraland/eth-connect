@@ -11,12 +11,12 @@ x = new BigNumber(-0)
 x.isZero()                 // true
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isZero(): boolean;
 ```
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

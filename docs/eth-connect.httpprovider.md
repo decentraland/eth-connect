@@ -6,7 +6,7 @@
 
 HttpProvider should be used to send rpc calls over http
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class HTTPProvider 

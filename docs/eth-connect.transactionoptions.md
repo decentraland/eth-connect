@@ -5,7 +5,7 @@
 ## TransactionOptions type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type TransactionOptions = {
@@ -18,5 +18,5 @@ export type TransactionOptions = {
     nonce?: BigNumber.Value;
 };
 ```
-<b>References:</b> [Address](./eth-connect.address.md)<!-- -->, [BigNumber.Value](./eth-connect.bignumber.value.md)
+**References:** [Address](./eth-connect.address.md)<!-- -->, [BigNumber.Value](./eth-connect.bignumber.value.md)
 

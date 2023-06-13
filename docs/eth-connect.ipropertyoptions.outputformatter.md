@@ -4,7 +4,7 @@
 
 ## IPropertyOptions.outputFormatter property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 outputFormatter: (_: any) => V;

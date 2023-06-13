@@ -6,7 +6,7 @@
 
 Transmits data using the WebSocket connection. data can be a string, a Blob, an ArrayBuffer, or an ArrayBufferView.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 send(data: string): void;
@@ -18,7 +18,7 @@ send(data: string): void;
 |  --- | --- | --- |
 |  data | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 void
 

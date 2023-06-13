@@ -6,7 +6,7 @@
 
 Generates and returns an estimate of how much gas is necessary to allow the transaction to complete. The transaction will not be added to the blockchain. Note that the estimate may be significantly more than the amount of gas actually used by the transaction, for a variety of reasons including EVM mechanics and node performance.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_estimateGas: (data: Partial<TransactionCallOptions> & Partial<TransactionOptions>) => Promise<Quantity>;

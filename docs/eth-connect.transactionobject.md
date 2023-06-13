@@ -5,7 +5,7 @@
 ## TransactionObject type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type TransactionObject = {
@@ -25,5 +25,5 @@ export type TransactionObject = {
     s?: Data;
 };
 ```
-<b>References:</b> [TxHash](./eth-connect.txhash.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [BigNumber](./eth-connect.bignumber.md)<!-- -->, [Quantity](./eth-connect.quantity.md)<!-- -->, [Data](./eth-connect.data.md)
+**References:** [TxHash](./eth-connect.txhash.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [BigNumber](./eth-connect.bignumber.md)<!-- -->, [Quantity](./eth-connect.quantity.md)<!-- -->, [Data](./eth-connect.data.md)
 

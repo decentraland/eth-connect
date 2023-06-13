@@ -6,7 +6,7 @@
 
 Returns true if given string is a valid Ethereum block header bloom.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isBloom(bloom: string): boolean;
@@ -18,7 +18,7 @@ export declare function isBloom(bloom: string): boolean;
 |  --- | --- | --- |
 |  bloom | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

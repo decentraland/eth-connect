@@ -16,7 +16,7 @@ BigNumber('7e+500').multipliedBy(y)    // '1.26e+501'
 x.multipliedBy('-a', 16)               // '-6'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 multipliedBy(n: BigNumber.Value, base?: number): BigNumber;
@@ -27,9 +27,9 @@ multipliedBy(n: BigNumber.Value, base?: number): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

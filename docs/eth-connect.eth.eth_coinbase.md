@@ -4,7 +4,7 @@
 
 ## eth.eth\_coinbase variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_coinbase: Property<string>

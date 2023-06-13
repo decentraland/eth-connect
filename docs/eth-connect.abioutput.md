@@ -5,7 +5,7 @@
 ## AbiOutput interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface AbiOutput 
@@ -13,10 +13,10 @@ export interface AbiOutput
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [components?](./eth-connect.abioutput.components.md) | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [internalType?](./eth-connect.abioutput.internaltype.md) | string | <i>(Optional)</i> |
-|  [name](./eth-connect.abioutput.name.md) | string |  |
-|  [type](./eth-connect.abioutput.type.md) | string |  |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [components?](./eth-connect.abioutput.components.md) |  | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] | _(Optional)_ |
+|  [internalType?](./eth-connect.abioutput.internaltype.md) |  | string | _(Optional)_ |
+|  [name](./eth-connect.abioutput.name.md) |  | string |  |
+|  [type](./eth-connect.abioutput.type.md) |  | string |  |
 

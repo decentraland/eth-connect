@@ -6,7 +6,7 @@
 
 Returns true if client is actively mining new blocks.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_mining: () => Promise<boolean>;

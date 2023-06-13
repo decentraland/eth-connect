@@ -4,12 +4,12 @@
 
 ## HTTPProvider.send() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 send(): void;
 ```
-<b>Returns:</b>
+**Returns:**
 
 void
 

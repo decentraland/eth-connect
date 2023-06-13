@@ -4,7 +4,7 @@
 
 ## eth.eth\_syncing variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_syncing: Property<Syncing>

@@ -4,7 +4,7 @@
 
 ## eth.eth\_submitHashrate variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_submitHashrate: Method<boolean>

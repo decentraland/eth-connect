@@ -5,7 +5,7 @@
 ## Syncing type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Syncing = {
@@ -14,5 +14,5 @@ export type Syncing = {
     highestBlock: Quantity;
 };
 ```
-<b>References:</b> [Quantity](./eth-connect.quantity.md)
+**References:** [Quantity](./eth-connect.quantity.md)
 

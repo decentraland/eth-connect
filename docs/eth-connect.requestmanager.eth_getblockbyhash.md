@@ -6,7 +6,7 @@
 
 Returns information about a block by hash.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getBlockByHash: (blockHash: TxHash, fullTransactionObjects: boolean) => Promise<BlockObject>;

@@ -4,7 +4,7 @@
 
 ## SolidityFunction.extractDefaultBlock() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 extractDefaultBlock(args: any[]): string;
@@ -16,7 +16,7 @@ extractDefaultBlock(args: any[]): string;
 |  --- | --- | --- |
 |  args | any\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

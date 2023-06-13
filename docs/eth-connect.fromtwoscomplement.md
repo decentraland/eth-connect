@@ -6,7 +6,7 @@
 
 If the bit N is 1
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function fromTwosComplement(num: BigNumber, bits?: number): BigNumber;
@@ -17,9 +17,9 @@ export declare function fromTwosComplement(num: BigNumber, bits?: number): BigNu
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  num | [BigNumber](./eth-connect.bignumber.md) |  |
-|  bits | number |  |
+|  bits | number | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

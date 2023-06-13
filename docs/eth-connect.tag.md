@@ -5,7 +5,7 @@
 ## Tag type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Tag = 'latest' | 'earliest' | 'pending';

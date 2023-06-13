@@ -5,7 +5,7 @@
 ## QueuedTransaction type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type QueuedTransaction = {
@@ -14,5 +14,5 @@ export type QueuedTransaction = {
     nonce: number;
 };
 ```
-<b>References:</b> [TransactionType.queued](./eth-connect.transactiontype.md)
+**References:** [TransactionType.queued](./eth-connect.transactiontype.md)
 

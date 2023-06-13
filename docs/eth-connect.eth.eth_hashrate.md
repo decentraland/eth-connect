@@ -4,7 +4,7 @@
 
 ## eth.eth\_hashrate variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_hashrate: Property<number>

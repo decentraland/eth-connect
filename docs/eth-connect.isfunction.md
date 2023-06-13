@@ -6,7 +6,7 @@
 
 Returns true if object is function, otherwise false
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isFunction(object: any): object is CallableFunction;
@@ -18,7 +18,7 @@ export declare function isFunction(object: any): object is CallableFunction;
 |  --- | --- | --- |
 |  object | any |  |
 
-<b>Returns:</b>
+**Returns:**
 
 object is CallableFunction
 

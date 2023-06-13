@@ -4,7 +4,7 @@
 
 ## eth.shh\_getMessages variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_getMessages: Method<any[]>

@@ -4,7 +4,7 @@
 
 ## eth.eth\_newPendingTransactionFilter variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_newPendingTransactionFilter: Method<string>

@@ -5,7 +5,7 @@
 ## sha3() function
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function sha3(value: string | number[] | ArrayBuffer | Uint8Array, options?: {
@@ -18,9 +18,9 @@ export declare function sha3(value: string | number[] | ArrayBuffer | Uint8Array
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  value | string \| number\[\] \| ArrayBuffer \| Uint8Array |  |
-|  options | { encoding?: 'hex'; } |  |
+|  options | { encoding?: 'hex'; } | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

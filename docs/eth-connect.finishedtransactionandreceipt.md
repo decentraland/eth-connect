@@ -5,12 +5,12 @@
 ## FinishedTransactionAndReceipt type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type FinishedTransactionAndReceipt = TransactionAndReceipt & {
     status: TransactionStatus;
 };
 ```
-<b>References:</b> [TransactionAndReceipt](./eth-connect.transactionandreceipt.md)<!-- -->, [TransactionStatus](./eth-connect.transactionstatus.md)
+**References:** [TransactionAndReceipt](./eth-connect.transactionandreceipt.md)<!-- -->, [TransactionStatus](./eth-connect.transactionstatus.md)
 

@@ -5,7 +5,7 @@
 ## SHHPost type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type SHHPost = {
@@ -17,5 +17,5 @@ export type SHHPost = {
     ttl: Quantity;
 };
 ```
-<b>References:</b> [Data](./eth-connect.data.md)<!-- -->, [Quantity](./eth-connect.quantity.md)
+**References:** [Data](./eth-connect.data.md)<!-- -->, [Quantity](./eth-connect.quantity.md)
 

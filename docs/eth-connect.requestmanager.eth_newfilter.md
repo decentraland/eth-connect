@@ -10,7 +10,7 @@ A note on specifying topic filters: Topics are order-dependent. A transaction wi
 
 \[\] "anything" \[A\] "A in first position (and anything after)" \[null, B\] "anything in first position AND B in second position (and anything after)" \[A, B\] "A in first position AND B in second position (and anything after)" \[\[A, B\], \[A, B\]\] "(A OR B) in first position AND (A OR B) in second position (and anything after)"
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_newFilter: (options: FilterOptions) => Promise<Data>;

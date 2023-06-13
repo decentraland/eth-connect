@@ -6,7 +6,7 @@
 
 Constructs a new instance of the `Property` class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(options: IPropertyOptions<V>);

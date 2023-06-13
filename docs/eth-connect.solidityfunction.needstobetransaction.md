@@ -4,7 +4,7 @@
 
 ## SolidityFunction.needsToBeTransaction property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 needsToBeTransaction: boolean;

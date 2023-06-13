@@ -6,7 +6,7 @@
 
 Returns the value from a storage position at a given address.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getStorageAt: (address: Address, position: Quantity, block: BlockIdentifier) => Promise<Data>;

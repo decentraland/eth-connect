@@ -6,7 +6,7 @@
 
 Converts value to it's boolean representation (x != 0)
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toBoolean(value: BigNumber.Value | boolean): boolean;
@@ -18,7 +18,7 @@ export declare function toBoolean(value: BigNumber.Value | boolean): boolean;
 |  --- | --- | --- |
 |  value | [BigNumber.Value](./eth-connect.bignumber.value.md) \| boolean |  |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

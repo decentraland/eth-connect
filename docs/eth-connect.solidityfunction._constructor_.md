@@ -6,7 +6,7 @@
 
 Constructs a new instance of the `SolidityFunction` class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(json: AbiFunction);

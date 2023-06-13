@@ -4,12 +4,12 @@
 
 ## AbstractFilter.getChanges() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 protected abstract getChanges(): Promise<ReceivedLog[]>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;ReceivedLog\[\]&gt;
 

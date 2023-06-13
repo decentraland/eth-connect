@@ -54,7 +54,7 @@ x.toFormat(2, fmt)                        // '12.34.56.789,12'
 x.toFormat(3, BigNumber.ROUND_UP, fmt)    // '12.34.56.789,124'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toFormat(decimalPlaces: number, roundingMode: BigNumber.RoundingMode, format?: BigNumber.Format): string;
@@ -66,9 +66,9 @@ toFormat(decimalPlaces: number, roundingMode: BigNumber.RoundingMode, format?: B
 |  --- | --- | --- |
 |  decimalPlaces | number | Decimal places, integer, 0 to 1e+9. |
 |  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | Rounding mode, integer, 0 to 8. |
-|  format | [BigNumber.Format](./eth-connect.bignumber.format.md) | Formatting options object. See <code>BigNumber.Format</code>. |
+|  format | [BigNumber.Format](./eth-connect.bignumber.format.md) | _(Optional)_ Formatting options object. See <code>BigNumber.Format</code>. |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

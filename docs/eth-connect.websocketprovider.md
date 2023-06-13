@@ -5,7 +5,7 @@
 ## WebSocketProvider class
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class WebSocketProvider<T extends IWebSocket> 

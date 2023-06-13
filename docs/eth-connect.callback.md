@@ -4,7 +4,7 @@
 
 ## Callback type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Callback = (err: Error | null, message?: any) => void;

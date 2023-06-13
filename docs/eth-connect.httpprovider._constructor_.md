@@ -6,7 +6,7 @@
 
 Constructs a new instance of the `HTTPProvider` class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(host: string, options?: HTTPProviderOptions);
@@ -17,5 +17,5 @@ constructor(host: string, options?: HTTPProviderOptions);
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  host | string |  |
-|  options | [HTTPProviderOptions](./eth-connect.httpprovideroptions.md) |  |
+|  options | [HTTPProviderOptions](./eth-connect.httpprovideroptions.md) | _(Optional)_ |
 

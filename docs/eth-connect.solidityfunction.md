@@ -6,7 +6,7 @@
 
 This prototype should be used to call/sendTransaction to solidity functions
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class SolidityFunction 

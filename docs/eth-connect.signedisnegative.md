@@ -6,7 +6,7 @@
 
 Check if input value is negative in twos complement
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function signedIsNegative(value: BigNumber, bits: number): boolean;
@@ -19,7 +19,7 @@ export declare function signedIsNegative(value: BigNumber, bits: number): boolea
 |  value | [BigNumber](./eth-connect.bignumber.md) |  |
 |  bits | number |  |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

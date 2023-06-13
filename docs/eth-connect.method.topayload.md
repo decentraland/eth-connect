@@ -6,7 +6,7 @@
 
 Should create payload from given input args
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toPayload(args: any[]): {
@@ -21,7 +21,7 @@ toPayload(args: any[]): {
 |  --- | --- | --- |
 |  args | any\[\] | The given input arguments |
 
-<b>Returns:</b>
+**Returns:**
 
 { method: string; params: any\[\]; }
 

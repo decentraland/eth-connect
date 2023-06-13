@@ -6,7 +6,7 @@
 
 Takes and input transforms it into bignumber and if it is negative value, into two's complement
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toTwosComplement(num: BigNumber.Value, bits?: number): BigNumber;
@@ -17,9 +17,9 @@ export declare function toTwosComplement(num: BigNumber.Value, bits?: number): B
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  num | [BigNumber.Value](./eth-connect.bignumber.value.md) |  |
-|  bits | number |  |
+|  bits | number | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

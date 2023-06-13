@@ -6,7 +6,7 @@
 
 Uninstalls a filter with given id. Should always be called when watch is no longer needed. Additonally Filters timeout when they aren't requested with shh\_getFilterChanges for a period of time.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_uninstallFilter: (filterId: Data) => Promise<boolean>;

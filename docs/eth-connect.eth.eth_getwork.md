@@ -4,7 +4,7 @@
 
 ## eth.eth\_getWork variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getWork: Method<any[]>

@@ -4,7 +4,7 @@
 
 ## IPropertyOptions interface
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface IPropertyOptions<V> 
@@ -12,8 +12,8 @@ export interface IPropertyOptions<V>
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [getter](./eth-connect.ipropertyoptions.getter.md) | string |  |
-|  [outputFormatter](./eth-connect.ipropertyoptions.outputformatter.md) | (\_: any) =&gt; V |  |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [getter](./eth-connect.ipropertyoptions.getter.md) |  | string |  |
+|  [outputFormatter](./eth-connect.ipropertyoptions.outputformatter.md) |  | (\_: any) =&gt; V |  |
 

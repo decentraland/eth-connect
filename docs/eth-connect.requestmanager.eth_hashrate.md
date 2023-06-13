@@ -6,7 +6,7 @@
 
 Returns the number of hashes per second that the node is mining with.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_hashrate: () => Promise<Quantity>;

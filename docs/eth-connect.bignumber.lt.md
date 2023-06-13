@@ -14,7 +14,7 @@ BigNumber(0).lt(x)                      // true
 BigNumber(11.1, 2).lt(11, 3)            // true
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 lt(n: BigNumber.Value, base?: number): boolean;
@@ -25,9 +25,9 @@ lt(n: BigNumber.Value, base?: number): boolean;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

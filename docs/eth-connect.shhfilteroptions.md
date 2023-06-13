@@ -5,7 +5,7 @@
 ## SHHFilterOptions type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type SHHFilterOptions = {
@@ -13,5 +13,5 @@ export type SHHFilterOptions = {
     topics: TopicFilter;
 };
 ```
-<b>References:</b> [Data](./eth-connect.data.md)<!-- -->, [TopicFilter](./eth-connect.topicfilter.md)
+**References:** [Data](./eth-connect.data.md)<!-- -->, [TopicFilter](./eth-connect.topicfilter.md)
 

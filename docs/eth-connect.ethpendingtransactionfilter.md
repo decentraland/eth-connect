@@ -4,12 +4,12 @@
 
 ## EthPendingTransactionFilter class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class EthPendingTransactionFilter extends EthFilter<TxHash, TxHash> 
 ```
-<b>Extends:</b> [EthFilter](./eth-connect.ethfilter.md)<!-- -->&lt;[TxHash](./eth-connect.txhash.md)<!-- -->, [TxHash](./eth-connect.txhash.md)<!-- -->&gt;
+**Extends:** [EthFilter](./eth-connect.ethfilter.md)<!-- -->&lt;[TxHash](./eth-connect.txhash.md)<!-- -->, [TxHash](./eth-connect.txhash.md)<!-- -->&gt;
 
 ## Constructors
 

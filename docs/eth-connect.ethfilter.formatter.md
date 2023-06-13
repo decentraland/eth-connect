@@ -4,7 +4,7 @@
 
 ## EthFilter.formatter property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 formatter: (message: ReceivedLog) => TransformedLog;

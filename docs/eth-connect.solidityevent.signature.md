@@ -6,12 +6,12 @@
 
 Should be used to get event signature
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 signature(): string;
 ```
-<b>Returns:</b>
+**Returns:**
 
 string
 

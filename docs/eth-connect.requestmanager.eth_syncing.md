@@ -6,7 +6,7 @@
 
 Returns an object with data about the sync status or false.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_syncing: () => Promise<false | Syncing>;

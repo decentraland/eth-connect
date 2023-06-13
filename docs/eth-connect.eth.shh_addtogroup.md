@@ -4,7 +4,7 @@
 
 ## eth.shh\_addToGroup variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_addToGroup: Method<boolean>

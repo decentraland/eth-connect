@@ -4,7 +4,7 @@
 
 ## EthFilter.requestManager property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 requestManager: RequestManager;

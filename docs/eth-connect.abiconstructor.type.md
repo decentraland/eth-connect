@@ -4,7 +4,7 @@
 
 ## AbiConstructor.type property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 type: 'constructor';

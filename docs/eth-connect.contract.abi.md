@@ -4,7 +4,7 @@
 
 ## Contract.abi property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 abi: AbiItem[];

@@ -6,7 +6,7 @@
 
 Checks if the given string is a checksummed address
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isChecksumAddress(_address: string): boolean;
@@ -18,7 +18,7 @@ export declare function isChecksumAddress(_address: string): boolean;
 |  --- | --- | --- |
 |  \_address | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

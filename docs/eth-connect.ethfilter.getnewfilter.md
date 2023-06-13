@@ -4,12 +4,12 @@
 
 ## EthFilter.getNewFilter() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 protected getNewFilter(): Promise<Data>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[Data](./eth-connect.data.md)<!-- -->&gt;
 

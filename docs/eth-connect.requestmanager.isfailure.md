@@ -6,7 +6,7 @@
 
 Expects the result of getTransactionRecepeit's geth command and returns true if the transaction failed. It'll also check for a failed status prop against TRANSACTION\_STATUS
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isFailure(tx: TransactionAndReceipt): boolean;
@@ -18,7 +18,7 @@ isFailure(tx: TransactionAndReceipt): boolean;
 |  --- | --- | --- |
 |  tx | [TransactionAndReceipt](./eth-connect.transactionandreceipt.md) | The transaction object |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

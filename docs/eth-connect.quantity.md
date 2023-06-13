@@ -5,10 +5,10 @@
 ## Quantity type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Quantity = number | Hex;
 ```
-<b>References:</b> [Hex](./eth-connect.hex.md)
+**References:** [Hex](./eth-connect.hex.md)
 

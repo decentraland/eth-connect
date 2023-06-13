@@ -5,7 +5,7 @@
 ## bytesToHex() function
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function bytesToHex(bytes: Uint8Array): string;
@@ -17,7 +17,7 @@ export declare function bytesToHex(bytes: Uint8Array): string;
 |  --- | --- | --- |
 |  bytes | Uint8Array |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

@@ -5,7 +5,7 @@
 ## TransactionStatus enum
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare enum TransactionStatus 

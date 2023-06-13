@@ -4,10 +4,10 @@
 
 ## BigNumber.Constructor type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 type Constructor = typeof BigNumber;
 ```
-<b>References:</b> [BigNumber](./eth-connect.bignumber.md)
+**References:** [BigNumber](./eth-connect.bignumber.md)
 

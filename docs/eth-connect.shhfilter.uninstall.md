@@ -4,12 +4,12 @@
 
 ## SHHFilter.uninstall() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 protected uninstall(): Promise<boolean>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;boolean&gt;
 

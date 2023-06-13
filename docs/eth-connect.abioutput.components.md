@@ -4,7 +4,7 @@
 
 ## AbiOutput.components property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 components?: AbiOutput[];

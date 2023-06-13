@@ -6,7 +6,7 @@
 
 Returns true if object is BigNumber, otherwise false
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isBigNumber(object: any): object is BigNumber;
@@ -18,7 +18,7 @@ export declare function isBigNumber(object: any): object is BigNumber;
 |  --- | --- | --- |
 |  object | any |  |
 
-<b>Returns:</b>
+**Returns:**
 
 object is [BigNumber](./eth-connect.bignumber.md)
 

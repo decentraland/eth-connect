@@ -4,7 +4,7 @@
 
 ## RequestManager.shh\_addToGroup property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_addToGroup: (group: Data) => Promise<boolean>;

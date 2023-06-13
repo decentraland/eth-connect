@@ -6,7 +6,7 @@
 
 The string to append.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 suffix?: string;

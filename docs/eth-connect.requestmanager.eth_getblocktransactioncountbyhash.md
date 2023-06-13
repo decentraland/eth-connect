@@ -6,7 +6,7 @@
 
 Returns the number of transactions in a block from a block matching the given block hash.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getBlockTransactionCountByHash: (blockHash: TxHash) => Promise<number>;

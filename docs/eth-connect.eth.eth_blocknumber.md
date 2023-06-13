@@ -4,7 +4,7 @@
 
 ## eth.eth\_blockNumber variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_blockNumber: Property<number>

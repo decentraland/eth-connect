@@ -5,7 +5,7 @@
 ## SHHFilterMessage type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type SHHFilterMessage = {
@@ -20,5 +20,5 @@ export type SHHFilterMessage = {
     workProved: Quantity;
 };
 ```
-<b>References:</b> [TxHash](./eth-connect.txhash.md)<!-- -->, [Data](./eth-connect.data.md)<!-- -->, [Quantity](./eth-connect.quantity.md)
+**References:** [TxHash](./eth-connect.txhash.md)<!-- -->, [Data](./eth-connect.data.md)<!-- -->, [Quantity](./eth-connect.quantity.md)
 

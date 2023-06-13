@@ -8,7 +8,7 @@ Polling method for whisper filters. Returns new messages since the last call of 
 
 Note calling the shh\_getMessages method, will reset the buffer for this method, so that you won't receive duplicate messages.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_getFilterChanges: (filterId: Data) => Promise<Array<SHHFilterMessage>>;

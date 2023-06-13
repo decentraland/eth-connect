@@ -23,7 +23,7 @@ BN = BigNumber.clone()
 BN.config({ DECIMAL_PLACES: 9 })
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static clone(object?: BigNumber.Config): BigNumber.Constructor;
@@ -33,9 +33,9 @@ static clone(object?: BigNumber.Config): BigNumber.Constructor;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  object | [BigNumber.Config](./eth-connect.bignumber.config.md) | The configuration object. |
+|  object | [BigNumber.Config](./eth-connect.bignumber.config.md) | _(Optional)_ The configuration object. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber.Constructor](./eth-connect.bignumber.constructor.md)
 

@@ -6,7 +6,7 @@
 
 Should be used to estimateGas of solidity function
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 estimateGas(requestManager: RequestManager, address: string, ...args: any[]): Promise<Quantity>;
@@ -20,7 +20,7 @@ estimateGas(requestManager: RequestManager, address: string, ...args: any[]): Pr
 |  address | string |  |
 |  args | any\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[Quantity](./eth-connect.quantity.md)<!-- -->&gt;
 

@@ -6,7 +6,7 @@
 
 Should be used to create payload from arguments
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toPayload(args: any[]): any;
@@ -18,7 +18,7 @@ toPayload(args: any[]): any;
 |  --- | --- | --- |
 |  args | any\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 any
 

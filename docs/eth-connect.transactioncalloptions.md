@@ -5,7 +5,7 @@
 ## TransactionCallOptions type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type TransactionCallOptions = {
@@ -17,5 +17,5 @@ export type TransactionCallOptions = {
     data?: string;
 };
 ```
-<b>References:</b> [Address](./eth-connect.address.md)<!-- -->, [BigNumber.Value](./eth-connect.bignumber.value.md)
+**References:** [Address](./eth-connect.address.md)<!-- -->, [BigNumber.Value](./eth-connect.bignumber.value.md)
 

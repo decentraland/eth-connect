@@ -6,7 +6,7 @@
 
 Returns the balance of the account of given address.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getBalance: (address: Address, block: BlockIdentifier) => Promise<BigNumber>;

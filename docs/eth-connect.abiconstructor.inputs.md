@@ -4,7 +4,7 @@
 
 ## AbiConstructor.inputs property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 inputs?: AbiInput[];

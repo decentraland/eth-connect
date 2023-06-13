@@ -15,7 +15,7 @@ x.minus(0.1)                    // '0.2'
 x.minus(0.6, 20)                // '0'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 minus(n: BigNumber.Value, base?: number): BigNumber;
@@ -26,9 +26,9 @@ minus(n: BigNumber.Value, base?: number): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

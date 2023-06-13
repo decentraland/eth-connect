@@ -23,7 +23,7 @@ x.pow(2)                           // '0.49'
 BigNumber(3).pow(-2)               // '0.11111111111111111111'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 pow(n: BigNumber.Value, m?: BigNumber.Value): BigNumber;
@@ -34,9 +34,9 @@ pow(n: BigNumber.Value, m?: BigNumber.Value): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | The exponent, an integer. |
-|  m | [BigNumber.Value](./eth-connect.bignumber.value.md) | The modulus. |
+|  m | [BigNumber.Value](./eth-connect.bignumber.value.md) | _(Optional)_ The modulus. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

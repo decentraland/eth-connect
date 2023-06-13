@@ -6,7 +6,7 @@
 
 Returns Keccak-256 (not the standardized SHA3-256) of the given data.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 web3_sha3: (data: Data) => Promise<Data>;

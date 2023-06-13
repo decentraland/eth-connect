@@ -4,7 +4,7 @@
 
 ## SolidityEvent.\_anonymous property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 _anonymous: boolean;

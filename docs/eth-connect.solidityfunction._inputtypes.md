@@ -4,7 +4,7 @@
 
 ## SolidityFunction.\_inputTypes property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 _inputTypes: AbiInput[];

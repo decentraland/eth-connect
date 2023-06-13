@@ -5,7 +5,7 @@
 ## ConfirmedTransaction type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type ConfirmedTransaction = TransactionObject & {
@@ -13,5 +13,5 @@ export type ConfirmedTransaction = TransactionObject & {
     receipt: TransactionReceipt;
 };
 ```
-<b>References:</b> [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.confirmed](./eth-connect.transactiontype.md)<!-- -->, [TransactionReceipt](./eth-connect.transactionreceipt.md)
+**References:** [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.confirmed](./eth-connect.transactiontype.md)<!-- -->, [TransactionReceipt](./eth-connect.transactionreceipt.md)
 

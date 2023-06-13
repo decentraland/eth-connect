@@ -4,7 +4,7 @@
 
 ## BigNumber.toFormat() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toFormat(format: BigNumber.Format): string;
@@ -16,7 +16,7 @@ toFormat(format: BigNumber.Format): string;
 |  --- | --- | --- |
 |  format | [BigNumber.Format](./eth-connect.bignumber.format.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

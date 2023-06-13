@@ -33,7 +33,7 @@ z.toString()                    // '1.23456789'
 z.toString(10)                  // '1.2346'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toString(base?: number): string;
@@ -43,9 +43,9 @@ toString(base?: number): string;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  base | number | The base, integer, 2 to 36 (or <code>ALPHABET.length</code>, see <code>ALPHABET</code>). |
+|  base | number | _(Optional)_ The base, integer, 2 to 36 (or <code>ALPHABET.length</code>, see <code>ALPHABET</code>). |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

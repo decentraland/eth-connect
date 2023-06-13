@@ -4,12 +4,12 @@
 
 ## BigNumber.toPrecision() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toPrecision(): string;
 ```
-<b>Returns:</b>
+**Returns:**
 
 string
 

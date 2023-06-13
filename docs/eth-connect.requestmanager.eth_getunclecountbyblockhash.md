@@ -6,7 +6,7 @@
 
 Returns the number of uncles in a block from a block matching the given block hash.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getUncleCountByBlockHash: (blockHash: TxHash) => Promise<number>;

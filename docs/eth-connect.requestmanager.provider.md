@@ -4,7 +4,7 @@
 
 ## RequestManager.provider property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 provider: any;

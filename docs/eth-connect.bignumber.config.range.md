@@ -30,7 +30,7 @@ new BigNumber(0.0001)        // '0'          e is -4
 ```
 The largest possible magnitude of a finite BigNumber is 9.999...e+1000000000. The smallest possible magnitude of a non-zero BigNumber is 1e-1000000000.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 RANGE?: number | [number, number];

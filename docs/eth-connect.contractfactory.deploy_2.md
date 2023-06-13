@@ -4,7 +4,7 @@
 
 ## ContractFactory.deploy() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 deploy(options: TransactionOptions): Promise<Contract>;
@@ -16,7 +16,7 @@ deploy(options: TransactionOptions): Promise<Contract>;
 |  --- | --- | --- |
 |  options | [TransactionOptions](./eth-connect.transactionoptions.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[Contract](./eth-connect.contract.md)<!-- -->&gt;
 

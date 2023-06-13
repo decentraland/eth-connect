@@ -6,7 +6,7 @@
 
 Hex string
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Data = string;

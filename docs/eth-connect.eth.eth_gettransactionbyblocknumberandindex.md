@@ -4,7 +4,7 @@
 
 ## eth.eth\_getTransactionByBlockNumberAndIndex variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getTransactionByBlockNumberAndIndex: Method<TransactionObject | null>

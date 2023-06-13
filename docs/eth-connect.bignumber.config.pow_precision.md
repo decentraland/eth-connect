@@ -16,7 +16,7 @@ See `exponentiatedBy`<!-- -->.
 BigNumber.config({ POW_PRECISION: 100 })
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 POW_PRECISION?: number;

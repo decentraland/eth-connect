@@ -6,12 +6,12 @@
 
 As `valueOf`<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toJSON(): string;
 ```
-<b>Returns:</b>
+**Returns:**
 
 string
 

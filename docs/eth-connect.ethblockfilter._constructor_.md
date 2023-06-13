@@ -6,7 +6,7 @@
 
 Constructs a new instance of the `EthBlockFilter` class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(requestManager: RequestManager);

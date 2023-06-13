@@ -6,7 +6,7 @@
 
 Converts value to it's hex representation in string
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toData(val: BigNumber.Value): string;
@@ -18,7 +18,7 @@ export declare function toData(val: BigNumber.Value): string;
 |  --- | --- | --- |
 |  val | [BigNumber.Value](./eth-connect.bignumber.value.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

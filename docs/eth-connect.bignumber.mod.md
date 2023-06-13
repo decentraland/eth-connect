@@ -20,7 +20,7 @@ y = new BigNumber(33)
 y.mod('a', 33)               // '3'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 mod(n: BigNumber.Value, base?: number): BigNumber;
@@ -31,9 +31,9 @@ mod(n: BigNumber.Value, base?: number): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

@@ -6,7 +6,7 @@
 
 The secondary grouping size of the integer part.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 secondaryGroupSize?: number;

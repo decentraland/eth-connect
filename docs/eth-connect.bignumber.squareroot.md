@@ -15,12 +15,12 @@ y = new BigNumber(3)
 y.squareRoot()                  // '1.73205080756887729353'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 squareRoot(): BigNumber;
 ```
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

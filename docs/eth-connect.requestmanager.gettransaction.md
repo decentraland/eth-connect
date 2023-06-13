@@ -6,7 +6,7 @@
 
 Returns a transaction in any of the possible states.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 getTransaction(txId: string): Promise<Transaction | null>;
@@ -18,7 +18,7 @@ getTransaction(txId: string): Promise<Transaction | null>;
 |  --- | --- | --- |
 |  txId | string | The transaction ID |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[Transaction](./eth-connect.transaction.md) \| null&gt;
 

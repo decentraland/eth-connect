@@ -6,7 +6,7 @@
 
 Constructs a new instance of the `RequestManager` class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(provider: any);

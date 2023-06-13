@@ -22,7 +22,7 @@ z instanceof BigNumber               // false
 BigNumber.isBigNumber(z)             // true
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static isBigNumber(value: any): value is BigNumber;
@@ -34,7 +34,7 @@ static isBigNumber(value: any): value is BigNumber;
 |  --- | --- | --- |
 |  value | any | The value to test. |
 
-<b>Returns:</b>
+**Returns:**
 
 value is [BigNumber](./eth-connect.bignumber.md)
 

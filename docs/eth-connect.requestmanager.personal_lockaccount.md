@@ -6,7 +6,7 @@
 
 Removes the private key with given address from memory. The account can no longer be used to send transactions.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_lockAccount: (address: Address) => Promise<boolean>;

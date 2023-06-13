@@ -14,7 +14,7 @@ x.div(5)                    // '71'
 x.div(47, 16)               // '5'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 div(n: BigNumber.Value, base?: number): BigNumber;
@@ -25,9 +25,9 @@ div(n: BigNumber.Value, base?: number): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

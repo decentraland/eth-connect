@@ -4,7 +4,7 @@
 
 ## eth.personal\_sign variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_sign: Method<string>

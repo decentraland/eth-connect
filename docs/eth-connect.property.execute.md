@@ -4,7 +4,7 @@
 
 ## Property.execute() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 execute(requestManager: RequestManager, ..._unusedArgs: any[]): Promise<V>;
@@ -17,7 +17,7 @@ execute(requestManager: RequestManager, ..._unusedArgs: any[]): Promise<V>;
 |  requestManager | [RequestManager](./eth-connect.requestmanager.md) |  |
 |  \_unusedArgs | any\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;V&gt;
 

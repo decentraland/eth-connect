@@ -5,7 +5,7 @@
 ## LogObject type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type LogObject = {
@@ -20,5 +20,5 @@ export type LogObject = {
     topics: Array<Data>;
 };
 ```
-<b>References:</b> [Quantity](./eth-connect.quantity.md)<!-- -->, [TxHash](./eth-connect.txhash.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [Data](./eth-connect.data.md)
+**References:** [Quantity](./eth-connect.quantity.md)<!-- -->, [TxHash](./eth-connect.txhash.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [Data](./eth-connect.data.md)
 

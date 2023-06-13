@@ -5,7 +5,7 @@
 ## StateMutabilityType type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';

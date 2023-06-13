@@ -6,7 +6,7 @@
 
 Should be called to format input args of method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 formatInput(args: any[]): any[];
@@ -18,7 +18,7 @@ formatInput(args: any[]): any[];
 |  --- | --- | --- |
 |  args | any\[\] | The array of arguments |
 
-<b>Returns:</b>
+**Returns:**
 
 any\[\]
 

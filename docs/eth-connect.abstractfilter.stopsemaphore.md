@@ -4,7 +4,7 @@
 
 ## AbstractFilter.stopSemaphore property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 protected stopSemaphore: IFuture<any>;

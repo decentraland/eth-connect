@@ -4,7 +4,7 @@
 
 ## AbiConstructor.stateMutability property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 stateMutability?: StateMutabilityType;

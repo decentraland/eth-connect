@@ -4,12 +4,12 @@
 
 ## BigNumber.toExponential() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toExponential(): string;
 ```
-<b>Returns:</b>
+**Returns:**
 
 string
 

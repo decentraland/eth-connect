@@ -14,7 +14,7 @@ x.idiv(0.7)                     // '7'
 x.idiv('0.f', 16)               // '5'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 idiv(n: BigNumber.Value, base?: number): BigNumber;
@@ -25,9 +25,9 @@ idiv(n: BigNumber.Value, base?: number): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

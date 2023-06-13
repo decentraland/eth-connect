@@ -6,7 +6,7 @@
 
 Ensures the result will be an array
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toArray(value: any): any[];
@@ -18,7 +18,7 @@ export declare function toArray(value: any): any[];
 |  --- | --- | --- |
 |  value | any |  |
 
-<b>Returns:</b>
+**Returns:**
 
 any\[\]
 

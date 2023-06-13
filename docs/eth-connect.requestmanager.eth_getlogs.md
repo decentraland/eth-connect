@@ -6,7 +6,7 @@
 
 Returns an array of all logs matching a given filter object.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getLogs: (options: FilterOptions) => Promise<Array<TxHash> | Array<LogObject>>;

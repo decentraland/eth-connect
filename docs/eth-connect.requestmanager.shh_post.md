@@ -6,7 +6,7 @@
 
 Sends a whisper message.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_post: (data: SHHPost) => Promise<boolean>;

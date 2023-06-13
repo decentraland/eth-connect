@@ -4,7 +4,7 @@
 
 ## SolidityFunction.\_name property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 _name: string;

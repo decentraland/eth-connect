@@ -27,12 +27,12 @@ y = new BigNumber('9.9e-101')
 y.decimalPlaces()                      // 102
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 decimalPlaces(): number;
 ```
-<b>Returns:</b>
+**Returns:**
 
 number
 

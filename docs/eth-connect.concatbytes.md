@@ -4,7 +4,7 @@
 
 ## concatBytes() function
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function concatBytes(...buffers: Uint8Array[]): Uint8Array;
@@ -16,7 +16,7 @@ export declare function concatBytes(...buffers: Uint8Array[]): Uint8Array;
 |  --- | --- | --- |
 |  buffers | Uint8Array\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Uint8Array
 

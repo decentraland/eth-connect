@@ -4,7 +4,7 @@
 
 ## IWebSocket.onerror property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 onerror: ((this: this, ev: any) => any) | null;

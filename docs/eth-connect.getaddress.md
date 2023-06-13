@@ -5,7 +5,7 @@
 ## getAddress() function
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function getAddress(address: string): string;
@@ -17,7 +17,7 @@ export declare function getAddress(address: string): string;
 |  --- | --- | --- |
 |  address | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

@@ -4,7 +4,7 @@
 
 ## eth.shh\_newGroup variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_newGroup: Method<string>

@@ -4,7 +4,7 @@
 
 ## eth.eth\_gasPrice variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_gasPrice: Property<BigNumber>

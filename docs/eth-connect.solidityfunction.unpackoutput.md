@@ -4,7 +4,7 @@
 
 ## SolidityFunction.unpackOutput() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 unpackOutput(output: string): any;
@@ -16,7 +16,7 @@ unpackOutput(output: string): any;
 |  --- | --- | --- |
 |  output | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 any
 

@@ -4,12 +4,12 @@
 
 ## AbstractFilter.uninstall() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 protected abstract uninstall(): Promise<boolean>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;boolean&gt;
 

@@ -6,7 +6,7 @@
 
 Creates new message call transaction or a contract creation, if the data field contains code.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_sendTransaction: (options: TransactionOptions) => Promise<TxHash>;

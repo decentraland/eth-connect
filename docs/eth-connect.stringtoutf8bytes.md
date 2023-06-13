@@ -6,7 +6,7 @@
 
 Converts a string into a Uint8Array encoded with UTF-8
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function stringToUtf8Bytes(str: string): Uint8Array;
@@ -18,7 +18,7 @@ export declare function stringToUtf8Bytes(str: string): Uint8Array;
 |  --- | --- | --- |
 |  str | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Uint8Array
 

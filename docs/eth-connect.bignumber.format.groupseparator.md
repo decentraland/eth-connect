@@ -6,7 +6,7 @@
 
 The grouping separator of the integer part.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 groupSeparator?: string;

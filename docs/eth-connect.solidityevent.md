@@ -6,7 +6,7 @@
 
 This prototype should be used to create event filters
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class SolidityEvent 

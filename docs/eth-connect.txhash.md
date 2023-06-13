@@ -6,7 +6,7 @@
 
 Hex string of 32 bytes
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type TxHash = string;

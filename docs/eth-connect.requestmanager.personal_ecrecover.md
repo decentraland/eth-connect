@@ -6,7 +6,7 @@
 
 ecRecover returns the address associated with the private key that was used to calculate the signature in personal\_sign.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_ecRecover: (message: Data, signature: Data) => Promise<Address>;

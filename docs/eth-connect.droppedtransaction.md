@@ -5,7 +5,7 @@
 ## DroppedTransaction type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type DroppedTransaction = {
@@ -14,5 +14,5 @@ export type DroppedTransaction = {
     nonce: number;
 };
 ```
-<b>References:</b> [TransactionType.dropped](./eth-connect.transactiontype.md)
+**References:** [TransactionType.dropped](./eth-connect.transactiontype.md)
 

@@ -4,7 +4,7 @@
 
 ## HTTPProviderOptions type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type HTTPProviderOptions = {
@@ -15,5 +15,5 @@ export type HTTPProviderOptions = {
     fetch?: FetchFunction;
 };
 ```
-<b>References:</b> [FetchFunction](./eth-connect.fetchfunction.md)
+**References:** [FetchFunction](./eth-connect.fetchfunction.md)
 

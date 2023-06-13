@@ -5,7 +5,7 @@
 ## FilterOptions type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type FilterOptions = {
@@ -15,5 +15,5 @@ export type FilterOptions = {
     topics?: TopicFilter;
 };
 ```
-<b>References:</b> [BlockIdentifier](./eth-connect.blockidentifier.md)<!-- -->, [Data](./eth-connect.data.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [TopicFilter](./eth-connect.topicfilter.md)
+**References:** [BlockIdentifier](./eth-connect.blockidentifier.md)<!-- -->, [Data](./eth-connect.data.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [TopicFilter](./eth-connect.topicfilter.md)
 
