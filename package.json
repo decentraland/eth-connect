@@ -49,7 +49,7 @@
     "@dcl/eslint-config": "^1.1.2",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@microsoft/api-documenter": "^7.17.16",
-    "@microsoft/api-extractor": "^7.13.2",
+    "@microsoft/api-extractor": "^7.35.3",
     "@rollup/plugin-commonjs": "^25.0.1",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-terser": "^0.4.3",
