@@ -18,7 +18,7 @@ x.shiftedBy(3)                      // '1230'
 x.shiftedBy(-3)                     // '0.00123'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shiftedBy(n: number): BigNumber;
@@ -30,7 +30,7 @@ shiftedBy(n: number): BigNumber;
 |  --- | --- | --- |
 |  n | number | The shift value, integer, -9007199254740991 to 9007199254740991. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

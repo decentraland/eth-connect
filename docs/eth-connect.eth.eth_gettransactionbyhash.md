@@ -4,7 +4,7 @@
 
 ## eth.eth\_getTransactionByHash variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getTransactionByHash: Method<TransactionObject | null>

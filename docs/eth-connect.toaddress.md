@@ -6,7 +6,7 @@
 
 Transforms given string to valid 20 bytes-length addres with 0x prefix
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toAddress(address: string): string;
@@ -18,7 +18,7 @@ export declare function toAddress(address: string): string;
 |  --- | --- | --- |
 |  address | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

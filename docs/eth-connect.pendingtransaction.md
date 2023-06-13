@@ -5,12 +5,12 @@
 ## PendingTransaction type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type PendingTransaction = TransactionObject & {
+export type PendingTransaction = TransactionObject & {
     type: TransactionType.pending;
 };
 ```
-<b>References:</b> [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.pending](./eth-connect.transactiontype.md)
+**References:** [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.pending](./eth-connect.transactiontype.md)
 

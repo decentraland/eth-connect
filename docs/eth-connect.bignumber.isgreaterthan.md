@@ -14,7 +14,7 @@ BigNumber(0).isGreaterThan(x)                 // false
 BigNumber(11, 3).isGreaterThan(11.1, 2)       // true
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isGreaterThan(n: BigNumber.Value, base?: number): boolean;
@@ -25,9 +25,9 @@ isGreaterThan(n: BigNumber.Value, base?: number): boolean;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

@@ -4,7 +4,7 @@
 
 ## BigNumber.ModuloMode type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 type ModuloMode = 0 | 1 | 3 | 6 | 9;

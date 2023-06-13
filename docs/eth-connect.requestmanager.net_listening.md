@@ -6,7 +6,7 @@
 
 Returns true if client is actively listening for network connections.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 net_listening: () => Promise<boolean>;

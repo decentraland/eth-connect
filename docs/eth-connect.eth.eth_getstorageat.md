@@ -4,7 +4,7 @@
 
 ## eth.eth\_getStorageAt variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getStorageAt: Method<string>

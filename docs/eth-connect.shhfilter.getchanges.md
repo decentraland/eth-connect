@@ -4,12 +4,12 @@
 
 ## SHHFilter.getChanges() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 protected getChanges(): Promise<SHHFilterMessage[]>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[SHHFilterMessage](./eth-connect.shhfiltermessage.md)<!-- -->\[\]&gt;
 

@@ -4,12 +4,12 @@
 
 ## BigNumber.toFixed() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toFixed(): string;
 ```
-<b>Returns:</b>
+**Returns:**
 
 string
 

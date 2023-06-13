@@ -4,7 +4,7 @@
 
 ## Method.outputFormatter property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 outputFormatter: (something: any) => Output;

@@ -6,12 +6,12 @@
 
 Should be used to get event display name
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 displayName(): string;
 ```
-<b>Returns:</b>
+**Returns:**
 
 string
 

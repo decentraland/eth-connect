@@ -4,7 +4,7 @@
 
 ## eth.eth\_uninstallFilter variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_uninstallFilter: Method<boolean>

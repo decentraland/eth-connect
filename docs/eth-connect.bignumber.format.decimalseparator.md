@@ -6,7 +6,7 @@
 
 The decimal separator.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 decimalSeparator?: string;

@@ -13,7 +13,7 @@ BigNumber.config({ DECIMAL_PLACES: 5 })
 BigNumber.set({ DECIMAL_PLACES: 5 })
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 DECIMAL_PLACES?: number;

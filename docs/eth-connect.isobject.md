@@ -6,7 +6,7 @@
 
 Returns true if object is Objet, otherwise false
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isObject<T extends object>(object: any): object is T;
@@ -18,7 +18,7 @@ export declare function isObject<T extends object>(object: any): object is T;
 |  --- | --- | --- |
 |  object | any |  |
 
-<b>Returns:</b>
+**Returns:**
 
 object is T
 

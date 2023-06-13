@@ -4,7 +4,7 @@
 
 ## SolidityFunction.\_payable property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 _payable: boolean;

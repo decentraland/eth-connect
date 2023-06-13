@@ -13,12 +13,12 @@ y = new BigNumber('Infinity')
 y.isNaN()                       // false
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isNaN(): boolean;
 ```
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

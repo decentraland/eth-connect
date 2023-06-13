@@ -6,7 +6,7 @@
 
 The grouping separator of the fraction part.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 fractionGroupSeparator?: string;

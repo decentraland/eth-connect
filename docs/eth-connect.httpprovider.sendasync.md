@@ -6,7 +6,7 @@
 
 Should be used to make async request
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 sendAsync(payload: RPCMessage | RPCMessage[], callback: Callback): void;
@@ -19,7 +19,7 @@ sendAsync(payload: RPCMessage | RPCMessage[], callback: Callback): void;
 |  payload | [RPCMessage](./eth-connect.rpcmessage.md) \| [RPCMessage](./eth-connect.rpcmessage.md)<!-- -->\[\] |  |
 |  callback | [Callback](./eth-connect.callback.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 void
 

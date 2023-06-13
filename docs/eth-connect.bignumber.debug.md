@@ -39,7 +39,7 @@ BigNumber.DEBUG = true
 BigNumber.isBigNumber(x)    // '[BigNumber Error] Invalid BigNumber'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static DEBUG?: boolean;

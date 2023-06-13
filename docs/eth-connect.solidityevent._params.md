@@ -4,7 +4,7 @@
 
 ## SolidityEvent.\_params property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 _params: AbiInput[];

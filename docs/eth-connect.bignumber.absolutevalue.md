@@ -13,12 +13,12 @@ x = new BigNumber(-0.8)
 x.absoluteValue()           // '0.8'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 absoluteValue(): BigNumber;
 ```
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

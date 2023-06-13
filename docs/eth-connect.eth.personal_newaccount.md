@@ -4,7 +4,7 @@
 
 ## eth.personal\_newAccount variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_newAccount: Method<string>

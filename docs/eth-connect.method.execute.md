@@ -4,7 +4,7 @@
 
 ## Method.execute() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 execute(requestManager: RequestManager, ...args: any[]): Promise<Output | null>;
@@ -17,7 +17,7 @@ execute(requestManager: RequestManager, ...args: any[]): Promise<Output | null>;
 |  requestManager | [RequestManager](./eth-connect.requestmanager.md) |  |
 |  args | any\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;Output \| null&gt;
 

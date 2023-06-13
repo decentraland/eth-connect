@@ -6,7 +6,7 @@
 
 Constructs a new instance of the `SolidityEvent` class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(requestManager: RequestManager, json: AbiEvent, address: string);

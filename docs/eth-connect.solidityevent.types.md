@@ -6,7 +6,7 @@
 
 Should be used to get filtered param types
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 types(indexed: boolean): AbiInput[];
@@ -18,7 +18,7 @@ types(indexed: boolean): AbiInput[];
 |  --- | --- | --- |
 |  indexed | boolean |  |
 
-<b>Returns:</b>
+**Returns:**
 
 [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\]
 

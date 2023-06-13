@@ -6,7 +6,7 @@
 
 Should be called to check if jsonrpc response is valid
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isValidResponse(response: RPCResponse | RPCResponse[]): boolean;
@@ -18,7 +18,7 @@ export declare function isValidResponse(response: RPCResponse | RPCResponse[]): 
 |  --- | --- | --- |
 |  response | RPCResponse \| RPCResponse\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

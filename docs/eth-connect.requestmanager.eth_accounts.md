@@ -6,7 +6,7 @@
 
 Returns a list of addresses owned by client.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_accounts: () => Promise<Address[]>;

@@ -6,7 +6,7 @@
 
 Returns true if given string is valid json object
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isJson(str: string): boolean;
@@ -18,7 +18,7 @@ export declare function isJson(str: string): boolean;
 |  --- | --- | --- |
 |  str | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

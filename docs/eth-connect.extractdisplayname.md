@@ -6,7 +6,7 @@
 
 Should be called to get display name of contract function
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function extractDisplayName(name: string): string;
@@ -18,7 +18,7 @@ export declare function extractDisplayName(name: string): string;
 |  --- | --- | --- |
 |  name | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

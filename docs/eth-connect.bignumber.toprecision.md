@@ -27,7 +27,7 @@ x.toPrecision(5)                // '45.600'
 y.toPrecision(5)                // '45.600'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toPrecision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): string;
@@ -38,9 +38,9 @@ toPrecision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): s
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  significantDigits | number | Significant digits, integer, 1 to 1e+9. |
-|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | Rounding mode, integer 0 to 8. |
+|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | _(Optional)_ Rounding mode, integer 0 to 8. |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

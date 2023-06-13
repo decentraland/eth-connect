@@ -4,7 +4,7 @@
 
 ## IPropertyOptions.getter property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 getter: string;

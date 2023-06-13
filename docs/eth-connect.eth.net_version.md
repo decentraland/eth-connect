@@ -4,7 +4,7 @@
 
 ## eth.net\_version variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 net_version: Property<string>

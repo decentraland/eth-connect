@@ -17,7 +17,7 @@ By adding a prefix to the message makes the calculated signature recognisable as
 
 Note the address to sign with must be unlocked.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_sign: (address: Address, message: Data) => Promise<Data>;

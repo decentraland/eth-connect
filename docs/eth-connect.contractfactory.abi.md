@@ -4,7 +4,7 @@
 
 ## ContractFactory.abi property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 abi: any[];

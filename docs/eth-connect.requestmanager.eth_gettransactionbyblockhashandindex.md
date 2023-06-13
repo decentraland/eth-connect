@@ -6,7 +6,7 @@
 
 Returns information about a transaction by block hash and transaction index position.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getTransactionByBlockHashAndIndex: (blockHash: TxHash, txIndex: Quantity) => Promise<TransactionObject>;

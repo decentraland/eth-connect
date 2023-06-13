@@ -27,12 +27,12 @@ y = new BigNumber('9.9e-101')
 y.dp()                                 // 102
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 dp(): number;
 ```
-<b>Returns:</b>
+**Returns:**
 
 number
 

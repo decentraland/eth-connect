@@ -29,7 +29,7 @@ x.toFixed(5)                    // '3.45600'
 y.toFixed(5)                    // '3.45600'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toFixed(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
@@ -40,9 +40,9 @@ toFixed(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  decimalPlaces | number | Decimal places, integer, 0 to 1e+9. |
-|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | Rounding mode, integer, 0 to 8. |
+|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | _(Optional)_ Rounding mode, integer, 0 to 8. |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

@@ -4,7 +4,7 @@
 
 ## AbstractFilter.callbacks property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 protected callbacks: ((message: TransformedLog) => void)[];

@@ -6,7 +6,7 @@
 
 Calls a contract function or to sendTransaction to solidity function
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 execute(requestManager: RequestManager, address: string, ...args: any[]): Promise<any>;
@@ -20,7 +20,7 @@ execute(requestManager: RequestManager, address: string, ...args: any[]): Promis
 |  address | string |  |
 |  args | any\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;any&gt;
 

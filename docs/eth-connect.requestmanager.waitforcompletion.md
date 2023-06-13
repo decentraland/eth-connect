@@ -6,7 +6,7 @@
 
 Wait until a transaction finishes by either being mined or failing
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransactionAndReceipt>;
@@ -17,9 +17,9 @@ waitForCompletion(txId: string, retriesOnEmpty?: number): Promise<FinishedTransa
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  txId | string | Transaction id to watch |
-|  retriesOnEmpty | number | Number of retries when a transaction status returns empty |
+|  retriesOnEmpty | number | _(Optional)_ Number of retries when a transaction status returns empty |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[FinishedTransactionAndReceipt](./eth-connect.finishedtransactionandreceipt.md)<!-- -->&gt;
 

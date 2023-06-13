@@ -4,7 +4,7 @@
 
 ## IWebSocket.onmessage property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 onmessage: ((this: this, ev: any) => any) | null;

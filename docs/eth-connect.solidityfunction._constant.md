@@ -4,7 +4,7 @@
 
 ## SolidityFunction.\_constant property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 _constant: boolean;

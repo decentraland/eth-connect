@@ -4,7 +4,7 @@
 
 ## eth.eth\_getBlockByHash variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getBlockByHash: Method<BlockObject | null>

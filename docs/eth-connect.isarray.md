@@ -6,7 +6,7 @@
 
 Returns true if object is array, otherwise false
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isArray<T extends Array<any>>(object: any): object is T;
@@ -18,7 +18,7 @@ export declare function isArray<T extends Array<any>>(object: any): object is T;
 |  --- | --- | --- |
 |  object | any |  |
 
-<b>Returns:</b>
+**Returns:**
 
 object is T
 

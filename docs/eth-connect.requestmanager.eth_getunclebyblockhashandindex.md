@@ -6,7 +6,7 @@
 
 Returns information about a uncle of a block by hash and uncle index position.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getUncleByBlockHashAndIndex: (blockHash: TxHash, index: Quantity) => Promise<BlockObject>;

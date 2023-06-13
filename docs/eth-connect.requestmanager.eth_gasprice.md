@@ -6,7 +6,7 @@
 
 Returns the current price per gas in wei.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_gasPrice: () => Promise<BigNumber>;

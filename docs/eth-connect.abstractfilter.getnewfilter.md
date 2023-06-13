@@ -4,12 +4,12 @@
 
 ## AbstractFilter.getNewFilter() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 protected abstract getNewFilter(): Promise<Data>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[Data](./eth-connect.data.md)<!-- -->&gt;
 

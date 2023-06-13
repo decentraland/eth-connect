@@ -33,7 +33,7 @@ BigNumber.config({ EXPONENTIAL_AT: 0 })
 ```
 Regardless of the value of `EXPONENTIAL_AT`<!-- -->, the `toFixed` method will always return a value in normal notation and the `toExponential` method will always return a value in exponential form. Calling `toString` with a base argument, e.g. `toString(10)`<!-- -->, will also always return normal notation.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 EXPONENTIAL_AT?: number | [number, number];

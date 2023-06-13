@@ -6,7 +6,7 @@
 
 Creates new whisper identity in the client.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_newIdentity: () => Promise<Data>;

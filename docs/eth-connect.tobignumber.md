@@ -6,7 +6,7 @@
 
 Takes an input and transforms it into an bignumber
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toBigNumber(_num: BigNumber.Value): BigNumber;
@@ -18,7 +18,7 @@ export declare function toBigNumber(_num: BigNumber.Value): BigNumber;
 |  --- | --- | --- |
 |  \_num | [BigNumber.Value](./eth-connect.bignumber.value.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

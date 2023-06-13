@@ -6,7 +6,7 @@
 
 Returns true if given string is a valid log topic.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isTopic(topic: string): boolean;
@@ -18,7 +18,7 @@ export declare function isTopic(topic: string): boolean;
 |  --- | --- | --- |
 |  topic | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

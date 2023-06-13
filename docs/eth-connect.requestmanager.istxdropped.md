@@ -6,7 +6,7 @@
 
 Wait retryAttemps \* TRANSACTION\_FETCH\_DELAY for a transaction status to be in the mempool
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isTxDropped(txId: string, _retryAttemps?: number): Promise<boolean>;
@@ -17,9 +17,9 @@ isTxDropped(txId: string, _retryAttemps?: number): Promise<boolean>;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  txId | string | Transaction id to watch |
-|  \_retryAttemps | number |  |
+|  \_retryAttemps | number | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;boolean&gt;
 

@@ -23,7 +23,7 @@ BigNumber.config().CRYPTO       // true
 BigNumber.random()              // 0.54340758610486147524
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 CRYPTO?: boolean;

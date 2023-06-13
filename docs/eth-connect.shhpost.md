@@ -5,10 +5,10 @@
 ## SHHPost type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type SHHPost = {
+export type SHHPost = {
     from: Data;
     to: Data;
     topics: Array<Data>;
@@ -17,5 +17,5 @@ export declare type SHHPost = {
     ttl: Quantity;
 };
 ```
-<b>References:</b> [Data](./eth-connect.data.md)<!-- -->, [Quantity](./eth-connect.quantity.md)
+**References:** [Data](./eth-connect.data.md)<!-- -->, [Quantity](./eth-connect.quantity.md)
 

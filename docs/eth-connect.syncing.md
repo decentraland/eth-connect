@@ -5,14 +5,14 @@
 ## Syncing type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type Syncing = {
+export type Syncing = {
     startingBlock: Quantity;
     currentBlock: Quantity;
     highestBlock: Quantity;
 };
 ```
-<b>References:</b> [Quantity](./eth-connect.quantity.md)
+**References:** [Quantity](./eth-connect.quantity.md)
 

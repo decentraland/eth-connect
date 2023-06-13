@@ -4,10 +4,10 @@
 
 ## BigNumber.Value type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 type Value = string | number | Instance;
 ```
-<b>References:</b> [Instance](./eth-connect.bignumber.instance.md)
+**References:** [Instance](./eth-connect.bignumber.instance.md)
 

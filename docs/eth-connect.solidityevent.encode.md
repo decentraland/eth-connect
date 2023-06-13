@@ -6,7 +6,7 @@
 
 Should be used to encode indexed params and options to one final object
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 encode(indexed?: Record<string, any>, options?: FilterOptions): FilterOptions;
@@ -16,10 +16,10 @@ encode(indexed?: Record<string, any>, options?: FilterOptions): FilterOptions;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  indexed | Record&lt;string, any&gt; |  |
-|  options | [FilterOptions](./eth-connect.filteroptions.md) |  |
+|  indexed | Record&lt;string, any&gt; | _(Optional)_ |
+|  options | [FilterOptions](./eth-connect.filteroptions.md) | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 [FilterOptions](./eth-connect.filteroptions.md)
 

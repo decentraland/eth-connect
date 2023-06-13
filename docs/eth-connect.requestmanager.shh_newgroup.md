@@ -4,7 +4,7 @@
 
 ## RequestManager.shh\_newGroup property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_newGroup: () => Promise<Data>;

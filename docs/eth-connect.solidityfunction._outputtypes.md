@@ -4,7 +4,7 @@
 
 ## SolidityFunction.\_outputTypes property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 _outputTypes: AbiOutput[];

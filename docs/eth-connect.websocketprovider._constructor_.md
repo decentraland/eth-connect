@@ -6,7 +6,7 @@
 
 Constructs a new instance of the `WebSocketProvider` class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(url: string, options?: WebSocketProviderOptions);
@@ -17,5 +17,5 @@ constructor(url: string, options?: WebSocketProviderOptions);
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  url | string |  |
-|  options | [WebSocketProviderOptions](./eth-connect.websocketprovideroptions.md) |  |
+|  options | [WebSocketProviderOptions](./eth-connect.websocketprovideroptions.md) | _(Optional)_ |
 

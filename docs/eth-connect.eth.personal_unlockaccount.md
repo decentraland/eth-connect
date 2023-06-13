@@ -4,7 +4,7 @@
 
 ## eth.personal\_unlockAccount variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_unlockAccount: Method<boolean>

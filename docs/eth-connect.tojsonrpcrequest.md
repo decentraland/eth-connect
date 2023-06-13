@@ -6,7 +6,7 @@
 
 Should be called to valid json create payload object
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toJsonRpcRequest(method: string, params: any[]): {
@@ -24,7 +24,7 @@ export declare function toJsonRpcRequest(method: string, params: any[]): {
 |  method | string |  |
 |  params | any\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 { jsonrpc: string; id: number; method: string; params: any\[\]; }
 

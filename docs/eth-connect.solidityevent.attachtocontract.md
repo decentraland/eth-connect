@@ -6,7 +6,7 @@
 
 Should be used to attach event to contract object
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 attachToContract(contract: Contract): void;
@@ -18,7 +18,7 @@ attachToContract(contract: Contract): void;
 |  --- | --- | --- |
 |  contract | [Contract](./eth-connect.contract.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 void
 

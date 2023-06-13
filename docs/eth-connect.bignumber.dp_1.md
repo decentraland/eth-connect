@@ -4,7 +4,7 @@
 
 ## BigNumber.dp() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 dp(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
@@ -15,9 +15,9 @@ dp(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  decimalPlaces | number |  |
-|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) |  |
+|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

@@ -6,7 +6,7 @@
 
 The exponent of the value of this BigNumber, an integer number, -1000000000 to 1000000000, or null.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly e: number | null;

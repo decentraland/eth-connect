@@ -6,7 +6,7 @@
 
 Returns the current client version.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 web3_clientVersion: () => Promise<string>;

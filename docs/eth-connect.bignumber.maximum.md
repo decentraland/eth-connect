@@ -16,7 +16,7 @@ arr = [12, '13', new BigNumber(14)]
 BigNumber.maximum.apply(null, arr)            // '14'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static maximum(...n: BigNumber.Value[]): BigNumber;
@@ -28,7 +28,7 @@ static maximum(...n: BigNumber.Value[]): BigNumber;
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md)<!-- -->\[\] | A numeric value. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

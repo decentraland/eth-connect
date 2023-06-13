@@ -6,7 +6,7 @@
 
 Returns the current network id.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 net_version: () => Promise<string>;

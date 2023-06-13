@@ -6,7 +6,7 @@
 
 Should be called to pad string to expected length
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function padRight(str: string, chars: number, sign?: string): string;
@@ -18,9 +18,9 @@ export declare function padRight(str: string, chars: number, sign?: string): str
 |  --- | --- | --- |
 |  str | string |  |
 |  chars | number |  |
-|  sign | string |  |
+|  sign | string | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

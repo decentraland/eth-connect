@@ -4,7 +4,7 @@
 
 ## HTTPProvider.debug property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 debug: boolean;

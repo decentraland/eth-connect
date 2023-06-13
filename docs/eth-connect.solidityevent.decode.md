@@ -6,7 +6,7 @@
 
 Should be used to decode indexed params and options
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 decode(data: LogObject): LogObject & {
@@ -22,7 +22,7 @@ decode(data: LogObject): LogObject & {
 |  --- | --- | --- |
 |  data | [LogObject](./eth-connect.logobject.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 [LogObject](./eth-connect.logobject.md) &amp; { event: string; address: string; args: Record&lt;string, any&gt;; }
 

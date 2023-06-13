@@ -4,7 +4,7 @@
 
 ## SolidityEvent.address property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 address: string;

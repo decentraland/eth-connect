@@ -4,7 +4,7 @@
 
 ## eth.shh\_hasIdentity variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_hasIdentity: Method<boolean>

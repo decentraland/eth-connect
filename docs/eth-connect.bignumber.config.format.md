@@ -35,7 +35,7 @@ BigNumber.config({
 })
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 FORMAT?: BigNumber.Format;

@@ -6,7 +6,7 @@
 
 Returns the information about a transaction requested by transaction hash.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getTransactionByHash: (hash: TxHash) => Promise<TransactionObject>;

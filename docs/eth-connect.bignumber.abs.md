@@ -13,12 +13,12 @@ x = new BigNumber(-0.8)
 x.abs()                     // '0.8'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 abs(): BigNumber;
 ```
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

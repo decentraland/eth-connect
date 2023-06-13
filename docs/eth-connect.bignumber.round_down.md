@@ -6,7 +6,7 @@
 
 Rounds towards zero.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static readonly ROUND_DOWN: 1;

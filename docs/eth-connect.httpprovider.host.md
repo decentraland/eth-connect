@@ -4,7 +4,7 @@
 
 ## HTTPProvider.host property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 host: string;

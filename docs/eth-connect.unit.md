@@ -4,8 +4,8 @@
 
 ## Unit type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type Unit = keyof typeof unitMap;
+export type Unit = keyof typeof unitMap;
 ```

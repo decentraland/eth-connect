@@ -6,7 +6,7 @@
 
 Returns the current ethereum protocol version.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_protocolVersion: () => Promise<number>;

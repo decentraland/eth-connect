@@ -21,7 +21,7 @@ pi.toFraction(10)               // '22, 7'
 pi.toFraction(1)                // '3, 1'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toFraction(max_denominator?: BigNumber.Value): [BigNumber, BigNumber];
@@ -31,9 +31,9 @@ toFraction(max_denominator?: BigNumber.Value): [BigNumber, BigNumber];
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  max\_denominator | [BigNumber.Value](./eth-connect.bignumber.value.md) | The maximum denominator, integer &gt; 0, or Infinity. |
+|  max\_denominator | [BigNumber.Value](./eth-connect.bignumber.value.md) | _(Optional)_ The maximum denominator, integer &gt; 0, or Infinity. |
 
-<b>Returns:</b>
+**Returns:**
 
 \[[BigNumber](./eth-connect.bignumber.md)<!-- -->, [BigNumber](./eth-connect.bignumber.md)<!-- -->\]
 

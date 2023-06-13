@@ -4,7 +4,7 @@
 
 ## eth.net\_listening variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 net_listening: Property<boolean>

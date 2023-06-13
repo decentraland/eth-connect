@@ -6,7 +6,7 @@
 
 Returns the receipt of a transaction by transaction hash. Note That the receipt is not available for pending transactions.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getTransactionReceipt: (hash: TxHash) => Promise<TransactionReceipt>;

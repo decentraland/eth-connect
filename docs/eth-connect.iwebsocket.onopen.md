@@ -4,7 +4,7 @@
 
 ## IWebSocket.onopen property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 onopen: ((this: this, ev: any) => any) | null;

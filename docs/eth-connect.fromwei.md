@@ -8,7 +8,7 @@ Takes a number of wei and converts it to any other ether unit.
 
 Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function fromWei(num: BigNumber, unit: Unit): BigNumber;
@@ -21,7 +21,7 @@ export declare function fromWei(num: BigNumber, unit: Unit): BigNumber;
 |  num | [BigNumber](./eth-connect.bignumber.md) |  |
 |  unit | [Unit](./eth-connect.unit.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

@@ -6,12 +6,12 @@
 
 Should be used to get function type name
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 typeName(): string;
 ```
-<b>Returns:</b>
+**Returns:**
 
 string
 

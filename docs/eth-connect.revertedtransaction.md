@@ -5,12 +5,12 @@
 ## RevertedTransaction type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type RevertedTransaction = TransactionObject & {
+export type RevertedTransaction = TransactionObject & {
     type: TransactionType.reverted;
 };
 ```
-<b>References:</b> [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.reverted](./eth-connect.transactiontype.md)
+**References:** [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionType.reverted](./eth-connect.transactiontype.md)
 

@@ -4,7 +4,7 @@
 
 ## eth.shh\_getFilterChanges variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_getFilterChanges: Method<any[]>

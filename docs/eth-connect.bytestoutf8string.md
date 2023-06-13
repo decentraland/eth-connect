@@ -6,7 +6,7 @@
 
 Decodes an Uint8Array or hex string into a UTF-8 string
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function bytesToUtf8String(bytesOrHexString: Uint8Array | string): string;
@@ -18,7 +18,7 @@ export declare function bytesToUtf8String(bytesOrHexString: Uint8Array | string)
 |  --- | --- | --- |
 |  bytesOrHexString | Uint8Array \| string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

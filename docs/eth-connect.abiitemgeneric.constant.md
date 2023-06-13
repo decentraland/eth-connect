@@ -4,7 +4,7 @@
 
 ## AbiItemGeneric.constant property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constant?: boolean;

@@ -6,7 +6,7 @@
 
 Imports the given unencrypted private key (hex string) into the key store, encrypting it with the passphrase. Returns the address of the new account.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_sendTransaction: (txObject: TransactionOptions, passPhrase: Data) => Promise<TxHash>;

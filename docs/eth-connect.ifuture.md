@@ -4,7 +4,7 @@
 
 ## IFuture type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare type IFuture<T> = Promise<T> & {

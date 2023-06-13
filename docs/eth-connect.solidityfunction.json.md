@@ -4,7 +4,7 @@
 
 ## SolidityFunction.json property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 json: AbiFunction;

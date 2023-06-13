@@ -4,7 +4,7 @@
 
 ## BigNumber.pow() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 pow(n: number, m?: BigNumber.Value): BigNumber;
@@ -15,9 +15,9 @@ pow(n: number, m?: BigNumber.Value): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | number |  |
-|  m | [BigNumber.Value](./eth-connect.bignumber.value.md) |  |
+|  m | [BigNumber.Value](./eth-connect.bignumber.value.md) | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

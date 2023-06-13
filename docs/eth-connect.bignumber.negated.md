@@ -13,12 +13,12 @@ y = new BigNumber(-1.3)
 y.negated()                     // '1.3'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 negated(): BigNumber;
 ```
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

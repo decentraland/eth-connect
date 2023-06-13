@@ -4,7 +4,7 @@
 
 ## AbstractFilter.watch() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 watch(callback: (message: TransformedLog) => void): Promise<void>;
@@ -16,7 +16,7 @@ watch(callback: (message: TransformedLog) => void): Promise<void>;
 |  --- | --- | --- |
 |  callback | (message: TransformedLog) =&gt; void |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;void&gt;
 

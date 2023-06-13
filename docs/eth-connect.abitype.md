@@ -5,8 +5,8 @@
 ## AbiType type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
+export type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
 ```

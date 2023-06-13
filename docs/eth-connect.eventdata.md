@@ -5,10 +5,10 @@
 ## EventData type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type EventData = {
+export type EventData = {
     data: string;
     topics: string[];
     address: string;

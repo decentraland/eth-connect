@@ -5,8 +5,8 @@
 ## Hex type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type Hex = string;
+export type Hex = string;
 ```

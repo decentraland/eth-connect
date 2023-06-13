@@ -6,7 +6,7 @@
 
 Returns information about a block by block number.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getBlockByNumber: (block: BlockIdentifier, fullTransactionObjects: boolean) => Promise<BlockObject>;

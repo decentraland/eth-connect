@@ -4,7 +4,7 @@
 
 ## eth.personal\_listAccounts variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_listAccounts: Property<any[]>

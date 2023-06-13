@@ -5,14 +5,14 @@
 ## DroppedTransaction type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type DroppedTransaction = {
+export type DroppedTransaction = {
     type: TransactionType.dropped;
     hash: string;
     nonce: number;
 };
 ```
-<b>References:</b> [TransactionType.dropped](./eth-connect.transactiontype.md)
+**References:** [TransactionType.dropped](./eth-connect.transactiontype.md)
 

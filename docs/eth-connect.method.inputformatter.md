@@ -4,7 +4,7 @@
 
 ## Method.inputFormatter property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 inputFormatter: Array<null | ((a: any) => any)>;

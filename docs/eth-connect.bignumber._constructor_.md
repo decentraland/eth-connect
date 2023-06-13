@@ -75,7 +75,7 @@ A BigNumber can also be created from an object literal. Use `isBigNumber` to che
 new BigNumber({ s: 1, e: 2, c: [ 777, 12300000000000 ], _isBigNumber: true })    // '777.123'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(n: BigNumber.Value, base?: number);
@@ -86,5 +86,5 @@ constructor(n: BigNumber.Value, base?: number);
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of <code>n</code>, integer, 2 to 36 (or <code>ALPHABET.length</code>, see <code>ALPHABET</code>). |
+|  base | number | _(Optional)_ The base of <code>n</code>, integer, 2 to 36 (or <code>ALPHABET.length</code>, see <code>ALPHABET</code>). |
 

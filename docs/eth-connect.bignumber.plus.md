@@ -16,7 +16,7 @@ BigNumber(0.7).plus(x).plus(y)  // '1.1'
 x.plus('0.1', 8)                // '0.225'
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 plus(n: BigNumber.Value, base?: number): BigNumber;
@@ -27,9 +27,9 @@ plus(n: BigNumber.Value, base?: number): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

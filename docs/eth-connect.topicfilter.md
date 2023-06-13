@@ -4,10 +4,10 @@
 
 ## TopicFilter type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type TopicFilter = Array<Data | null | TopicFilter>;
+export type TopicFilter = Array<Data | null | TopicFilter>;
 ```
-<b>References:</b> [Data](./eth-connect.data.md)<!-- -->, [TopicFilter](./eth-connect.topicfilter.md)
+**References:** [Data](./eth-connect.data.md)<!-- -->, [TopicFilter](./eth-connect.topicfilter.md)
 

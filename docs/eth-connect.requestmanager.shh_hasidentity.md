@@ -6,7 +6,7 @@
 
 Checks if the client hold the private keys for a given identity.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_hasIdentity: (identity: Data) => Promise<boolean>;

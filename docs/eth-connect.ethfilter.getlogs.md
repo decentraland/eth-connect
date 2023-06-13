@@ -4,12 +4,12 @@
 
 ## EthFilter.getLogs() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 getLogs(): Promise<ReceivedLog[]>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;ReceivedLog\[\]&gt;
 

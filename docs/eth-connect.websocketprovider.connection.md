@@ -4,7 +4,7 @@
 
 ## WebSocketProvider.connection property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 connection: IFuture<T>;

@@ -4,7 +4,7 @@
 
 ## eth.eth\_sendRawTransaction variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_sendRawTransaction: Method<string>

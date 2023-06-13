@@ -6,7 +6,7 @@
 
 Should be called to attach function to contract
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 attachToContract(contract: Contract): void;
@@ -18,7 +18,7 @@ attachToContract(contract: Contract): void;
 |  --- | --- | --- |
 |  contract | [Contract](./eth-connect.contract.md) | The contract instance |
 
-<b>Returns:</b>
+**Returns:**
 
 void
 

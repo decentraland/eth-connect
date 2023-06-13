@@ -4,7 +4,7 @@
 
 ## eth.personal\_lockAccount variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_lockAccount: Method<boolean>

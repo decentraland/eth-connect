@@ -4,10 +4,10 @@
 
 ## FetchFunction type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type FetchFunction = (url: string, params: {
+export type FetchFunction = (url: string, params: {
     body?: any;
     method?: string;
     mode?: string;

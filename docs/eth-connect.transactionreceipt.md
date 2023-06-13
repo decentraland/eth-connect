@@ -5,10 +5,10 @@
 ## TransactionReceipt type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type TransactionReceipt = {
+export type TransactionReceipt = {
     transactionHash: TxHash;
     transactionIndex: Quantity;
     blockHash: TxHash;
@@ -22,5 +22,5 @@ export declare type TransactionReceipt = {
     status?: Quantity;
 };
 ```
-<b>References:</b> [TxHash](./eth-connect.txhash.md)<!-- -->, [Quantity](./eth-connect.quantity.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [LogObject](./eth-connect.logobject.md)<!-- -->, [Data](./eth-connect.data.md)
+**References:** [TxHash](./eth-connect.txhash.md)<!-- -->, [Quantity](./eth-connect.quantity.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [LogObject](./eth-connect.logobject.md)<!-- -->, [Data](./eth-connect.data.md)
 

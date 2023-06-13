@@ -6,7 +6,7 @@
 
 Should be called to get hex representation (prefixed by 0x) of ascii string
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function fromAscii(str: string, num?: number): string;
@@ -17,9 +17,9 @@ export declare function fromAscii(str: string, num?: number): string;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  str | string |  |
-|  num | number |  |
+|  num | number | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

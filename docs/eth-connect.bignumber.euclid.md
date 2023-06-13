@@ -6,7 +6,7 @@
 
 See `MODULO_MODE`<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static readonly EUCLID: 9;

@@ -6,7 +6,7 @@
 
 Returns the current whisper protocol version.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_version: () => Promise<string>;

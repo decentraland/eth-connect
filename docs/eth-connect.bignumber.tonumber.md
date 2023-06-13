@@ -21,12 +21,12 @@ z = new BigNumber(-0)
 1 / +z                          // -Infinity
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toNumber(): number;
 ```
-<b>Returns:</b>
+**Returns:**
 
 number
 

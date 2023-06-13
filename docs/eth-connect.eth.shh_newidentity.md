@@ -4,7 +4,7 @@
 
 ## eth.shh\_newIdentity variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_newIdentity: Method<string>

@@ -6,7 +6,7 @@
 
 Creates a filter in the node, to notify when a new block arrives. To check if the state has changed, call eth\_getFilterChanges.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_newBlockFilter: () => Promise<Data>;

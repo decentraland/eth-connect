@@ -6,7 +6,7 @@
 
 The sign of the value of this BigNumber, -1, 1, or null.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly s: number | null;

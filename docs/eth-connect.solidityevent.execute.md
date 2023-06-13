@@ -6,7 +6,7 @@
 
 Should be used to create new filter object from event
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 execute(indexed: Record<string, any>, options?: FilterOptions): Promise<EthFilter<LogObject>>;
@@ -17,9 +17,9 @@ execute(indexed: Record<string, any>, options?: FilterOptions): Promise<EthFilte
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  indexed | Record&lt;string, any&gt; |  |
-|  options | [FilterOptions](./eth-connect.filteroptions.md) |  |
+|  options | [FilterOptions](./eth-connect.filteroptions.md) | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[EthFilter](./eth-connect.ethfilter.md)<!-- -->&lt;[LogObject](./eth-connect.logobject.md)<!-- -->&gt;&gt;
 
