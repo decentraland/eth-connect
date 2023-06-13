@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as coder from '../src/solidity/coder'
 import { Tuple } from '../src/abi/coder'
 import { BigNumber as bn } from '../dist/eth-connect'

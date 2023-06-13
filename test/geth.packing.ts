@@ -1,5 +1,5 @@
 import { AbiInput, AbiOutput, BigNumber as bn } from '../dist/eth-connect'
-import * as expect from 'expect'
+import expect from 'expect'
 import { coder } from '../src/solidity/coder'
 import { hexToBytes, isArray, isBigNumber } from '../src'
 import { formatParamType, Tuple } from '../src/abi/coder'

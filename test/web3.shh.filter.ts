@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 import { RequestManager } from '../src'
 import { SHHFilter } from '../src/Filter'

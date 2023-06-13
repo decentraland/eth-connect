@@ -1,5 +1,5 @@
 import 'isomorphic-fetch'
-import * as expect from 'expect'
+import expect from 'expect'
 import { ContractFactory, RequestManager, BigNumber } from '../src'
 import { testAllProviders } from './helpers/testAllProviders'
 import { ConfirmedTransaction, TxHash } from '../src/Schema'
@@ -228,7 +228,6 @@ function doTest(requestManager: RequestManager) {
       expect(allowedNumber).toBeInstanceOf(BigNumber)
     }
   })
-
 
   it('test for allowance using DG parameters', async function () {
     this.timeout(30000)

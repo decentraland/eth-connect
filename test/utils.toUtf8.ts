@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { hexToBytes } from '../src'
 import * as utils from '../src/utils/utf8'
 

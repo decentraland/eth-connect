@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import 'isomorphic-fetch'
 import { RequestManager, isStrictAddress, isArray } from '../src'
 import { testAllProviders } from './helpers/testAllProviders'

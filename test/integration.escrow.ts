@@ -1,5 +1,5 @@
 import 'isomorphic-fetch'
-import * as expect from 'expect'
+import expect from 'expect'
 import { ContractFactory, RequestManager, BigNumber } from '../src'
 import { testAllProviders } from './helpers/testAllProviders'
 import { abi, bytecode } from './fixtures/Escrow.json'
@@ -39,7 +39,7 @@ function doTest(requestManager: RequestManager) {
     expect(tx.status).toEqual('confirmed')
     expect(typeof tx.receipt).toEqual('object')
     expect(tx.receipt.status).toEqual(1)
-    const deposits = await EscrowContract.depositsOf(account, { from: account });
+    const deposits = await EscrowContract.depositsOf(account, { from: account })
     expect(deposits).toBeInstanceOf(BigNumber)
     expect((deposits as BigNumber).eq(123)).toEqual(true)
   })

@@ -4,7 +4,10 @@
   "private": true,
   "description": "Ethereum TypeScript API, middleware to talk to a ethereum node using an async provider",
   "decentralandLibrary": {},
-  "repository": "decentraland/eth-connect",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decentraland/eth-connect.git"
+  },
   "homepage": "https://github.com/decentraland/eth-connect",
   "bugs": "https://github.com/decentraland/eth-connect/issues",
   "scripts": {
@@ -58,7 +61,7 @@
     "@types/node-fetch": "^2.6.1",
     "bignumber.js": "^9.0.1",
     "coveralls": "^3.1.0",
-    "expect": "^26.6.2",
+    "expect": "^29.5.0",
     "fp-future": "^1.0.1",
     "ganache-cli": "^6.12.2",
     "isomorphic-fetch": "^3.0.0",

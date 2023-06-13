@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { SolidityFunction, toBigNumber } from '../src'
 
 describe('solidityfunction', () => {
