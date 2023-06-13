@@ -63,7 +63,7 @@
     "ganache-cli": "^6.12.2",
     "isomorphic-fetch": "^3.0.0",
     "js-sha3": "^0.8.0",
-    "mocha": "^8.3.2",
+    "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "rollup": "^3.25.1",
     "source-map-support": "^0.5.19",
