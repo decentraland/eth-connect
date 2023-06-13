@@ -31,7 +31,7 @@ function doTest(requestManager: RequestManager) {
       const message = '0xad1231'
       const signature = await requestManager.personal_sign(message, account, 'test')
       const signerAddress = await requestManager.personal_ecRecover(message, signature)
-      expect(signerAddress).toEqual(account)
+      expect(signerAddress.toLowerCase()).toEqual(account)
     }
   })
 
@@ -47,7 +47,7 @@ function doTest(requestManager: RequestManager) {
       const message = 'TEST MESSAGE'
       const signature = await requestManager.personal_sign(message, account, 'test')
       const signerAddress = await requestManager.personal_ecRecover(message, signature)
-      expect(signerAddress).toEqual(account)
+      expect(signerAddress.toLowerCase()).toEqual(account)
     }
   })
 
@@ -56,7 +56,7 @@ function doTest(requestManager: RequestManager) {
       const message = new Uint8Array([14, 15, 99]) as any
       const signature = await requestManager.personal_sign(message, account, 'test')
       const signerAddress = await requestManager.personal_ecRecover(message, signature)
-      expect(signerAddress).toEqual(account)
+      expect(signerAddress.toLowerCase()).toEqual(account)
     }
   })
 
