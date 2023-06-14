@@ -5,12 +5,12 @@
 ## EventFilterCreator type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type EventFilterCreator = (indexed: {
+export type EventFilterCreator = (indexed: {
     [key: string]: any;
 }, options?: FilterOptions) => Promise<EthFilter>;
 ```
-<b>References:</b> [FilterOptions](./eth-connect.filteroptions.md)<!-- -->, [EthFilter](./eth-connect.ethfilter.md)
+**References:** [FilterOptions](./eth-connect.filteroptions.md)<!-- -->, [EthFilter](./eth-connect.ethfilter.md)
 

@@ -6,7 +6,7 @@
 
 Rounds towards nearest neighbour. If equidistant, rounds towards even neighbour.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static readonly ROUND_HALF_EVEN: 6;

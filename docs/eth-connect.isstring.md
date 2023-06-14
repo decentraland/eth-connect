@@ -6,7 +6,7 @@
 
 Returns true if object is string, otherwise false
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isString(value: any): value is string;
@@ -18,7 +18,7 @@ export declare function isString(value: any): value is string;
 |  --- | --- | --- |
 |  value | any |  |
 
-<b>Returns:</b>
+**Returns:**
 
 value is string
 

@@ -4,7 +4,7 @@
 
 ## AbstractFilter.isStarted property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isStarted: boolean;

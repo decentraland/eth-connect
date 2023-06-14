@@ -16,10 +16,9 @@ x.sd()                         // 9
 y = new BigNumber(987000)
 y.sd(false)                    // 3
 y.sd(true)                     // 6
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 sd(includeZeros?: boolean): number;
@@ -29,9 +28,9 @@ sd(includeZeros?: boolean): number;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  includeZeros | boolean | Whether to include integer trailing zeros in the significant digit count. |
+|  includeZeros | boolean | _(Optional)_ Whether to include integer trailing zeros in the significant digit count. |
 
-<b>Returns:</b>
+**Returns:**
 
 number
 

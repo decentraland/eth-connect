@@ -6,7 +6,7 @@
 
 Closes the WebSocket connection, optionally using code as the the WebSocket connection close code and reason as the the WebSocket connection close reason.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 close(code?: number, reason?: string): void;
@@ -16,10 +16,10 @@ close(code?: number, reason?: string): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  code | number |  |
-|  reason | string |  |
+|  code | number | _(Optional)_ |
+|  reason | string | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 void
 

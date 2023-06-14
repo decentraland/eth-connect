@@ -1,20 +1,17 @@
-import typescript from 'rollup-plugin-typescript2'
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import globals from 'rollup-plugin-node-globals'
-import { terser } from 'rollup-plugin-terser'
+// import globals from 'rollup-plugin-node-globals'
+import terser from '@rollup/plugin-terser'
+import typescript from '@rollup/plugin-typescript';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+
+import commonjs from '@rollup/plugin-commonjs';
 
 const PROD = !!process.env.CI
 
 console.log(`production: ${PROD}`)
 
 const plugins = [
-  typescript({
-    verbosity: 2,
-    clean: true,
-    useTsconfigDeclarationDir: true
-  }),
-  resolve({
+  typescript({}),
+  nodeResolve({
     browser: true,
     preferBuiltins: false,
   }),
@@ -74,7 +71,7 @@ const plugins = [
   }),
 
   PROD && terser({}),
-  globals({}),
+  // globals({}),
 ]
 
 const banner = `/*! eth-connect ${JSON.stringify(

@@ -12,10 +12,9 @@ x = new BigNumber(0.1)
 x.isLessThanOrEqualTo(BigNumber(0.3).minus(0.2))   // true
 BigNumber(-1).isLessThanOrEqualTo(x)               // true
 BigNumber(10, 18).isLessThanOrEqualTo('i', 36)     // true
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isLessThanOrEqualTo(n: BigNumber.Value, base?: number): boolean;
@@ -26,9 +25,9 @@ isLessThanOrEqualTo(n: BigNumber.Value, base?: number): boolean;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

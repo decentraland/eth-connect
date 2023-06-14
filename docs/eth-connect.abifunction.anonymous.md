@@ -4,7 +4,7 @@
 
 ## AbiFunction.anonymous property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 anonymous?: boolean;

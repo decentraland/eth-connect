@@ -26,10 +26,9 @@ y.toExponential(1)              // '4.6e+1'
 y.toExponential(1, 1)           // '4.5e+1'  (ROUND_DOWN)
 x.toExponential(3)              // '4.560e+1'
 y.toExponential(3)              // '4.560e+1'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toExponential(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
@@ -40,9 +39,9 @@ toExponential(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): str
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  decimalPlaces | number | Decimal places, integer, 0 to 1e+9. |
-|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | Rounding mode, integer, 0 to 8. |
+|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | _(Optional)_ Rounding mode, integer, 0 to 8. |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

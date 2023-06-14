@@ -17,10 +17,9 @@ x.precision(6, BigNumber.ROUND_UP)     // '9876.55'
 x.precision(2)                         // '9900'
 x.precision(2, 1)                      // '9800'
 x                                      // '9876.54321'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 precision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
@@ -31,9 +30,9 @@ precision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): Big
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  significantDigits | number | Significant digits, integer, 1 to 1e+9. |
-|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | Rounding mode, integer, 0 to 8. |
+|  roundingMode | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | _(Optional)_ Rounding mode, integer, 0 to 8. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

@@ -14,10 +14,9 @@ BigNumber.max(4e9, x, '123456789.9')      // '4000000000'
 
 arr = [12, '13', new BigNumber(14)]
 BigNumber.max.apply(null, arr)            // '14'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static max(...n: BigNumber.Value[]): BigNumber;
@@ -29,7 +28,7 @@ static max(...n: BigNumber.Value[]): BigNumber;
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md)<!-- -->\[\] | A numeric value. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

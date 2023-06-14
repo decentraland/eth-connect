@@ -16,10 +16,9 @@ BigNumber.config({ ALPHABET: '0123456789TE' })
 x = new BigNumber('T', 12)
 x.toString()                // '10'
 x.toString(12)              // 'T'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 ALPHABET?: string;

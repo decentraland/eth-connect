@@ -4,7 +4,7 @@
 
 ## eth.personal\_importRawKey variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_importRawKey: Method<string>

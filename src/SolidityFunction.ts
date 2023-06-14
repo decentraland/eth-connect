@@ -22,37 +22,31 @@ import * as errors from './utils/errors'
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
-import { AbiFunction } from './Schema'
+import { AbiFunction, AbiInput, AbiOutput, Quantity } from './Schema'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
  */
 export class SolidityFunction {
-  _address: string
-  _inputTypes: string[]
-  _outputTypes: string[]
+  _inputTypes: AbiInput[]
+  _outputTypes: AbiOutput[]
   _constant: boolean
   _name: string
   _payable: boolean
 
   needsToBeTransaction: boolean
 
-  constructor(public requestManager: RequestManager, public json: AbiFunction, address: string) {
-    this._inputTypes = (json.inputs || []).map(function (i) {
-      return i.type
-    })
-    this._outputTypes = (json.outputs || []).map(function (i) {
-      return i.type
-    })
+  constructor(public json: AbiFunction) {
+    this._inputTypes = json.inputs || []
+    this._outputTypes = json.outputs || []
 
     this._constant = !!json.constant
-    this._payable = !!json.payable
+    this._payable = !!json.payable || json.stateMutability === 'payable'
 
     this.needsToBeTransaction =
-      json.payable || ('constant' in json && !json.constant) || json.stateMutability === 'nonpayable'
+      this._payable || ('constant' in json && !json.constant) || json.stateMutability === 'nonpayable'
 
     this._name = utils.transformToFullName(json)
-    this._address = address
   }
 
   extractDefaultBlock(args: any[]): string {
@@ -72,9 +66,14 @@ export class SolidityFunction {
       throw new Error('Invalid call, some arguments are undefined')
     }
 
-    let inputArgs = args.filter(function (a) {
+    const inputArgs = args.filter(function (a) {
       // filter the options object but not arguments that are arrays
-      return !(utils.isObject(a) === true && utils.isArray(a) === false && utils.isBigNumber(a) === false)
+      return !(
+        utils.isObject(a) === true &&
+        utils.isArray(a) === false &&
+        utils.isBigNumber(a) === false &&
+        !(a instanceof Uint8Array)
+      )
     })
     if (inputArgs.length !== this._inputTypes.length) {
       throw errors.InvalidNumberOfSolidityArgs(inputArgs.length, this._inputTypes.length)
@@ -96,12 +95,11 @@ export class SolidityFunction {
     }
 
     if (args.length > this._inputTypes.length && utils.isObject(args[args.length - 1])) {
-      options = args[args.length - 1]
+      options = args.pop()
     }
 
     this.validateArgs(args)
 
-    options.to = this._address
     const signature = this.signature()
     let params = coder.encodeParams(this._inputTypes, args)
     if (params.indexOf('0x') == 0) params = params.substr(2)
@@ -123,7 +121,7 @@ export class SolidityFunction {
     }
 
     const encodedOutput = output.length >= 2 ? output.slice(2) : output
-    let result = coder.decodeParams(this._outputTypes, encodedOutput)
+    const result = coder.decodeParams(this._outputTypes, encodedOutput)
     return result.length === 1 ? result[0] : result
   }
 
@@ -132,13 +130,14 @@ export class SolidityFunction {
    *
    * @param requestManager - The RequestManager instance
    */
-  async execute(requestManager: RequestManager, ...args: any[]) {
+  async execute(requestManager: RequestManager, address: string, ...args: any[]) {
     if (!requestManager) {
       throw new Error(`Cannot call function ${this.displayName()} because there is no requestManager`)
     }
 
     if (this.needsToBeTransaction) {
       const payload = this.toPayload(args)
+      payload.to = address
       if (payload.value > 0 && !this._payable) {
         throw new Error('Cannot send value to non-payable function')
       }
@@ -150,6 +149,7 @@ export class SolidityFunction {
     } else {
       const defaultBlock = this.extractDefaultBlock(args)
       const payload = this.toPayload(args)
+      payload.to = address
       const output = await requestManager.eth_call(payload, defaultBlock)
       return this.unpackOutput(output)
     }
@@ -158,10 +158,14 @@ export class SolidityFunction {
   /**
    * Should be used to estimateGas of solidity function
    */
-  estimateGas(...args: any[]) {
-    let payload = this.toPayload(args)
+  estimateGas(requestManager: RequestManager, address: string, ...args: any[]): Promise<Quantity> {
+    if (!(requestManager instanceof RequestManager))
+      throw new Error('estimateGas needs to receive a RequestManager as first argument')
 
-    return this.requestManager.eth_estimateGas(payload)
+    const payload = this.toPayload(args)
+    payload.to = address
+
+    return requestManager.eth_estimateGas(payload)
   }
 
   /**
@@ -184,16 +188,15 @@ export class SolidityFunction {
    * @param contract - The contract instance
    */
   attachToContract(contract: Contract) {
-    let displayName = this.displayName()
-    const fun = this
+    const displayName = this.displayName()
 
     const execute = Object.assign(
-      (...args: any[]) => {
-        const requestManager = this.requestManager || fun.requestManager
-
-        return fun.execute(requestManager, ...args)
-      },
-      { estimateGas: this.estimateGas.bind(this) }
+      (...args: any[]) => this.execute(contract.requestManager, contract.address, ...args),
+      {
+        estimateGas: this.estimateGas.bind(this, contract.requestManager, contract.address),
+        toPayload: (...args: any[]) => this.toPayload(args),
+        unpackOutput: (output: string) => this.unpackOutput(output)
+      }
     )
 
     if (!(contract as any)[displayName]) {

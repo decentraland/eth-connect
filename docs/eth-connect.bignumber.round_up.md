@@ -6,7 +6,7 @@
 
 Rounds away from zero.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static readonly ROUND_UP: 0;

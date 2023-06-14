@@ -6,7 +6,7 @@
 
 Should be called to create batch payload object
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toBatchPayload(messages: RPCSendableMessage[]): {
@@ -23,7 +23,7 @@ export declare function toBatchPayload(messages: RPCSendableMessage[]): {
 |  --- | --- | --- |
 |  messages | [RPCSendableMessage](./eth-connect.rpcsendablemessage.md)<!-- -->\[\] | An array of objects with method (required) and params (optional) fields |
 
-<b>Returns:</b>
+**Returns:**
 
 { jsonrpc: string; id: number; method: string; params: any\[\]; }\[\]
 

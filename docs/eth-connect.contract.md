@@ -6,7 +6,7 @@
 
 Should be called to create new contract instance
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class Contract 

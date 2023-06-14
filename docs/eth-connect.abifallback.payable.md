@@ -4,7 +4,7 @@
 
 ## AbiFallback.payable property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 payable?: boolean;

@@ -5,14 +5,14 @@
 ## ReplacedTransaction type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type ReplacedTransaction = {
+export type ReplacedTransaction = {
     type: TransactionType.replaced;
     hash: string;
     nonce: number;
 };
 ```
-<b>References:</b> [TransactionType.replaced](./eth-connect.transactiontype.replaced.md)
+**References:** [TransactionType.replaced](./eth-connect.transactiontype.md)
 

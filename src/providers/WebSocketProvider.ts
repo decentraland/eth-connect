@@ -75,7 +75,7 @@ export class WebSocketProvider<T extends IWebSocket> {
             const message = toRPC($)
             toSend.push(message)
             this.responseCallbacks.set(message.id, defer)
-          } catch (e) {
+          } catch (e: any) {
             defer.reject(e)
           }
 
@@ -88,7 +88,7 @@ export class WebSocketProvider<T extends IWebSocket> {
         const message = toRPC(payload)
         toSend.push(message)
         this.responseCallbacks.set(message.id, defer)
-      } catch (e) {
+      } catch (e: any) {
         defer.reject(e)
       }
       didFinish = defer
@@ -120,10 +120,10 @@ export class WebSocketProvider<T extends IWebSocket> {
    * Will parse the response and make an array out of it.
    */
   private parseResponse(data: string) {
-    let returnValues: any[] = []
+    const returnValues: any[] = []
 
     // DE-CHUNKER
-    let dechunkedData = data
+    const dechunkedData = data
       .replace(/\}[\n\r]?\{/g, '}|--|{') // }{
       .replace(/\}\][\n\r]?\[\{/g, '}]|--|[{') // }][{
       .replace(/\}[\n\r]?\[\{/g, '}|--|[{') // }[{
@@ -202,7 +202,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
     // reset all requests and callbacks
     if (!this.isDisposed) {
-      this.connect()
+      setTimeout(() => this.connect(), 1000)
     }
   }
 
@@ -218,7 +218,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
     this.lastChunk = ''
 
-    let ctor = this.options.WebSocketConstructor || (typeof WebSocket !== 'undefined' ? WebSocket : void 0)
+    const ctor = this.options.WebSocketConstructor || (typeof WebSocket !== 'undefined' ? WebSocket : void 0)
 
     if (!ctor) {
       throw new Error('Please provide a WebSocketConstructor')
@@ -242,7 +242,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
     // LISTEN FOR CONNECTION RESPONSES
     connection.onmessage = (e) => {
-      let data = typeof e.data === 'string' ? e.data : ''
+      const data = typeof e.data === 'string' ? e.data : ''
 
       /* istanbul ignore if */
       // tslint:disable-next-line:no-console

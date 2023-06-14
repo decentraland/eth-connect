@@ -4,7 +4,7 @@
 
 ## eth.eth\_getBalance variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getBalance: Method<BigNumber>

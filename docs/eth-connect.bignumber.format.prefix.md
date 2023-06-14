@@ -6,7 +6,7 @@
 
 The string to prepend.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 prefix?: string;

@@ -4,7 +4,7 @@
 
 ## Method.callName property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 callName: string;

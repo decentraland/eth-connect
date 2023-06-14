@@ -5,19 +5,16 @@
 ## AbiInput interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export interface AbiInput 
+export interface AbiInput extends AbiOutput 
 ```
+**Extends:** [AbiOutput](./eth-connect.abioutput.md)
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [components?](./eth-connect.abiinput.components.md) | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [indexed?](./eth-connect.abiinput.indexed.md) | boolean | <i>(Optional)</i> |
-|  [internalType?](./eth-connect.abiinput.internaltype.md) | string | <i>(Optional)</i> |
-|  [name](./eth-connect.abiinput.name.md) | string |  |
-|  [type](./eth-connect.abiinput.type.md) | string |  |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [indexed?](./eth-connect.abiinput.indexed.md) |  | boolean | _(Optional)_ |
 

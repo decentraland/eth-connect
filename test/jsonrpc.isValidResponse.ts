@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import { RPCResponse } from '../src/providers/common'
 import * as Jsonrpc from '../src/utils/jsonrpc'
 

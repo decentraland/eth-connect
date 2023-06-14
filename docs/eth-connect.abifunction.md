@@ -5,7 +5,7 @@
 ## AbiFunction interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface AbiFunction 
@@ -13,15 +13,15 @@ export interface AbiFunction
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [anonymous?](./eth-connect.abifunction.anonymous.md) | boolean | <i>(Optional)</i> |
-|  [constant?](./eth-connect.abifunction.constant.md) | boolean | <i>(Optional)</i> |
-|  [gas?](./eth-connect.abifunction.gas.md) | number | <i>(Optional)</i> |
-|  [inputs?](./eth-connect.abifunction.inputs.md) | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [name?](./eth-connect.abifunction.name.md) | string | <i>(Optional)</i> |
-|  [outputs?](./eth-connect.abifunction.outputs.md) | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [payable?](./eth-connect.abifunction.payable.md) | boolean | <i>(Optional)</i> |
-|  [stateMutability?](./eth-connect.abifunction.statemutability.md) | [StateMutabilityType](./eth-connect.statemutabilitytype.md) | <i>(Optional)</i> |
-|  [type](./eth-connect.abifunction.type.md) | 'function' |  |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [anonymous?](./eth-connect.abifunction.anonymous.md) |  | boolean | _(Optional)_ |
+|  [constant?](./eth-connect.abifunction.constant.md) |  | boolean | _(Optional)_ |
+|  [gas?](./eth-connect.abifunction.gas.md) |  | number | _(Optional)_ |
+|  [inputs?](./eth-connect.abifunction.inputs.md) |  | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] | _(Optional)_ |
+|  [name?](./eth-connect.abifunction.name.md) |  | string | _(Optional)_ |
+|  [outputs?](./eth-connect.abifunction.outputs.md) |  | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] | _(Optional)_ |
+|  [payable?](./eth-connect.abifunction.payable.md) |  | boolean | _(Optional)_ |
+|  [stateMutability?](./eth-connect.abifunction.statemutability.md) |  | [StateMutabilityType](./eth-connect.statemutabilitytype.md) | _(Optional)_ |
+|  [type](./eth-connect.abifunction.type.md) |  | 'function' |  |
 

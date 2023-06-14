@@ -6,7 +6,7 @@
 
 Returns true if object is boolean, otherwise false
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isBoolean(object: any): object is boolean;
@@ -18,7 +18,7 @@ export declare function isBoolean(object: any): object is boolean;
 |  --- | --- | --- |
 |  object | any |  |
 
-<b>Returns:</b>
+**Returns:**
 
 object is boolean
 

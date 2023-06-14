@@ -6,7 +6,7 @@
 
 Creates filter to notify, when client receives whisper message matching the filter options.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_newFilter: (options: SHHFilterOptions) => Promise<Data>;

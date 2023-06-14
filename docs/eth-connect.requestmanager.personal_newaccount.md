@@ -8,7 +8,7 @@ Generates a new private key and stores it in the key store directory. The key fi
 
 At the geth console, newAccount will prompt for a passphrase when it is not supplied as the argument.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_newAccount: (passPhrase: Data) => Promise<Address>;

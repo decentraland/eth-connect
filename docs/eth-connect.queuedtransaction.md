@@ -5,14 +5,14 @@
 ## QueuedTransaction type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type QueuedTransaction = {
+export type QueuedTransaction = {
     type: TransactionType.queued;
     hash: string;
     nonce: number;
 };
 ```
-<b>References:</b> [TransactionType.queued](./eth-connect.transactiontype.queued.md)
+**References:** [TransactionType.queued](./eth-connect.transactiontype.md)
 

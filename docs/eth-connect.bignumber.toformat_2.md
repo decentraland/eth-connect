@@ -4,7 +4,7 @@
 
 ## BigNumber.toFormat() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toFormat(decimalPlaces?: number): string;
@@ -14,9 +14,9 @@ toFormat(decimalPlaces?: number): string;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  decimalPlaces | number |  |
+|  decimalPlaces | number | _(Optional)_ |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

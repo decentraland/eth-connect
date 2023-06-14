@@ -6,7 +6,7 @@
 
 Should be called to format output(result) of method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 formatOutput(result: any): V;
@@ -18,7 +18,7 @@ formatOutput(result: any): V;
 |  --- | --- | --- |
 |  result | any | The result to be formatted |
 
-<b>Returns:</b>
+**Returns:**
 
 V
 

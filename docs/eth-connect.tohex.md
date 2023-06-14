@@ -8,19 +8,19 @@ Auto converts any given value into it's hex representation.
 
 And even stringifys objects before.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare function toHex(val: BigNumber.Value | boolean): string;
+export declare function toHex(val: BigNumber.Value | boolean | Uint8Array): string;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  val | [BigNumber.Value](./eth-connect.bignumber.value.md) \| boolean |  |
+|  val | [BigNumber.Value](./eth-connect.bignumber.value.md) \| boolean \| Uint8Array |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

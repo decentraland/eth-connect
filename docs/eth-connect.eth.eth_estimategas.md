@@ -4,7 +4,7 @@
 
 ## eth.eth\_estimateGas variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_estimateGas: Method<number>

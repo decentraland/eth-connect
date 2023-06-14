@@ -6,8 +6,8 @@
 
 Hex string of 20 bytes
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type Address = string;
+export type Address = string;
 ```

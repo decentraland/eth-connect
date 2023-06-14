@@ -6,7 +6,7 @@
 
 Rounds towards -Infinity.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static readonly ROUND_FLOOR: 3;

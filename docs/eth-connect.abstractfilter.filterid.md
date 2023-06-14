@@ -4,7 +4,7 @@
 
 ## AbstractFilter.filterId property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 protected filterId: IFuture<Data>;

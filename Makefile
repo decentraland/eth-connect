@@ -3,7 +3,6 @@ TSC = $(NODE) --max-old-space-size=4096 node_modules/.bin/tsc
 MOCHA = $(NODE) --max-old-space-size=4096 node_modules/.bin/mocha
 NYC = $(NODE) --max-old-space-size=4096 node_modules/.bin/nyc
 ROLLUP = $(NODE) --max-old-space-size=4096 node_modules/.bin/rollup
-TSLINT = $(NODE) --max-old-space-size=4096 node_modules/.bin/tslint
 COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
 
 ifneq ($(CI), true)
@@ -19,7 +18,8 @@ clean:
 
 build: clean
 		@echo '> Building'
-		${ROLLUP} -c --environment BUILD:production
+		${TSC} --project . --declarationDir ./dist --outDir ./dist --noEmit false
+		${ROLLUP} --bundleConfigAsCjs -c --environment BUILD:production
 		$(MAKE) provision-bundled
 
 provision-bundled:
@@ -45,13 +45,12 @@ provision-bundled:
 watch:
 		${TSC} --project tsconfig.json --watch
 
-lint:
-		${TSLINT}
-
 test:
-		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha
+		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha --timeout 60000
 test-fast:
-		node --inspect --experimental-modules node_modules/.bin/_mocha
+		node --inspect --experimental-modules node_modules/.bin/_mocha  $(TEST_ARGS)
+test-fast-bail:
+		node --inspect --experimental-modules node_modules/.bin/_mocha --bail $(TEST_ARGS)
 
 test-coveralls:
 		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose
@@ -75,10 +74,10 @@ local-node:
 						ethereum/client-go \
 				--identity="TEST_NODE" --networkid="53611" \
         --allow-insecure-unlock \
-				--rpc --rpcaddr 0.0.0.0 --rpcapi="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" \
-				--ws  --wsaddr 0.0.0.0  --wsapi="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" --wsorigins \* \
-				--mine --minerthreads=1 \
-				--dev
+				--http --http.addr 0.0.0.0 --http.api="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" \
+				--ws  --ws.addr 0.0.0.0  --ws.api="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" --ws.origins \* \
+				--mine \
+				--dev --dev.period 0
 
 kill-docker:
 		# stop the node

@@ -4,7 +4,7 @@
 
 ## eth.eth\_mining variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_mining: Property<boolean>

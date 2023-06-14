@@ -4,7 +4,7 @@
 
 ## AbiOutput.internalType property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 internalType?: string;

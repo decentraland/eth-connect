@@ -14,10 +14,9 @@ BigNumber.min(4e9, x, '123456789.9')             // '123456789.9'
 
 arr = [2, new BigNumber(-14), '-15.9999', -12]
 BigNumber.min.apply(null, arr)                   // '-15.9999'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static min(...n: BigNumber.Value[]): BigNumber;
@@ -29,7 +28,7 @@ static min(...n: BigNumber.Value[]): BigNumber;
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md)<!-- -->\[\] | A numeric value. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

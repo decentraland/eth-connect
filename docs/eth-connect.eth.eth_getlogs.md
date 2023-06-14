@@ -4,7 +4,7 @@
 
 ## eth.eth\_getLogs variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getLogs: Method<any[]>

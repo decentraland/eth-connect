@@ -4,7 +4,7 @@
 
 ## eth.personal\_ecRecover variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_ecRecover: Method<string>

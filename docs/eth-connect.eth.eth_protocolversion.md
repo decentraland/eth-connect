@@ -4,7 +4,7 @@
 
 ## eth.eth\_protocolVersion variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_protocolVersion: Property<number>

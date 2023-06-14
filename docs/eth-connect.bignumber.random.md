@@ -14,7 +14,6 @@ To be able to set `CRYPTO` to true when using Node.js, the `crypto` object must 
 
 ```ts
 global.crypto = require('crypto')
-
 ```
 If `CRYPTO` is true, i.e. one of the `crypto` methods is to be used, the value of a returned BigNumber should be cryptographically secure and statistically indistinguishable from a random value.
 
@@ -24,10 +23,9 @@ Throws if `decimalPlaces` is invalid.
 BigNumber.config({ DECIMAL_PLACES: 10 })
 BigNumber.random()              // '0.4117936847'
 BigNumber.random(20)            // '0.78193327636914089009'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static random(decimalPlaces?: number): BigNumber;
@@ -37,9 +35,9 @@ static random(decimalPlaces?: number): BigNumber;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  decimalPlaces | number | Decimal places, integer, 0 to 1e+9. |
+|  decimalPlaces | number | _(Optional)_ Decimal places, integer, 0 to 1e+9. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

@@ -4,7 +4,7 @@
 
 ## BigNumber namespace
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export namespace BigNumber 

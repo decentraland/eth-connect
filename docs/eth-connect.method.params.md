@@ -4,7 +4,7 @@
 
 ## Method.params property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 params: number;

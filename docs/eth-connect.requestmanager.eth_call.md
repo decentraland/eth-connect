@@ -6,7 +6,7 @@
 
 Executes a new message call immediately without creating a transaction on the block chain.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_call: (options: TransactionCallOptions, block: BlockIdentifier) => Promise<Data>;

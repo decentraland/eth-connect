@@ -4,7 +4,7 @@
 
 ## eth.eth\_getCode variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getCode: Method<string>

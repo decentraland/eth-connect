@@ -17,10 +17,9 @@ x.integerValue(BigNumber.ROUND_CEIL)    // '124'
 y = new BigNumber(-12.7)
 y.integerValue()                        // '-13'
 x.integerValue(BigNumber.ROUND_DOWN)    // '-12'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 integerValue(rm?: BigNumber.RoundingMode): BigNumber;
@@ -30,9 +29,9 @@ integerValue(rm?: BigNumber.RoundingMode): BigNumber;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  rm | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | The roundng mode, an integer, 0 to 8. |
+|  rm | [BigNumber.RoundingMode](./eth-connect.bignumber.roundingmode.md) | _(Optional)_ The roundng mode, an integer, 0 to 8. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

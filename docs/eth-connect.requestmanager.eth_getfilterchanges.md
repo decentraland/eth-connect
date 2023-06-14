@@ -6,7 +6,7 @@
 
 Polling method for a filter, which returns an array of logs which occurred since last poll.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getFilterChanges: (filterId: Data) => Promise<Array<TxHash> | Array<LogObject>>;

@@ -6,7 +6,7 @@
 
 Constructs a new instance of the `EthFilter` class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(requestManager: RequestManager, options: FilterOptions, formatter?: (message: ReceivedLog) => TransformedLog);
@@ -18,5 +18,5 @@ constructor(requestManager: RequestManager, options: FilterOptions, formatter?: 
 |  --- | --- | --- |
 |  requestManager | [RequestManager](./eth-connect.requestmanager.md) |  |
 |  options | [FilterOptions](./eth-connect.filteroptions.md) |  |
-|  formatter | (message: ReceivedLog) =&gt; TransformedLog |  |
+|  formatter | (message: ReceivedLog) =&gt; TransformedLog | _(Optional)_ |
 

@@ -5,7 +5,7 @@
 ## AbiEvent interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface AbiEvent 
@@ -13,15 +13,15 @@ export interface AbiEvent
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [anonymous?](./eth-connect.abievent.anonymous.md) | boolean | <i>(Optional)</i> |
-|  [constant?](./eth-connect.abievent.constant.md) | boolean | <i>(Optional)</i> |
-|  [gas?](./eth-connect.abievent.gas.md) | number | <i>(Optional)</i> |
-|  [inputs?](./eth-connect.abievent.inputs.md) | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [name?](./eth-connect.abievent.name.md) | string | <i>(Optional)</i> |
-|  [outputs?](./eth-connect.abievent.outputs.md) | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [payable?](./eth-connect.abievent.payable.md) | boolean | <i>(Optional)</i> |
-|  [stateMutability?](./eth-connect.abievent.statemutability.md) | [StateMutabilityType](./eth-connect.statemutabilitytype.md) | <i>(Optional)</i> |
-|  [type](./eth-connect.abievent.type.md) | 'event' |  |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [anonymous?](./eth-connect.abievent.anonymous.md) |  | boolean | _(Optional)_ |
+|  [constant?](./eth-connect.abievent.constant.md) |  | boolean | _(Optional)_ |
+|  [gas?](./eth-connect.abievent.gas.md) |  | number | _(Optional)_ |
+|  [inputs?](./eth-connect.abievent.inputs.md) |  | [AbiInput](./eth-connect.abiinput.md)<!-- -->\[\] | _(Optional)_ |
+|  [name?](./eth-connect.abievent.name.md) |  | string | _(Optional)_ |
+|  [outputs?](./eth-connect.abievent.outputs.md) |  | [AbiOutput](./eth-connect.abioutput.md)<!-- -->\[\] | _(Optional)_ |
+|  [payable?](./eth-connect.abievent.payable.md) |  | boolean | _(Optional)_ |
+|  [stateMutability?](./eth-connect.abievent.statemutability.md) |  | [StateMutabilityType](./eth-connect.statemutabilitytype.md) | _(Optional)_ |
+|  [type](./eth-connect.abievent.type.md) |  | 'event' |  |
 

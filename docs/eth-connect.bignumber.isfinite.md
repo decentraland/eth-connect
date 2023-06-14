@@ -13,15 +13,14 @@ x = new BigNumber(1)
 x.isFinite()                    // true
 y = new BigNumber(Infinity)
 y.isFinite()                    // false
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isFinite(): boolean;
 ```
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

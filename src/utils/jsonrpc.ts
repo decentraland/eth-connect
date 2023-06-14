@@ -27,7 +27,7 @@ export type RPCSendableMessage = {
 /**
  * Should be called to valid json create payload object
  */
-export function toPayload(method: string, params: any[]) {
+export function toJsonRpcRequest(method: string, params: any[]) {
   if (!method) {
     throw new Error('jsonrpc method should be specified!')
   }
@@ -71,6 +71,6 @@ export function isValidResponse(response: RPCResponse | RPCResponse[]) {
  */
 export function toBatchPayload(messages: RPCSendableMessage[]) {
   return messages.map(function (message) {
-    return toPayload(message.method, message.params)
+    return toJsonRpcRequest(message.method, message.params)
   })
 }

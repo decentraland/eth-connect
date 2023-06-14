@@ -6,7 +6,7 @@
 
 Returns code at a given address.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getCode: (address: Address, block: BlockIdentifier) => Promise<Data>;

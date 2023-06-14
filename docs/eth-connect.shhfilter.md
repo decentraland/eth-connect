@@ -4,12 +4,12 @@
 
 ## SHHFilter class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class SHHFilter extends AbstractFilter<SHHFilterMessage> 
 ```
-<b>Extends:</b> [AbstractFilter](./eth-connect.abstractfilter.md)<!-- -->&lt;[SHHFilterMessage](./eth-connect.shhfiltermessage.md)<!-- -->&gt;
+**Extends:** [AbstractFilter](./eth-connect.abstractfilter.md)<!-- -->&lt;[SHHFilterMessage](./eth-connect.shhfiltermessage.md)<!-- -->&gt;
 
 ## Constructors
 
@@ -28,8 +28,8 @@ export declare class SHHFilter extends AbstractFilter<SHHFilterMessage>
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [getChanges()](./eth-connect.shhfilter.getchanges.md) |  |  |
+|  [getChanges()](./eth-connect.shhfilter.getchanges.md) | <code>protected</code> |  |
 |  [getMessages()](./eth-connect.shhfilter.getmessages.md) |  |  |
-|  [getNewFilter()](./eth-connect.shhfilter.getnewfilter.md) |  |  |
-|  [uninstall()](./eth-connect.shhfilter.uninstall.md) |  |  |
+|  [getNewFilter()](./eth-connect.shhfilter.getnewfilter.md) | <code>protected</code> |  |
+|  [uninstall()](./eth-connect.shhfilter.uninstall.md) | <code>protected</code> |  |
 

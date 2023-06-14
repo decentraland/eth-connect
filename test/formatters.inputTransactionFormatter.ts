@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as formatters from '../src/utils/formatters'
 import { BigNumber } from '../src'
 
@@ -91,10 +91,10 @@ let tests = [
   }
 ]
 
-describe('formatters', function() {
-  describe('inputTransactionFormatter', function() {
-    tests.forEach(function(test, i) {
-      it('should return the correct value: ' + i, function() {
+describe('formatters', function () {
+  describe('inputTransactionFormatter', function () {
+    tests.forEach(function (test, i) {
+      it('should return the correct value: ' + i, function () {
         expect(formatters.inputTransactionFormatter(test.input as any)).toEqual(test.result)
       })
     })

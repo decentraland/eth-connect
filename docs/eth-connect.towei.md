@@ -8,7 +8,7 @@ Takes a number of a unit and converts it to wei.
 
 Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toWei(num: number | string, unit: Unit): string | BigNumber;
@@ -21,7 +21,7 @@ export declare function toWei(num: number | string, unit: Unit): string | BigNum
 |  num | number \| string |  |
 |  unit | [Unit](./eth-connect.unit.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string \| [BigNumber](./eth-connect.bignumber.md)
 

@@ -5,10 +5,10 @@
 ## TransactionObject type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type TransactionObject = {
+export type TransactionObject = {
     hash: TxHash;
     nonce: number;
     blockHash: TxHash;
@@ -25,5 +25,5 @@ export declare type TransactionObject = {
     s?: Data;
 };
 ```
-<b>References:</b> [TxHash](./eth-connect.txhash.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [BigNumber](./eth-connect.bignumber.md)<!-- -->, [Quantity](./eth-connect.quantity.md)<!-- -->, [Data](./eth-connect.data.md)
+**References:** [TxHash](./eth-connect.txhash.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [BigNumber](./eth-connect.bignumber.md)<!-- -->, [Quantity](./eth-connect.quantity.md)<!-- -->, [Data](./eth-connect.data.md)
 

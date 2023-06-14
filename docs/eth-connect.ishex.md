@@ -6,7 +6,7 @@
 
 Converts value to it's decimal representation in string
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isHex(value: string): boolean;
@@ -18,7 +18,7 @@ export declare function isHex(value: string): boolean;
 |  --- | --- | --- |
 |  value | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

@@ -4,7 +4,7 @@
 
 ## eth.web3\_clientVersion variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 web3_clientVersion: Property<string>

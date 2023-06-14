@@ -6,7 +6,7 @@
 
 Should be called to check if the number of arguments is correct
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 validateArgs(args: any[]): void;
@@ -18,7 +18,7 @@ validateArgs(args: any[]): void;
 |  --- | --- | --- |
 |  args | any\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 void
 

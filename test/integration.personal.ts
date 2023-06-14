@@ -1,6 +1,6 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import 'isomorphic-fetch'
-import { RequestManager, isStrictAddress, isArray } from '../src'
+import { RequestManager, isStrictAddress, isArray } from '../dist/eth-connect'
 import { testAllProviders } from './helpers/testAllProviders'
 import { WebSocketProvider } from '../src/providers/WebSocketProvider'
 
@@ -23,7 +23,7 @@ function doTest(requestManager: RequestManager) {
     let accounts = await requestManager.personal_listAccounts()
     expect(isArray(accounts)).toEqual(true) // 'returns an array of accounts'
     expect(accounts.length).toBeGreaterThan(0) // 'has accounts'
-    expect(accounts).toContain(account) // 'has our created account'
+    expect(accounts.map((s) => s.toLowerCase())).toContain(account.toLowerCase()) // 'has our created account'
   })
 
   it('should sign a message (geth only) and recover the signer address', async () => {
@@ -31,7 +31,32 @@ function doTest(requestManager: RequestManager) {
       const message = '0xad1231'
       const signature = await requestManager.personal_sign(message, account, 'test')
       const signerAddress = await requestManager.personal_ecRecover(message, signature)
-      expect(signerAddress).toEqual(account)
+      expect(signerAddress.toLowerCase()).toEqual(account.toLowerCase())
+    }
+  })
+
+  it('should sign a string message (geth only)', async () => {
+    if (requestManager.provider instanceof WebSocketProvider /* test in geth node only */) {
+      const message = 'TEST MESSAGE'
+      await requestManager.personal_sign(message, account, 'test')
+    }
+  })
+
+  it('should sign a string message (geth only) and recover the signer address', async () => {
+    if (requestManager.provider instanceof WebSocketProvider /* test in geth node only */) {
+      const message = 'TEST MESSAGE'
+      const signature = await requestManager.personal_sign(message, account, 'test')
+      const signerAddress = await requestManager.personal_ecRecover(message, signature)
+      expect(signerAddress.toLowerCase()).toEqual(account.toLowerCase())
+    }
+  })
+
+  it('should sign a Uint8Array message (geth only) and recover the signer address', async () => {
+    if (requestManager.provider instanceof WebSocketProvider /* test in geth node only */) {
+      const message = new Uint8Array([14, 15, 99]) as any
+      const signature = await requestManager.personal_sign(message, account, 'test')
+      const signerAddress = await requestManager.personal_ecRecover(message, signature)
+      expect(signerAddress.toLowerCase()).toEqual(account.toLowerCase())
     }
   })
 

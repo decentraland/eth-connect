@@ -6,7 +6,7 @@
 
 Get the transaction status and receipt
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 getTransactionAndReceipt(txId: string): Promise<TransactionAndReceipt>;
@@ -18,7 +18,7 @@ getTransactionAndReceipt(txId: string): Promise<TransactionAndReceipt>;
 |  --- | --- | --- |
 |  txId | string | Transaction id |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[TransactionAndReceipt](./eth-connect.transactionandreceipt.md)<!-- -->&gt;
 

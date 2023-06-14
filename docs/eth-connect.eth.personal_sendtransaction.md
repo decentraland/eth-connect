@@ -4,7 +4,7 @@
 
 ## eth.personal\_sendTransaction variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_sendTransaction: Method<string>

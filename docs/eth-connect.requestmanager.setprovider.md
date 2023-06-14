@@ -6,7 +6,7 @@
 
 Should be used to set provider of request manager
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 setProvider(p: any): void;
@@ -18,7 +18,7 @@ setProvider(p: any): void;
 |  --- | --- | --- |
 |  p | any | The provider |
 
-<b>Returns:</b>
+**Returns:**
 
 void
 

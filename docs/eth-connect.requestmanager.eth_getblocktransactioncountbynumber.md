@@ -6,7 +6,7 @@
 
 Returns the number of transactions in a block matching the given block number.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getBlockTransactionCountByNumber: (block: BlockIdentifier) => Promise<number>;

@@ -4,7 +4,7 @@
 
 ## eth.eth\_call variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_call: Method<string>

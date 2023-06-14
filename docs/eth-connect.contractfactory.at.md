@@ -6,7 +6,7 @@
 
 Should be called to get access to existing contract on a blockchain
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 at(address: string): Promise<Contract>;
@@ -18,7 +18,7 @@ at(address: string): Promise<Contract>;
 |  --- | --- | --- |
 |  address | string | The contract address |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[Contract](./eth-connect.contract.md)<!-- -->&gt;
 

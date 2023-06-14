@@ -10,7 +10,7 @@ By adding a prefix to the message makes the calculated signature recognisable as
 
 See ecRecover to verify the signature.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_sign: (data: Data, signerAddress: Address, passPhrase: Data) => Promise<Data>;

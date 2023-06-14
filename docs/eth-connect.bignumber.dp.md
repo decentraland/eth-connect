@@ -25,15 +25,14 @@ x.dp(1, BigNumber.ROUND_HALF_EVEN)     // '1234.6'
 x                                      // '1234.56'
 y = new BigNumber('9.9e-101')
 y.dp()                                 // 102
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-dp(): number;
+dp(): number | null;
 ```
-<b>Returns:</b>
+**Returns:**
 
-number
+number \| null
 

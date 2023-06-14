@@ -4,7 +4,7 @@
 
 ## AbstractFilter.formatter property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 formatter: (x: ReceivedLog) => TransformedLog;

@@ -4,7 +4,7 @@
 
 ## eth.shh\_version variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_version: Method<number>

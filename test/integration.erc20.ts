@@ -1,8 +1,7 @@
 import 'isomorphic-fetch'
-import * as expect from 'expect'
-import { ContractFactory, RequestManager, BigNumber } from '../src'
+import expect from 'expect'
+import { RequestManager, ContractFactory, BigNumber, ConfirmedTransaction, TxHash } from '../dist/eth-connect'
 import { testAllProviders } from './helpers/testAllProviders'
-import { ConfirmedTransaction, TxHash } from '../src/Schema'
 import { testReturnType } from './unit.eth-return-types'
 import { abi, bytecode } from './fixtures/ERC20.json'
 
@@ -202,10 +201,11 @@ function doTest(requestManager: RequestManager) {
   it('test allowance, invalid address', async function () {
     this.timeout(30000)
     const accounts = await requestManager.eth_accounts()
-    await expect(ERC20Contract.allowance(accounts[0], '0x1')).rejects.toThrow('Invalid address')
+    await expect(ERC20Contract.allowance(accounts[0], '0x1')).rejects.toThrow(/invalid address/)
   })
 
   it('test allowance', async function () {
+    requestManager.provider.debug = true
     this.timeout(30000)
     const accounts = await requestManager.eth_accounts()
     const allowanceAddress = '0x0f5d2fb29fb7d3cfee444a200298f468908cc942'
@@ -214,5 +214,29 @@ function doTest(requestManager: RequestManager) {
       const allowedNumber: BigNumber = await ERC20Contract.allowance(accounts[0], allowanceAddress)
       expect(allowedNumber).toBeInstanceOf(BigNumber)
     }
+  })
+
+  it('test allowance with malformed addressess', async function () {
+    this.timeout(30000)
+    const accounts = await requestManager.eth_accounts()
+    const account = ` ${accounts[0]} `
+    const allowanceAddress = '   0x0f5d2fb29fb7d3cfee444a200298f468908cc942   \n'
+    {
+      console.log(`> allowance(${account},${allowanceAddress})`)
+      const allowedNumber: BigNumber = await ERC20Contract.allowance(account, allowanceAddress)
+      expect(allowedNumber).toBeInstanceOf(BigNumber)
+    }
+  })
+
+  it('test for allowance using DG parameters', async function () {
+    this.timeout(30000)
+    const account = `0x6224fe0bea79701d338cf65ebc0da0caa566c544`
+    const allowanceAddress = '0xBF79cE2fbd819e5aBC2327563D02a200255B7Cb3'
+    {
+      console.log(`> allowance(${account},${allowanceAddress})`)
+      const allowedNumber: BigNumber = await ERC20Contract.allowance(account, allowanceAddress)
+      expect(allowedNumber).toBeInstanceOf(BigNumber)
+    }
+    requestManager.provider.debug = false
   })
 }

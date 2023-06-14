@@ -93,17 +93,9 @@ export interface AbiFunction {
 }
 
 // @public (undocumented)
-export interface AbiInput {
-    // (undocumented)
-    components?: AbiInput[];
+export interface AbiInput extends AbiOutput {
     // (undocumented)
     indexed?: boolean;
-    // (undocumented)
-    internalType?: string;
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    type: string;
 }
 
 // @public (undocumented)
@@ -146,7 +138,7 @@ export interface AbiOutput {
 // @public (undocumented)
 export type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
 
-// Warning: (ae-missing-release-tag) "AbstractFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "AbstractFilter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> {
@@ -182,395 +174,399 @@ export abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> 
 // @public
 export type Address = string;
 
-// Warning: (ae-missing-release-tag) "BigNumber" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-// Warning: (ae-missing-release-tag) "BigNumber" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "BigNumber" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "BigNumber" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "BigNumber" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
+// @public (undocumented)
+export function BigNumber(n: BigNumber.Value, base?: number): BigNumber;
+
 // @public (undocumented)
 export namespace BigNumber {
 
-  export interface Config {
+    export interface Config {
 
-    ALPHABET?: string;
+        ALPHABET?: string;
 
-    CRYPTO?: boolean;
+        CRYPTO?: boolean;
 
-    DECIMAL_PLACES?: number;
+        DECIMAL_PLACES?: number;
 
-    EXPONENTIAL_AT?: number | [number, number];
+        EXPONENTIAL_AT?: number | [number, number];
 
-    FORMAT?: BigNumber.Format;
+        FORMAT?: BigNumber.Format;
 
-    MODULO_MODE?: BigNumber.ModuloMode;
+        MODULO_MODE?: BigNumber.ModuloMode;
 
-    POW_PRECISION?: number;
+        POW_PRECISION?: number;
 
-    RANGE?: number | [number, number];
+        RANGE?: number | [number, number];
 
-    ROUNDING_MODE?: BigNumber.RoundingMode;
-  }
-
-  // (undocumented)
-  export type Constructor = typeof BigNumber;
-
-  export interface Format {
-
-    decimalSeparator?: string;
-
-    fractionGroupSeparator?: string;
-
-    fractionGroupSize?: number;
-
-    groupSeparator?: string;
-
-    groupSize?: number;
-
-    prefix?: string;
-
-    secondaryGroupSize?: number;
-
-    suffix?: string;
-  }
-
-  // (undocumented)
-  export interface Instance {
+        ROUNDING_MODE?: BigNumber.RoundingMode;
+    }
 
     // (undocumented)
-    [key: string]: any;
+    export type Constructor = typeof BigNumber;
 
-    readonly c: number[] | null;
+    export interface Format {
 
-    readonly e: number | null;
+        decimalSeparator?: string;
 
-    readonly s: number | null;
-  }
+        fractionGroupSeparator?: string;
 
-  // (undocumented)
-  export type ModuloMode = 0 | 1 | 3 | 6 | 9;
+        fractionGroupSize?: number;
 
-  // (undocumented)
-  export type RoundingMode = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+        groupSeparator?: string;
 
-  // (undocumented)
-  export type Value = string | number | Instance;
+        groupSize?: number;
+
+        prefix?: string;
+
+        secondaryGroupSize?: number;
+
+        suffix?: string;
+    }
+
+    // (undocumented)
+    export interface Instance {
+
+        // (undocumented)
+        [key: string]: any;
+
+        readonly c: number[] | null;
+
+        readonly e: number | null;
+
+        readonly s: number | null;
+    }
+
+    // (undocumented)
+    export type ModuloMode = 0 | 1 | 3 | 6 | 9;
+
+    // (undocumented)
+    export type RoundingMode = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
+    // (undocumented)
+    export type Value = string | number | Instance;
 }
 
 // @public (undocumented)
 export class BigNumber implements BigNumber.Instance {
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  constructor(n: BigNumber.Value, base?: number);
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    constructor(n: BigNumber.Value, base?: number);
 
-  abs(): BigNumber;
+    abs(): BigNumber;
 
-  absoluteValue(): BigNumber;
+    absoluteValue(): BigNumber;
 
-  readonly c: number[] | null;
+    readonly c: number[] | null;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  static clone(object?: BigNumber.Config): BigNumber.Constructor;
-
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  comparedTo(n: BigNumber.Value, base?: number): number;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    static clone(object?: BigNumber.Config): BigNumber.Constructor;
+
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    comparedTo(n: BigNumber.Value, base?: number): number;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  static config(object: BigNumber.Config): BigNumber.Config;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    static config(object?: BigNumber.Config): BigNumber.Config;
 
-  static DEBUG?: boolean;
+    static DEBUG?: boolean;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  decimalPlaces(): number;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    decimalPlaces(): number | null;
 
-  // (undocumented)
-  decimalPlaces(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
+    // (undocumented)
+    decimalPlaces(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  div(n: BigNumber.Value, base?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    div(n: BigNumber.Value, base?: number): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  dividedBy(n: BigNumber.Value, base?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    dividedBy(n: BigNumber.Value, base?: number): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  dividedToIntegerBy(n: BigNumber.Value, base?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    dividedToIntegerBy(n: BigNumber.Value, base?: number): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  dp(): number;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    dp(): number | null;
 
-  // (undocumented)
-  dp(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
+    // (undocumented)
+    dp(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
 
-  readonly e: number | null;
+    readonly e: number | null;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  eq(n: BigNumber.Value, base?: number): boolean;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    eq(n: BigNumber.Value, base?: number): boolean;
 
-  static readonly EUCLID: 9;
+    static readonly EUCLID: 9;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  exponentiatedBy(n: BigNumber.Value, m?: BigNumber.Value): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    exponentiatedBy(n: BigNumber.Value, m?: BigNumber.Value): BigNumber;
 
-  // (undocumented)
-  exponentiatedBy(n: number, m?: BigNumber.Value): BigNumber;
+    // (undocumented)
+    exponentiatedBy(n: number, m?: BigNumber.Value): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  gt(n: BigNumber.Value, base?: number): boolean;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    gt(n: BigNumber.Value, base?: number): boolean;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  gte(n: BigNumber.Value, base?: number): boolean;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    gte(n: BigNumber.Value, base?: number): boolean;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  idiv(n: BigNumber.Value, base?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    idiv(n: BigNumber.Value, base?: number): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
-  integerValue(rm?: BigNumber.RoundingMode): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    integerValue(rm?: BigNumber.RoundingMode): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  static isBigNumber(value: any): value is BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    static isBigNumber(value: any): value is BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  isEqualTo(n: BigNumber.Value, base?: number): boolean;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    isEqualTo(n: BigNumber.Value, base?: number): boolean;
 
-  isFinite(): boolean;
+    isFinite(): boolean;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  isGreaterThan(n: BigNumber.Value, base?: number): boolean;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    isGreaterThan(n: BigNumber.Value, base?: number): boolean;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  isGreaterThanOrEqualTo(n: BigNumber.Value, base?: number): boolean;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    isGreaterThanOrEqualTo(n: BigNumber.Value, base?: number): boolean;
 
-  isInteger(): boolean;
+    isInteger(): boolean;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  isLessThan(n: BigNumber.Value, base?: number): boolean;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    isLessThan(n: BigNumber.Value, base?: number): boolean;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  isLessThanOrEqualTo(n: BigNumber.Value, base?: number): boolean;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    isLessThanOrEqualTo(n: BigNumber.Value, base?: number): boolean;
 
-  isNaN(): boolean;
+    isNaN(): boolean;
 
-  isNegative(): boolean;
+    isNegative(): boolean;
 
-  isPositive(): boolean;
+    isPositive(): boolean;
 
-  isZero(): boolean;
+    isZero(): boolean;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  lt(n: BigNumber.Value, base?: number): boolean;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    lt(n: BigNumber.Value, base?: number): boolean;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  lte(n: BigNumber.Value, base?: number): boolean;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    lte(n: BigNumber.Value, base?: number): boolean;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  static max(...n: BigNumber.Value[]): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    static max(...n: BigNumber.Value[]): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  static maximum(...n: BigNumber.Value[]): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    static maximum(...n: BigNumber.Value[]): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  static min(...n: BigNumber.Value[]): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    static min(...n: BigNumber.Value[]): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  static minimum(...n: BigNumber.Value[]): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    static minimum(...n: BigNumber.Value[]): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  minus(n: BigNumber.Value, base?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    minus(n: BigNumber.Value, base?: number): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  mod(n: BigNumber.Value, base?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    mod(n: BigNumber.Value, base?: number): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  modulo(n: BigNumber.Value, base?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    modulo(n: BigNumber.Value, base?: number): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  multipliedBy(n: BigNumber.Value, base?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    multipliedBy(n: BigNumber.Value, base?: number): BigNumber;
 
-  negated(): BigNumber;
+    negated(): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  plus(n: BigNumber.Value, base?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    plus(n: BigNumber.Value, base?: number): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  pow(n: BigNumber.Value, m?: BigNumber.Value): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    pow(n: BigNumber.Value, m?: BigNumber.Value): BigNumber;
 
-  // (undocumented)
-  pow(n: number, m?: BigNumber.Value): BigNumber;
+    // (undocumented)
+    pow(n: number, m?: BigNumber.Value): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  precision(includeZeros?: boolean): number;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    precision(includeZeros?: boolean): number;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  precision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    precision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  static random(decimalPlaces?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    static random(decimalPlaces?: number): BigNumber;
 
-  static readonly ROUND_CEIL: 2;
+    static readonly ROUND_CEIL: 2;
 
-  static readonly ROUND_DOWN: 1;
+    static readonly ROUND_DOWN: 1;
 
-  static readonly ROUND_FLOOR: 3;
+    static readonly ROUND_FLOOR: 3;
 
-  static readonly ROUND_HALF_CEIL: 7;
+    static readonly ROUND_HALF_CEIL: 7;
 
-  static readonly ROUND_HALF_DOWN: 5;
+    static readonly ROUND_HALF_DOWN: 5;
 
-  static readonly ROUND_HALF_EVEN: 6;
+    static readonly ROUND_HALF_EVEN: 6;
 
-  static readonly ROUND_HALF_FLOOR: 8;
+    static readonly ROUND_HALF_FLOOR: 8;
 
-  static readonly ROUND_HALF_UP: 4;
+    static readonly ROUND_HALF_UP: 4;
 
-  static readonly ROUND_UP: 0;
+    static readonly ROUND_UP: 0;
 
-  readonly s: number | null;
+    readonly s: number | null;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  sd(includeZeros?: boolean): number;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    sd(includeZeros?: boolean): number;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  sd(significantDigits: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    sd(significantDigits: number, roundingMode?: BigNumber.RoundingMode): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  static set(object: BigNumber.Config): BigNumber.Config;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    static set(object?: BigNumber.Config): BigNumber.Config;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  shiftedBy(n: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    shiftedBy(n: number): BigNumber;
 
-  sqrt(): BigNumber;
+    sqrt(): BigNumber;
 
-  squareRoot(): BigNumber;
+    squareRoot(): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  static sum(...n: BigNumber.Value[]): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    static sum(...n: BigNumber.Value[]): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  times(n: BigNumber.Value, base?: number): BigNumber;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    times(n: BigNumber.Value, base?: number): BigNumber;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toExponential(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    toExponential(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
 
-  // (undocumented)
-  toExponential(): string;
+    // (undocumented)
+    toExponential(): string;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toFixed(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    toFixed(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
 
-  // (undocumented)
-  toFixed(): string;
+    // (undocumented)
+    toFixed(): string;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toFormat(decimalPlaces: number, roundingMode: BigNumber.RoundingMode, format?: BigNumber.Format): string;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    toFormat(decimalPlaces: number, roundingMode: BigNumber.RoundingMode, format?: BigNumber.Format): string;
 
-  // (undocumented)
-  toFormat(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
+    // (undocumented)
+    toFormat(decimalPlaces: number, roundingMode?: BigNumber.RoundingMode): string;
 
-  // (undocumented)
-  toFormat(decimalPlaces?: number): string;
+    // (undocumented)
+    toFormat(decimalPlaces?: number): string;
 
-  // (undocumented)
-  toFormat(decimalPlaces: number, format: BigNumber.Format): string;
+    // (undocumented)
+    toFormat(decimalPlaces: number, format: BigNumber.Format): string;
 
-  // (undocumented)
-  toFormat(format: BigNumber.Format): string;
+    // (undocumented)
+    toFormat(format: BigNumber.Format): string;
 
-  // Warning: (tsdoc-escape-greater-than) The ">" character should be escaped using a backslash to avoid confusion with an HTML tag
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toFraction(max_denominator?: BigNumber.Value): [BigNumber, BigNumber];
+    // Warning: (tsdoc-escape-greater-than) The ">" character should be escaped using a backslash to avoid confusion with an HTML tag
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    toFraction(max_denominator?: BigNumber.Value): [BigNumber, BigNumber];
 
-  toJSON(): string;
+    toJSON(): string;
 
-  toNumber(): number;
+    toNumber(): number;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toPrecision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): string;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    toPrecision(significantDigits: number, roundingMode?: BigNumber.RoundingMode): string;
 
-  // (undocumented)
-  toPrecision(): string;
+    // (undocumented)
+    toPrecision(): string;
 
-  // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-  // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
-  toString(base?: number): string;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-optional-name) The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.
+    toString(base?: number): string;
 
-  // Warning: (tsdoc-code-span-empty) A code span must contain at least one character between the backticks
-  // Warning: (tsdoc-code-fence-missing-delimiter) Error parsing code fence: Missing closing delimiter
-  valueOf(): string;
+    // Warning: (tsdoc-code-span-empty) A code span must contain at least one character between the backticks
+    // Warning: (tsdoc-code-fence-missing-delimiter) Error parsing code fence: Missing closing delimiter
+    valueOf(): string;
 }
 
 // @public (undocumented)
@@ -599,10 +595,45 @@ export type BlockObject = {
     uncles: Array<TxHash>;
 };
 
-// Warning: (ae-missing-release-tag) "Callback" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// @public (undocumented)
+export function bytesToHex(bytes: Uint8Array): string;
+
+// @public
+export function bytesToUtf8String(bytesOrHexString: Uint8Array | string): string;
+
+// Warning: (ae-missing-release-tag) "Callback" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export type Callback = (err: Error | null, message?: any) => void;
+
+// Warning: (ae-missing-release-tag) "coder" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public
+export namespace coder {
+    // Warning: (tsdoc-undefined-tag) The TSDoc tag "@method" is not defined in this configuration
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-escape-right-brace) The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag
+    // Warning: (tsdoc-malformed-inline-tag) Expecting a TSDoc tag starting with "{@"
+    // Warning: (tsdoc-undefined-tag) The TSDoc tag "@return" is not defined in this configuration
+    export function decodeParams(outputs: ReadonlyArray<Readonly<AbiOutput | string>>, bytes: string): any;
+    // Warning: (tsdoc-undefined-tag) The TSDoc tag "@method" is not defined in this configuration
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-escape-right-brace) The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag
+    // Warning: (tsdoc-malformed-inline-tag) Expecting a TSDoc tag starting with "{@"
+    // Warning: (tsdoc-undefined-tag) The TSDoc tag "@return" is not defined in this configuration
+    export function encodeParams(types: ReadonlyArray<Readonly<AbiOutput | string>>, params: any[]): string;
+}
+
+// Warning: (ae-missing-release-tag) "concatBytes" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export function concatBytes(...buffers: Uint8Array[]): Uint8Array;
 
 // @public (undocumented)
 export type ConfirmedTransaction = TransactionObject & {
@@ -786,7 +817,7 @@ export namespace eth {
     shh_getMessages: Method<any[]>;
 }
 
-// Warning: (ae-missing-release-tag) "EthBlockFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "EthBlockFilter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export class EthBlockFilter extends EthFilter<TxHash, TxHash> {
@@ -795,7 +826,7 @@ export class EthBlockFilter extends EthFilter<TxHash, TxHash> {
     getNewFilter(): Promise<string>;
 }
 
-// Warning: (ae-missing-release-tag) "EthFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "EthFilter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObject> extends AbstractFilter<ReceivedLog, TransformedLog> {
@@ -816,7 +847,7 @@ export class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObject> exte
     protected uninstall(): Promise<boolean>;
 }
 
-// Warning: (ae-missing-release-tag) "EthPendingTransactionFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "EthPendingTransactionFilter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export class EthPendingTransactionFilter extends EthFilter<TxHash, TxHash> {
@@ -843,7 +874,17 @@ export function extractDisplayName(name: string): string;
 // @public
 export function extractTypeName(name: string): string;
 
-// Warning: (ae-missing-release-tag) "FilterCallback" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "FetchFunction" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public (undocumented)
+export type FetchFunction = (url: string, params: {
+    body?: any;
+    method?: string;
+    mode?: string;
+    headers?: any;
+}) => Promise<any>;
+
+// Warning: (ae-missing-release-tag) "FilterCallback" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export type FilterCallback = (messages: LogObject[] | string[]) => void;
@@ -868,15 +909,18 @@ export function fromAscii(str: string, num?: number): string;
 export function fromDecimal(value: BigNumber.Value): string;
 
 // @public
-export function fromUtf8(_str: string, allowZero?: boolean): string;
+export function fromTwosComplement(num: BigNumber, bits?: number): BigNumber;
 
-// Warning: (ae-missing-release-tag) "fromWei" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "fromWei" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
 export function fromWei(num: BigNumber, unit: Unit): BigNumber;
 
 // @public (undocumented)
 export function fromWei(num: string | number, unit: Unit): string;
+
+// @public (undocumented)
+export function getAddress(address: string): string;
 
 // @public
 export function getValueOfUnit(_unit: Unit): BigNumber;
@@ -901,7 +945,7 @@ export class HTTPProvider {
     sendAsync(payload: RPCMessage | RPCMessage[], callback: Callback): void;
 }
 
-// Warning: (ae-missing-release-tag) "HTTPProviderOptions" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "HTTPProviderOptions" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export type HTTPProviderOptions = {
@@ -909,9 +953,10 @@ export type HTTPProviderOptions = {
         [key: string]: string;
     };
     timeout?: number;
+    fetch?: FetchFunction;
 };
 
-// Warning: (ae-missing-release-tag) "IFuture" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "IFuture" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export type IFuture<T> = Promise<T> & {
@@ -921,7 +966,7 @@ export type IFuture<T> = Promise<T> & {
     isPending: boolean;
 };
 
-// Warning: (ae-missing-release-tag) "IPropertyOptions" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "IPropertyOptions" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export interface IPropertyOptions<V> {
@@ -971,12 +1016,12 @@ export function isString(value: any): value is string;
 export function isTopic(topic: string): boolean;
 
 // Warning: (ae-forgotten-export) The symbol "RPCResponse" needs to be exported by the entry point index.d.ts
-// Warning: (ae-missing-release-tag) "isValidResponse" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "isValidResponse" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
 export function isValidResponse(response: RPCResponse | RPCResponse[]): boolean;
 
-// Warning: (ae-missing-release-tag) "IWebSocket" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "IWebSocket" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export interface IWebSocket {
@@ -1005,7 +1050,7 @@ export type LogObject = {
     topics: Array<Data>;
 };
 
-// Warning: (ae-missing-release-tag) "messageId" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "messageId" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export let messageId: number;
@@ -1158,9 +1203,7 @@ class RequestManager {
     web3_clientVersion: () => Promise<string>;
     web3_sha3: (data: Data) => Promise<Data>;
 }
-
 export { RequestManager }
-
 export default RequestManager;
 
 // @public (undocumented)
@@ -1168,7 +1211,7 @@ export type RevertedTransaction = TransactionObject & {
     type: TransactionType.reverted;
 };
 
-// Warning: (ae-missing-release-tag) "RPCMessage" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "RPCMessage" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export type RPCMessage = {
@@ -1180,7 +1223,7 @@ export type RPCMessage = {
     };
 };
 
-// Warning: (ae-missing-release-tag) "RPCSendableMessage" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "RPCSendableMessage" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export type RPCSendableMessage = {
@@ -1193,7 +1236,7 @@ export function sha3(value: string | number[] | ArrayBuffer | Uint8Array, option
     encoding?: 'hex';
 }): string;
 
-// Warning: (ae-missing-release-tag) "SHHFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "SHHFilter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
@@ -1241,8 +1284,92 @@ export type SHHPost = {
     ttl: Quantity;
 };
 
+// Warning: (ae-missing-release-tag) "signedIsNegative" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public
+export function signedIsNegative(value: BigNumber, bits: number): boolean;
+
+// Warning: (ae-missing-release-tag) "SolidityEvent" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public
+export class SolidityEvent {
+    constructor(requestManager: RequestManager, json: AbiEvent, address: string);
+    // (undocumented)
+    address: string;
+    // (undocumented)
+    _anonymous: boolean;
+    // Warning: (tsdoc-escape-right-brace) The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag
+    // Warning: (tsdoc-malformed-inline-tag) Expecting a TSDoc tag starting with "{@"
+    // Warning: (tsdoc-param-tag-with-invalid-name) The @param block should be followed by a parameter name
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    attachToContract(contract: Contract): void;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    decode(data: LogObject): LogObject & {
+        event: string;
+        address: string;
+        args: Record<string, any>;
+    };
+    displayName(): string;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    encode(indexed?: Record<string, any>, options?: FilterOptions): FilterOptions;
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    execute(indexed: Record<string, any>, options?: FilterOptions): Promise<EthFilter<LogObject>>;
+    // (undocumented)
+    _name: string;
+    // (undocumented)
+    _params: AbiInput[];
+    // (undocumented)
+    requestManager: RequestManager;
+    signature(): string;
+    typeName(): string;
+    types(indexed: boolean): AbiInput[];
+}
+
+// Warning: (ae-missing-release-tag) "SolidityFunction" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public
+export class SolidityFunction {
+    constructor(json: AbiFunction);
+    attachToContract(contract: Contract): void;
+    // (undocumented)
+    _constant: boolean;
+    displayName(): string;
+    estimateGas(requestManager: RequestManager, address: string, ...args: any[]): Promise<Quantity>;
+    execute(requestManager: RequestManager, address: string, ...args: any[]): Promise<any>;
+    // (undocumented)
+    extractDefaultBlock(args: any[]): string;
+    // (undocumented)
+    _inputTypes: AbiInput[];
+    // (undocumented)
+    json: AbiFunction;
+    // (undocumented)
+    _name: string;
+    // (undocumented)
+    needsToBeTransaction: boolean;
+    // (undocumented)
+    _outputTypes: AbiOutput[];
+    // (undocumented)
+    _payable: boolean;
+    signature(): string;
+    toPayload(args: any[]): any;
+    typeName(): string;
+    // (undocumented)
+    unpackOutput(output: string): any;
+    validateArgs(args: any[]): void;
+}
+
 // @public (undocumented)
 export type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
+
+// @public
+export function stringToUtf8Bytes(str: string): Uint8Array;
 
 // @public (undocumented)
 export type Syncing = {
@@ -1263,7 +1390,7 @@ export function toArray(value: any): any[];
 // @public
 export function toAscii(hex: string): string;
 
-// Warning: (ae-missing-release-tag) "toBatchPayload" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "toBatchPayload" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
 export function toBatchPayload(messages: RPCSendableMessage[]): {
@@ -1289,36 +1416,35 @@ export function toData(val: BigNumber.Value): string;
 export function toDecimal(value: BigNumber.Value): number;
 
 // @public
-export function toHex(val: BigNumber.Value | boolean): string;
+export function toHex(val: BigNumber.Value | boolean | Uint8Array): string;
 
-// @public
-export function toNullDecimal(value: BigNumber.Value): number;
-
-// Warning: (ae-missing-release-tag) "toPayload" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "toJsonRpcRequest" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
-export function toPayload(method: string, params: any[]): {
+export function toJsonRpcRequest(method: string, params: any[]): {
     jsonrpc: string;
     id: number;
     method: string;
     params: any[];
 };
 
-// Warning: (ae-missing-release-tag) "TopicFilter" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// @public
+export function toNullDecimal(value: BigNumber.Value): number;
+
+// Warning: (ae-missing-release-tag) "TopicFilter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export type TopicFilter = Array<Data | null | TopicFilter>;
 
 // @public
 function toString_2(value: BigNumber.Value): string;
-
 export { toString_2 as toString }
 
 // @public
-export function toTwosComplement(num: BigNumber.Value): BigNumber;
+export function toStringData(val: BigNumber.Value): string;
 
 // @public
-export function toUtf8(hex: string): string;
+export function toTwosComplement(num: BigNumber.Value, bits?: number): BigNumber;
 
 // @public
 export function toWei(num: number | string, unit: Unit): string | BigNumber;
@@ -1418,7 +1544,7 @@ export function transformToFullName(json: AbiItem): string;
 export type TxHash = string;
 
 // Warning: (ae-forgotten-export) The symbol "unitMap" needs to be exported by the entry point index.d.ts
-// Warning: (ae-missing-release-tag) "Unit" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "Unit" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export type Unit = keyof typeof unitMap;
@@ -1444,7 +1570,7 @@ export class WebSocketProvider<T extends IWebSocket> {
     url: string;
 }
 
-// Warning: (ae-missing-release-tag) "WebSocketProviderOptions" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+// Warning: (ae-missing-release-tag) "WebSocketProviderOptions" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
 export type WebSocketProviderOptions = {
@@ -1452,7 +1578,6 @@ export type WebSocketProviderOptions = {
     timeout?: number;
     protocol?: string;
 };
-
 
 // (No @packageDocumentation comment for this package)
 

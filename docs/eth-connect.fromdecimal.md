@@ -6,7 +6,7 @@
 
 Converts value to it's hex representation
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function fromDecimal(value: BigNumber.Value): string;
@@ -18,7 +18,7 @@ export declare function fromDecimal(value: BigNumber.Value): string;
 |  --- | --- | --- |
 |  value | [BigNumber.Value](./eth-connect.bignumber.value.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

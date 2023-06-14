@@ -12,7 +12,7 @@ The unencrypted key will be held in memory until the unlock duration expires. If
 
 The account can be used with eth\_sign and eth\_sendTransaction while it is unlocked.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 personal_unlockAccount: (account: Address, passPhrase?: Data, seconds?: Quantity) => Promise<boolean>;

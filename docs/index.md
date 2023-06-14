@@ -8,7 +8,6 @@
 
 |  Class | Description |
 |  --- | --- |
-|  [AbstractFilter](./eth-connect.abstractfilter.md) |  |
 |  [BigNumber](./eth-connect.bignumber.md) |  |
 |  [Contract](./eth-connect.contract.md) | Should be called to create new contract instance |
 |  [ContractFactory](./eth-connect.contractfactory.md) | Should be called to create new ContractFactory instance |
@@ -20,7 +19,15 @@
 |  [Property](./eth-connect.property.md) |  |
 |  [RequestManager](./eth-connect.requestmanager.md) | It's responsible for passing messages to providers It's also responsible for polling the ethereum node for incoming messages Default poll timeout is 1 second |
 |  [SHHFilter](./eth-connect.shhfilter.md) |  |
+|  [SolidityEvent](./eth-connect.solidityevent.md) | This prototype should be used to create event filters |
+|  [SolidityFunction](./eth-connect.solidityfunction.md) | This prototype should be used to call/sendTransaction to solidity functions |
 |  [WebSocketProvider](./eth-connect.websocketprovider.md) |  |
+
+## Abstract Classes
+
+|  Abstract Class | Description |
+|  --- | --- |
+|  [AbstractFilter](./eth-connect.abstractfilter.md) |  |
 
 ## Enumerations
 
@@ -33,13 +40,18 @@
 
 |  Function | Description |
 |  --- | --- |
+|  [BigNumber(n, base)](./eth-connect.bignumber.md) |  |
+|  [bytesToHex(bytes)](./eth-connect.bytestohex.md) |  |
+|  [bytesToUtf8String(bytesOrHexString)](./eth-connect.bytestoutf8string.md) | Decodes an Uint8Array or hex string into a UTF-8 string |
+|  [concatBytes(buffers)](./eth-connect.concatbytes.md) |  |
 |  [extractDisplayName(name)](./eth-connect.extractdisplayname.md) | Should be called to get display name of contract function |
 |  [extractTypeName(name)](./eth-connect.extracttypename.md) | Should be called to get type name of contract function |
 |  [fromAscii(str, num)](./eth-connect.fromascii.md) | Should be called to get hex representation (prefixed by 0x) of ascii string |
 |  [fromDecimal(value)](./eth-connect.fromdecimal.md) | Converts value to it's hex representation |
-|  [fromUtf8(\_str, allowZero)](./eth-connect.fromutf8.md) | Should be called to get hex representation (prefixed by 0x) of utf8 string |
-|  [fromWei(num, unit)](./eth-connect.fromwei.md) | Takes a number of wei and converts it to any other ether unit.<!-- -->Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |
+|  [fromTwosComplement(num, bits)](./eth-connect.fromtwoscomplement.md) | If the bit N is 1 |
+|  [fromWei(num, unit)](./eth-connect.fromwei.md) | <p>Takes a number of wei and converts it to any other ether unit.</p><p>Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether</p> |
 |  [fromWei(num, unit)](./eth-connect.fromwei_1.md) |  |
+|  [getAddress(address)](./eth-connect.getaddress.md) |  |
 |  [getValueOfUnit(\_unit)](./eth-connect.getvalueofunit.md) | Returns value of unit in Wei |
 |  [hexToBytes(hex)](./eth-connect.hextobytes.md) |  |
 |  [isAddress(address)](./eth-connect.isaddress.md) | Checks if the given string is an address |
@@ -59,6 +71,8 @@
 |  [padLeft(str, chars, sign)](./eth-connect.padleft.md) | Should be called to pad string to expected length |
 |  [padRight(str, chars, sign)](./eth-connect.padright.md) | Should be called to pad string to expected length |
 |  [sha3(value, options)](./eth-connect.sha3.md) |  |
+|  [signedIsNegative(value, bits)](./eth-connect.signedisnegative.md) | Check if input value is negative in twos complement |
+|  [stringToUtf8Bytes(str)](./eth-connect.stringtoutf8bytes.md) | Converts a string into a Uint8Array encoded with UTF-8 |
 |  [toAddress(address)](./eth-connect.toaddress.md) | Transforms given string to valid 20 bytes-length addres with 0x prefix |
 |  [toArray(value)](./eth-connect.toarray.md) | Ensures the result will be an array |
 |  [toAscii(hex)](./eth-connect.toascii.md) | Should be called to get ascii from it's hex representation |
@@ -68,13 +82,13 @@
 |  [toChecksumAddress(\_address)](./eth-connect.tochecksumaddress.md) | Makes a checksum address |
 |  [toData(val)](./eth-connect.todata.md) | Converts value to it's hex representation in string |
 |  [toDecimal(value)](./eth-connect.todecimal.md) | Converts value to it's decimal representation in string |
-|  [toHex(val)](./eth-connect.tohex.md) | Auto converts any given value into it's hex representation.<!-- -->And even stringifys objects before. |
+|  [toHex(val)](./eth-connect.tohex.md) | <p>Auto converts any given value into it's hex representation.</p><p>And even stringifys objects before.</p> |
+|  [toJsonRpcRequest(method, params)](./eth-connect.tojsonrpcrequest.md) | Should be called to valid json create payload object |
 |  [toNullDecimal(value)](./eth-connect.tonulldecimal.md) | Converts value to it's decimal representation in string |
-|  [toPayload(method, params)](./eth-connect.topayload.md) | Should be called to valid json create payload object |
 |  [toString\_2(value)](./eth-connect.tostring_2.md) | Converts value to string |
-|  [toTwosComplement(num)](./eth-connect.totwoscomplement.md) | Takes and input transforms it into bignumber and if it is negative value, into two's complement |
-|  [toUtf8(hex)](./eth-connect.toutf8.md) | Should be called to get utf8 from it's hex representation |
-|  [toWei(num, unit)](./eth-connect.towei.md) | Takes a number of a unit and converts it to wei.<!-- -->Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether |
+|  [toStringData(val)](./eth-connect.tostringdata.md) | Converts a UTF8 string to it's hex representation as a 0x string. If the argument is already a 0xHEX prefixed string, the conversion is skipped. |
+|  [toTwosComplement(num, bits)](./eth-connect.totwoscomplement.md) | Takes and input transforms it into bignumber and if it is negative value, into two's complement |
+|  [toWei(num, unit)](./eth-connect.towei.md) | <p>Takes a number of a unit and converts it to wei.</p><p>Possible units are: SI Short SI Full Effigy Other - kwei femtoether babbage - mwei picoether lovelace - gwei nanoether shannon nano - -- microether szabo micro - -- milliether finney milli - ether -- -- - kether -- grand - mether - gether - tether</p> |
 |  [transformToFullName(json)](./eth-connect.transformtofullname.md) | Should be used to create full function/event name from json abi |
 
 ## Interfaces
@@ -96,6 +110,7 @@
 |  Namespace | Description |
 |  --- | --- |
 |  [BigNumber](./eth-connect.bignumber.md) |  |
+|  [coder](./eth-connect.coder.md) | SolidityCoder prototype should be used to encode/decode solidity params of any type |
 |  [eth](./eth-connect.eth.md) |  |
 
 ## Variables
@@ -119,6 +134,7 @@
 |  [DroppedTransaction](./eth-connect.droppedtransaction.md) |  |
 |  [EventData](./eth-connect.eventdata.md) |  |
 |  [EventFilterCreator](./eth-connect.eventfiltercreator.md) |  |
+|  [FetchFunction](./eth-connect.fetchfunction.md) |  |
 |  [FilterCallback](./eth-connect.filtercallback.md) |  |
 |  [FilterOptions](./eth-connect.filteroptions.md) |  |
 |  [FinishedTransactionAndReceipt](./eth-connect.finishedtransactionandreceipt.md) |  |

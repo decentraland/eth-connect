@@ -6,7 +6,7 @@
 
 The grouping size of the fraction part.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 fractionGroupSize?: number;

@@ -6,7 +6,7 @@
 
 Makes a checksum address
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toChecksumAddress(_address: string): string;
@@ -18,7 +18,7 @@ export declare function toChecksumAddress(_address: string): string;
 |  --- | --- | --- |
 |  \_address | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

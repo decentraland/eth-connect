@@ -1,13 +1,13 @@
 # eth-connect
 
 [![NPM version](https://badge.fury.io/js/eth-connect.svg)](https://npmjs.org/package/eth-connect)
-[![Build Status](https://travis-ci.org/decentraland/eth-connect.svg?branch=master)](https://travis-ci.org/decentraland/eth-connect)
 [![codecov](https://codecov.io/gh/decentraland/eth-connect/branch/master/graph/badge.svg)](https://codecov.io/gh/decentraland/eth-connect)
 [![Install Size](https://packagephobia.now.sh/badge?p=eth-connect)](https://packagephobia.now.sh/result?p=eth-connect)
 
 _eth-connect_ is a TypeScript-based [web3](https://github.com/ethereum/web3.js) library alternative which implements the [Generic JSON RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) spec as well.
 
 You can follow the [JavaScript API documentation](https://github.com/ethereum/wiki/wiki/JavaScript-API) until TypeScript docs are released.
+
 
 ## Design goals
 
@@ -101,17 +101,16 @@ make test-local
 
 ## Comparison
 
-|                 |  `web3`  | `eth-connect` |
-| --------------- | :------: | :-----------: |
-| Browser support |    ✔     |       ✔       |
-| Promise API     |    ✖     |       ✔       |
-| TS/JS Docs      |    ✖     |       ✔       |
-| Wiki Docs       |    ✔     |       ?       |
-| Downloads       | ![][wd]  |    ![][ed]    |
-| Coverage        | ![][wc]  |    ![][ec]    |
-| Build           | ![][wb]  |    ![][eb]    |
-| Dependents      | ![][wdp] |   ![][edp]    |
-| Install size    | ![][wis] |   ![][eis]    |
+|                    |  `web3`  | `eth-connect` |
+| ------------------ | :------: | :-----------: |
+| Browser support    |    ✔     |       ✔       |
+| Promise API        |    ✖     |       ✔       |
+| Strict type checks |    ✖     |       ✔       |
+| TS/JS Docs         |    ✖     |       ✔       |
+| Wiki Docs          |    ✔     |       ?       |
+| Coverage           | ![][wc]  |    ![][ec]    |
+| Dependents         | ![][wdp] |   ![][edp]    |
+| Install size       | ![][wis] |   ![][eis]    |
 
 <!-- DOWNLOADS -->
 
@@ -145,3 +144,4 @@ Follow this link to read the full documentation for eth-connect [here](docs/inde
 ## Project Status
 
 You may find issues while using this library, as it's still under development. Please report any issues you come accross.
+

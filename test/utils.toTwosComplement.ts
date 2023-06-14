@@ -2,7 +2,7 @@
  * Created by danielbruce on 2017-09-25.
  */
 
-import * as expect from 'expect'
+import expect from 'expect'
 import { BigNumber, toTwosComplement } from '../dist/eth-connect'
 
 let tests = [

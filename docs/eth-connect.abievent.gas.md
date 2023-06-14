@@ -4,7 +4,7 @@
 
 ## AbiEvent.gas property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 gas?: number;

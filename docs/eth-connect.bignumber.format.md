@@ -6,7 +6,7 @@
 
 See `FORMAT` and `toFormat`<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 interface Format 
@@ -14,14 +14,14 @@ interface Format
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [decimalSeparator?](./eth-connect.bignumber.format.decimalseparator.md) | string | <i>(Optional)</i> The decimal separator. |
-|  [fractionGroupSeparator?](./eth-connect.bignumber.format.fractiongroupseparator.md) | string | <i>(Optional)</i> The grouping separator of the fraction part. |
-|  [fractionGroupSize?](./eth-connect.bignumber.format.fractiongroupsize.md) | number | <i>(Optional)</i> The grouping size of the fraction part. |
-|  [groupSeparator?](./eth-connect.bignumber.format.groupseparator.md) | string | <i>(Optional)</i> The grouping separator of the integer part. |
-|  [groupSize?](./eth-connect.bignumber.format.groupsize.md) | number | <i>(Optional)</i> The primary grouping size of the integer part. |
-|  [prefix?](./eth-connect.bignumber.format.prefix.md) | string | <i>(Optional)</i> The string to prepend. |
-|  [secondaryGroupSize?](./eth-connect.bignumber.format.secondarygroupsize.md) | number | <i>(Optional)</i> The secondary grouping size of the integer part. |
-|  [suffix?](./eth-connect.bignumber.format.suffix.md) | string | <i>(Optional)</i> The string to append. |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [decimalSeparator?](./eth-connect.bignumber.format.decimalseparator.md) |  | string | _(Optional)_ The decimal separator. |
+|  [fractionGroupSeparator?](./eth-connect.bignumber.format.fractiongroupseparator.md) |  | string | _(Optional)_ The grouping separator of the fraction part. |
+|  [fractionGroupSize?](./eth-connect.bignumber.format.fractiongroupsize.md) |  | number | _(Optional)_ The grouping size of the fraction part. |
+|  [groupSeparator?](./eth-connect.bignumber.format.groupseparator.md) |  | string | _(Optional)_ The grouping separator of the integer part. |
+|  [groupSize?](./eth-connect.bignumber.format.groupsize.md) |  | number | _(Optional)_ The primary grouping size of the integer part. |
+|  [prefix?](./eth-connect.bignumber.format.prefix.md) |  | string | _(Optional)_ The string to prepend. |
+|  [secondaryGroupSize?](./eth-connect.bignumber.format.secondarygroupsize.md) |  | number | _(Optional)_ The secondary grouping size of the integer part. |
+|  [suffix?](./eth-connect.bignumber.format.suffix.md) |  | string | _(Optional)_ The string to append. |
 

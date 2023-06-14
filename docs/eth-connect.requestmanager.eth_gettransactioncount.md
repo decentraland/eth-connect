@@ -6,7 +6,7 @@
 
 Returns the number of transactions sent from an address.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getTransactionCount: (address: Address, block: BlockIdentifier) => Promise<number>;

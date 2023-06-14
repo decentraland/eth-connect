@@ -19,10 +19,9 @@ See `modulo`<!-- -->.
 ```ts
 BigNumber.config({ MODULO_MODE: BigNumber.EUCLID })
 BigNumber.set({ MODULO_MODE: 9 })          // equivalent
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 MODULO_MODE?: BigNumber.ModuloMode;

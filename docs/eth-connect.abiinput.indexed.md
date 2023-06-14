@@ -4,7 +4,7 @@
 
 ## AbiInput.indexed property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 indexed?: boolean;

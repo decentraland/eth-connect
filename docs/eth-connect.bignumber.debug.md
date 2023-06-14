@@ -13,7 +13,6 @@ new BigNumber(9, 2)        // 'NaN'
 BigNumber.DEBUG = true
 new BigNumber('blurgh')    // '[BigNumber Error] Not a number'
 new BigNumber(9, 2)        // '[BigNumber Error] Not a base 2 number'
-
 ```
 An error will also be thrown if a `BigNumber.Value` is of type number with more than 15 significant digits, as calling `toString` or `valueOf` on such numbers may not result in the intended value.
 
@@ -24,7 +23,6 @@ new BigNumber(823456789123456.3)     // '823456789123456.2'
 BigNumber.DEBUG = true
 new BigNumber(823456789123456.3)
 // '[BigNumber Error] Number primitive has more than 15 significant digits'
-
 ```
 Check that a BigNumber instance is well-formed:
 
@@ -39,10 +37,9 @@ BigNumber.isBigNumber(x)    // true
 
 BigNumber.DEBUG = true
 BigNumber.isBigNumber(x)    // '[BigNumber Error] Invalid BigNumber'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static DEBUG?: boolean;

@@ -8,12 +8,12 @@ As `toString`<!-- -->, but does not accept a base argument and includes the minu
 
 \`\`<!-- -->ts x = new BigNumber('-0') x.toString() // '0' x.valueOf() // '-0' y = new BigNumber('1.777e+457') y.valueOf() // '1.777e+457' \`\`\`
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 valueOf(): string;
 ```
-<b>Returns:</b>
+**Returns:**
 
 string
 

@@ -6,7 +6,7 @@
 
 Returns the number of most recent block.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_blockNumber: () => Promise<Quantity>;

@@ -6,7 +6,7 @@
 
 The primary grouping size of the integer part.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 groupSize?: number;

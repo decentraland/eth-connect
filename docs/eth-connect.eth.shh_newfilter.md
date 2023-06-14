@@ -4,7 +4,7 @@
 
 ## eth.shh\_newFilter variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_newFilter: Method<string>

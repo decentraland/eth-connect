@@ -1,5 +1,5 @@
-import * as expect from 'expect'
-import { ContractFactory, RequestManager } from '../src'
+import expect from 'expect'
+import { RequestManager, ContractFactory } from '../dist/eth-connect'
 import { testAllProviders } from './helpers/testAllProviders'
 
 /*

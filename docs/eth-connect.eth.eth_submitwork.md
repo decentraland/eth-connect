@@ -4,7 +4,7 @@
 
 ## eth.eth\_submitWork variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_submitWork: Method<boolean>

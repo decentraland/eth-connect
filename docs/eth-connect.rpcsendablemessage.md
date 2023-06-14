@@ -4,10 +4,10 @@
 
 ## RPCSendableMessage type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type RPCSendableMessage = {
+export type RPCSendableMessage = {
     method: string;
     params: any[];
 };

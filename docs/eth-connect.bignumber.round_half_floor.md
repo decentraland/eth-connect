@@ -6,7 +6,7 @@
 
 Rounds towards nearest neighbour. If equidistant, rounds towards -Infinity.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static readonly ROUND_HALF_FLOOR: 8;

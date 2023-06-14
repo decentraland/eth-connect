@@ -11,10 +11,9 @@ The maximum number of decimal places of the result of operations involving divis
 ```ts
 BigNumber.config({ DECIMAL_PLACES: 5 })
 BigNumber.set({ DECIMAL_PLACES: 5 })
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 DECIMAL_PLACES?: number;

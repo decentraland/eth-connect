@@ -6,7 +6,7 @@
 
 Returns the client coinbase address.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_coinbase: () => Promise<Address>;

@@ -1,9 +1,20 @@
 import { RPCMessage, Callback, toRPC } from './common'
 export { RPCMessage, Callback } from './common'
 
+export type FetchFunction = (
+  url: string,
+  params: {
+    body?: any
+    method?: string
+    mode?: string
+    headers?: any
+  }
+) => Promise<any>
+
 export type HTTPProviderOptions = {
   headers?: { [key: string]: string }
   timeout?: number
+  fetch?: FetchFunction
 }
 
 /**
@@ -33,20 +44,23 @@ export class HTTPProvider {
       let toSend = null
 
       if (payload instanceof Array) {
-        toSend = payload.map($ => toRPC($))
+        toSend = payload.map(($) => toRPC($))
       } else {
         toSend = toRPC(payload)
       }
 
+      const fetch = this.options.fetch || globalThis.fetch
+
       /* istanbul ignore if */
       if (typeof fetch === 'undefined') {
-        throw new Error('There is no global fetch object. Please install and import isomorphic-fetch')
+        throw new Error(
+          'There is no global fetch object nor it was provided. Please install and import isomorphic-fetch'
+        )
       }
 
       const params: RequestInit = {
         body: JSON.stringify(toSend),
         method: 'POST',
-        // mode: 'cors',
         headers: {
           ...this.options.headers,
           'Content-Type': 'application/json'
@@ -58,7 +72,7 @@ export class HTTPProvider {
       if (this.debug) console.log('SEND >> ' + params.body)
 
       fetch(this.host, params).then(
-        async $ => {
+        async ($) => {
           if (!$.ok) {
             /* istanbul ignore if */
             // tslint:disable-next-line:no-console
@@ -76,14 +90,14 @@ export class HTTPProvider {
             }
           }
         },
-        err => {
+        (err) => {
           /* istanbul ignore if */
           // tslint:disable-next-line:no-console
           if (this.debug) console.log('ERR << ' + JSON.stringify(err))
           callback(err)
         }
       )
-    } catch (e) {
+    } catch (e: any) {
       /* istanbul ignore if */
       // tslint:disable-next-line:no-console
       if (this.debug) console.log('ERR << ' + JSON.stringify(e))

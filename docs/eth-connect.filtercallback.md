@@ -4,10 +4,10 @@
 
 ## FilterCallback type
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type FilterCallback = (messages: LogObject[] | string[]) => void;
+export type FilterCallback = (messages: LogObject[] | string[]) => void;
 ```
-<b>References:</b> [LogObject](./eth-connect.logobject.md)
+**References:** [LogObject](./eth-connect.logobject.md)
 

@@ -6,7 +6,7 @@
 
 Should be called to get ascii from it's hex representation
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function toAscii(hex: string): string;
@@ -18,7 +18,7 @@ export declare function toAscii(hex: string): string;
 |  --- | --- | --- |
 |  hex | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

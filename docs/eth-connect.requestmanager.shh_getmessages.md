@@ -6,7 +6,7 @@
 
 Get all messages matching a filter. Unlike shh\_getFilterChanges this returns all messages.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 shh_getMessages: (filterId: Data) => Promise<Array<SHHFilterMessage>>;

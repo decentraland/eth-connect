@@ -14,10 +14,9 @@ x = new BigNumber(0.6)
 y = x.times(3)                  // '1.8'
 BigNumber('7e+500').times(y)    // '1.26e+501'
 x.times('-a', 16)               // '-6'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 times(n: BigNumber.Value, base?: number): BigNumber;
@@ -28,9 +27,9 @@ times(n: BigNumber.Value, base?: number): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

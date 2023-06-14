@@ -4,7 +4,7 @@
 
 ## eth.eth\_getBlockTransactionCountByHash variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getBlockTransactionCountByHash: Method<number>

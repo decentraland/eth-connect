@@ -4,12 +4,12 @@
 
 ## EthBlockFilter.getNewFilter() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 getNewFilter(): Promise<string>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;string&gt;
 

@@ -13,10 +13,9 @@ The modes are available as enumerated properties of the BigNumber constructor.
 ```ts
 BigNumber.config({ ROUNDING_MODE: 0 })
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_UP })
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 ROUNDING_MODE?: BigNumber.RoundingMode;

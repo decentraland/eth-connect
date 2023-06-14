@@ -4,7 +4,7 @@
 
 ## AbiEvent.outputs property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 outputs?: AbiOutput[];

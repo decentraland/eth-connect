@@ -87,9 +87,7 @@ function encodeConstructorParams(abi: AbiItem[], params: any[]) {
         return json.type === 'constructor' && json.inputs && json.inputs.length === params.length
       })
       .map(function (json) {
-        return json.inputs!.map(function (input) {
-          return input.type
-        })
+        return json.inputs || []
       })
       .map(function (types) {
         return coder.encodeParams(types, params)
@@ -114,7 +112,7 @@ export class ContractFactory {
     // parse arguments
     let options: TransactionOptions | undefined = undefined
 
-    let last = args[args.length - 1]
+    const last = args[args.length - 1]
 
     if (utils.isObject(last) && !utils.isArray(last)) {
       options = args.pop()
@@ -131,7 +129,7 @@ export class ContractFactory {
     }
 
     if (toDecimal(options.value!) > 0) {
-      let constructorAbi =
+      const constructorAbi =
         this.abi.filter(function (json) {
           return json.type === 'constructor' && json.inputs.length === args.length
         })[0] || {}
@@ -142,7 +140,7 @@ export class ContractFactory {
       }
     }
 
-    let bytes = encodeConstructorParams(this.abi, args)
+    const bytes = encodeConstructorParams(this.abi, args)
     options.data += bytes
 
     if (!options.gas) {

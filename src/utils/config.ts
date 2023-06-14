@@ -15,8 +15,6 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import { BigNumber } from '../utils/BigNumber'
-
 export const ETH_UNITS = [
   'wei',
   'kwei',
@@ -47,10 +45,5 @@ export const ETH_UNITS = [
   'Uether'
 ]
 
-export const ETH_PADDING = 32
-export const ETH_SIGNATURE_LENGTH = 4
-export const ETH_BIGNUMBER_ROUNDING_MODE = {
-  ROUNDING_MODE: BigNumber.ROUND_DOWN as BigNumber.RoundingMode
-}
 export const ETH_POLLING_TIMEOUT = 1000 / 2
-export let defaultBlock: 'latest' = 'latest'
+export const defaultBlock: 'latest' = 'latest'

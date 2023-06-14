@@ -5,12 +5,12 @@
 ## TransactionAndReceipt type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type TransactionAndReceipt = TransactionObject & {
+export type TransactionAndReceipt = TransactionObject & {
     receipt: TransactionReceipt;
 };
 ```
-<b>References:</b> [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionReceipt](./eth-connect.transactionreceipt.md)
+**References:** [TransactionObject](./eth-connect.transactionobject.md)<!-- -->, [TransactionReceipt](./eth-connect.transactionreceipt.md)
 

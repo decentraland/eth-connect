@@ -4,12 +4,12 @@
 
 ## EthFilter class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObject> extends AbstractFilter<ReceivedLog, TransformedLog> 
 ```
-<b>Extends:</b> [AbstractFilter](./eth-connect.abstractfilter.md)<!-- -->&lt;ReceivedLog, TransformedLog&gt;
+**Extends:** [AbstractFilter](./eth-connect.abstractfilter.md)<!-- -->&lt;ReceivedLog, TransformedLog&gt;
 
 ## Constructors
 
@@ -29,8 +29,8 @@ export declare class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObje
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [getChanges()](./eth-connect.ethfilter.getchanges.md) |  |  |
+|  [getChanges()](./eth-connect.ethfilter.getchanges.md) | <code>protected</code> |  |
 |  [getLogs()](./eth-connect.ethfilter.getlogs.md) |  |  |
-|  [getNewFilter()](./eth-connect.ethfilter.getnewfilter.md) |  |  |
-|  [uninstall()](./eth-connect.ethfilter.uninstall.md) |  |  |
+|  [getNewFilter()](./eth-connect.ethfilter.getnewfilter.md) | <code>protected</code> |  |
+|  [uninstall()](./eth-connect.ethfilter.uninstall.md) | <code>protected</code> |  |
 

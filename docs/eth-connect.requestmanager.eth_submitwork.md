@@ -6,7 +6,7 @@
 
 Used for submitting a proof-of-work solution.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_submitWork: (data: Data, powHash: TxHash, digest: TxHash) => Promise<boolean>;

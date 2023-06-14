@@ -5,10 +5,10 @@
 ## BlockObject type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type BlockObject = {
+export type BlockObject = {
     number: Quantity;
     hash: TxHash;
     parentHash: TxHash;
@@ -30,5 +30,5 @@ export declare type BlockObject = {
     uncles: Array<TxHash>;
 };
 ```
-<b>References:</b> [Quantity](./eth-connect.quantity.md)<!-- -->, [TxHash](./eth-connect.txhash.md)<!-- -->, [Data](./eth-connect.data.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [BigNumber](./eth-connect.bignumber.md)<!-- -->, [TransactionObject](./eth-connect.transactionobject.md)
+**References:** [Quantity](./eth-connect.quantity.md)<!-- -->, [TxHash](./eth-connect.txhash.md)<!-- -->, [Data](./eth-connect.data.md)<!-- -->, [Address](./eth-connect.address.md)<!-- -->, [BigNumber](./eth-connect.bignumber.md)<!-- -->, [TransactionObject](./eth-connect.transactionobject.md)
 

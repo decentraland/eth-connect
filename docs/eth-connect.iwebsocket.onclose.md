@@ -4,7 +4,7 @@
 
 ## IWebSocket.onclose property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 onclose: ((this: this, ev: any) => any) | null;

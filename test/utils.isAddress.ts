@@ -1,4 +1,4 @@
-import * as expect from 'expect'
+import expect from 'expect'
 import * as utils from '../src/utils/utils'
 
 let tests = [
@@ -17,7 +17,8 @@ let tests = [
   { value: '0xE247a45c287191d435A8a5D72A7C8dc030451E9F', is: false },
   { value: '0xe247a45c287191d435a8a5d72a7c8dc030451e9f', is: true },
   { value: '0XE247A45C287191D435A8A5D72A7C8DC030451E9F', is: false },
-  { value: '0xE247A45C287191D435A8A5D72A7C8DC030451E9F', is: true }
+  { value: '0xE247A45C287191D435A8A5D72A7C8DC030451E9F', is: true },
+  { value: '0xBF79cE2fbd819e5aBC2327563D02a200255B7Cb3', is: true }
 ]
 
 describe('lib/utils/utils', function () {

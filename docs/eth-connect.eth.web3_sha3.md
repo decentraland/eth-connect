@@ -4,7 +4,7 @@
 
 ## eth.web3\_sha3 variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 web3_sha3: Method<string>

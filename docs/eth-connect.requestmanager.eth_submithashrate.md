@@ -6,7 +6,7 @@
 
 Used for submitting mining hashrate.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_submitHashrate: (hashRate: Data, id: Data) => Promise<boolean>;

@@ -4,7 +4,7 @@
 
 ## eth.eth\_getUncleByBlockHashAndIndex variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getUncleByBlockHashAndIndex: Method<BlockObject | null>

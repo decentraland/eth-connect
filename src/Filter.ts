@@ -21,6 +21,7 @@ import { RequestManager } from './RequestManager'
 import * as config from './utils/config'
 import { FilterOptions, LogObject, TxHash, SHHFilterOptions, Data, SHHFilterMessage } from './Schema'
 import { future, IFuture } from 'fp-future'
+import { stringToUtf8Bytes } from './utils/utf8'
 
 function safeAsync(fn: () => Promise<any>) {
   return function () {
@@ -42,7 +43,7 @@ function toTopic(value: any): string | null {
   if (strValue.indexOf('0x') === 0) {
     return strValue
   } else {
-    return utils.fromUtf8(strValue)
+    return utils.bytesToHex(stringToUtf8Bytes(strValue))
   }
 }
 
@@ -52,7 +53,7 @@ export abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> 
   public isStarted = false
   public isDisposed = false
 
-  public formatter: (x: ReceivedLog) => TransformedLog = x => x as any
+  public formatter: (x: ReceivedLog) => TransformedLog = (x) => x as any
 
   protected filterId: IFuture<Data> = future()
   protected callbacks: ((message: TransformedLog) => void)[] = []
@@ -126,15 +127,17 @@ export abstract class AbstractFilter<ReceivedLog, TransformedLog = ReceivedLog> 
       if (this.callbacks.length) {
         const result = await this.getChanges()
 
-        this.callbacks.forEach((cb) => {
-          if (this.formatter) {
-            result.forEach(($) => {
-              cb(this.formatter!($))
-            })
-          } else {
-            result.forEach(($) => cb($ as any))
-          }
-        })
+        if (result) {
+          this.callbacks.forEach((cb) => {
+            if (this.formatter) {
+              result.forEach(($) => {
+                cb(this.formatter!($))
+              })
+            } else {
+              result.forEach(($) => cb($ as any))
+            }
+          })
+        }
       }
 
       this.stopSemaphore.resolve(1)
@@ -188,7 +191,10 @@ export class SHHFilter extends AbstractFilter<SHHFilterMessage> {
   }
 }
 
-export class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObject> extends AbstractFilter<ReceivedLog, TransformedLog> {
+export class EthFilter<TransformedLog = LogObject, ReceivedLog = LogObject> extends AbstractFilter<
+  ReceivedLog,
+  TransformedLog
+> {
   constructor(
     public requestManager: RequestManager,
     public options: FilterOptions,

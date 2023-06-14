@@ -6,7 +6,7 @@
 
 Returns number of peers currently connected to the client.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 net_peerCount: () => Promise<Quantity>;

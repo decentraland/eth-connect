@@ -6,7 +6,7 @@
 
 Should be used to create full function/event name from json abi
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function transformToFullName(json: AbiItem): string;
@@ -18,7 +18,7 @@ export declare function transformToFullName(json: AbiItem): string;
 |  --- | --- | --- |
 |  json | [AbiItem](./eth-connect.abiitem.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

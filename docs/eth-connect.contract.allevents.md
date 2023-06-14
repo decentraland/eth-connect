@@ -4,7 +4,7 @@
 
 ## Contract.allEvents property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 allEvents: (options: FilterOptions) => Promise<EthFilter>;

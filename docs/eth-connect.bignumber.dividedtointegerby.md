@@ -12,10 +12,9 @@ y = new BigNumber(3)
 x.dividedToIntegerBy(y)              // '1'
 x.dividedToIntegerBy(0.7)            // '7'
 x.dividedToIntegerBy('0.f', 16)      // '5'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 dividedToIntegerBy(n: BigNumber.Value, base?: number): BigNumber;
@@ -26,9 +25,9 @@ dividedToIntegerBy(n: BigNumber.Value, base?: number): BigNumber;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

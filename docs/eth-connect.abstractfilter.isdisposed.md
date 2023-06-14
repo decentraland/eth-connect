@@ -4,7 +4,7 @@
 
 ## AbstractFilter.isDisposed property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isDisposed: boolean;

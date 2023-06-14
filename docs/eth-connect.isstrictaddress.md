@@ -6,7 +6,7 @@
 
 Checks if the given string is strictly an address
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isStrictAddress(address: any): boolean;
@@ -18,7 +18,7 @@ export declare function isStrictAddress(address: any): boolean;
 |  --- | --- | --- |
 |  address | any |  |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

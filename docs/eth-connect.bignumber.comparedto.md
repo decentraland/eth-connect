@@ -14,10 +14,9 @@ x.comparedTo(y)                 // 1
 x.comparedTo(x.minus(1))        // 0
 y.comparedTo(NaN)               // null
 y.comparedTo('110', 2)          // -1
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 comparedTo(n: BigNumber.Value, base?: number): number;
@@ -28,9 +27,9 @@ comparedTo(n: BigNumber.Value, base?: number): number;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md) | A numeric value. |
-|  base | number | The base of n. |
+|  base | number | _(Optional)_ The base of n. |
 
-<b>Returns:</b>
+**Returns:**
 
 number
 

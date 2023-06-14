@@ -30,22 +30,21 @@ BigNumber.set({
 });
 
 BigNumber.set().DECIMAL_PLACES        // 40
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-static set(object: BigNumber.Config): BigNumber.Config;
+static set(object?: BigNumber.Config): BigNumber.Config;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  object | [BigNumber.Config](./eth-connect.bignumber.config.md) | The configuration object. |
+|  object | [BigNumber.Config](./eth-connect.bignumber.config.md) | _(Optional)_ The configuration object. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber.Config](./eth-connect.bignumber.config.md)
 

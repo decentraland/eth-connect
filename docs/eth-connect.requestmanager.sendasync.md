@@ -6,7 +6,7 @@
 
 Should be used to asynchronously send request
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 sendAsync(data: RPCSendableMessage): Promise<any>;
@@ -18,7 +18,7 @@ sendAsync(data: RPCSendableMessage): Promise<any>;
 |  --- | --- | --- |
 |  data | [RPCSendableMessage](./eth-connect.rpcsendablemessage.md) | The RPC message to be sent |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;any&gt;
 

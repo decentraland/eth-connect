@@ -6,7 +6,7 @@
 
 Waits until the transaction finishes. Returns if it was successfull. Throws if the transaction fails or if it lacks any of the supplied events
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 getConfirmedTransaction(txId: string): Promise<FinishedTransactionAndReceipt>;
@@ -18,7 +18,7 @@ getConfirmedTransaction(txId: string): Promise<FinishedTransactionAndReceipt>;
 |  --- | --- | --- |
 |  txId | string | Transaction id to watch |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;[FinishedTransactionAndReceipt](./eth-connect.finishedtransactionandreceipt.md)<!-- -->&gt;
 

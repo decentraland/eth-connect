@@ -14,10 +14,9 @@ BigNumber.sum(4e9, x, '123456789.9')      // '7381326134.9378653'
 
 arr = [2, new BigNumber(14), '15.9999', 12]
 BigNumber.sum.apply(null, arr)            // '43.9999'
-
 ```
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static sum(...n: BigNumber.Value[]): BigNumber;
@@ -29,7 +28,7 @@ static sum(...n: BigNumber.Value[]): BigNumber;
 |  --- | --- | --- |
 |  n | [BigNumber.Value](./eth-connect.bignumber.value.md)<!-- -->\[\] | A numeric value. |
 
-<b>Returns:</b>
+**Returns:**
 
 [BigNumber](./eth-connect.bignumber.md)
 

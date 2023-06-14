@@ -4,7 +4,7 @@
 
 ## fromWei() function
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function fromWei(num: string | number, unit: Unit): string;
@@ -17,7 +17,7 @@ export declare function fromWei(num: string | number, unit: Unit): string;
 |  num | string \| number |  |
 |  unit | [Unit](./eth-connect.unit.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 string
 

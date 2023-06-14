@@ -4,7 +4,7 @@
 
 ## eth.eth\_getUncleCountByBlockHash variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 eth_getUncleCountByBlockHash: Method<number>

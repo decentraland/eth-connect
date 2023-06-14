@@ -4,7 +4,7 @@
 
 ## eth.net\_peerCount variable
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 net_peerCount: Property<number>
