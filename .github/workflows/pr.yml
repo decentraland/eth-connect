@@ -5,6 +5,10 @@ name: CI Validation
 jobs:
   check_and_build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    outputs:
+      s3_bucket_key: ${{ steps.publish_package.outputs.s3-bucket-key }}
     steps:
       - uses: actions/checkout@master
       - name: Use Node.js 18.x
@@ -42,6 +46,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: publish packages
+        if: ${{ github.actor != 'dependabot[bot]' }}
         uses: menduz/oddish-action@master
         id: publish_package
         with:
