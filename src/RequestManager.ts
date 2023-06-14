@@ -15,8 +15,6 @@
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// tslint:disable:variable-name
-
 import { RPCSendableMessage, toJsonRpcRequest, isValidResponse } from './utils/jsonrpc'
 import { InvalidProvider, InvalidResponse } from './utils/errors'
 import { BigNumber } from './utils/BigNumber'
@@ -579,7 +577,6 @@ export class RequestManager {
    * It'll also check for a pending status prop against TRANSACTION_STATUS
    * @param tx - The transaction object
    */
-  // tslint:disable-next-line:prefer-function-over-method
   isPending(tx: TransactionAndReceipt): boolean {
     return tx && tx.blockNumber === null
   }
@@ -589,7 +586,6 @@ export class RequestManager {
    * It'll also check for a failed status prop against TRANSACTION_STATUS
    * @param tx - The transaction object
    */
-  // tslint:disable-next-line:prefer-function-over-method
   isFailure(tx: TransactionAndReceipt): boolean {
     return tx && (!tx.receipt || tx.receipt.status === 0)
   }

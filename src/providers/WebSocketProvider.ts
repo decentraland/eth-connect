@@ -62,7 +62,6 @@ export class WebSocketProvider<T extends IWebSocket> {
   }
 
   /* istanbul ignore next */
-  // tslint:disable-next-line:prefer-function-over-method
   send() {
     /* istanbul ignore next */
     throw new Error('Sync requests are deprecated')
@@ -175,7 +174,6 @@ export class WebSocketProvider<T extends IWebSocket> {
       const defer = this.responseCallbacks.get(id)
 
       if (!defer) {
-        // tslint:disable-next-line:no-console
         console.error('Error: Received a response for an unknown request', message)
         return
       }

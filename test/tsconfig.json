@@ -17,11 +17,6 @@
     "forceConsistentCasingInFileNames": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "plugins": [
-      {
-        "name": "tslint-language-service"
-      }
-    ],
     "noEmit": true,
     "allowJs": true
   },

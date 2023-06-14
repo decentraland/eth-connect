@@ -43,7 +43,6 @@ export class FakeHttpProvider {
     this.error = null
   }
 
-  // tslint:disable-next-line
   send(_) {
     throw new Error('Cannot call sync code')
   }
@@ -95,7 +94,6 @@ export class FakeHttpProvider {
         }
       })
       .catch((e) => {
-        // tslint:disable-next-line
         console.error(e)
         callback(e)
       })
