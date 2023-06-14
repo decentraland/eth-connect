@@ -29,6 +29,8 @@ jobs:
         run:  make clean
       - name: install
         run:  npm ci
+      - name: lint
+        run:  npm run lint:check
       - name: build & test
         run:  make ci
       - name: print diff if failed

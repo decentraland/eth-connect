@@ -14,8 +14,6 @@
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
-// tslint:disable:variable-name
-
 import * as formatters from '../utils/formatters'
 import * as utils from '../utils/utils'
 import { Method } from '../Method'

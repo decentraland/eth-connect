@@ -22,7 +22,7 @@ export declare class Property<V>
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [getter](./eth-connect.property.getter.md) |  | string |  |
-|  [outputFormatter](./eth-connect.property.outputformatter.md) |  | Function |  |
+|  [outputFormatter](./eth-connect.property.outputformatter.md) |  | (\_: any) =&gt; V |  |
 
 ## Methods
 

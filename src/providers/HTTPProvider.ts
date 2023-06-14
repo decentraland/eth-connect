@@ -30,7 +30,6 @@ export class HTTPProvider {
   }
 
   /* istanbul ignore next */
-  // tslint:disable-next-line:prefer-function-over-method
   send() {
     /* istanbul ignore next */
     throw new Error('Sync requests are deprecated')
@@ -68,20 +67,17 @@ export class HTTPProvider {
       }
 
       /* istanbul ignore if */
-      // tslint:disable-next-line:no-console
       if (this.debug) console.log('SEND >> ' + params.body)
 
       fetch(this.host, params).then(
         async ($) => {
           if (!$.ok) {
             /* istanbul ignore if */
-            // tslint:disable-next-line:no-console
             if (this.debug) console.log('ERR << ' + JSON.stringify($))
             callback(new Error('External error. response code: ' + $.status))
           } else {
             const json = await $.json()
             /* istanbul ignore if */
-            // tslint:disable-next-line:no-console
             if (this.debug) console.log('RECV << ' + JSON.stringify(json))
             if (json.error) {
               callback(Object.assign(new Error(json.error.json || json.error), json.error))
@@ -92,14 +88,12 @@ export class HTTPProvider {
         },
         (err) => {
           /* istanbul ignore if */
-          // tslint:disable-next-line:no-console
           if (this.debug) console.log('ERR << ' + JSON.stringify(err))
           callback(err)
         }
       )
     } catch (e: any) {
       /* istanbul ignore if */
-      // tslint:disable-next-line:no-console
       if (this.debug) console.log('ERR << ' + JSON.stringify(e))
       callback(e)
     }

@@ -467,7 +467,7 @@ export function toTwosComplement(num: BigNumber.Value, bits = 256): BigNumber {
  */
 export function signedIsNegative(value: BigNumber, bits: number) {
   const binary = padLeft(value.toString(2), bits, '0')
-  return binary[0] == '1'
+  return binary[0] === '1'
 }
 
 /**

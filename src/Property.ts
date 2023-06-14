@@ -27,7 +27,7 @@ export interface IPropertyOptions<V> {
  */
 export class Property<V> {
   getter: string
-  outputFormatter!: Function
+  outputFormatter: (_: any) => V
 
   constructor(options: IPropertyOptions<V>) {
     this.getter = options.getter

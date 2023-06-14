@@ -7,5 +7,5 @@
 **Signature:**
 
 ```typescript
-outputFormatter: Function;
+outputFormatter: (_: any) => V;
 ```

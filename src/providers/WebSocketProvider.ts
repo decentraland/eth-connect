@@ -52,12 +52,16 @@ export class WebSocketProvider<T extends IWebSocket> {
     this.isDisposed = true
     const connection = this.connection
     this.timeout(new Error('Provider disposed.'))
-    // tslint:disable-next-line:no-floating-promises
-    connection.then(($) => $.close())
+    connection
+      .then(($) => $.close())
+      .catch((err: any) => {
+        if (this.debug) {
+          console.error(err)
+        }
+      })
   }
 
   /* istanbul ignore next */
-  // tslint:disable-next-line:prefer-function-over-method
   send() {
     /* istanbul ignore next */
     throw new Error('Sync requests are deprecated')
@@ -105,7 +109,6 @@ export class WebSocketProvider<T extends IWebSocket> {
           const s = JSON.stringify($)
 
           /* istanbul ignore if */
-          // tslint:disable-next-line:no-console
           if (this.debug) console.log('SEND >> ' + s)
           ws.send(s)
         })
@@ -171,7 +174,6 @@ export class WebSocketProvider<T extends IWebSocket> {
       const defer = this.responseCallbacks.get(id)
 
       if (!defer) {
-        // tslint:disable-next-line:no-console
         console.error('Error: Received a response for an unknown request', message)
         return
       }
@@ -208,8 +210,13 @@ export class WebSocketProvider<T extends IWebSocket> {
 
   private connect() {
     if (this.connection && !this.connection.isPending) {
-      // tslint:disable-next-line
-      this.connection.then(($) => $.close())
+      this.connection
+        .then(($) => $.close())
+        .catch((err: any) => {
+          if (this.debug) {
+            console.error(err)
+          }
+        })
     }
 
     if (!this.connection || !this.connection.isPending) {
@@ -245,7 +252,6 @@ export class WebSocketProvider<T extends IWebSocket> {
       const data = typeof e.data === 'string' ? e.data : ''
 
       /* istanbul ignore if */
-      // tslint:disable-next-line:no-console
       if (this.debug) console.log('RECV << ' + e.data)
 
       this.parseResponse(data).forEach((result) => {

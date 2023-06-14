@@ -58,7 +58,7 @@ export function inputDefaultBlockNumberFormatter(blockNumber?: Quantity | Tag): 
 }
 
 export function inputBlockNumberFormatter(blockNumber: Quantity | Tag | null): string | null {
-  if (blockNumber === undefined || blockNumber == null) {
+  if (blockNumber === undefined || blockNumber === null) {
     return null
   } else if (isPredefinedBlockNumber(blockNumber)) {
     return blockNumber

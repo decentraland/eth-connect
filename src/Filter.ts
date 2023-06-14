@@ -25,7 +25,6 @@ import { stringToUtf8Bytes } from './utils/utf8'
 
 function safeAsync(fn: () => Promise<any>) {
   return function () {
-    // tslint:disable-next-line:no-console
     fn().catch(($) => console.error($))
   }
 }

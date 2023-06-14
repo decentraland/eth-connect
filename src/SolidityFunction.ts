@@ -102,7 +102,7 @@ export class SolidityFunction {
 
     const signature = this.signature()
     let params = coder.encodeParams(this._inputTypes, args)
-    if (params.indexOf('0x') == 0) params = params.substr(2)
+    if (params.indexOf('0x') === 0) params = params.substr(2)
     options.data = '0x' + signature + params
 
     return options
