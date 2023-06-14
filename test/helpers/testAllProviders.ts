@@ -2,7 +2,7 @@ import 'isomorphic-fetch'
 import fetch from 'node-fetch'
 
 import { NodeConnectionFactory } from '../helpers/NodeConnectionFactory'
-import { ContractFactory, RequestManager } from '../../src'
+import { RequestManager, ContractFactory } from '../../dist/eth-connect'
 
 import { HTTPProvider } from '../../src/providers/HTTPProvider'
 import { WebSocketProvider } from '../../src/providers/WebSocketProvider'

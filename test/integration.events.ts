@@ -1,10 +1,16 @@
 import expect from 'expect'
 
-import { ContractFactory, RequestManager, Contract } from '../src'
-import { EthFilter, EthBlockFilter, EthPendingTransactionFilter } from '../src/Filter'
+import {
+  RequestManager,
+  ContractFactory,
+  Contract,
+  WebSocketProvider,
+  EthFilter,
+  EthBlockFilter,
+  EthPendingTransactionFilter
+} from '../dist/eth-connect'
 import { testAllProviders } from './helpers/testAllProviders'
 import { future } from 'fp-future'
-import WebSocketProvider from '../src/providers/WebSocketProvider'
 
 /*
 pragma solidity ^0.4.21;

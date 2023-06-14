@@ -1,6 +1,6 @@
 import 'isomorphic-fetch'
 import expect from 'expect'
-import { ContractFactory, RequestManager, BigNumber } from '../src'
+import { RequestManager, ContractFactory, BigNumber } from '../dist/eth-connect'
 import { testAllProviders } from './helpers/testAllProviders'
 import { abi, bytecode } from './fixtures/Escrow.json'
 

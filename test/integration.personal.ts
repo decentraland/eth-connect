@@ -1,6 +1,6 @@
 import expect from 'expect'
 import 'isomorphic-fetch'
-import { RequestManager, isStrictAddress, isArray } from '../src'
+import { RequestManager, isStrictAddress, isArray } from '../dist/eth-connect'
 import { testAllProviders } from './helpers/testAllProviders'
 import { WebSocketProvider } from '../src/providers/WebSocketProvider'
 

@@ -1,16 +1,14 @@
 import expect from 'expect'
-import * as coder from '../src/solidity/coder'
 import { Tuple } from '../src/abi/coder'
-import { BigNumber as bn } from '../dist/eth-connect'
-import { hexToBytes } from '../src'
+import { BigNumber, coder, hexToBytes } from '../dist/eth-connect'
 import { parseParamType } from '../src/abi/parser'
 
 describe('lib/solidity/coder', function () {
   describe('decodeParam', function () {
     let test = function (t) {
       it('should turn ' + t.value + ' to ' + t.type + '=' + t.expected, function () {
-        expect(coder.coder.decodeParams([parseParamType(t.type)], t.value)).toEqual([t.expected])
-        expect(coder.coder.decodeParams([t.type], t.value)).toEqual([t.expected])
+        expect(coder.decodeParams([parseParamType(t.type)], t.value)).toEqual([t.expected])
+        expect(coder.decodeParams([t.type], t.value)).toEqual([t.expected])
       })
     }
     test({
@@ -110,37 +108,37 @@ describe('lib/solidity/coder', function () {
 
     test({
       type: 'int',
-      expected: new bn(1),
+      expected: new BigNumber(1),
       value: '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
       type: 'int',
-      expected: new bn(1),
+      expected: new BigNumber(1),
       value: '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
       type: 'int',
-      expected: new bn(16),
+      expected: new BigNumber(16),
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
       type: 'int',
-      expected: new bn(-1),
+      expected: new BigNumber(-1),
       value: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
     })
     test({
       type: 'int256',
-      expected: new bn(1),
+      expected: new BigNumber(1),
       value: '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
       type: 'int256',
-      expected: new bn(16),
+      expected: new BigNumber(16),
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
       type: 'int256',
-      expected: new bn(-1),
+      expected: new BigNumber(-1),
       value: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
     })
     test({
@@ -162,12 +160,12 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'int64',
-      expected: new bn(16),
+      expected: new BigNumber(16),
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
       type: 'int128',
-      expected: new bn(16),
+      expected: new BigNumber(16),
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
@@ -179,7 +177,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'int[]',
-      expected: [new bn(3)],
+      expected: [new BigNumber(3)],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -187,7 +185,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'int256[]',
-      expected: [new bn(3)],
+      expected: [new BigNumber(3)],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -195,7 +193,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'int[]',
-      expected: [new bn(1), new bn(2), new bn(3)],
+      expected: [new BigNumber(1), new BigNumber(2), new BigNumber(3)],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000003' +
@@ -206,8 +204,8 @@ describe('lib/solidity/coder', function () {
     test({
       type: 'int[3][]',
       expected: [
-        [new bn(1), new bn(2), new bn(3)],
-        [new bn(4), new bn(5), new bn(6)]
+        [new BigNumber(1), new BigNumber(2), new BigNumber(3)],
+        [new BigNumber(4), new BigNumber(5), new BigNumber(6)]
       ],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
@@ -222,32 +220,32 @@ describe('lib/solidity/coder', function () {
 
     test({
       type: 'uint',
-      expected: new bn(1),
+      expected: new BigNumber(1),
       value: '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
       type: 'uint',
-      expected: new bn(1),
+      expected: new BigNumber(1),
       value: '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
       type: 'uint',
-      expected: new bn(16),
+      expected: new BigNumber(16),
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
       type: 'uint',
-      expected: new bn('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'),
+      expected: new BigNumber('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'),
       value: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
     })
     test({
       type: 'uint256',
-      expected: new bn(1),
+      expected: new BigNumber(1),
       value: '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
       type: 'uint256',
-      expected: new bn(16),
+      expected: new BigNumber(16),
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
@@ -262,12 +260,12 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'uint64',
-      expected: new bn(16),
+      expected: new BigNumber(16),
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
       type: 'uint128',
-      expected: new bn(16),
+      expected: new BigNumber(16),
       value: '0000000000000000000000000000000000000000000000000000000000000010'
     })
     test({
@@ -279,7 +277,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'uint[]',
-      expected: [new bn(3)],
+      expected: [new BigNumber(3)],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -287,7 +285,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'uint256[]',
-      expected: [new bn(3)],
+      expected: [new BigNumber(3)],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -295,7 +293,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'uint[]',
-      expected: [new bn(1), new bn(2), new bn(3)],
+      expected: [new BigNumber(1), new BigNumber(2), new BigNumber(3)],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000003' +
@@ -306,8 +304,8 @@ describe('lib/solidity/coder', function () {
     test({
       type: 'uint[3][]',
       expected: [
-        [new bn(1), new bn(2), new bn(3)],
-        [new bn(4), new bn(5), new bn(6)]
+        [new BigNumber(1), new BigNumber(2), new BigNumber(3)],
+        [new BigNumber(4), new BigNumber(5), new BigNumber(6)]
       ],
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
@@ -522,7 +520,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(uint256,uint256)',
-      expected: new Tuple(new bn(5), new bn(5)),
+      expected: new Tuple(new BigNumber(5), new BigNumber(5)),
       value:
         '0000000000000000000000000000000000000000000000000000000000000005' +
         '0000000000000000000000000000000000000000000000000000000000000005'
@@ -560,7 +558,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(uint256,string,bytes)',
-      expected: new Tuple(new bn(4), 'what what', hexToBytes('0xabcdef12345678')),
+      expected: new Tuple(new BigNumber(4), 'what what', hexToBytes('0xabcdef12345678')),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '0000000000000000000000000000000000000000000000000000000000000004' +
@@ -573,7 +571,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       type: 'tuple(uint128,string,bytes)',
-      expected: new Tuple(new bn(666), 'encode your kids', hexToBytes('0x656e636f646520796f75722077696665')),
+      expected: new Tuple(new BigNumber(666), 'encode your kids', hexToBytes('0x656e636f646520796f75722077696665')),
       value:
         '0000000000000000000000000000000000000000000000000000000000000020' +
         '000000000000000000000000000000000000000000000000000000000000029a' +
@@ -589,7 +587,7 @@ describe('lib/solidity/coder', function () {
       expected: new Tuple(
         'foo bar',
         hexToBytes('0xaabbccddeeff0000000000000000000000000000000000000000000000000000'),
-        new bn(321),
+        new BigNumber(321),
         true
       ),
       value:
@@ -620,7 +618,7 @@ describe('lib/solidity/coder', function () {
       type: 'tuple(tuple(address,address),tuple(uint256,uint256))',
       expected: [
         ['0x1234567890123456789012345678901234567890', '0x1234567890123456789012345678901234567890'],
-        [new bn(5), new bn(6)]
+        [new BigNumber(5), new BigNumber(6)]
       ],
       value:
         '0000000000000000000000001234567890123456789012345678901234567890' +
@@ -632,7 +630,7 @@ describe('lib/solidity/coder', function () {
       type: 'tuple(tuple(address,address),tuple(uint256,uint256),tuple(string,string))',
       expected: [
         ['0x1234567890123456789012345678901234567890', '0x1234567890123456789012345678901234567890'],
-        [new bn(5), new bn(6)],
+        [new BigNumber(5), new BigNumber(6)],
         ['a string', 'another string']
       ],
       value:
@@ -657,12 +655,12 @@ describe('lib/solidity/coder', function () {
     let test = function (t) {
       it('should turn ' + t.values + ' to ' + t.expected, function () {
         expect(
-          coder.coder.decodeParams(
+          coder.decodeParams(
             t.types.map((type) => parseParamType(type)),
             t.values
           )
         ).toEqual(t.expected)
-        expect(coder.coder.decodeParams(t.types, t.values)).toEqual(t.expected)
+        expect(coder.decodeParams(t.types, t.values)).toEqual(t.expected)
       })
     }
 
@@ -701,8 +699,8 @@ describe('lib/solidity/coder', function () {
     test({
       types: ['int[2]', 'int256[3]'],
       expected: [
-        [new bn(1), new bn(2)],
-        [new bn(3), new bn(4), new bn(5)]
+        [new BigNumber(1), new BigNumber(2)],
+        [new BigNumber(3), new BigNumber(4), new BigNumber(5)]
       ],
       values:
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -713,14 +711,14 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['int'],
-      expected: [new bn(1)],
+      expected: [new BigNumber(1)],
       values: '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
       types: ['uint[2]', 'uint256[3]'],
       expected: [
-        [new bn(1), new bn(2)],
-        [new bn(3), new bn(4), new bn(5)]
+        [new BigNumber(1), new BigNumber(2)],
+        [new BigNumber(3), new BigNumber(4), new BigNumber(5)]
       ],
       values:
         '0000000000000000000000000000000000000000000000000000000000000001' +
@@ -731,7 +729,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['uint'],
-      expected: [new bn(1)],
+      expected: [new BigNumber(1)],
       values: '0000000000000000000000000000000000000000000000000000000000000001'
     })
     test({
@@ -765,7 +763,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['int', 'string', 'int'],
-      expected: [new bn(1), 'gavofyork', new bn(5)],
+      expected: [new BigNumber(1), 'gavofyork', new BigNumber(5)],
       values:
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000060' +
@@ -775,21 +773,28 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['bytes32', 'int'],
-      expected: [hexToBytes('0x6761766f66796f726b0000000000000000000000000000000000000000000000'), new bn(5)],
+      expected: [hexToBytes('0x6761766f66796f726b0000000000000000000000000000000000000000000000'), new BigNumber(5)],
       values:
         '6761766f66796f726b0000000000000000000000000000000000000000000000' +
         '0000000000000000000000000000000000000000000000000000000000000005'
     })
     test({
       types: ['int', 'bytes32'],
-      expected: [new bn(5), hexToBytes('0x6761766f66796f726b0000000000000000000000000000000000000000000000')],
+      expected: [new BigNumber(5), hexToBytes('0x6761766f66796f726b0000000000000000000000000000000000000000000000')],
       values:
         '0000000000000000000000000000000000000000000000000000000000000005' +
         '6761766f66796f726b0000000000000000000000000000000000000000000000'
     })
     test({
       types: ['int', 'string', 'int', 'int', 'int', 'int[]'],
-      expected: [new bn(1), 'gavofyork', new bn(2), new bn(3), new bn(4), [new bn(5), new bn(6), new bn(7)]],
+      expected: [
+        new BigNumber(1),
+        'gavofyork',
+        new BigNumber(2),
+        new BigNumber(3),
+        new BigNumber(4),
+        [new BigNumber(5), new BigNumber(6), new BigNumber(7)]
+      ],
       values:
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '00000000000000000000000000000000000000000000000000000000000000c0' +
@@ -807,12 +812,12 @@ describe('lib/solidity/coder', function () {
     test({
       types: ['int', 'bytes', 'int', 'bytes'],
       expected: [
-        new bn(5),
+        new BigNumber(5),
         hexToBytes(
           '0x131a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
             '231a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
         ),
-        new bn(3),
+        new BigNumber(3),
         hexToBytes(
           '0x331a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b' +
             '431a3afc00d1b1e3461b955e53fc866dcf303b3eb9f4c16f89e388930f48134b'
@@ -856,7 +861,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['int[2][1]', 'bool'],
-      expected: [[[new bn(1), new bn(2)]], true],
+      expected: [[[new BigNumber(1), new BigNumber(2)]], true],
       values:
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -864,7 +869,7 @@ describe('lib/solidity/coder', function () {
     })
     test({
       types: ['uint[2][1]', 'bool'],
-      expected: [[[new bn(1), new bn(2)]], true],
+      expected: [[[new BigNumber(1), new BigNumber(2)]], true],
       values:
         '0000000000000000000000000000000000000000000000000000000000000001' +
         '0000000000000000000000000000000000000000000000000000000000000002' +
@@ -894,7 +899,7 @@ describe('lib/solidity/coder', function () {
       types: ['string', 'tuple(uint256,string)', 'bool', 'tuple(bytes32,bytes)'],
       expected: [
         'the string',
-        new Tuple(new bn(56), 'some string'),
+        new Tuple(new BigNumber(56), 'some string'),
         true,
         new Tuple(
           hexToBytes('0x1234567890123456789012345678901234567890123456789012345678901234'),
@@ -927,7 +932,7 @@ describe('lib/solidity/coder', function () {
       expected: [
         true,
         [false, [true, [false, true]]],
-        [new bn(256), [new bn(76), new bn(67), [new bn(1337), 'hello']]],
+        [new BigNumber(256), [new BigNumber(76), new BigNumber(67), [new BigNumber(1337), 'hello']]],
         'last param'
       ],
       values:
@@ -1079,8 +1084,12 @@ describe('lib/solidity/coder', function () {
           false,
           '0xd13b6e9058E58B8677233CEc2315e1D9e77C79C4'
         ),
-        new bn(-6),
-        new Tuple(new bn(-7), new bn(5), new Tuple('foobar', new bn(-8), '0xB1eeF147028E9f480DbC5ccaA3277D417D1b85F0'))
+        new BigNumber(-6),
+        new Tuple(
+          new BigNumber(-7),
+          new BigNumber(5),
+          new Tuple('foobar', new BigNumber(-8), '0xB1eeF147028E9f480DbC5ccaA3277D417D1b85F0')
+        )
       ],
       values:
         '00000000000000000000000000000000000000000000000000000000000000c0' +
@@ -1141,7 +1150,7 @@ describe('lib/solidity/coder', function () {
             '0x1234567890123456789012345678901234567890',
             hexToBytes('0xffffffffffffffffffffffffffffffffabdef123849181759adebfadecaefbae')
           ),
-          new Tuple(new bn(-6124612), new bn(89000))
+          new Tuple(new BigNumber(-6124612), new BigNumber(89000))
         ]
       ],
       values:

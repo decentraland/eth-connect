@@ -1,14 +1,13 @@
 import expect from 'expect'
-import * as coder from '../src/solidity/coder'
-import { hexToBytes } from '../src'
+import { coder, hexToBytes } from '../dist/eth-connect'
 import { parseParamType } from '../src/abi/parser'
 
 describe('lib/solidity/coder', function () {
   describe('encodeParam', function () {
     let test = function (t) {
       it('should turn ' + t.type + ' ' + t.value + ' to ' + t.expected, function () {
-        expect(coder.coder.encodeParams([parseParamType(t.type)], [t.value])).toEqual(t.expected)
-        expect(coder.coder.encodeParams([t.type], [t.value])).toEqual(t.expected)
+        expect(coder.encodeParams([parseParamType(t.type)], [t.value])).toEqual(t.expected)
+        expect(coder.encodeParams([t.type], [t.value])).toEqual(t.expected)
       })
     }
 
@@ -486,12 +485,12 @@ describe('lib/solidity/coder', function () {
     let test = function (t) {
       it('should turn ' + t.values + ' to ' + t.expected, function () {
         expect(
-          coder.coder.encodeParams(
+          coder.encodeParams(
             t.types.map((type) => parseParamType(type)),
             t.values
           )
         ).toEqual(t.expected)
-        expect(coder.coder.encodeParams(t.types, t.values)).toEqual(t.expected)
+        expect(coder.encodeParams(t.types, t.values)).toEqual(t.expected)
       })
     }
 
@@ -1071,12 +1070,12 @@ describe('lib/solidity/coder', function () {
   it('encodeParams', function () {
     tests.forEach(function (test) {
       expect(
-        coder.coder.encodeParams(
+        coder.encodeParams(
           test.types.map((type) => parseParamType(type)),
           test.params
         )
       ).toEqual(test.result)
-      expect(coder.coder.encodeParams(test.types, test.params)).toEqual(test.result)
+      expect(coder.encodeParams(test.types, test.params)).toEqual(test.result)
     })
   })
 
