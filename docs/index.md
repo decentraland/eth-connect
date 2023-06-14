@@ -110,6 +110,7 @@
 |  Namespace | Description |
 |  --- | --- |
 |  [BigNumber](./eth-connect.bignumber.md) |  |
+|  [coder](./eth-connect.coder.md) | SolidityCoder prototype should be used to encode/decode solidity params of any type |
 |  [eth](./eth-connect.eth.md) |  |
 
 ## Variables

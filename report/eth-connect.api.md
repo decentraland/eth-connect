@@ -606,6 +606,30 @@ export function bytesToUtf8String(bytesOrHexString: Uint8Array | string): string
 // @public (undocumented)
 export type Callback = (err: Error | null, message?: any) => void;
 
+// Warning: (ae-missing-release-tag) "coder" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public
+export namespace coder {
+    // Warning: (tsdoc-undefined-tag) The TSDoc tag "@method" is not defined in this configuration
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-escape-right-brace) The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag
+    // Warning: (tsdoc-malformed-inline-tag) Expecting a TSDoc tag starting with "{@"
+    // Warning: (tsdoc-undefined-tag) The TSDoc tag "@return" is not defined in this configuration
+    export function decodeParams(outputs: ReadonlyArray<Readonly<AbiOutput | string>>, bytes: string): any;
+    // Warning: (tsdoc-undefined-tag) The TSDoc tag "@method" is not defined in this configuration
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+    // Warning: (tsdoc-param-tag-with-invalid-type) The @param block should not include a JSDoc-style '{type}'
+    // Warning: (tsdoc-escape-right-brace) The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag
+    // Warning: (tsdoc-malformed-inline-tag) Expecting a TSDoc tag starting with "{@"
+    // Warning: (tsdoc-undefined-tag) The TSDoc tag "@return" is not defined in this configuration
+    export function encodeParams(types: ReadonlyArray<Readonly<AbiOutput | string>>, params: any[]): string;
+}
+
 // Warning: (ae-missing-release-tag) "concatBytes" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
