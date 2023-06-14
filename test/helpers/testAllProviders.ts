@@ -2,10 +2,7 @@ import 'isomorphic-fetch'
 import fetch from 'node-fetch'
 
 import { NodeConnectionFactory } from '../helpers/NodeConnectionFactory'
-import { RequestManager, ContractFactory } from '../../dist/eth-connect'
-
-import { HTTPProvider } from '../../src/providers/HTTPProvider'
-import { WebSocketProvider } from '../../src/providers/WebSocketProvider'
+import { RequestManager, ContractFactory, HTTPProvider, WebSocketProvider } from '../../dist/eth-connect'
 import { w3cwebsocket } from 'websocket'
 
 export function testAllProviders(doTest: (x: RequestManager) => void) {
@@ -48,7 +45,9 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
       })
     })
 
-    const rm = new RequestManager(new HTTPProvider('http://127.0.0.1:7654', { fetch: Math.random() > 0.5 ? fetch : undefined }))
+    const rm = new RequestManager(
+      new HTTPProvider('http://127.0.0.1:7654', { fetch: Math.random() > 0.5 ? fetch : undefined })
+    )
 
     it('should get the network', async () => {
       console.log('Network version:', await rm.net_version())
