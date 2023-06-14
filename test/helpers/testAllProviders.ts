@@ -20,6 +20,10 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
       }
     })
 
+    it('initialize the provider', async () => {
+      await provider.initialize()
+    })
+
     it('should get the network', async () => {
       console.log('Network version:', await rm.net_version())
     })
@@ -30,8 +34,8 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
     doTest(rm)
 
-    it('closes the provider', (done) => {
-      provider.close(done)
+    it('closes the provider', async () => {
+      await provider.disconnect()
     })
   })
 
@@ -59,8 +63,8 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
     doTest(rm)
 
-    it('closes the provider', (done) => {
-      provider.close(done)
+    it('closes the provider', async () => {
+      await provider.close()
     })
   })
 

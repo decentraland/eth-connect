@@ -51,7 +51,7 @@ describe('test types', () => {
     // TODO: Move this to its own file
     expect(() => toRPC({ id: null } as any)).toThrow()
     expect(() => toRPC({ id: 1.1 } as any)).toThrow()
-    expect(() => toRPC({ id: 'asd' } as any)).toThrow()
+    expect(() => toRPC({ id: '0xaff' } as any)).toThrow()
     expect(() => toRPC({ id: 1, method: '' } as any)).toThrow()
     expect(() => toRPC({ id: 1, method: null } as any)).toThrow()
     expect(() => toRPC({ id: 1, method: 123 } as any)).toThrow()
@@ -61,7 +61,7 @@ describe('test types', () => {
   })
 
   testReturnType(requestManager, 'web3_clientVersion', 'string')
-  testReturnType(requestManager, 'web3_sha3', 'string', 'asd')
+  testReturnType(requestManager, 'web3_sha3', 'string', '0xaff')
   testReturnType(requestManager, 'net_version', 'string')
   testReturnType(requestManager, 'net_peerCount', 'number')
   testReturnType(requestManager, 'net_listening', 'boolean')
@@ -79,14 +79,14 @@ describe('test types', () => {
 
   testReturnType(requestManager, 'eth_getCode', 'string', address, 'latest')
 
-  testReturnType(requestManager, 'eth_sign', 'string', address, 'asd')
+  testReturnType(requestManager, 'eth_sign', 'string', address, '0xaff')
   testReturnType(requestManager, 'eth_getBlockByHash', 'object', '0x0', true)
   testReturnType(requestManager, 'eth_newFilter', 'data', {})
   testReturnType(requestManager, 'eth_newBlockFilter', 'data')
   testReturnType(requestManager, 'eth_newPendingTransactionFilter', 'data')
   testReturnType(requestManager, 'eth_getFilterChanges', 'array', '0x01')
   testReturnType(requestManager, 'eth_getFilterLogs', 'array', '0x01')
-  testReturnType(requestManager, 'eth_getLogs', 'array', '0x01')
+  testReturnType(requestManager, 'eth_getLogs', 'array', ['0x01'])
   testReturnType(requestManager, 'eth_uninstallFilter', 'boolean', '0x01')
   testReturnType(requestManager, 'eth_uninstallFilter', 'boolean', '0x02')
   testReturnType(requestManager, 'eth_uninstallFilter', 'boolean', '0x03')

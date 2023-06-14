@@ -347,7 +347,7 @@ export namespace eth {
   export const eth_getLogs = new Method({
     callName: 'eth_getLogs',
     params: 1,
-    inputFormatter: [utils.toHex],
+    inputFormatter: [utils.toArray],
     outputFormatter: utils.toArray
   })
 
