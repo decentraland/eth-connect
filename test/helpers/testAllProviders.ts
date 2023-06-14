@@ -33,8 +33,8 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
     doTest(rm)
 
-    it('closes the provider', async () => {
-      await provider.disconnect()
+    it('closes the provider', (done) => {
+      provider.close(done)
     })
   })
 
@@ -48,9 +48,7 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
       })
     })
 
-    const rm = new RequestManager(
-      new HTTPProvider('http://127.0.0.1:7654', { fetch: Math.random() > 0.5 ? fetch : undefined })
-    )
+    const rm = new RequestManager(new HTTPProvider('http://127.0.0.1:7654', { fetch: Math.random() > 0.5 ? fetch : undefined }))
 
     it('should get the network', async () => {
       console.log('Network version:', await rm.net_version())
@@ -62,8 +60,8 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
     doTest(rm)
 
-    it('closes the provider', async () => {
-      await provider.close()
+    it('closes the provider', (done) => {
+      provider.close(done)
     })
   })
 
