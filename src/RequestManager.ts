@@ -65,8 +65,8 @@ export function inject(target: RequestManager, propertyKey: keyof typeof eth) {
   }
 
   Object.defineProperty(target, propertyKey, {
-    value: function (this: RequestManager) {
-      return method.execute(this, ...arguments)
+    value: function (this: RequestManager, ...args: any[]) {
+      return method.execute(this, ...args)
     }
   })
 }
@@ -472,15 +472,15 @@ export class RequestManager {
     try {
       status = await this.eth_getTransactionByHash(hash)
       // not found
-      if (status == null) {
+      if (status === null) {
         return null
       }
     } catch (e) {
       return null
     }
 
-    if (status.blockNumber == null) {
-      if (currentNonce != null) {
+    if (status.blockNumber === null) {
+      if (currentNonce !== null) {
         // replaced
         if (status.nonce < currentNonce) {
           const tx: ReplacedTransaction = {
@@ -516,7 +516,7 @@ export class RequestManager {
       receipt = await this.eth_getTransactionReceipt(hash)
 
       // reverted
-      if (receipt == null || receipt.status === 0x0) {
+      if (receipt === null || receipt.status === 0x0) {
         const tx: RevertedTransaction = {
           type: TransactionType.reverted,
           ...status

@@ -52,8 +52,13 @@ export class WebSocketProvider<T extends IWebSocket> {
     this.isDisposed = true
     const connection = this.connection
     this.timeout(new Error('Provider disposed.'))
-    // tslint:disable-next-line:no-floating-promises
-    connection.then(($) => $.close())
+    connection
+      .then(($) => $.close())
+      .catch((err: any) => {
+        if (this.debug) {
+          console.error(err)
+        }
+      })
   }
 
   /* istanbul ignore next */
@@ -105,7 +110,6 @@ export class WebSocketProvider<T extends IWebSocket> {
           const s = JSON.stringify($)
 
           /* istanbul ignore if */
-          // tslint:disable-next-line:no-console
           if (this.debug) console.log('SEND >> ' + s)
           ws.send(s)
         })
@@ -208,8 +212,13 @@ export class WebSocketProvider<T extends IWebSocket> {
 
   private connect() {
     if (this.connection && !this.connection.isPending) {
-      // tslint:disable-next-line
-      this.connection.then(($) => $.close())
+      this.connection
+        .then(($) => $.close())
+        .catch((err: any) => {
+          if (this.debug) {
+            console.error(err)
+          }
+        })
     }
 
     if (!this.connection || !this.connection.isPending) {
@@ -245,7 +254,6 @@ export class WebSocketProvider<T extends IWebSocket> {
       const data = typeof e.data === 'string' ? e.data : ''
 
       /* istanbul ignore if */
-      // tslint:disable-next-line:no-console
       if (this.debug) console.log('RECV << ' + e.data)
 
       this.parseResponse(data).forEach((result) => {

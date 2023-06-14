@@ -1102,7 +1102,7 @@ export class Property<V> {
     // (undocumented)
     getter: string;
     // (undocumented)
-    outputFormatter: Function;
+    outputFormatter: (_: any) => V;
 }
 
 // @public (undocumented)

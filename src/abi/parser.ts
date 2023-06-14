@@ -72,7 +72,7 @@ export function parseSignatureFunction(fragment: string): AbiFunction {
   // We have outputs
   if (comps.length > 1) {
     const right = comps[1].match(regexParen)
-    if (!right || right[1].trim() != '' || right[3].trim() != '') {
+    if (!right || right[1].trim() !== '' || right[3].trim() !== '') {
       throw new Error('unexpected tokens')
     }
 
@@ -155,7 +155,7 @@ function parseParam(param: string, allowIndexed?: boolean): AbiInput {
         }
         node.type = verifyType(node.type)
 
-        var child = node
+        const child = node
         node = node.parent
         if (!node) {
           throw throwError(i)
@@ -174,7 +174,7 @@ function parseParam(param: string, allowIndexed?: boolean): AbiInput {
         }
         node.type = verifyType(node.type)
 
-        var sibling: ParseNode = { type: '', name: '', parent: node.parent, state: { allowType: true } }
+        const sibling: ParseNode = { type: '', name: '', parent: node.parent, state: { allowType: true } }
         node.parent.components.push(sibling)
         delete node.parent
         node = sibling

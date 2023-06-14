@@ -46,4 +46,4 @@ export const ETH_UNITS = [
 ]
 
 export const ETH_POLLING_TIMEOUT = 1000 / 2
-export const defaultBlock: 'latest' = 'latest'
+export const defaultBlock = 'latest'

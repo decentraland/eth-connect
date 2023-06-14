@@ -8,13 +8,13 @@ export type Arrayish = string | ArrayLike<number>
 ///////////////////////////////
 
 export function isArrayish(value: any): value is Arrayish {
-  if (!value || parseInt(String(value.length)) != value.length || typeof value === 'string') {
+  if (!value || parseInt(String(value.length)) !== value.length || typeof value === 'string') {
     return false
   }
 
   for (let i = 0; i < value.length; i++) {
     const v = value[i]
-    if (v < 0 || v >= 256 || parseInt(String(v)) != v) {
+    if (v < 0 || v >= 256 || parseInt(String(v)) !== v) {
       return false
     }
   }
@@ -23,7 +23,7 @@ export function isArrayish(value: any): value is Arrayish {
 }
 
 export function arrayify(value: Arrayish): Uint8Array {
-  if (value == null) {
+  if (value === null) {
     throw createError('cannot convert null value to array', INVALID_ARGUMENT, { arg: 'value', value: value })
   }
 
