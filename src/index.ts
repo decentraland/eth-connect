@@ -21,6 +21,7 @@ export * from './utils/utils'
 export * from './Schema'
 export * from './utils/utf8'
 export * from './utils/jsonrpc'
+export { coder } from './solidity/coder'
 
 export { IFuture } from 'fp-future'
 
