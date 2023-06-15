@@ -18,12 +18,12 @@
 import * as utils from './utils/utils'
 import * as formatters from './utils/formatters'
 import * as errors from './utils/errors'
+import { RPCSendableMessage } from './utils/jsonrpc'
 
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
 import { AbiFunction, AbiInput, AbiOutput, Quantity } from './Schema'
-import { RPCSendableMessage } from 'utils/jsonrpc'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
