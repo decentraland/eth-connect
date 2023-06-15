@@ -98,10 +98,4 @@ export class HTTPProvider {
       callback(e)
     }
   }
-
-  send(payload: RPCMessage | RPCMessage[]) {
-    return new Promise((resolve, reject) => {
-      this.sendAsync(payload, (err: Error | null, message?: any) => {})
-    })
-  }
 }
