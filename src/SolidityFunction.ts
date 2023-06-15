@@ -23,6 +23,7 @@ import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
 import { Contract } from './Contract'
 import { AbiFunction, AbiInput, AbiOutput, Quantity } from './Schema'
+import { RPCSendableMessage } from 'utils/jsonrpc'
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
@@ -195,6 +196,12 @@ export class SolidityFunction {
       {
         estimateGas: this.estimateGas.bind(this, contract.requestManager, contract.address),
         toPayload: (...args: any[]) => this.toPayload(args),
+        toRPCMessage: (...args: any[]): RPCSendableMessage => {
+          const defaultBlock = this.extractDefaultBlock(args)
+          const payload = this.toPayload(args)
+          payload.to = contract.address
+          return { method: 'eth_call', params: [payload, defaultBlock] }
+        },
         unpackOutput: (output: string) => this.unpackOutput(output)
       }
     )
