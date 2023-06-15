@@ -42,6 +42,7 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     const server = createGanacheServer()
     before(async () => {
       await server.listen(7654)
+      await new Promise((resolve) => setTimeout(resolve, 200))
     })
 
     const rm = new RequestManager(
