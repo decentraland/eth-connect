@@ -39,10 +39,9 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
   })
 
   describe('ganache(http):', function () {
-    const provider = createGanacheServer()
-
-    it('should start the server', async () => {
-      return provider.listen(7654)
+    const server = createGanacheServer()
+    before(async () => {
+      await server.listen(7654)
     })
 
     const rm = new RequestManager(
@@ -59,8 +58,8 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
     doTest(rm)
 
-    it('closes the provider', async () => {
-      await provider.close()
+    after(async () => {
+      await server.close()
     })
   })
 
