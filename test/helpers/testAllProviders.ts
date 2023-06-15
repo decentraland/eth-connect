@@ -4,6 +4,7 @@ import fetch from 'node-fetch'
 import { RequestManager, ContractFactory, HTTPProvider, WebSocketProvider } from '../../dist/eth-connect'
 import { w3cwebsocket } from 'websocket'
 import { createGanacheProvider, createGanacheServer } from '../helpers/ganache'
+import { Server } from 'ganache'
 
 export function testAllProviders(doTest: (x: RequestManager) => void) {
   describe('ganache(injected):', function () {
@@ -39,8 +40,9 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
   })
 
   describe('ganache(http):', function () {
-    const server = createGanacheServer()
+    let server: Server
     before(async () => {
+      server = createGanacheServer()
       await server.listen(7654)
       const provider = server.provider
       await provider.initialize()
