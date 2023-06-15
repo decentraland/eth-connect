@@ -7,6 +7,37 @@ import { createGanacheProvider, createGanacheServer } from '../helpers/ganache'
 import { Server } from 'ganache'
 
 export function testAllProviders(doTest: (x: RequestManager) => void) {
+  describe('ganache(http):', function () {
+    let server: Server
+    before(async () => {
+      server = createGanacheServer()
+      await server.listen(7654)
+      const provider = server.provider
+      await provider.initialize()
+      try {
+        await rm.net_version()
+      } catch (err) {}
+    })
+
+    const rm = new RequestManager(
+      new HTTPProvider('http://127.0.0.1:7654', { fetch: Math.random() > 0.5 ? fetch : undefined })
+    )
+
+    it('should get the network', async () => {
+      console.log('Network version:', await rm.net_version())
+    })
+
+    it('should get the protocol version', async () => {
+      console.log('Protocol version:', await rm.eth_protocolVersion())
+    })
+
+    doTest(rm)
+
+    after(async () => {
+      await server.close()
+    })
+  })
+
   describe('ganache(injected):', function () {
     const provider = createGanacheProvider()
     const rm = new RequestManager(provider)
@@ -36,37 +67,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
     it('closes the provider', async () => {
       await provider.disconnect()
-    })
-  })
-
-  describe('ganache(http):', function () {
-    let server: Server
-    before(async () => {
-      server = createGanacheServer()
-      await server.listen(7654)
-      const provider = server.provider
-      await provider.initialize()
-      try {
-        await rm.net_version()
-      } catch (err) {}
-    })
-
-    const rm = new RequestManager(
-      new HTTPProvider('http://127.0.0.1:7654', { fetch: Math.random() > 0.5 ? fetch : undefined })
-    )
-
-    it('should get the network', async () => {
-      console.log('Network version:', await rm.net_version())
-    })
-
-    it('should get the protocol version', async () => {
-      console.log('Protocol version:', await rm.eth_protocolVersion())
-    })
-
-    doTest(rm)
-
-    after(async () => {
-      await server.close()
     })
   })
 
