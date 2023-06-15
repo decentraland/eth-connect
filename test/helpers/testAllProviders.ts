@@ -42,10 +42,11 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     const server = createGanacheServer()
     before(async () => {
       await server.listen(7654)
-      // NOTE(hugo): I had to add this because sometimes ganache's server is not ready after the listen promise is resolved,
-      // although according to what I gather from reading the comments in the doc it should be.
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      console.log('SERVER STATUS', server.status)
+      const provider = server.provider
+      await provider.initialize()
+      try {
+        await rm.net_version()
+      } catch (err) {}
     })
 
     const rm = new RequestManager(
@@ -53,7 +54,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     )
 
     it('should get the network', async () => {
-      console.log('SERVER STATUS', server.status)
       console.log('Network version:', await rm.net_version())
     })
 
