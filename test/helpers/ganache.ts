@@ -33,6 +33,9 @@ export function createGanacheServer() {
         }
       ],
       defaultBalance: 999999
+    },
+    server: {
+      ws: true
     }
   })
 }
