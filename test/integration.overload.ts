@@ -100,9 +100,11 @@ function doTest(requestManager: RequestManager) {
   })
 
   it('should get the balance', async () => {
-    const coinbase = await requestManager.eth_coinbase()
-    console.log(`> Coinbase`, coinbase)
-    const balance = await requestManager.eth_getBalance(coinbase, 'latest')
+    const accounts = await requestManager.eth_accounts()
+    const account = accounts[0]
+
+    console.log(`> Using account ${account}`)
+    const balance = await requestManager.eth_getBalance(account, 'latest')
     console.log(`> Balance ${balance}`)
     expect(balance.toNumber()).toBeGreaterThan(0)
   })
