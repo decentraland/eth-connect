@@ -50,6 +50,7 @@ jobs:
         uses: menduz/oddish-action@master
         id: publish_package
         with:
+          cwd: ./dist
           registry-url: 'https://registry.npmjs.org'
           access: public
           ## use action runId instead of current date to generate snapshot numbers

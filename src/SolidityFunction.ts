@@ -18,6 +18,7 @@
 import * as utils from './utils/utils'
 import * as formatters from './utils/formatters'
 import * as errors from './utils/errors'
+import { RPCSendableMessage } from './utils/jsonrpc'
 
 import { coder } from './solidity/coder'
 import { RequestManager } from './RequestManager'
@@ -195,6 +196,12 @@ export class SolidityFunction {
       {
         estimateGas: this.estimateGas.bind(this, contract.requestManager, contract.address),
         toPayload: (...args: any[]) => this.toPayload(args),
+        toRPCMessage: (...args: any[]): RPCSendableMessage => {
+          const defaultBlock = this.extractDefaultBlock(args)
+          const payload = this.toPayload(args)
+          payload.to = contract.address
+          return { method: 'eth_call', params: [payload, defaultBlock] }
+        },
         unpackOutput: (output: string) => this.unpackOutput(output)
       }
     )
