@@ -6,17 +6,12 @@ import { w3cwebsocket } from 'websocket'
 import { createGanacheProvider, createGanacheServer } from '../helpers/ganache'
 import { Server } from 'ganache'
 
-export function testAllProviders(doTest: (x: RequestManager) => void) {
+export function testWithGanacheServer(doTest: (x: RequestManager) => void) {
   describe('ganache(http):', function () {
     let server: Server
     before(async () => {
       server = createGanacheServer()
       await server.listen(7654)
-      const provider = server.provider
-      await provider.initialize()
-      try {
-        await rm.net_version()
-      } catch (err) {}
     })
 
     const rm = new RequestManager(
@@ -37,7 +32,9 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
       await server.close()
     })
   })
+}
 
+export function testAllProviders(doTest: (x: RequestManager) => void) {
   describe('ganache(injected):', function () {
     const provider = createGanacheProvider()
     const rm = new RequestManager(provider)
