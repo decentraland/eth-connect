@@ -1,12 +1,16 @@
 import expect from 'expect'
 import 'isomorphic-fetch'
 import * as EthConnect from '../dist/eth-connect'
-import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
+import { createGanacheProvider } from './helpers/ganache'
 import { abi, bytecode } from './fixtures/ERC20.json'
 
 describe('e2e.erc20', function () {
-  const nodeConnectionFactory = new NodeConnectionFactory()
-  const provider = nodeConnectionFactory.createProvider()
+  const provider = createGanacheProvider()
+
+  before(async () => {
+    await provider.initialize()
+  })
+
   doTest(new EthConnect.RequestManager(provider))
 })
 
