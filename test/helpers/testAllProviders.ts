@@ -1,14 +1,13 @@
 import 'isomorphic-fetch'
 import fetch from 'node-fetch'
 
-import { NodeConnectionFactory } from '../helpers/NodeConnectionFactory'
 import { RequestManager, ContractFactory, HTTPProvider, WebSocketProvider } from '../../dist/eth-connect'
 import { w3cwebsocket } from 'websocket'
+import { createGanacheProvider, createGanacheServer } from '../helpers/ganache'
 
 export function testAllProviders(doTest: (x: RequestManager) => void) {
   describe('ganache(injected):', function () {
-    const nodeConnectionFactory = new NodeConnectionFactory()
-    const provider = nodeConnectionFactory.createProvider()
+    const provider = createGanacheProvider()
     const rm = new RequestManager(provider)
 
     it('should return no instantiated contracts', async () => {
@@ -21,7 +20,7 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     })
 
     it('initialize the provider', async () => {
-      await provider.initialize()
+      return provider.initialize()
     })
 
     it('should get the network', async () => {
@@ -40,13 +39,10 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
   })
 
   describe('ganache(http):', function () {
-    const nodeConnectionFactory = new NodeConnectionFactory()
-    const provider = nodeConnectionFactory.createServer()
+    const provider = createGanacheServer()
 
-    it('should start the server', (done) => {
-      provider.listen(7654, function (err) {
-        done(err)
-      })
+    it('should start the server', async () => {
+      return provider.listen(7654)
     })
 
     const rm = new RequestManager(

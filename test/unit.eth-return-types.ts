@@ -1,7 +1,7 @@
 import { RequestManager, isHex, isAddress, BigNumber } from '../dist/eth-connect'
-import { NodeConnectionFactory } from './helpers/NodeConnectionFactory'
 import expect from 'expect'
 import { toRPC } from '../src/providers/common'
+import { createGanacheProvider } from './helpers/ganache'
 
 export function testReturnType(
   requestManager: RequestManager,
@@ -33,8 +33,8 @@ export function testReturnType(
 }
 
 describe('test types', () => {
-  const nodeConnectionFactory = new NodeConnectionFactory()
-  const requestManager = new RequestManager(nodeConnectionFactory.createProvider())
+  const provider = createGanacheProvider()
+  const requestManager = new RequestManager(provider)
 
   let address = '0xebc757b8bfd562158b1bfded4e1cafe332d9845a'
 
