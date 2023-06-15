@@ -70,8 +70,6 @@ export function inputBlockNumberFormatter(blockNumber: Quantity | Tag | null): s
  * Formats the input of a transaction and converts all values to HEX
  */
 export function inputCallFormatter(options: TransactionOptions) {
-  options.from = options.from
-
   if (options.from) {
     options.from = inputAddressFormatter(options.from)
   }
