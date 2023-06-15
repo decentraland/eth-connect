@@ -54,14 +54,6 @@
 |  [getAddress(address)](./eth-connect.getaddress.md) |  |
 |  [getValueOfUnit(\_unit)](./eth-connect.getvalueofunit.md) | Returns value of unit in Wei |
 |  [hexToBytes(hex)](./eth-connect.hextobytes.md) |  |
-|  [inputAddressFormatter(address)](./eth-connect.inputaddressformatter.md) |  |
-|  [inputBlockNumberFormatter(blockNumber)](./eth-connect.inputblocknumberformatter.md) |  |
-|  [inputCallFormatter(options)](./eth-connect.inputcallformatter.md) | Formats the input of a transaction and converts all values to HEX |
-|  [inputDefaultBlockNumberFormatter(blockNumber)](./eth-connect.inputdefaultblocknumberformatter.md) |  |
-|  [inputFilterOptions(options)](./eth-connect.inputfilteroptions.md) |  |
-|  [inputPostFormatter(post)](./eth-connect.inputpostformatter.md) | Formats the input of a whisper post and converts all values to HEX |
-|  [inputTransactionFormatter(options)](./eth-connect.inputtransactionformatter.md) | Formats the input of a transaction and converts all values to HEX |
-|  [inputTransactionId(txId)](./eth-connect.inputtransactionid.md) | Ensures a correct transactionId is provided |
 |  [isAddress(address)](./eth-connect.isaddress.md) | Checks if the given string is an address |
 |  [isArray(object)](./eth-connect.isarray.md) | Returns true if object is array, otherwise false |
 |  [isBigNumber(object)](./eth-connect.isbignumber.md) | Returns true if object is BigNumber, otherwise false |
@@ -72,18 +64,10 @@
 |  [isHex(value)](./eth-connect.ishex.md) | Converts value to it's decimal representation in string |
 |  [isJson(str)](./eth-connect.isjson.md) | Returns true if given string is valid json object |
 |  [isObject(object)](./eth-connect.isobject.md) | Returns true if object is Objet, otherwise false |
-|  [isPredefinedBlockNumber(blockNumber)](./eth-connect.ispredefinedblocknumber.md) | Returns true if the provided blockNumber is 'latest', 'pending' or 'earliest |
 |  [isStrictAddress(address)](./eth-connect.isstrictaddress.md) | Checks if the given string is strictly an address |
 |  [isString(value)](./eth-connect.isstring.md) | Returns true if object is string, otherwise false |
 |  [isTopic(topic)](./eth-connect.istopic.md) | Returns true if given string is a valid log topic. |
 |  [isValidResponse(response)](./eth-connect.isvalidresponse.md) | Should be called to check if jsonrpc response is valid |
-|  [outputBigNumberFormatter(output)](./eth-connect.outputbignumberformatter.md) | Should format the output to a big number |
-|  [outputBlockFormatter(block)](./eth-connect.outputblockformatter.md) | Formats the output of a block to its proper value |
-|  [outputLogFormatter(log)](./eth-connect.outputlogformatter.md) | Formats the output of a log |
-|  [outputPostFormatter(post)](./eth-connect.outputpostformatter.md) | Formats the output of a received post message |
-|  [outputSyncingFormatter(result)](./eth-connect.outputsyncingformatter.md) |  |
-|  [outputTransactionFormatter(tx)](./eth-connect.outputtransactionformatter.md) | Formats the output of a transaction to its proper values |
-|  [outputTransactionReceiptFormatter(receipt)](./eth-connect.outputtransactionreceiptformatter.md) | Formats the output of a transaction receipt to its proper values |
 |  [padLeft(str, chars, sign)](./eth-connect.padleft.md) | Should be called to pad string to expected length |
 |  [padRight(str, chars, sign)](./eth-connect.padright.md) | Should be called to pad string to expected length |
 |  [sha3(value, options)](./eth-connect.sha3.md) |  |

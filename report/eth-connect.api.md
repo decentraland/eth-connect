@@ -966,46 +966,6 @@ export type IFuture<T> = Promise<T> & {
     isPending: boolean;
 };
 
-// Warning: (ae-missing-release-tag) "inputAddressFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public (undocumented)
-export function inputAddressFormatter(address: string): string;
-
-// Warning: (ae-missing-release-tag) "inputBlockNumberFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public (undocumented)
-export function inputBlockNumberFormatter(blockNumber: Quantity | Tag | null): string | null;
-
-// Warning: (ae-missing-release-tag) "inputCallFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function inputCallFormatter(options: TransactionOptions): TransactionOptions;
-
-// Warning: (ae-missing-release-tag) "inputDefaultBlockNumberFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public (undocumented)
-export function inputDefaultBlockNumberFormatter(blockNumber?: Quantity | Tag): string | Tag | null;
-
-// Warning: (ae-missing-release-tag) "inputFilterOptions" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public (undocumented)
-export function inputFilterOptions(options: FilterOptions): FilterOptions;
-
-// Warning: (ae-missing-release-tag) "inputPostFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function inputPostFormatter(post: any): any;
-
-// Warning: (ae-missing-release-tag) "inputTransactionFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function inputTransactionFormatter(options: TransactionOptions): TransactionOptions;
-
-// Warning: (ae-missing-release-tag) "inputTransactionId" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function inputTransactionId(txId: string): string;
-
 // Warning: (ae-missing-release-tag) "IPropertyOptions" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
@@ -1045,11 +1005,6 @@ export function isJson(str: string): boolean;
 
 // @public
 export function isObject<T extends object>(object: any): object is T;
-
-// Warning: (ae-missing-release-tag) "isPredefinedBlockNumber" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function isPredefinedBlockNumber(blockNumber: Quantity | Tag): blockNumber is Tag;
 
 // @public
 export function isStrictAddress(address: any): boolean;
@@ -1126,41 +1081,6 @@ export class Method<Output> {
     };
     validateArgs(args: any[]): void;
 }
-
-// Warning: (ae-missing-release-tag) "outputBigNumberFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function outputBigNumberFormatter(output: BigNumber.Value): BigNumber;
-
-// Warning: (ae-missing-release-tag) "outputBlockFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function outputBlockFormatter(block: BlockObject | null): BlockObject | null;
-
-// Warning: (ae-missing-release-tag) "outputLogFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function outputLogFormatter(log: LogObject): LogObject;
-
-// Warning: (ae-missing-release-tag) "outputPostFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function outputPostFormatter(post: SHHFilterMessage): SHHFilterMessage | null;
-
-// Warning: (ae-missing-release-tag) "outputSyncingFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public (undocumented)
-export function outputSyncingFormatter(result: Syncing): Syncing;
-
-// Warning: (ae-missing-release-tag) "outputTransactionFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function outputTransactionFormatter(tx: TransactionObject): TransactionObject | null;
-
-// Warning: (ae-missing-release-tag) "outputTransactionReceiptFormatter" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-//
-// @public
-export function outputTransactionReceiptFormatter(receipt: TransactionReceipt): TransactionReceipt | null;
 
 // @public
 export function padLeft(str: string, chars: number, sign?: string): string;
