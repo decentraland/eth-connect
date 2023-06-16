@@ -1,5 +1,4 @@
 import 'isomorphic-fetch'
-import expect from 'expect'
 import { RequestManager, ContractFactory } from '../dist/eth-connect'
 import { abi, bytecode } from './fixtures/Catalyst.json'
 
@@ -15,7 +14,6 @@ export function doCatalystTest(requestManager: RequestManager) {
   let CatalystContract = null
 
   it('deploys a new contract', async function () {
-    this.timeout(100000)
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
 
@@ -24,7 +22,7 @@ export function doCatalystTest(requestManager: RequestManager) {
     CatalystContract = await factory.deploy({ data: bytecode, from: account, to: null })
 
     console.log(`> Tx: ${CatalystContract.transactionHash}`)
-  })
+  }, 100000)
 
   it('getCatalyst uint8array(32)', async function () {
     const t = await CatalystContract.catalystById(new Uint8Array(32))

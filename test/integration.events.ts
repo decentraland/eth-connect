@@ -1,5 +1,3 @@
-import expect from 'expect'
-
 import {
   RequestManager,
   ContractFactory,
@@ -163,7 +161,6 @@ export function doEventsTest(rm: RequestManager) {
   })
 
   it('deploys a new contract', async function () {
-    this.timeout(100000)
     const accounts = await rm.eth_accounts()
     const account = accounts[0]
 
@@ -181,7 +178,7 @@ export function doEventsTest(rm: RequestManager) {
     })
 
     console.log(`> Tx: ${TestContract.transactionHash}`)
-  })
+  }, 100000)
 
   it('gets the receipt', async () => {
     const txRecipt = await rm.eth_getTransactionReceipt(TestContract.transactionHash)
@@ -197,20 +194,18 @@ export function doEventsTest(rm: RequestManager) {
   })
 
   it('setInstructor("agustin", 99)', async function () {
-    this.timeout(5000)
     const accounts = await rm.eth_accounts()
     const from = accounts[0]
     const tx = await TestContract.setInstructor('agustin', 99, { from })
     await rm.waitForCompletion(tx)
-  })
+  }, 5000)
 
   it('setInstructorEvent("agustin", 99)', async function () {
-    this.timeout(5000)
     const accounts = await rm.eth_accounts()
     const from = accounts[0]
     const tx = await TestContract.setInstructorEvent('agustin', 99, { from })
     await rm.waitForCompletion(tx)
-  })
+  }, 5000)
 
   it('getInstructor() - index', async () => {
     const [name, age] = await TestContract.getInstructor()

@@ -1,9 +1,5 @@
 NODE = @node
-TSC = $(NODE) --max-old-space-size=4096 node_modules/.bin/tsc
-MOCHA = $(NODE) --max-old-space-size=4096 node_modules/.bin/mocha
-NYC = $(NODE) --max-old-space-size=4096 node_modules/.bin/nyc
 ROLLUP = $(NODE) --max-old-space-size=4096 node_modules/.bin/rollup
-COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
 
 ifneq ($(CI), true)
 LOCAL_ARG = --local --verbose --diagnostics
@@ -46,17 +42,7 @@ watch:
 		${TSC} --project tsconfig.json --watch
 
 test:
-		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha --timeout 60000
-test-fast:
-		node --inspect --experimental-modules node_modules/.bin/_mocha  $(TEST_ARGS)
-test-fast-bail:
-		node --inspect --experimental-modules node_modules/.bin/_mocha --bail $(TEST_ARGS)
-
-test-coveralls:
-		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose
-
-test-codecov:
-		${NYC} report --reporter=text-lcov > coverage.lcov
+		yarn test
 
 local-node:
 		# ensure ethereum/client-go image
@@ -83,7 +69,7 @@ kill-docker:
 		# stop the node
 		@(docker container kill geth-dev && docker container rm geth-dev) || true
 
-ci: | build local-node test test-codecov kill-docker
+ci: | build local-node test kill-docker
 
 test-local: | build local-node test kill-docker
 

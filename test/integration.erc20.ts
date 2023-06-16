@@ -1,7 +1,6 @@
 import 'isomorphic-fetch'
-import expect from 'expect'
 import { RequestManager, ContractFactory, BigNumber, ConfirmedTransaction, TxHash } from '../dist/eth-connect'
-import { testReturnType } from './unit.eth-return-types'
+import { expectReturnType } from './unit.eth-return-types.spec'
 import { abi, bytecode } from './fixtures/ERC20.json'
 
 export function doERC20Test(requestManager: RequestManager) {
@@ -18,7 +17,6 @@ export function doERC20Test(requestManager: RequestManager) {
   let ERC20Contract = null
 
   it('deploys a new contract', async function () {
-    this.timeout(100000)
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
 
@@ -29,7 +27,7 @@ export function doERC20Test(requestManager: RequestManager) {
     console.log(`> Tx: ${ERC20Contract.transactionHash}`)
 
     // manaAddress = txRecipt.contractAddress
-  })
+  }, 100000)
 
   it('gets the receipt', async () => {
     const txRecipt = await requestManager.eth_getTransactionReceipt(ERC20Contract.transactionHash)
@@ -124,13 +122,12 @@ export function doERC20Test(requestManager: RequestManager) {
   let txHash: TxHash = null
 
   it('should work with injected methods from ABI', async function () {
-    this.timeout(1000000)
     const mintingFinished = ERC20Contract.mintingFinished()
     expect(mintingFinished).toHaveProperty('then')
 
     const result = await mintingFinished
     expect(typeof result).toEqual('boolean')
-  })
+  }, 1000000)
 
   it('total supply must be 0', async () => {
     const totalSupply = await ERC20Contract.totalSupply()
@@ -138,7 +135,6 @@ export function doERC20Test(requestManager: RequestManager) {
   })
 
   it('mint 1', async function () {
-    this.timeout(1000000)
     const account = (await requestManager.eth_accounts())[0]
     const mintResult = (txHash = await ERC20Contract.mint(account, 10, { from: account }))
     expect(typeof mintResult).toEqual('string')
@@ -146,52 +142,44 @@ export function doERC20Test(requestManager: RequestManager) {
     expect(tx.status).toEqual('confirmed')
     expect(typeof tx.receipt).toEqual('object')
     expect(tx.receipt.status).toEqual(1)
-  })
+  }, 1000000)
 
   it('total supply 10', async function () {
-    this.timeout(1000000)
-
     const totalSupply = await ERC20Contract.totalSupply()
     expect(totalSupply.toNumber()).toEqual(10)
-  })
+  }, 1000000)
 
   it('mint 2', async function () {
-    this.timeout(1000000)
     const account = (await requestManager.eth_accounts())[0]
     const mintResult = await ERC20Contract.mint(account, 11, { from: account })
     expect(typeof mintResult).toEqual('string')
     await requestManager.waitForCompletion(mintResult)
-  })
+  }, 1000000)
 
   it('total supply 21', async function () {
-    this.timeout(1000000)
-
     const totalSupply = await ERC20Contract.totalSupply()
     expect(totalSupply.toNumber()).toEqual(21)
-  })
+  }, 1000000)
 
   it('waits the block', async function () {
     const tx = await requestManager.waitForCompletion(txHash)
 
-    testReturnType(requestManager, 'eth_getBlockTransactionCountByHash', 'number', tx.blockHash)
-    testReturnType(requestManager, 'eth_getBlockTransactionCountByNumber', 'number', tx.blockNumber)
+    await expectReturnType(requestManager, 'eth_getBlockTransactionCountByHash', 'number', tx.blockHash)
+    await expectReturnType(requestManager, 'eth_getBlockTransactionCountByNumber', 'number', tx.blockNumber)
   })
 
   it('test allowance, one argument', async function () {
-    this.timeout(30000)
     const accounts = await requestManager.eth_accounts()
     await expect(ERC20Contract.allowance(accounts[0])).rejects.toThrow('Invalid number of arguments')
-  })
+  }, 30000)
 
   it('test allowance, invalid address', async function () {
-    this.timeout(30000)
     const accounts = await requestManager.eth_accounts()
     await expect(ERC20Contract.allowance(accounts[0], '0x1')).rejects.toThrow(/invalid address/)
-  })
+  }, 30000)
 
   it('test allowance', async function () {
     requestManager.provider.debug = true
-    this.timeout(30000)
     const accounts = await requestManager.eth_accounts()
     const allowanceAddress = '0x0f5d2fb29fb7d3cfee444a200298f468908cc942'
     {
@@ -199,10 +187,9 @@ export function doERC20Test(requestManager: RequestManager) {
       const allowedNumber: BigNumber = await ERC20Contract.allowance(accounts[0], allowanceAddress)
       expect(allowedNumber).toBeInstanceOf(BigNumber)
     }
-  })
+  }, 30000)
 
   it('test allowance with malformed addressess', async function () {
-    this.timeout(30000)
     const accounts = await requestManager.eth_accounts()
     const account = ` ${accounts[0]} `
     const allowanceAddress = '   0x0f5d2fb29fb7d3cfee444a200298f468908cc942   \n'
@@ -211,10 +198,9 @@ export function doERC20Test(requestManager: RequestManager) {
       const allowedNumber: BigNumber = await ERC20Contract.allowance(account, allowanceAddress)
       expect(allowedNumber).toBeInstanceOf(BigNumber)
     }
-  })
+  }, 30000)
 
   it('test for allowance using DG parameters', async function () {
-    this.timeout(30000)
     const account = `0x6224fe0bea79701d338cf65ebc0da0caa566c544`
     const allowanceAddress = '0xBF79cE2fbd819e5aBC2327563D02a200255B7Cb3'
     {
@@ -223,5 +209,5 @@ export function doERC20Test(requestManager: RequestManager) {
       expect(allowedNumber).toBeInstanceOf(BigNumber)
     }
     requestManager.provider.debug = false
-  })
+  }, 30000)
 }

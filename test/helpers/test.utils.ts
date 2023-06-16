@@ -1,4 +1,3 @@
-import expect from 'expect'
 
 export function methodExists(object, method) {
   it('should have method ' + method + ' implemented', function () {

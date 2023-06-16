@@ -1,4 +1,3 @@
-import expect from 'expect'
 import 'isomorphic-fetch'
 import { RequestManager, isStrictAddress, isArray } from '../dist/eth-connect'
 import { WebSocketProvider } from '../src/providers/WebSocketProvider'
@@ -7,7 +6,6 @@ export function doPersonalTest(requestManager: RequestManager) {
   let account = null
 
   it('should create an account', async function () {
-    this.timeout(30000)
     // this should not fail, that's all
     account = await requestManager.personal_newAccount('test')
     expect(isStrictAddress(account)).toEqual(true) // 'is strict address'

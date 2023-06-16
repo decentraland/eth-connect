@@ -1,4 +1,3 @@
-import expect from 'expect'
 import * as utils from '../../src/utils/utils'
 import { future, IFuture } from 'fp-future'
 
