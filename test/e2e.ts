@@ -1,4 +1,3 @@
-import expect from 'expect'
 import 'isomorphic-fetch'
 import * as EthConnect from '../dist/eth-connect'
 import { createGanacheProvider } from './helpers/ganache'

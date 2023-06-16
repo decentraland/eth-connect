@@ -1,4 +1,3 @@
-import expect from 'expect'
 
 import { RequestManager, ContractFactory } from '../src'
 import { future } from 'fp-future'

@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { BigNumber, toBigNumber } from '../dist/eth-connect'
 
 let tests = [

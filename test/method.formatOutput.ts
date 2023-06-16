@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { Method } from '../src'
 
 describe('lib/web3/method', function () {

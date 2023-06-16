@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { SolidityEvent } from '../src/SolidityEvent'
 import { FilterOptions } from '../src/Schema'
 

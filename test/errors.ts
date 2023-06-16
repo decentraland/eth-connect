@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { createError } from '../src/utils/errors'
 
 describe('lib/web3/method', function () {

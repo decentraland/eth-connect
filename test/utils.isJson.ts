@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { isJson } from '../src/utils/utils'
 
 let tests = [

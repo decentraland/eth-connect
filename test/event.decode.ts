@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { AbiEvent, BigNumber } from '../src'
 import { SolidityEvent } from '../src/SolidityEvent'
 

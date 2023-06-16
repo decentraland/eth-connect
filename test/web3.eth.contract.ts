@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { FakeHttpProvider } from './helpers/FakeHttpProvider'
 import { RequestManager, ContractFactory } from '../src'
 

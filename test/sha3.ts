@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { sha3 } from '../src/utils/utils'
 
 describe('lib/utils/sha3', function () {

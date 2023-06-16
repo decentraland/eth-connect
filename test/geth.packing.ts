@@ -1,5 +1,4 @@
 import { AbiInput, AbiOutput, BigNumber, isArray, isBigNumber, coder, hexToBytes } from '../dist/eth-connect'
-import expect from 'expect'
 import { formatParamType, Tuple } from '../src/abi/coder'
 
 var packUnpackTests: Array<{ def: Partial<AbiOutput>[]; packed: string; unpacked: any }> = [

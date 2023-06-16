@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { BigNumber } from '../src'
 import * as formatters from '../src/utils/formatters'
 

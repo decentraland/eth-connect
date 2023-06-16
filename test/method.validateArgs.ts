@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { Method } from '../src'
 import * as errors from '../src/utils/errors'
 
