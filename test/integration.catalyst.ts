@@ -1,14 +1,9 @@
 import 'isomorphic-fetch'
 import expect from 'expect'
 import { RequestManager, ContractFactory } from '../dist/eth-connect'
-import { testAllProviders } from './helpers/testAllProviders'
 import { abi, bytecode } from './fixtures/Catalyst.json'
 
-describe('integration.catalyst', function () {
-  testAllProviders(doTest)
-})
-
-function doTest(requestManager: RequestManager) {
+export function doCatalystTest(requestManager: RequestManager) {
   it('should get the balance', async () => {
     const coinbase = await requestManager.eth_coinbase()
     console.log(`> Coinbase`, coinbase)

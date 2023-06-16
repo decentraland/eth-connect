@@ -10,6 +10,10 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     const provider = createGanacheProvider()
     const rm = new RequestManager(provider)
 
+    before(async () => {
+      await provider.initialize()
+    })
+
     it('should return no instantiated contracts', async () => {
       try {
         await new ContractFactory(rm, []).at('')
@@ -17,10 +21,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
       } catch (e) {
         if (e.message == 'x') throw new Error("The test didn't fail")
       }
-    })
-
-    it('initialize the provider', async () => {
-      return provider.initialize()
     })
 
     it('should get the network', async () => {
@@ -32,10 +32,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     })
 
     doTest(rm)
-
-    it('closes the provider', async () => {
-      await provider.disconnect()
-    })
   })
 
   describe('ganache(http):', function () {
@@ -62,10 +58,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     })
 
     doTest(rm)
-
-    after(async () => {
-      await server.close()
-    })
   })
 
   describe('geth(ws):', function () {
