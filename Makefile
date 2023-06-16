@@ -1,9 +1,5 @@
 NODE = @node
-TSC = $(NODE) --max-old-space-size=4096 node_modules/.bin/tsc
-MOCHA = $(NODE) --max-old-space-size=4096 node_modules/.bin/mocha
-NYC = $(NODE) --max-old-space-size=4096 node_modules/.bin/nyc
 ROLLUP = $(NODE) --max-old-space-size=4096 node_modules/.bin/rollup
-COVERALLS = $(NODE) --max-old-space-size=4096 node_modules/.bin/coveralls
 
 ifneq ($(CI), true)
 LOCAL_ARG = --local --verbose --diagnostics
@@ -47,12 +43,6 @@ watch:
 
 test:
 		npm run test
-
-test-coveralls:
-		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose
-
-test-codecov:
-		${NYC} report --reporter=text-lcov > coverage.lcov
 
 local-node:
 		# ensure ethereum/client-go image
