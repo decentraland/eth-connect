@@ -64,7 +64,6 @@ describe('eth.filter', function () {
   })
 
   it('Test EthFilter polling', async function () {
-    this.timeout(100000)
     // given
     const provider = new FakeHttpProvider()
     const rm = new RequestManager(provider)
@@ -130,7 +129,7 @@ describe('eth.filter', function () {
 
     await filter.stop()
     await didCallUninstall
-  })
+  }, 100000)
 
   it('EthBlockFilter', async function () {
     // given

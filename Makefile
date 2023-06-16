@@ -46,11 +46,7 @@ watch:
 		${TSC} --project tsconfig.json --watch
 
 test:
-		node --experimental-modules --es-module-specifier-resolution=node node_modules/.bin/nyc node_modules/mocha/bin/_mocha --timeout 60000
-test-fast:
-		node --inspect --experimental-modules node_modules/.bin/_mocha  $(TEST_ARGS)
-test-fast-bail:
-		node --inspect --experimental-modules node_modules/.bin/_mocha --bail $(TEST_ARGS)
+		npm run test
 
 test-coveralls:
 		${NYC} report --reporter=text-lcov | ${COVERALLS} --verbose

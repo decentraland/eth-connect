@@ -4,7 +4,6 @@ import { doEscrowTest } from './integration.escrow'
 import { doERC20Test } from './integration.erc20'
 import { doEventsTest } from './integration.events'
 import { doPersonalTest } from './integration.personal'
-import expect from 'expect'
 import 'isomorphic-fetch'
 import fetch from 'node-fetch'
 import { RequestManager, ContractFactory, HTTPProvider, WebSocketProvider } from '../dist/eth-connect'
@@ -16,11 +15,11 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     const provider = createGanacheProvider()
     const rm = new RequestManager(provider)
 
-    before(async () => {
+    beforeAll(async () => {
       await provider.initialize()
     })
 
-    after(async () => {
+    afterAll(async () => {
       await provider.disconnect()
     })
 
@@ -46,7 +45,7 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
   describe('ganache(http):', function () {
     const server = createGanacheServer()
-    before(async () => {
+    beforeAll(async () => {
       await server.listen(7654)
       const provider = server.provider
       await provider.initialize()
@@ -55,7 +54,7 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
       } catch (err) {}
     })
 
-    after(async () => {
+    afterAll(async () => {
       await server.close()
     })
 
@@ -80,7 +79,7 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
 
     doTest(rm)
 
-    after(() => provider.dispose())
+    afterAll(() => provider.dispose())
   })
 }
 

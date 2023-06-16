@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { Tuple } from '../src/abi/coder'
 import { BigNumber, coder, hexToBytes } from '../dist/eth-connect'
 import { parseParamType } from '../src/abi/parser'

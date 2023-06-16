@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { RequestManager, ContractFactory } from '../dist/eth-connect'
 
 /*
@@ -98,7 +97,6 @@ export function doOverloadTest(requestManager: RequestManager) {
     let TestContract = null
 
     it('deploys a new contract', async function () {
-      this.timeout(100000)
       const accounts = await requestManager.eth_accounts()
       const account = accounts[0]
 
@@ -106,7 +104,7 @@ export function doOverloadTest(requestManager: RequestManager) {
       TestContract = await factory.deploy({ data: contract.bytecode, from: account, to: null })
 
       console.log(`> Tx: ${TestContract.transactionHash}`)
-    })
+    }, 100000)
 
     it('gets the receipt', async () => {
       const txRecipt = await requestManager.eth_getTransactionReceipt(TestContract.transactionHash)

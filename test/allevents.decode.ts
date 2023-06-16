@@ -1,4 +1,3 @@
-import expect from 'expect'
 import { BigNumber } from '../src/utils/BigNumber'
 import { AllSolidityEvents } from '../src/AllSolidityEvents'
 import { RequestManager } from '../src'

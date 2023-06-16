@@ -10,7 +10,7 @@
     "strict": false,
     "resolveJsonModule": true,
     "types": [
-      "mocha",
+      "jest",
       "node"
     ],
     "stripInternal": true,

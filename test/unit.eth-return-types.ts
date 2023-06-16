@@ -1,7 +1,31 @@
 import { RequestManager, isHex, isAddress, BigNumber } from '../dist/eth-connect'
-import expect from 'expect'
 import { toRPC } from '../src/providers/common'
 import { createGanacheProvider } from './helpers/ganache'
+
+export async function expectReturnType(
+  requestManager: RequestManager,
+  method: keyof RequestManager,
+  type: string | typeof BigNumber,
+  ...args
+) {
+  const result = await requestManager[method].apply(requestManager, args)
+  try {
+    if (type === 'address') {
+      expect(isAddress(result)).toEqual(true) // 'is address'
+    } else if (type === 'data') {
+      expect(isHex(result)).toEqual(true) //  'is data with shape 0x..'
+    } else if (type === 'array') {
+      expect(result instanceof Array).toEqual(true) //  'is instance of array'
+    } else if (type === BigNumber) {
+      expect(result instanceof BigNumber).toEqual(true) //  'is instance of BigNumber'
+    } else {
+      expect(typeof result).toEqual(type)
+    }
+  } catch (e) {
+    console.dir(result)
+    throw e
+  }
+}
 
 export function testReturnType(
   requestManager: RequestManager,
@@ -12,23 +36,7 @@ export function testReturnType(
   const name = typeof type === 'function' ? type.constructor.name : type
 
   it(method + ' must be ' + name, async () => {
-    const result = await requestManager[method].apply(requestManager, args)
-    try {
-      if (type === 'address') {
-        expect(isAddress(result)).toEqual(true) // 'is address'
-      } else if (type === 'data') {
-        expect(isHex(result)).toEqual(true) //  'is data with shape 0x..'
-      } else if (type === 'array') {
-        expect(result instanceof Array).toEqual(true) //  'is instance of array'
-      } else if (type === BigNumber) {
-        expect(result instanceof BigNumber).toEqual(true) //  'is instance of BigNumber'
-      } else {
-        expect(typeof result).toEqual(type)
-      }
-    } catch (e) {
-      console.dir(result)
-      throw e
-    }
+    await expectReturnType(requestManager, method, type, ...args)
   })
 }
 

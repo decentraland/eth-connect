@@ -1,5 +1,4 @@
 import 'isomorphic-fetch'
-import expect from 'expect'
 import { RequestManager, ContractFactory, BigNumber } from '../dist/eth-connect'
 import { abi, bytecode } from './fixtures/Escrow.json'
 
@@ -15,7 +14,6 @@ export function doEscrowTest(requestManager: RequestManager) {
   let EscrowContract = null
 
   it('deploys a new contract', async function () {
-    this.timeout(100000)
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
 
@@ -24,10 +22,9 @@ export function doEscrowTest(requestManager: RequestManager) {
     EscrowContract = await factory.deploy({ data: bytecode, from: account, to: null })
 
     console.log(`> Tx: ${EscrowContract.transactionHash}`)
-  })
+  }, 100000)
 
   it('deposit', async function () {
-    this.timeout(1000000)
     const account = (await requestManager.eth_accounts())[0]
     const depositResult = await EscrowContract.deposit(account, { from: account, value: 123 })
     const tx = await requestManager.getConfirmedTransaction(depositResult)
@@ -37,5 +34,5 @@ export function doEscrowTest(requestManager: RequestManager) {
     const deposits = await EscrowContract.depositsOf(account, { from: account })
     expect(deposits).toBeInstanceOf(BigNumber)
     expect((deposits as BigNumber).eq(123)).toEqual(true)
-  })
+  }, 1000000)
 }
