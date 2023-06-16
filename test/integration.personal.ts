@@ -1,14 +1,9 @@
 import expect from 'expect'
 import 'isomorphic-fetch'
 import { RequestManager, isStrictAddress, isArray } from '../dist/eth-connect'
-import { testAllProviders } from './helpers/testAllProviders'
 import { WebSocketProvider } from '../src/providers/WebSocketProvider'
 
-describe('integration.personal', function () {
-  testAllProviders(doTest)
-})
-
-function doTest(requestManager: RequestManager) {
+export function doPersonalTest(requestManager: RequestManager) {
   let account = null
 
   it('should create an account', async function () {

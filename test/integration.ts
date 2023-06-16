@@ -1,14 +1,28 @@
+import { doCatalystTest } from './integration.catalyst'
+import { doOverloadTest } from './integration.overload'
+import { doEscrowTest } from './integration.escrow'
+import { doERC20Test } from './integration.erc20'
+import { doEventsTest } from './integration.events'
+import { doPersonalTest } from './integration.personal'
+import expect from 'expect'
 import 'isomorphic-fetch'
 import fetch from 'node-fetch'
-
-import { RequestManager, ContractFactory, HTTPProvider, WebSocketProvider } from '../../dist/eth-connect'
+import { RequestManager, ContractFactory, HTTPProvider, WebSocketProvider } from '../dist/eth-connect'
 import { w3cwebsocket } from 'websocket'
-import { createGanacheProvider, createGanacheServer } from '../helpers/ganache'
+import { createGanacheProvider, createGanacheServer } from './helpers/ganache'
 
 export function testAllProviders(doTest: (x: RequestManager) => void) {
   describe('ganache(injected):', function () {
     const provider = createGanacheProvider()
     const rm = new RequestManager(provider)
+
+    before(async () => {
+      await provider.initialize()
+    })
+
+    after(async () => {
+      await provider.disconnect()
+    })
 
     it('should return no instantiated contracts', async () => {
       try {
@@ -17,10 +31,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
       } catch (e) {
         if (e.message == 'x') throw new Error("The test didn't fail")
       }
-    })
-
-    it('initialize the provider', async () => {
-      return provider.initialize()
     })
 
     it('should get the network', async () => {
@@ -32,10 +42,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     })
 
     doTest(rm)
-
-    it('closes the provider', async () => {
-      await provider.disconnect()
-    })
   })
 
   describe('ganache(http):', function () {
@@ -47,6 +53,10 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
       try {
         await rm.net_version()
       } catch (err) {}
+    })
+
+    after(async () => {
+      await server.close()
     })
 
     const rm = new RequestManager(
@@ -62,10 +72,6 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     })
 
     doTest(rm)
-
-    after(async () => {
-      await server.close()
-    })
   })
 
   describe('geth(ws):', function () {
@@ -77,3 +83,24 @@ export function testAllProviders(doTest: (x: RequestManager) => void) {
     after(() => provider.dispose())
   })
 }
+
+describe('integration', function () {
+  testAllProviders((rm) => {
+    it('should get the balance', async () => {
+      const coinbase = await rm.eth_coinbase()
+      console.log(`> Coinbase`, coinbase)
+      const accounts = await rm.eth_accounts()
+      const account = accounts[0]
+      const balance = await rm.eth_getBalance(account, 'latest')
+      console.log(`> Balance ${balance}`)
+      expect(balance.toNumber()).toBeGreaterThan(0)
+    })
+
+    doCatalystTest(rm)
+    doOverloadTest(rm)
+    doEscrowTest(rm)
+    doERC20Test(rm)
+    doEventsTest(rm)
+    doPersonalTest(rm)
+  })
+})

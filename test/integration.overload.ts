@@ -1,6 +1,5 @@
 import expect from 'expect'
 import { RequestManager, ContractFactory } from '../dist/eth-connect'
-import { testAllProviders } from './helpers/testAllProviders'
 
 /*
 
@@ -85,76 +84,56 @@ const contract = {
   ]
 }
 
-describe('integration.overload', function () {
-  testAllProviders(doTest)
-})
+export function doOverloadTest(requestManager: RequestManager) {
+  describe('integration.overload', function () {
+    it('should get the addresses', async () => {
+      const accounts = await requestManager.eth_accounts()
+      const account = accounts[0]
 
-function doTest(requestManager: RequestManager) {
-  it('should get the addresses', async () => {
-    const accounts = await requestManager.eth_accounts()
-    const account = accounts[0]
+      console.log(`> Using account ${account}`)
+      expect(typeof account).toEqual('string')
+      expect(account.length).toBeGreaterThan(0)
+    })
 
-    console.log(`> Using account ${account}`)
-    expect(typeof account).toEqual('string')
-    expect(account.length).toBeGreaterThan(0)
-  })
+    let TestContract = null
 
-  it('should get the balance', async () => {
-    const accounts = await requestManager.eth_accounts()
-    const account = accounts[0]
+    it('deploys a new contract', async function () {
+      this.timeout(100000)
+      const accounts = await requestManager.eth_accounts()
+      const account = accounts[0]
 
-    console.log(`> Using account ${account}`)
-    const balance = await requestManager.eth_getBalance(account, 'latest')
-    console.log(`> Balance ${balance}`)
-    expect(balance.toNumber()).toBeGreaterThan(0)
-  })
+      const factory = new ContractFactory(requestManager, contract.abi)
+      TestContract = await factory.deploy({ data: contract.bytecode, from: account, to: null })
 
-  it('should unlock the account', async () => {
-    const accounts = await requestManager.eth_accounts()
-    const account = accounts[0]
-    const accountUnlocked = await requestManager.personal_unlockAccount(account, '', 300)
-    console.log(`> Unlocking account status=${accountUnlocked}`)
-    expect(accountUnlocked).toEqual(true)
-  })
+      console.log(`> Tx: ${TestContract.transactionHash}`)
+    })
 
-  let TestContract = null
+    it('gets the receipt', async () => {
+      const txRecipt = await requestManager.eth_getTransactionReceipt(TestContract.transactionHash)
 
-  it('deploys a new contract', async function () {
-    this.timeout(100000)
-    const accounts = await requestManager.eth_accounts()
-    const account = accounts[0]
+      expect(typeof txRecipt.contractAddress).toEqual('string')
+      expect(txRecipt.contractAddress.length).toBeGreaterThan(0)
+    })
 
-    const factory = new ContractFactory(requestManager, contract.abi)
-    TestContract = await factory.deploy({ data: contract.bytecode, from: account, to: null })
+    it('gets the trasaction', async () => {
+      const x = await requestManager.eth_getTransactionByHash(TestContract.transactionHash)
+      expect(typeof x).toEqual('object')
+      expect(x.hash).toEqual(TestContract.transactionHash)
+    })
 
-    console.log(`> Tx: ${TestContract.transactionHash}`)
-  })
+    it('test() == 1', async () => {
+      const balance = await TestContract.test.void()
+      expect(balance.toString()).toEqual('1')
+    })
 
-  it('gets the receipt', async () => {
-    const txRecipt = await requestManager.eth_getTransactionReceipt(TestContract.transactionHash)
+    it('test(uint256) == 222', async () => {
+      const balance = await TestContract.test.uint256(222)
+      expect(balance.toString()).toEqual('222')
+    })
 
-    expect(typeof txRecipt.contractAddress).toEqual('string')
-    expect(txRecipt.contractAddress.length).toBeGreaterThan(0)
-  })
-
-  it('gets the trasaction', async () => {
-    const x = await requestManager.eth_getTransactionByHash(TestContract.transactionHash)
-    expect(typeof x).toEqual('object')
-    expect(x.hash).toEqual(TestContract.transactionHash)
-  })
-
-  it('test() == 1', async () => {
-    const balance = await TestContract.test.void()
-    expect(balance.toString()).toEqual('1')
-  })
-
-  it('test(uint256) == 222', async () => {
-    const balance = await TestContract.test.uint256(222)
-    expect(balance.toString()).toEqual('222')
-  })
-
-  it('test(uint256,uint256) == 333', async () => {
-    const balance = await TestContract.test['uint256,uint256'](222, 111)
-    expect(balance.toString()).toEqual('333')
+    it('test(uint256,uint256) == 333', async () => {
+      const balance = await TestContract.test['uint256,uint256'](222, 111)
+      expect(balance.toString()).toEqual('333')
+    })
   })
 }

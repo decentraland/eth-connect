@@ -9,7 +9,6 @@ import {
   EthBlockFilter,
   EthPendingTransactionFilter
 } from '../dist/eth-connect'
-import { testAllProviders } from './helpers/testAllProviders'
 import { future } from 'fp-future'
 
 /*
@@ -117,11 +116,7 @@ const contract = {
   ]
 }
 
-describe('integration.events', function () {
-  testAllProviders(doTest)
-})
-
-function doTest(rm: RequestManager) {
+export function doEventsTest(rm: RequestManager) {
   it('should get the addresses', async () => {
     const accounts = await rm.eth_accounts()
     const account = accounts[0]

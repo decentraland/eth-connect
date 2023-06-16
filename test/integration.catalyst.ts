@@ -1,24 +1,9 @@
 import 'isomorphic-fetch'
 import expect from 'expect'
 import { RequestManager, ContractFactory } from '../dist/eth-connect'
-import { testAllProviders } from './helpers/testAllProviders'
 import { abi, bytecode } from './fixtures/Catalyst.json'
 
-describe('integration.catalyst', function () {
-  testAllProviders(doTest)
-})
-
-function doTest(requestManager: RequestManager) {
-  it('should get the balance', async () => {
-    const coinbase = await requestManager.eth_coinbase()
-    console.log(`> Coinbase`, coinbase)
-    const accounts = await requestManager.eth_accounts()
-    const account = accounts[0]
-    const balance = await requestManager.eth_getBalance(account, 'latest')
-    console.log(`> Balance ${balance}`)
-    expect(balance.toNumber()).toBeGreaterThan(0)
-  })
-
+export function doCatalystTest(requestManager: RequestManager) {
   it('should unlock the account', async () => {
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]

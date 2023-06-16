@@ -1,25 +1,10 @@
 import 'isomorphic-fetch'
 import expect from 'expect'
 import { RequestManager, ContractFactory, BigNumber, ConfirmedTransaction, TxHash } from '../dist/eth-connect'
-import { testAllProviders } from './helpers/testAllProviders'
 import { testReturnType } from './unit.eth-return-types'
 import { abi, bytecode } from './fixtures/ERC20.json'
 
-describe('integration.erc20', function () {
-  testAllProviders(doTest)
-})
-
-function doTest(requestManager: RequestManager) {
-  it('should get the balance', async () => {
-    const coinbase = await requestManager.eth_coinbase()
-    console.log(`> Coinbase`, coinbase)
-    const accounts = await requestManager.eth_accounts()
-    const account = accounts[0]
-    const balance = await requestManager.eth_getBalance(account, 'latest')
-    console.log(`> Balance ${balance}`)
-    expect(balance.toNumber()).toBeGreaterThan(0)
-  })
-
+export function doERC20Test(requestManager: RequestManager) {
   it('should unlock the account', async () => {
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]

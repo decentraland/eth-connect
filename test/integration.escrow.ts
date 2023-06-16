@@ -1,14 +1,9 @@
 import 'isomorphic-fetch'
 import expect from 'expect'
 import { RequestManager, ContractFactory, BigNumber } from '../dist/eth-connect'
-import { testAllProviders } from './helpers/testAllProviders'
 import { abi, bytecode } from './fixtures/Escrow.json'
 
-describe('integration.escrow', function () {
-  testAllProviders(doTest)
-})
-
-function doTest(requestManager: RequestManager) {
+export function doEscrowTest(requestManager: RequestManager) {
   it('should unlock the account', async () => {
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
