@@ -1,6 +1,6 @@
 import 'isomorphic-fetch'
 import { RequestManager, ContractFactory, BigNumber, ConfirmedTransaction, TxHash } from '../dist/eth-connect'
-import { expectReturnType } from './unit.eth-return-types'
+import { expectReturnType } from './unit.eth-return-types.spec'
 import { abi, bytecode } from './fixtures/ERC20.json'
 
 export function doERC20Test(requestManager: RequestManager) {
