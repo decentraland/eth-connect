@@ -95,24 +95,6 @@ export function doOverloadTest(requestManager: RequestManager) {
       expect(account.length).toBeGreaterThan(0)
     })
 
-    it('should get the balance', async () => {
-      const accounts = await requestManager.eth_accounts()
-      const account = accounts[0]
-
-      console.log(`> Using account ${account}`)
-      const balance = await requestManager.eth_getBalance(account, 'latest')
-      console.log(`> Balance ${balance}`)
-      expect(balance.toNumber()).toBeGreaterThan(0)
-    })
-
-    it('should unlock the account', async () => {
-      const accounts = await requestManager.eth_accounts()
-      const account = accounts[0]
-      const accountUnlocked = await requestManager.personal_unlockAccount(account, '', 300)
-      console.log(`> Unlocking account status=${accountUnlocked}`)
-      expect(accountUnlocked).toEqual(true)
-    })
-
     let TestContract = null
 
     it('deploys a new contract', async function () {

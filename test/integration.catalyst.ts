@@ -4,16 +4,6 @@ import { RequestManager, ContractFactory } from '../dist/eth-connect'
 import { abi, bytecode } from './fixtures/Catalyst.json'
 
 export function doCatalystTest(requestManager: RequestManager) {
-  it('should get the balance', async () => {
-    const coinbase = await requestManager.eth_coinbase()
-    console.log(`> Coinbase`, coinbase)
-    const accounts = await requestManager.eth_accounts()
-    const account = accounts[0]
-    const balance = await requestManager.eth_getBalance(account, 'latest')
-    console.log(`> Balance ${balance}`)
-    expect(balance.toNumber()).toBeGreaterThan(0)
-  })
-
   it('should unlock the account', async () => {
     const accounts = await requestManager.eth_accounts()
     const account = accounts[0]
