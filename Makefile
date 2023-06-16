@@ -42,7 +42,7 @@ watch:
 		${TSC} --project tsconfig.json --watch
 
 test:
-		npm run test
+		yarn test
 
 local-node:
 		# ensure ethereum/client-go image
@@ -69,7 +69,7 @@ kill-docker:
 		# stop the node
 		@(docker container kill geth-dev && docker container rm geth-dev) || true
 
-ci: | build local-node test test-codecov kill-docker
+ci: | build local-node test kill-docker
 
 test-local: | build local-node test kill-docker
 
