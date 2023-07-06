@@ -64,7 +64,7 @@
     "ganache": "^7.8.0",
     "isomorphic-fetch": "^3.0.0",
     "js-sha3": "^0.8.0",
-    "rollup": "^3.25.3",
+    "rollup": "^3.26.2",
     "ts-node": "^10.9.1",
     "tslib": "^2.6.0",
     "typescript": "^5.1.5",
