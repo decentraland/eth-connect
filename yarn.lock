@@ -1138,10 +1138,10 @@
     "@typescript-eslint/types" "5.62.0"
     eslint-visitor-keys "^3.3.0"
 
-"@well-known-components/test-helpers@^1.5.2":
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@well-known-components/test-helpers/-/test-helpers-1.5.2.tgz#280f9529bb746d68b3be42b1c8cc01621bf49116"
-  integrity sha512-fdDJkWz0i8Ryz4UqqSNYBSktwqxUyGu+v/pP5WD1Hzbz0YE0KLj5UMh5rfdhq5maX4WiiTXLVTqj5HYacVT65g==
+"@well-known-components/test-helpers@^1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@well-known-components/test-helpers/-/test-helpers-1.5.3.tgz#87ee15c53d43a3e10f65b91d3d6f4e4a184cb54c"
+  integrity sha512-pOuHRNceMiqB3DC3jQxYsuxCr5qlrjLOhA0iUHa0vxYhaFCgHQdaMkNQrD2y/VrnVGzOf5YjkzxQS7ob2hoE1w==
   dependencies:
     "@types/jest" "^29.5.2"
     "@types/sinon" "^10.0.15"
