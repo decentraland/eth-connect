@@ -58,7 +58,7 @@
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "^11.1.2",
     "@types/node-fetch": "^2.6.4",
-    "@well-known-components/test-helpers": "^1.5.2",
+    "@well-known-components/test-helpers": "^1.5.3",
     "bignumber.js": "^9.1.1",
     "fp-future": "^1.0.1",
     "ganache": "^7.9.0",
