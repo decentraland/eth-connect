@@ -311,10 +311,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@dcl/eslint-config@^1.1.8":
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/@dcl/eslint-config/-/eslint-config-1.1.8.tgz#e5792d832d0056e397016131142dc01b0282d980"
-  integrity sha512-CKNRtkL1y/DcHTdT9pilvWS9tmj2ZMpwWH6F5Rlyd3JfG8W4yWl9oDAO+66aMQUXlQmA6c5h1VsYNH/RCw0uAA==
+"@dcl/eslint-config@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@dcl/eslint-config/-/eslint-config-1.1.9.tgz#d193b6977984f221cab488a1254c47cd7227dd13"
+  integrity sha512-S5uIFjsu3YDLgsRdNzF6eKzweqwLC1UWpu0EuWuKHy8gtnkXbx97ysKky4P7nHx7KvUFK3cwOy5YxzNzhwnfUQ==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.62.0"
     "@typescript-eslint/parser" "^5.62.0"
