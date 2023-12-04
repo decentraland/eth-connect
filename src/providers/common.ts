@@ -10,7 +10,7 @@ export type RPCMessage = {
 export type RPCError = {
   jsonrpc: '2.0'
   id: number
-  error: any
+  error: string | number | boolean | symbol | Object
 }
 
 export type RPCResponse =
@@ -19,6 +19,7 @@ export type RPCResponse =
       jsonrpc: '2.0'
       id: number
       result: any
+      error?: undefined | null
     }
 
 export function toRPC(message: RPCMessage): RPCMessage {

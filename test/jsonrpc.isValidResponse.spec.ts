@@ -130,5 +130,34 @@ describe('jsonrpc', function () {
       // then
       expect(valid).toEqual(true)
     })
+
+    it('should validate jsonrpc response with result and undefined error', () => {
+      let response: RPCResponse = {
+        jsonrpc: '2.0',
+        id: 1,
+        result: "3",
+        error: undefined
+      }
+      expect(Jsonrpc.isValidResponse(response)).toEqual(true)
+    })
+
+    it('should validate jsonrpc response with result and null error', () => {
+      let response: RPCResponse = {
+        jsonrpc: '2.0',
+        id: 1,
+        result: "3",
+        error: null
+      }
+      expect(Jsonrpc.isValidResponse(response)).toEqual(true)
+    })
+
+    it('should validate jsonrpc response with error', () => {
+      let response: RPCResponse = {
+        jsonrpc: '2.0',
+        id: 1,
+        error: "23"
+      }
+      expect(Jsonrpc.isValidResponse(response)).toEqual(false)
+    })
   })
 })
