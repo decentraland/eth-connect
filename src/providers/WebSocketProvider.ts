@@ -180,7 +180,7 @@ export class WebSocketProvider<T extends IWebSocket> {
 
       this.responseCallbacks.delete(id)
 
-      if ('error' in message && message.error !== undefined && message.error !== null) {
+      if (message.error !== undefined && message.error !== null) {
         defer.reject(Object.assign(new Error((message.error as any).message || message.error), message.error))
       } else if ('result' in message) {
         defer.resolve(message)

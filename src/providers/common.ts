@@ -10,7 +10,7 @@ export type RPCMessage = {
 export type RPCError = {
   jsonrpc: '2.0'
   id: number
-  error: string | number | boolean | symbol | Object
+  error: string | number | boolean | symbol | object
 }
 
 export type RPCResponse =

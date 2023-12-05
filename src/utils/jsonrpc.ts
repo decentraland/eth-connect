@@ -55,7 +55,7 @@ export function isValidResponse(response: RPCResponse | RPCResponse[]) {
   function validateSingleMessage(message: RPCResponse) {
     return (
       !!message &&
-      (!('error' in message) || message.error === undefined || message.error === null) &&
+      (message.error === undefined || message.error === null) &&
       message.jsonrpc === '2.0' &&
       typeof message.id === 'number' &&
       'result' in message &&
