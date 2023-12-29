@@ -58,10 +58,11 @@ describe('jsonrpc', function () {
       expect(valid).toEqual(false)
     })
 
-    it('should validate jsonrpc response without id number', function () {
+    it('should validate jsonrpc response without id', function () {
       // given
       let response: any = {
         jsonrpc: '2.0',
+        id: null,
         result: []
       }
 
@@ -72,7 +73,7 @@ describe('jsonrpc', function () {
       expect(valid).toEqual(false)
     })
 
-    it('should validate jsonrpc response with wrong id field', function () {
+    it('should validate jsonrpc response with id', function () {
       // given
       let response: any = {
         jsonrpc: '2.0',
@@ -84,7 +85,7 @@ describe('jsonrpc', function () {
       let valid = Jsonrpc.isValidResponse(response)
 
       // then
-      expect(valid).toEqual(false)
+      expect(valid).toEqual(true)
     })
 
     it('should validate jsonrpc response without result field', function () {
