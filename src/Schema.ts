@@ -327,6 +327,8 @@ export type TransactionReceipt = {
   cumulativeGasUsed: Quantity
   /** The amount of gas used by this specific transaction alone. */
   gasUsed: Quantity
+  /** The actual value per gas deducted from the sender's account. Before EIP-1559, equal to the gas price. */
+  effectiveGasPrice?: Quantity
   /**  The contract address created, if the transaction was a contract creation, otherwise null. */
   contractAddress: Address
   /** Array of log objects, which this transaction generated. */

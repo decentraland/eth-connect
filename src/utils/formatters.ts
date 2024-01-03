@@ -178,6 +178,9 @@ export function outputTransactionReceiptFormatter(receipt: TransactionReceipt) {
   receipt.cumulativeGasUsed = utils.toDecimal(receipt.cumulativeGasUsed)
   receipt.gasUsed = utils.toDecimal(receipt.gasUsed)
 
+  if (receipt.effectiveGasPrice !== undefined && receipt.effectiveGasPrice !== null)
+    receipt.effectiveGasPrice = utils.toDecimal(receipt.effectiveGasPrice)
+
   if (receipt.logs && utils.isArray(receipt.logs)) {
     receipt.logs = receipt.logs.map(function (log) {
       return outputLogFormatter(log)

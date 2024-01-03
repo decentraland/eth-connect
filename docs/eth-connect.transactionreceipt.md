@@ -15,6 +15,7 @@ export type TransactionReceipt = {
     blockNumber: Quantity;
     cumulativeGasUsed: Quantity;
     gasUsed: Quantity;
+    effectiveGasPrice?: Quantity;
     contractAddress: Address;
     logs: Array<LogObject>;
     logsBloom: Data;
