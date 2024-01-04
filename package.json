@@ -61,7 +61,7 @@
     "@well-known-components/test-helpers": "^1.5.3",
     "bignumber.js": "^9.1.1",
     "fp-future": "^1.0.1",
-    "ganache": "^7.9.0",
+    "ganache": "^7.9.2",
     "isomorphic-fetch": "^3.0.0",
     "js-sha3": "^0.8.0",
     "rollup": "^3.27.1",
