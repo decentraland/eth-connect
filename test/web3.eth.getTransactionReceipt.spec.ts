@@ -9,6 +9,7 @@ let txResult = {
   transactionIndex: '0x1',
   contractAddress: '0x407d73d8a49eeb85d32cf465507dd71d507100c1',
   cumulativeGasUsed: '0x7f110',
+  effectiveGasPrice: '0x123',
   status: '0xa',
   gasUsed: '0x7f110',
   logs: [
@@ -39,6 +40,7 @@ let formattedTxResult = {
   transactionIndex: 1,
   contractAddress: '0x407d73d8a49eeb85d32cf465507dd71d507100c1',
   cumulativeGasUsed: 520464,
+  effectiveGasPrice: 0x123,
   gasUsed: 520464,
   status: 10,
   logs: [
@@ -65,7 +67,7 @@ let formattedTxResult = {
 
 let tests = [
   {
-    args:          ['0xd6960376d6c6dea93647383ffb245cfced97ccc5c7525397a543a72fdaea5265'],
+    args: ['0xd6960376d6c6dea93647383ffb245cfced97ccc5c7525397a543a72fdaea5265'],
     formattedArgs: ['0xd6960376d6c6dea93647383ffb245cfced97ccc5c7525397a543a72fdaea5265'],
     result: txResult,
     formattedResult: formattedTxResult,
