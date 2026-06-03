@@ -11,10 +11,10 @@ jobs:
       s3_bucket_key: ${{ steps.publish_package.outputs.s3-bucket-key }}
     steps:
       - uses: actions/checkout@master
-      - name: Use Node.js 18.x
+      - name: Use Node.js 24
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 24
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL

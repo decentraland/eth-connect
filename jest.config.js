@@ -8,6 +8,7 @@ module.exports = {
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest",
   },
+  setupFiles: ["<rootDir>/jest.setup.js"],
   coverageDirectory: "coverage",
   collectCoverageFrom: ["src/**/*.ts", "src/**/*.js"],
   coveragePathIgnorePatterns: ["/node_modules/"],

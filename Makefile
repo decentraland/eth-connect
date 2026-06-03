@@ -46,7 +46,7 @@ test:
 
 local-node:
 		# ensure ethereum/client-go image
-		@docker pull ethereum/client-go
+		@docker pull ethereum/client-go:v1.13.15
 
 		# kill the previous ethereum/client-go container if exist
 		@(docker container kill geth-dev || true)
@@ -57,13 +57,39 @@ local-node:
 				-d --name geth-dev \
 				-v "$(PWD)":/eth_common \
 				-p 8545:8545 -p 8546:8546 \
-						ethereum/client-go \
+						ethereum/client-go:v1.13.15 \
 				--identity="TEST_NODE" --networkid="53611" \
         --allow-insecure-unlock \
-				--http --http.addr 0.0.0.0 --http.api="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" \
-				--ws  --ws.addr 0.0.0.0  --ws.api="admin,debug,eth,miner,net,personal,shh,txpool,web3,db" --ws.origins \* \
+				--http --http.addr 0.0.0.0 --http.api="admin,debug,eth,miner,net,personal,txpool,web3" \
+				--ws  --ws.addr 0.0.0.0  --ws.api="admin,debug,eth,miner,net,personal,txpool,web3" --ws.origins \* \
 				--mine \
-				--dev --dev.period 0
+				--dev --dev.period 0 --state.scheme=hash
+
+		# geth reports "transaction indexing is in progress" on receipt lookups until
+		# the first block is mined, which makes contract deployments in the tests fail.
+		# Mine one block with a dummy transaction and wait for the receipt index to be
+		# ready before handing the node over to the tests.
+		@echo '> waiting for geth to be ready'
+		@for i in $$(seq 1 60); do \
+			ACCOUNT=$$(curl -s -X POST -H 'Content-Type: application/json' \
+				--data '{"jsonrpc":"2.0","method":"eth_accounts","params":[],"id":1}' \
+				http://127.0.0.1:8545 | sed -nE 's/.*\["(0x[0-9a-fA-F]+)".*/\1/p'); \
+			if [ -n "$$ACCOUNT" ]; then \
+				curl -s -X POST -H 'Content-Type: application/json' \
+					--data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\",\"params\":[{\"from\":\"$$ACCOUNT\",\"to\":\"$$ACCOUNT\",\"value\":\"0x1\"}],\"id\":2}" \
+					http://127.0.0.1:8545 > /dev/null; \
+				sleep 1; \
+				if curl -s -X POST -H 'Content-Type: application/json' \
+					--data '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x0000000000000000000000000000000000000000000000000000000000000000"],"id":3}' \
+					http://127.0.0.1:8545 | grep -q '"result"'; then \
+					echo "> geth ready after $$i attempts"; \
+					exit 0; \
+				fi; \
+			else \
+				sleep 1; \
+			fi; \
+		done; \
+		echo '> geth did not become ready in time'; exit 1
 
 kill-docker:
 		# stop the node
