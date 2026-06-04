@@ -10,7 +10,7 @@ jobs:
     outputs:
       s3_bucket_key: ${{ steps.publish_package.outputs.s3-bucket-key }}
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # @v4.3.0
       - name: Use Node.js 24
         uses: actions/setup-node@v3
         with:
@@ -41,13 +41,13 @@ jobs:
         if: ${{ github.actor != 'dependabot[bot]' }}
         uses: github/codeql-action/analyze@v2
       - name: report coverage
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # @master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: publish packages
         if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: menduz/oddish-action@master
+        uses: decentraland/oddish-action@0074f2d535c43b5c83f136525304a6277166d77f # @master
         id: publish_package
         with:
           cwd: ./dist
