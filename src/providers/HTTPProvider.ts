@@ -72,9 +72,17 @@ export class HTTPProvider {
       fetch(this.host, params).then(
         async ($) => {
           if (!$.ok) {
+            // Drain the error response body so the underlying connection is released: native
+            // fetch (undici) and browser fetch keep the socket checked out until the body is
+            // read or cancelled. Reading it also lets us surface the server's error detail,
+            // which is far more useful than a bare status code when debugging RPC failures.
+            // Best-effort and bounded: ignore read failures and cap the detail length.
+            const errorBody = typeof $.text === 'function' ? await $.text().catch(() => '') : ''
+            const detail = errorBody.trim().slice(0, 512)
+            const message = 'External error. response code: ' + $.status + (detail ? ' — ' + detail : '')
             /* istanbul ignore if */
-            if (this.debug) console.log('ERR << ' + JSON.stringify($))
-            callback(new Error('External error. response code: ' + $.status))
+            if (this.debug) console.log('ERR << ' + message)
+            callback(new Error(message))
           } else {
             const json = await $.json()
             /* istanbul ignore if */
