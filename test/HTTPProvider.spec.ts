@@ -1,4 +1,4 @@
-import { HTTPProvider } from '../src/providers/HTTPProvider'
+import { HTTPProvider, HTTPProviderOptions } from '../src/providers/HTTPProvider'
 
 type SendResult = { err: Error | null; result: any }
 
@@ -107,6 +107,28 @@ describe('when sending an async request through the HTTPProvider', () => {
       const { result } = await sendAsync(provider, payload)
 
       expect(result.result).toBe('0x1')
+    })
+  })
+})
+
+describe('when configuring the fetch option', () => {
+  describe('and the global native fetch is supplied', () => {
+    it('should be accepted without a cast', () => {
+      // This compiles only if the global native fetch (same WHATWG signature on web and
+      // server) is assignable to the fetch option — the point of this change.
+      const options: HTTPProviderOptions = { fetch: globalThis.fetch }
+
+      expect(typeof options.fetch).toBe('function')
+    })
+  })
+
+  describe('and a native-fetch component is supplied', () => {
+    it('should be accepted without a cast', () => {
+      // Mirrors the shape of native-fetch components such as @dcl/fetch-component.
+      const fetchComponent: (url: string, init?: RequestInit) => Promise<Response> = globalThis.fetch
+      const options: HTTPProviderOptions = { fetch: fetchComponent }
+
+      expect(typeof options.fetch).toBe('function')
     })
   })
 })

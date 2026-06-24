@@ -10,7 +10,6 @@
 export type FetchFunction = (url: string, params: {
     body?: any;
     method?: string;
-    mode?: string;
     headers?: any;
 }) => Promise<any>;
 ```
