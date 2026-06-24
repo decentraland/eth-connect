@@ -10,9 +10,9 @@ jobs:
     outputs:
       s3_bucket_key: ${{ steps.publish_package.outputs.s3-bucket-key }}
     steps:
-      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # @v4.3.0
+      - uses: actions/checkout@v6
       - name: Use Node.js 24
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: 24
 
@@ -64,7 +64,6 @@ jobs:
           gitlab-token: ${{ secrets.GITLAB_TOKEN }}
           gitlab-pipeline-url: ${{ secrets.GITLAB_URL }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           AWS_DEFAULT_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.SDK_TEAM_AWS_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SDK_TEAM_AWS_SECRET }}
