@@ -880,7 +880,6 @@ export function extractTypeName(name: string): string;
 export type FetchFunction = (url: string, params: {
     body?: any;
     method?: string;
-    mode?: string;
     headers?: any;
 }) => Promise<any>;
 

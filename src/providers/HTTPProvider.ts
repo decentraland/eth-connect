@@ -1,12 +1,16 @@
 import { RPCMessage, Callback, toRPC } from './common'
 export { RPCMessage, Callback } from './common'
 
+// Structurally compatible with the global native `fetch` (the same WHATWG signature on web
+// and server) as well as native-fetch components (e.g. @dcl/fetch-component) and node-fetch,
+// so callers can pass any of them directly without a cast. Only the fields HTTPProvider sets
+// are listed; a previous `mode?: string` was dropped because it is unused here and made the
+// native fetch's `RequestInit` (`mode?: RequestMode`) non-assignable to this type.
 export type FetchFunction = (
   url: string,
   params: {
     body?: any
     method?: string
-    mode?: string
     headers?: any
   }
 ) => Promise<any>
